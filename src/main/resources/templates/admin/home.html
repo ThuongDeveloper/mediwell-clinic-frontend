@@ -1,0 +1,170 @@
+<html  xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    
+    <div th:replace="~{admin/layout/layout :: head}"></div>
+    
+<body data-new-gr-c-s-check-loaded="14.1115.0" data-gr-ext-installed="" cz-shortcut-listen="true"><noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NKDMSK6" height=0 width=0 style=display:none;visibility:hidden></iframe></noscript><div class="wrapper"><div class="notifications"><span mode="out-in"></span></div>
+      
+        <div th:replace="~{admin/layout/sidenav :: nav}"></div>
+      
+        <div class="main-content"><nav class="navbar navbar-top navbar-expand navbar-light navbar-expand-lg bg- navbar-dark"><div class="container-fluid"><button type="button" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler collapsed"><span class="navbar-toggler-bar navbar-kebab"></span><span class="navbar-toggler-bar navbar-kebab"></span><span class="navbar-toggler-bar navbar-kebab"></span></button><button type="button" aria-label="Toggle navigation" class="navbar-toggler collapsed" aria-expanded="false" aria-controls="nav-text-collapse"><span class="navbar-toggler-icon"></span></button><div id="nav-text-collapse" class="navbar-custom-collapse collapse navbar-collapse collapse" style="display: none;"><a href="#" aria-current="page" class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block active router-link-active"> dashboard </a><ul class="navbar-nav align-items-center ml-md-auto"><li class="nav-item d-sm-none"><a href="#" data-action="search-show" data-target="#navbar-search-main" class="nav-link"><i class="ni ni-zoom-split-in"></i></a></li></ul><ul class="navbar-nav align-items-center ml-auto ml-md-0"><form id="navbar-search-main" class="navbar-search form-inline mr-sm-3 navbar-search-dark"><fieldset class="form-group mb-0" id="__BVID__63"><!----><div tabindex="-1" role="group" class="bv-no-focus-ring"><div role="group" class="input-group input-group-alternative input-group-merge"><!----><input type="text" placeholder="Search" class="form-control" id="__BVID__64"><div class="input-group-append"><span class="input-group-text"><i class="fas fa-search"></i></span></div><!----></div><!----><!----><!----></div></fieldset></form><li data-v-9e976cde="" class="nav-item dropdown"><a data-v-9e976cde="" href="#" class="nav-link pr-0"><div data-v-9e976cde="" class="media align-items-center"><span data-v-9e976cde="" class="avatar avatar-sm rounded-circle"><img data-v-9e976cde="" alt="Image placeholder" src="img/theme/team-4.jpg"></span><div data-v-9e976cde="" class="media-body ml-2 d-none d-lg-block"><span data-v-9e976cde="" class="mb-0 text-sm  font-weight-bold">John Snow</span></div></div></a><ul data-v-9e976cde="" class="dropdown-menu dropdown-menu-right"><li data-v-9e976cde="" role="presentation" class="noti-title"><header data-v-9e976cde="" role="heading" class="dropdown-header"><h6 data-v-9e976cde="" class="text-overflow m-0">Welcome!</h6></header></li><li role="presentation" data-v-9e976cde=""><a role="menuitem" href="#!" target="_self" class="dropdown-item"><i class="ni ni-single-02"></i><span>My profile</span></a></li><li role="presentation" data-v-9e976cde=""><a role="menuitem" href="#!" target="_self" class="dropdown-item"><i class="ni ni-settings-gear-65"></i><span>Settings</span></a></li><li role="presentation" data-v-9e976cde=""><a role="menuitem" href="#!" target="_self" class="dropdown-item"><i class="ni ni-calendar-grid-58"></i><span>Activity</span></a></li><li role="presentation" data-v-9e976cde=""><a role="menuitem" href="#!" target="_self" class="dropdown-item"><i class="ni ni-support-16"></i><span>Support</span></a></li><div data-v-9e976cde="" class="dropdown-divider"></div><li role="presentation" data-v-9e976cde=""><a role="menuitem" href="#!" target="_self" class="dropdown-item"><i class="ni ni-user-run"></i><span>Logout</span></a></li></ul></li></ul></div></div></nav>
+            <div>
+                <div>
+                    <div th:replace="~{admin/layout/header :: header}"></div>
+                                                        <div class="mt--7 container-fluid"><div class="row"><div class="mb-5 mb-xl-0 col-xl-8"><div class="card bg-default"><!----><!----><div class="card-header bg-transparent"><div class="row align-items-center"><div class="col"><h6 class="text-light text-uppercase ls-1 mb-1">Overview</h6><h5 class="h3 text-white mb-0">Sales value</h5></div><div class="col"><ul class="nav nav-pills justify-content-end"><li class="nav-item mr-2 mr-md-0"><a href="#" target="_self" class="nav-link active py-2 px-3"><span class="d-none d-md-block">Month</span><span class="d-md-none">M</span></a></li><li class="nav-item"><a href="#" target="_self" class="nav-link py-2 px-3"><span class="d-none d-md-block">Week</span><span class="d-md-none">W</span></a></li></ul></div></div></div><div class="card-body"><!----><!----><div class=""><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div><canvas id="line-chart" width="882" height="437" style="display: block; height: 350px; width: 706px;" class="chartjs-render-monitor"></canvas></div></div><!----><!----><!----><!----></div></div><div class="mb-5 mb-xl-0 col-xl-4"><div class="card"><!----><!----><div class="card-header bg-transparent"><div class="row align-items-center"><div class="col"><h6 class="text-uppercase text-muted ls-1 mb-1">Performance</h6><h5 class="h3 mb-0">Total orders</h5></div></div></div><div class="card-body"><!----><!----><div class=""><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div><canvas id="bar-chart" width="391" height="437" style="display: block; height: 350px; width: 313px;" class="chartjs-render-monitor"></canvas></div></div><!----><!----><!----><!----></div></div></div><div class="row mt-5"><div class="mb-5 mb-xl-0 col-xl-8"><div class="card"><!----><div class="card-header border-0"><div class="row align-items-center"><div class="col"><h3 class="mb-0">Page visits</h3></div><div class="text-right col"><a href="#!" class="btn btn-sm btn-primary">See all</a></div></div></div><div class="card-body p-0"><!----><!----><div class="el-table table-responsive table el-table--fit el-table--enable-row-hover el-table--enable-row-transition"><div class="hidden-columns"><div></div><div></div><div></div><div></div></div><div class="el-table__header-wrapper"><table cellspacing="0" cellpadding="0" border="0" class="el-table__header" style="width: 754px;"><colgroup><col name="el-table_1_column_1" width="260"><col name="el-table_1_column_2" width="138"><col name="el-table_1_column_3" width="178"><col name="el-table_1_column_4" width="178"><col name="gutter" width="0"></colgroup><thead class="has-gutter"><tr class="thead-light"><th colspan="1" rowspan="1" class="el-table_1_column_1     is-leaf"><div class="cell">Page name</div></th><th colspan="1" rowspan="1" class="el-table_1_column_2     is-leaf"><div class="cell">Visitors</div></th><th colspan="1" rowspan="1" class="el-table_1_column_3     is-leaf"><div class="cell">Unique users</div></th><th colspan="1" rowspan="1" class="el-table_1_column_4     is-leaf"><div class="cell">Bounce rate</div></th><th class="gutter" style="width: 0px; display: none;"></th></tr></thead></table></div><div class="el-table__body-wrapper is-scrolling-none"><table cellspacing="0" cellpadding="0" border="0" class="el-table__body" style="width: 754px;"><colgroup><col name="el-table_1_column_1" width="260"><col name="el-table_1_column_2" width="138"><col name="el-table_1_column_3" width="178"><col name="el-table_1_column_4" width="178"></colgroup><tbody><tr class="el-table__row"><td rowspan="1" colspan="1" class="el-table_1_column_1  "><div class="cell"><div class="font-weight-600">/argon/</div></div></td><td rowspan="1" colspan="1" class="el-table_1_column_2  "><div class="cell">4,569</div></td><td rowspan="1" colspan="1" class="el-table_1_column_3  "><div class="cell">340</div></td><td rowspan="1" colspan="1" class="el-table_1_column_4  "><div class="cell">
+        46,53%
+      </div></td></tr><tr class="el-table__row"><td rowspan="1" colspan="1" class="el-table_1_column_1  "><div class="cell"><div class="font-weight-600">/argon/index.html</div></div></td><td rowspan="1" colspan="1" class="el-table_1_column_2  "><div class="cell">3,985</div></td><td rowspan="1" colspan="1" class="el-table_1_column_3  "><div class="cell">319</div></td><td rowspan="1" colspan="1" class="el-table_1_column_4  "><div class="cell">
+        46,53%
+      </div></td></tr><tr class="el-table__row"><td rowspan="1" colspan="1" class="el-table_1_column_1  "><div class="cell"><div class="font-weight-600">/argon/charts.html</div></div></td><td rowspan="1" colspan="1" class="el-table_1_column_2  "><div class="cell">3,513</div></td><td rowspan="1" colspan="1" class="el-table_1_column_3  "><div class="cell">294</div></td><td rowspan="1" colspan="1" class="el-table_1_column_4  "><div class="cell">
+        36,49%
+      </div></td></tr><tr class="el-table__row"><td rowspan="1" colspan="1" class="el-table_1_column_1  "><div class="cell"><div class="font-weight-600">/argon/tables.html</div></div></td><td rowspan="1" colspan="1" class="el-table_1_column_2  "><div class="cell">2,050</div></td><td rowspan="1" colspan="1" class="el-table_1_column_3  "><div class="cell">147</div></td><td rowspan="1" colspan="1" class="el-table_1_column_4  "><div class="cell">
+        50,87%
+      </div></td></tr><tr class="el-table__row"><td rowspan="1" colspan="1" class="el-table_1_column_1  "><div class="cell"><div class="font-weight-600">/argon/profile.html</div></div></td><td rowspan="1" colspan="1" class="el-table_1_column_2  "><div class="cell">1,795</div></td><td rowspan="1" colspan="1" class="el-table_1_column_3  "><div class="cell">190</div></td><td rowspan="1" colspan="1" class="el-table_1_column_4  "><div class="cell">
+        46,53%
+      </div></td></tr><!----></tbody></table><!----><!----></div><!----><!----><!----><!----><div class="el-table__column-resize-proxy" style="display: none;"></div></div></div><!----><!----></div></div><div class="mb-5 mb-xl-0 col-xl-4"><div class="card"><!----><div class="card-header border-0"><div class="row align-items-center"><div class="col"><h3 class="mb-0">Social traffic</h3></div><div class="text-right col"><button type="button" class="btn base-button btn-primary btn-sm"><!---->See all</button></div></div></div><div class="card-body p-0"><!----><!----><div class="el-table table-responsive table el-table--fit el-table--scrollable-x el-table--enable-row-hover el-table--enable-row-transition"><div class="hidden-columns"><div></div><div></div><div></div></div><div class="el-table__header-wrapper"><table cellspacing="0" cellpadding="0" border="0" class="el-table__header" style="width: 445px;"><colgroup><col name="el-table_2_column_5" width="115"><col name="el-table_2_column_6" width="110"><col name="el-table_2_column_7" width="220"><col name="gutter" width="0"></colgroup><thead class="has-gutter"><tr class="thead-light"><th colspan="1" rowspan="1" class="el-table_2_column_5     is-leaf"><div class="cell">Referral</div></th><th colspan="1" rowspan="1" class="el-table_2_column_6     is-leaf"><div class="cell">Visitors</div></th><th colspan="1" rowspan="1" class="el-table_2_column_7     is-leaf"><div class="cell"></div></th><th class="gutter" style="width: 0px; display: none;"></th></tr></thead></table></div><div class="el-table__body-wrapper is-scrolling-left"><table cellspacing="0" cellpadding="0" border="0" class="el-table__body" style="width: 445px;"><colgroup><col name="el-table_2_column_5" width="115"><col name="el-table_2_column_6" width="110"><col name="el-table_2_column_7" width="220"></colgroup><tbody><tr class="el-table__row"><td rowspan="1" colspan="1" class="el-table_2_column_5  "><div class="cell"><div class="font-weight-600">Facebook</div></div></td><td rowspan="1" colspan="1" class="el-table_2_column_6  "><div class="cell">1,480</div></td><td rowspan="1" colspan="1" class="el-table_2_column_7  "><div class="cell"><div class="d-flex align-items-center"><span class="mr-2">60%</span><div class="wrapper"><!----><div class="progress" size="" style="height: 3px;"><div role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="60" class="progress-bar bg-gradient-danger" style="width: 60%;"><!----></div></div></div></div></div></td></tr><tr class="el-table__row"><td rowspan="1" colspan="1" class="el-table_2_column_5  "><div class="cell"><div class="font-weight-600">LinkedIn</div></div></td><td rowspan="1" colspan="1" class="el-table_2_column_6  "><div class="cell">5,480</div></td><td rowspan="1" colspan="1" class="el-table_2_column_7  "><div class="cell"><div class="d-flex align-items-center"><span class="mr-2">70%</span><div class="wrapper"><!----><div class="progress" size="" style="height: 3px;"><div role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="70" class="progress-bar bg-gradient-success" style="width: 70%;"><!----></div></div></div></div></div></td></tr><tr class="el-table__row"><td rowspan="1" colspan="1" class="el-table_2_column_5  "><div class="cell"><div class="font-weight-600">Google</div></div></td><td rowspan="1" colspan="1" class="el-table_2_column_6  "><div class="cell">4,807</div></td><td rowspan="1" colspan="1" class="el-table_2_column_7  "><div class="cell"><div class="d-flex align-items-center"><span class="mr-2">80%</span><div class="wrapper"><!----><div class="progress" size="" style="height: 3px;"><div role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="80" class="progress-bar bg-gradient-primary" style="width: 80%;"><!----></div></div></div></div></div></td></tr><tr class="el-table__row"><td rowspan="1" colspan="1" class="el-table_2_column_5  "><div class="cell"><div class="font-weight-600">Instagram</div></div></td><td rowspan="1" colspan="1" class="el-table_2_column_6  "><div class="cell">3,678</div></td><td rowspan="1" colspan="1" class="el-table_2_column_7  "><div class="cell"><div class="d-flex align-items-center"><span class="mr-2">75%</span><div class="wrapper"><!----><div class="progress" size="" style="height: 3px;"><div role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="75" class="progress-bar bg-gradient-info" style="width: 75%;"><!----></div></div></div></div></div></td></tr><tr class="el-table__row"><td rowspan="1" colspan="1" class="el-table_2_column_5  "><div class="cell"><div class="font-weight-600">Twitter</div></div></td><td rowspan="1" colspan="1" class="el-table_2_column_6  "><div class="cell">2,645</div></td><td rowspan="1" colspan="1" class="el-table_2_column_7  "><div class="cell"><div class="d-flex align-items-center"><span class="mr-2">30%</span><div class="wrapper"><!----><div class="progress" size="" style="height: 3px;"><div role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="30" class="progress-bar bg-gradient-warning" style="width: 30%;"><!----></div></div></div></div></div></td></tr><!----></tbody></table><!----><!----></div><!----><!----><!----><!----><div class="el-table__column-resize-proxy" style="display: none;"></div></div></div><!----><!----></div></div></div></div></div></div>
+            <div th:replace="~{admin/layout/footer :: footer}"></div>
+        </div></div><script src="/bootstrap-vue-argon-dashboard/js/chunk-vendors.41984cab.js"></script><script src="/bootstrap-vue-argon-dashboard/js/app.a17a1494.js"></script><script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/v52afc6f149f6479b8c77fa569edb01181681764108816" integrity="sha512-jGCTpDpBAYDGNYR5ztKt4BQPGef1P0giN6ZGVUi835kFF88FOmmn8jBQWNgrNd8g/Yu421NdgWhwQoaOPFflDw==" data-cf-beacon="{&quot;rayId&quot;:&quot;7e5855669c48045f&quot;,&quot;version&quot;:&quot;2023.4.0&quot;,&quot;r&quot;:1,&quot;token&quot;:&quot;1b7cbb72744b40c580f8633c6b62637e&quot;,&quot;si&quot;:100}" crossorigin="anonymous"></script>
+
+
+<style>
+  #ofBar {
+    background: #fff;
+    z-index: 999999999;
+    font-size: 16px;
+    color: #333;
+    padding: 16px 40px;
+    font-weight: 400;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 40px;
+    width: 80%;
+    border-radius: 8px;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 13px 27px -5px rgba(50,50,93,0.25), 0 8px 16px -8px rgba(0,0,0,0.3), 0 -6px 16px -6px rgba(0,0,0,0.025);
+  }
+
+  #ofBar-logo img {
+    height: 50px;
+  }
+
+  #ofBar-content {
+    display: inline;
+    padding: 0 15px;
+  }
+
+  #ofBar-right {
+    display: flex;
+    align-items: center;
+  }
+
+  #ofBar b {
+    font-size: 15px !important;
+  }
+  #count-down {
+    display: initial;
+    padding-left: 10px;
+    font-weight: bold;
+    font-size: 20px;
+  }
+  #close-bar {
+    font-size: 17px;
+    opacity: 0.5;
+    cursor: pointer;
+    color: #808080;
+    font-weight: bold;
+  }
+  #close-bar:hover{
+    opacity: 1;
+  }
+  #btn-bar {
+    background-image: linear-gradient(310deg, #141727 0%, #3A416F 100%);
+    color: #fff;
+    border-radius: 4px;
+    padding: 10px 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 12px;
+    opacity: .95;
+    margin-right: 20px;
+    box-shadow: 0 5px 10px -3px rgba(0,0,0,.23), 0 6px 10px -5px rgba(0,0,0,.25);
+  }
+   #btn-bar, #btn-bar:hover, #btn-bar:focus, #btn-bar:active {
+     text-decoration: none !important;
+     color: #fff !important;
+ }
+  #btn-bar:hover{
+    opacity: 1;
+  }
+
+  #btn-bar span, #ofBar-content span {
+    color: red;
+    font-weight: 700;
+  }
+
+  #oldPriceBar {
+    text-decoration: line-through;
+    font-size: 16px;
+    color: #fff;
+    font-weight: 400;
+    top: 2px;
+    position: relative;
+  }
+  #newPrice{
+    color: #fff;
+    font-size: 19px;
+    font-weight: 700;
+    top: 2px;
+    position: relative;
+    margin-left: 7px;
+  }
+
+  #fromText {
+    font-size: 15px;
+    color: #fff;
+    font-weight: 400;
+    margin-right: 3px;
+    top: 0px;
+    position: relative;
+  }
+
+  @media(max-width: 991px){
+
+  }
+  @media (max-width: 768px) {
+    #count-down {
+      display: block;
+      margin-top: 15px;
+    }
+
+    #ofBar {
+      flex-direction: column;
+      align-items: normal;
+    }
+
+    #ofBar-content {
+      margin: 15px 0;
+      text-align: center;
+      font-size: 18px;
+    }
+
+    #ofBar-right {
+      justify-content: flex-end;
+    }
+  }
+</style>
+
+<script type="text/javascript" id="">function setCookie(b,d,c){var a=new Date;a.setTime(a.getTime()+864E5*c);c="expires\x3d"+a.toUTCString();document.cookie=b+"\x3d"+d+";"+c+";path\x3d/"}function readCookie(b){b+="\x3d";for(var d=document.cookie.split(";"),c=0;c<d.length;c++){for(var a=d[c];" "==a.charAt(0);)a=a.substring(1,a.length);if(0==a.indexOf(b))return a.substring(b.length,a.length)}return null}
+function createOfferBar(){var b=document.createElement("div");b.setAttribute("id","ofBar");b.innerHTML="\x3cdiv id\x3d'ofBar-logo'\x3e \x3cimg alt\x3d'creative-tim-logo' src\x3d'https://s3.amazonaws.com/creativetim_bucket/static-assets/logo-ct-black.png'\x3e\x3c/div\x3e\x3cdiv id\x3d'ofBar-content'\x3e \ud83c\udf89\ud83c\udf89 Join Creative Tim's Celebration! \x3cb\x3e10 Years Anniversary Bundle\x3c/b\x3e is here, with a big \x3cb\x3eThank You\x3c/b\x3e for your support  \u23f0 3 Days Left\x3c/div\x3e\x3cdiv id\x3d'ofBar-right'\x3e\x3ca href\x3d'https://www.creative-tim.com/campaign?ref\x3dct-demos' target\x3d'_blank' id\x3d'btn-bar'\x3eView Offer\x3c/a\x3e\x3ca id\x3d'close-bar'\x3e\u00d7\x3c/a\x3e\x3c/div\x3e";document.body.insertBefore(b,
+document.body.firstChild)}function closeOfferBar(){document.getElementById("ofBar").setAttribute("style","display:none");setCookie("view_offer_bar","true",1)}var value=readCookie("view_offer_bar");null==value&&(createOfferBar(),document.getElementById("close-bar").addEventListener("click",closeOfferBar));</script>
+	<script type="text/javascript" id="">!function(d,g,e){d.TiktokAnalyticsObject=e;var a=d[e]=d[e]||[];a.methods="page track identify instances debug on off once ready alias group enableCookie disableCookie".split(" ");a.setAndDefer=function(b,c){b[c]=function(){b.push([c].concat(Array.prototype.slice.call(arguments,0)))}};for(d=0;d<a.methods.length;d++)a.setAndDefer(a,a.methods[d]);a.instance=function(b){b=a._i[b]||[];for(var c=0;c<a.methods.length;c++)a.setAndDefer(b,a.methods[c]);return b};a.load=function(b,c){var f="https://analytics.tiktok.com/i18n/pixel/events.js";
+a._i=a._i||{};a._i[b]=[];a._i[b]._u=f;a._t=a._t||{};a._t[b]=+new Date;a._o=a._o||{};a._o[b]=c||{};c=document.createElement("script");c.type="text/javascript";c.async=!0;c.src=f+"?sdkid\x3d"+b+"\x26lib\x3d"+e;b=document.getElementsByTagName("script")[0];b.parentNode.insertBefore(c,b)};a.load("CC6UAQBC77U7GVKHLC4G");a.page()}(window,document,"ttq");</script>
+	<iframe id="_hjSafeContext_2137529" title="_hjSafeContext" tabindex="-1" aria-hidden="true" src="about:blank" style="display: none !important; width: 1px !important; height: 1px !important; opacity: 0 !important; pointer-events: none !important;"></iframe>
+
+<div th:replace="~{admin/layout/layout :: body}"></div>
+
+</body>
