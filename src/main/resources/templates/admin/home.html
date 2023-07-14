@@ -1,7 +1,7 @@
 <html  xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
 
-<div th:replace="~{admin/layout :: head}"></div>
+<div th:replace="~{admin/layout/layout :: head}"></div>
 
   <body class="nav-md">
     <div class="container body">
@@ -245,7 +245,7 @@
         <!-- /top navigation -->
 
         <!-- page content -->
-        <div class="right_col" role="main">
+        <div  role="main">
           <div class="row" style="display: inline-block;">
             <div class=" top_tiles" style="margin: 10px 0;">
               <div class="col-md-3 col-sm-3  tile">
@@ -797,10 +797,10 @@
         <!-- /page content -->
 
 
-<div th:replace="~{admin/footer :: footer}"></div>
+<div th:replace="~{admin/layout/footer :: footer}"></div>
       </div>
     
-<div th:replace="~{admin/layout :: body}"></div>
+<div th:replace="~{admin/layout/layout :: body}"></div>
 
   </body>
 </html>

@@ -16,21 +16,21 @@ var CURRENT_URL = window.location.href.split('#')[0].split('?')[0],
 
 // Sidebar
 function init_sidebar() {
-    // TODO: This is some kind of easy fix, maybe we can improve this
-    //    var setContentHeight = function () {
-    //        // reset height
-    //        $RIGHT_COL.css('min-height', $(window).height());
-    //
-    //        var bodyHeight = $BODY.outerHeight(),
-    //            footerHeight = $BODY.hasClass('footer_fixed') ? -10 : $FOOTER.height(),
-    //            leftColHeight = $LEFT_COL.eq(1).height() + $SIDEBAR_FOOTER.height(),
-    //            contentHeight = bodyHeight < leftColHeight ? leftColHeight : bodyHeight;
-    //
-    //        // normalize content
-    //        contentHeight -= $NAV_MENU.height() + footerHeight;
-    //
-    //        $RIGHT_COL.css('min-height', contentHeight);
-    //    }
+//     TODO: This is some kind of easy fix, maybe we can improve this
+//        var setContentHeight = function () {
+//            // reset height
+//            $RIGHT_COL.css('min-height', $(window).height());
+//    
+//            var bodyHeight = $BODY.outerHeight(),
+//                footerHeight = $BODY.hasClass('footer_fixed') ? -10 : $FOOTER.height(),
+//                leftColHeight = $LEFT_COL.eq(1).height() + $SIDEBAR_FOOTER.height(),
+//                contentHeight = bodyHeight < leftColHeight ? leftColHeight : bodyHeight;
+//    
+//            // normalize content
+//            contentHeight -= $NAV_MENU.height() + footerHeight;
+//    
+//            $RIGHT_COL.css('min-height', contentHeight);
+//        };
 
     var openUpMenu = function () {
         $SIDEBAR_MENU.find('li').removeClass('active active-sm');
