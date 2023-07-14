@@ -8,7 +8,7 @@
       if (this.isCropped) {
         this.renderCropBox();
       }
-    };
+    },
 
     initContainer: function () {
       var options = this.options;
@@ -26,8 +26,8 @@
 
       $this.addClass(CLASS_HIDDEN);
       $cropper.removeClass(CLASS_HIDDEN);
-    };
-    
+    },
+
     // Canvas (image wrapper)
     initCanvas: function () {
       var viewMode = this.options.viewMode;
@@ -75,7 +75,7 @@
       this.limitCanvas(true, true);
       this.initialImage = $.extend({}, image);
       this.initialCanvas = $.extend({}, canvas);
-    };
+    },
 
     limitCanvas: function (isSizeLimited, isPositionLimited) {
       var options = this.options;
@@ -185,7 +185,7 @@
           canvas.maxTop = containerHeight;
         }
       }
-    };
+    },
 
     renderCanvas: function (isChanged) {
       var canvas = this.canvas;
@@ -265,7 +265,7 @@
       if (isChanged) {
         this.output();
       }
-    };
+    },
 
     renderImage: function (isChanged) {
       var canvas = this.canvas;
@@ -304,7 +304,7 @@
       if (isChanged) {
         this.output();
       }
-    };
+    },
 
     initCropBox: function () {
       var options = this.options;
@@ -338,7 +338,7 @@
       cropBox.oldTop = cropBox.top = canvas.top + (canvas.height - cropBox.height) / 2;
 
       this.initialCropBox = $.extend({}, cropBox);
-    };
+    },
 
     limitCropBox: function (isSizeLimited, isPositionLimited) {
       var options = this.options;
@@ -404,7 +404,7 @@
           cropBox.maxTop = containerHeight - cropBox.height;
         }
       }
-    };
+    },
 
     renderCropBox: function () {
       var options = this.options;
@@ -449,7 +449,7 @@
       if (!this.isDisabled) {
         this.output();
       }
-    };
+    },
 
     output: function () {
       this.preview();
@@ -463,4 +463,4 @@
           this.trigger(EVENT_CROP, this.getData());
         }, this));
       }
-    };
+    },

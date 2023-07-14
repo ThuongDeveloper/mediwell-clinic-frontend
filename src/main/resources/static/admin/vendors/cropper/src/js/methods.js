@@ -16,7 +16,7 @@
       }
 
       this.setCropBoxData(this.initialCropBox);
-    };
+    },
 
     // Reset the image and crop box to their initial states
     reset: function () {
@@ -33,7 +33,7 @@
       if (this.isCropped) {
         this.renderCropBox();
       }
-    };
+    },
 
     // Clear the crop box
     clear: function () {
@@ -58,7 +58,7 @@
 
       this.$dragBox.removeClass(CLASS_MODAL);
       this.$cropBox.addClass(CLASS_HIDDEN);
-    };
+    },
 
     /**
      * Replace the image's src and rebuild the cropper
@@ -89,7 +89,7 @@
           this.load(url);
         }
       }
-    };
+    },
 
     // Enable (unfreeze) the cropper
     enable: function () {
@@ -97,7 +97,7 @@
         this.isDisabled = false;
         this.$cropper.removeClass(CLASS_DISABLED);
       }
-    };
+    },
 
     // Disable (freeze) the cropper
     disable: function () {
@@ -105,7 +105,7 @@
         this.isDisabled = true;
         this.$cropper.addClass(CLASS_DISABLED);
       }
-    };
+    },
 
     // Destroy the cropper and remove the instance from the image
     destroy: function () {
@@ -127,7 +127,7 @@
       }
 
       $this.removeData(NAMESPACE);
-    };
+    },
 
     /**
      * Move the canvas with relative offsets
@@ -142,7 +142,7 @@
         isUndefined(offsetX) ? offsetX : canvas.left + num(offsetX),
         isUndefined(offsetY) ? offsetY : canvas.top + num(offsetY)
       );
-    };
+    },
 
     /**
      * Move the canvas to an absolute point
@@ -177,7 +177,7 @@
           this.renderCanvas(true);
         }
       }
-    };
+    },
 
     /**
      * Zoom the canvas with a relative ratio
@@ -197,7 +197,7 @@
       }
 
       this.zoomTo(canvas.width * ratio / canvas.naturalWidth, _event);
-    };
+    },
 
     /**
      * Zoom the canvas to an absolute ratio
@@ -261,7 +261,7 @@
         canvas.height = newHeight;
         this.renderCanvas(true);
       }
-    };
+    },
 
     /**
      * Rotate the canvas with a relative degree
@@ -270,7 +270,7 @@
      */
     rotate: function (degree) {
       this.rotateTo((this.image.rotate || 0) + num(degree));
-    };
+    },
 
     /**
      * Rotate the canvas to an absolute degree
@@ -286,7 +286,7 @@
         this.isRotated = true;
         this.renderCanvas(true);
       }
-    };
+    },
 
     /**
      * Scale the image
@@ -322,7 +322,7 @@
           this.renderImage(true);
         }
       }
-    };
+    },
 
     /**
      * Scale the abscissa of the image
@@ -333,7 +333,7 @@
       var scaleY = this.image.scaleY;
 
       this.scale(scaleX, isNumber(scaleY) ? scaleY : 1);
-    };
+    },
 
     /**
      * Scale the ordinate of the image
@@ -344,7 +344,7 @@
       var scaleX = this.image.scaleX;
 
       this.scale(isNumber(scaleX) ? scaleX : 1, scaleY);
-    };
+    },
 
     /**
      * Get the cropped area position and size data (base on the original image)
@@ -394,7 +394,7 @@
       }
 
       return data;
-    };
+    },
 
     /**
      * Set the cropped area position and size with new data
@@ -460,7 +460,7 @@
 
         this.setCropBoxData(cropBoxData);
       }
-    };
+    },
 
     /**
      * Get the container size data
@@ -469,7 +469,7 @@
      */
     getContainerData: function () {
       return this.isBuilt ? this.container : {};
-    };
+    },
 
     /**
      * Get the image position and size data
@@ -478,7 +478,7 @@
      */
     getImageData: function () {
       return this.isLoaded ? this.image : {};
-    };
+    },
 
     /**
      * Get the canvas position and size data
@@ -503,7 +503,7 @@
       }
 
       return data;
-    };
+    },
 
     /**
      * Set the canvas position and size with new data
@@ -537,7 +537,7 @@
 
         this.renderCanvas(true);
       }
-    };
+    },
 
     /**
      * Get the crop box position and size data
@@ -558,7 +558,7 @@
       }
 
       return data || {};
-    };
+    },
 
     /**
      * Set the crop box position and size with new data
@@ -605,7 +605,7 @@
 
         this.renderCropBox();
       }
-    };
+    },
 
     /**
      * Get a canvas drawn the cropped image
@@ -732,7 +732,7 @@
       }).call(this));
 
       return canvas;
-    };
+    },
 
     /**
      * Change the aspect ratio of the crop box
@@ -755,7 +755,7 @@
           }
         }
       }
-    };
+    },
 
     /**
      * Change the drag mode

@@ -29,7 +29,7 @@
           'image-orientation:0deg!important;">'
         );
       });
-    };
+    },
 
     resetPreview: function () {
       this.$preview.each(function () {
@@ -41,7 +41,7 @@
           height: data.height
         }).html(data.html).removeData(DATA_PREVIEW);
       });
-    };
+    },
 
     preview: function () {
       var image = this.image;
@@ -97,4 +97,4 @@
           transform: getTransform(image)
         });
       });
-    };
+    },

@@ -83,7 +83,7 @@
         this.trigger(EVENT_BUILT);
         this.isCompleted = true;
       }, this), 0);
-    };
+    },
 
     unbuild: function () {
       if (!this.isBuilt) {
@@ -115,4 +115,4 @@
 
       this.$cropper.remove();
       this.$cropper = null;
-    };
+    },

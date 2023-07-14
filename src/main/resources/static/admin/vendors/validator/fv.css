@@ -112,7 +112,7 @@ form .field.fields{ height:auto; }
 .mode2 .field::after{ clear:both; }
 	.mode2 .field label{  }
 		.mode2 .field label span{ float:none; display:block; line-height:inherit; }
-	.mode2 .field input:not(type:"checkbox"), .field textarea{ width:250px; margin:0; }
+	.mode2 .field input:not(type"checkbox"), .field textarea{ width:250px; margin:0; }
 	.mode2 .field textarea{ width:350px; margin:0; }
 	.mode2 .field select{ width:260px; float:none; }
 	.mode2 .field.multi label{ float:none; }
