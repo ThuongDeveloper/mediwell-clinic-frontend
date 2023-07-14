@@ -1,170 +1,806 @@
 <html  xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+
+<div th:replace="~{admin/layout :: head}"></div>
+
+  <body class="nav-md">
+    <div class="container body">
+      <div class="main_container">
+        <div class="col-md-3 left_col">
+          <div class="left_col scroll-view">
+            <div class="navbar nav_title" style="border: 0;">
+              <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span>Gentelella Alela!</span></a>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <!-- menu profile quick info -->
+            <div class="profile clearfix">
+              <div class="profile_pic">
+                  <img src="../admin/../admin/images/img.jpg" alt="..." class="img-circle profile_img">
+              </div>
+              <div class="profile_info">
+                <span>Welcome,</span>
+                <h2>John Doe</h2>
+              </div>
+            </div>
+            <!-- /menu profile quick info -->
+
+            <br />
+
+            <!-- sidebar menu -->
+            <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+              <div class="menu_section">
+                <h3>General</h3>
+                <ul class="nav side-menu">
+                  <li><a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="index.html">Dashboard</a></li>
+                      <li><a href="index2.html">Dashboard2</a></li>
+                      <li><a href="index3.html">Dashboard3</a></li>
+                    </ul>
+                  </li>
+                  <li><a><i class="fa fa-edit"></i> Forms <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="form.html">General Form</a></li>
+                      <li><a href="form_advanced.html">Advanced Components</a></li>
+                      <li><a href="form_validation.html">Form Validation</a></li>
+                      <li><a href="form_wizards.html">Form Wizard</a></li>
+                      <li><a href="form_upload.html">Form Upload</a></li>
+                      <li><a href="form_buttons.html">Form Buttons</a></li>
+                    </ul>
+                  </li>
+                  <li><a><i class="fa fa-desktop"></i> UI Elements <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="general_elements.html">General Elements</a></li>
+                      <li><a href="media_gallery.html">Media Gallery</a></li>
+                      <li><a href="typography.html">Typography</a></li>
+                      <li><a href="icons.html">Icons</a></li>
+                      <li><a href="glyphicons.html">Glyphicons</a></li>
+                      <li><a href="widgets.html">Widgets</a></li>
+                      <li><a href="invoice.html">Invoice</a></li>
+                      <li><a href="inbox.html">Inbox</a></li>
+                      <li><a href="calendar.html">Calendar</a></li>
+                    </ul>
+                  </li>
+                  <li><a><i class="fa fa-table"></i> Tables <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="tables.html">Tables</a></li>
+                      <li><a href="tables_dynamic.html">Table Dynamic</a></li>
+                    </ul>
+                  </li>
+                  <li><a><i class="fa fa-bar-chart-o"></i> Data Presentation <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="chartjs.html">Chart JS</a></li>
+                      <li><a href="chartjs2.html">Chart JS2</a></li>
+                      <li><a href="morisjs.html">Moris JS</a></li>
+                      <li><a href="echarts.html">ECharts</a></li>
+                      <li><a href="other_charts.html">Other Charts</a></li>
+                    </ul>
+                  </li>
+                  <li><a><i class="fa fa-clone"></i>Layouts <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="fixed_sidebar.html">Fixed Sidebar</a></li>
+                      <li><a href="fixed_footer.html">Fixed Footer</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+              <div class="menu_section">
+                <h3>Live On</h3>
+                <ul class="nav side-menu">
+                  <li><a><i class="fa fa-bug"></i> Additional Pages <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="e_commerce.html">E-commerce</a></li>
+                      <li><a href="projects.html">Projects</a></li>
+                      <li><a href="project_detail.html">Project Detail</a></li>
+                      <li><a href="contacts.html">Contacts</a></li>
+                      <li><a href="profile.html">Profile</a></li>
+                    </ul>
+                  </li>
+                  <li><a><i class="fa fa-windows"></i> Extras <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="page_403.html">403 Error</a></li>
+                      <li><a href="page_404.html">404 Error</a></li>
+                      <li><a href="page_500.html">500 Error</a></li>
+                      <li><a href="plain_page.html">Plain Page</a></li>
+                      <li><a href="login.html">Login Page</a></li>
+                      <li><a href="pricing_tables.html">Pricing Tables</a></li>
+                    </ul>
+                  </li>
+                  <li><a><i class="fa fa-sitemap"></i> Multilevel Menu <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                        <li><a href="#level1_1">Level One</a>
+                        <li><a>Level One<span class="fa fa-chevron-down"></span></a>
+                          <ul class="nav child_menu">
+                            <li class="sub_menu"><a href="level2.html">Level Two</a>
+                            </li>
+                            <li><a href="#level2_1">Level Two</a>
+                            </li>
+                            <li><a href="#level2_2">Level Two</a>
+                            </li>
+                          </ul>
+                        </li>
+                        <li><a href="#level1_2">Level One</a>
+                        </li>
+                    </ul>
+                  </li>                  
+                  <li><a href="javascript:void(0)"><i class="fa fa-laptop"></i> Landing Page <span class="label label-success pull-right">Coming Soon</span></a></li>
+                </ul>
+              </div>
+
+            </div>
+            <!-- /sidebar menu -->
+
+            <!-- /menu footer buttons -->
+            <div class="sidebar-footer hidden-small">
+              <a data-toggle="tooltip" data-placement="top" title="Settings">
+                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+              </a>
+              <a data-toggle="tooltip" data-placement="top" title="FullScreen">
+                <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
+              </a>
+              <a data-toggle="tooltip" data-placement="top" title="Lock">
+                <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
+              </a>
+              <a data-toggle="tooltip" data-placement="top" title="Logout" href="login.html">
+                <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+              </a>
+            </div>
+            <!-- /menu footer buttons -->
+          </div>
+        </div>
+
+        <!-- top navigation -->
+        <div class="top_nav">
+            <div class="nav_menu">
+                <div class="nav toggle">
+                  <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                </div>
+                <nav class="nav navbar-nav">
+                <ul class=" navbar-right">
+                  <li class="nav-item dropdown open" style="padding-left: 15px;">
+                    <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
+                      <img src="../admin/images/img.jpg" alt="">John Doe
+                    </a>
+                    <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
+                      <a class="dropdown-item"  href="javascript:;"> Profile</a>
+                        <a class="dropdown-item"  href="javascript:;">
+                          <span class="badge bg-red pull-right">50%</span>
+                          <span>Settings</span>
+                        </a>
+                    <a class="dropdown-item"  href="javascript:;">Help</a>
+                      <a class="dropdown-item"  href="login.html"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
+                    </div>
+                  </li>
+  
+                  <li role="presentation" class="nav-item dropdown open">
+                    <a href="javascript:;" class="dropdown-toggle info-number" id="navbarDropdown1" data-toggle="dropdown" aria-expanded="false">
+                      <i class="fa fa-envelope-o"></i>
+                      <span class="badge bg-green">6</span>
+                    </a>
+                    <ul class="dropdown-menu list-unstyled msg_list" role="menu" aria-labelledby="navbarDropdown1">
+                      <li class="nav-item">
+                        <a class="dropdown-item">
+                          <span class="image"><img src="../admin/images/img.jpg" alt="Profile Image" /></span>
+                          <span>
+                            <span>John Smith</span>
+                            <span class="time">3 mins ago</span>
+                          </span>
+                          <span class="message">
+                            Film festivals used to be do-or-die moments for movie makers. They were where...
+                          </span>
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="dropdown-item">
+                          <span class="image"><img src="../admin/images/img.jpg" alt="Profile Image" /></span>
+                          <span>
+                            <span>John Smith</span>
+                            <span class="time">3 mins ago</span>
+                          </span>
+                          <span class="message">
+                            Film festivals used to be do-or-die moments for movie makers. They were where...
+                          </span>
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="dropdown-item">
+                          <span class="image"><img src="../admin/images/img.jpg" alt="Profile Image" /></span>
+                          <span>
+                            <span>John Smith</span>
+                            <span class="time">3 mins ago</span>
+                          </span>
+                          <span class="message">
+                            Film festivals used to be do-or-die moments for movie makers. They were where...
+                          </span>
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="dropdown-item">
+                          <span class="image"><img src="../admin/images/img.jpg" alt="Profile Image" /></span>
+                          <span>
+                            <span>John Smith</span>
+                            <span class="time">3 mins ago</span>
+                          </span>
+                          <span class="message">
+                            Film festivals used to be do-or-die moments for movie makers. They were where...
+                          </span>
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <div class="text-center">
+                          <a class="dropdown-item">
+                            <strong>See All Alerts</strong>
+                            <i class="fa fa-angle-right"></i>
+                          </a>
+                        </div>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        <!-- /top navigation -->
+
+        <!-- page content -->
+        <div class="right_col" role="main">
+          <div class="row" style="display: inline-block;">
+            <div class=" top_tiles" style="margin: 10px 0;">
+              <div class="col-md-3 col-sm-3  tile">
+                <span>Total Sessions</span>
+                <h2>231,809</h2>
+                <span class="sparkline_one" style="height: 160px;">
+                      <canvas width="200" height="60" style="display: inline-block; vertical-align: top; width: 94px; height: 30px;"></canvas>
+                  </span>
+              </div>
+              <div class="col-md-3 col-sm-3  tile">
+                <span>Total Revenue</span>
+                <h2>$ 231,809</h2>
+                <span class="sparkline_one" style="height: 160px;">
+                      <canvas width="200" height="60" style="display: inline-block; vertical-align: top; width: 94px; height: 30px;"></canvas>
+                  </span>
+              </div>
+              <div class="col-md-3 col-sm-3  tile">
+                <span>Total Sessions</span>
+                <h2>231,809</h2>
+                <span class="sparkline_one" style="height: 160px;">
+                      <canvas width="200" height="60" style="display: inline-block; vertical-align: top; width: 94px; height: 125px;"></canvas>
+                  </span> 
+              </div>
+              <div class="col-md-3 col-sm-3  tile">
+                <span>Total Sessions</span>
+                <h2>231,809</h2>
+                <span class="sparkline_one" style="height: 160px;">
+                      <canvas width="200" height="60" style="display: inline-block; vertical-align: top; width: 94px; height: 30px;"></canvas>
+                  </span>
+              </div>
+            </div>
+          </div>
+            <br/>
+
+
+            <div class="row">
+              <div class="col-md-12 col-sm-12 ">
+                <div class="dashboard_graph x_panel">
+                  <div class="x_title">
+                    <div class="col-md-6">
+                      <h3>Network Activities <small>Graph title sub-title</small></h3>
+                    </div>
+                    <div class="col-md-6">
+                      <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+                        <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                        <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="x_content">
+                    <div class="demo-container" style="height:250px">
+                      <div id="chart_plot_03" class="demo-placeholder"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="row">
+              <div class="col-md-4 col-sm-6 ">
+                <div class="x_panel fixed_height_320">
+                  <div class="x_title">
+                    <h2>App Devices <small>Sessions</small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="#">Settings 1</a>
+                            <a class="dropdown-item" href="#">Settings 2</a>
+                          </div>
+                      </li>
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                    <h4>App Versions</h4>
+                    <div class="widget_summary">
+                      <div class="w_left w_25">
+                        <span>1.5.2</span>
+                      </div>
+                      <div class="w_center w_55">
+                        <div class="progress">
+                          <div class="progress-bar bg-green" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 66%;">
+                            <span class="sr-only">60% Complete</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="w_right w_20">
+                        <span>123k</span>
+                      </div>
+                      <div class="clearfix"></div>
+                    </div>
+
+                    <div class="widget_summary">
+                      <div class="w_left w_25">
+                        <span>1.5.3</span>
+                      </div>
+                      <div class="w_center w_55">
+                        <div class="progress">
+                          <div class="progress-bar bg-green" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 45%;">
+                            <span class="sr-only">60% Complete</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="w_right w_20">
+                        <span>53k</span>
+                      </div>
+                      <div class="clearfix"></div>
+                    </div>
+                    <div class="widget_summary">
+                      <div class="w_left w_25">
+                        <span>1.5.4</span>
+                      </div>
+                      <div class="w_center w_55">
+                        <div class="progress">
+                          <div class="progress-bar bg-green" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 25%;">
+                            <span class="sr-only">60% Complete</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="w_right w_20">
+                        <span>23k</span>
+                      </div>
+                      <div class="clearfix"></div>
+                    </div>
+                    <div class="widget_summary">
+                      <div class="w_left w_25">
+                        <span>1.5.5</span>
+                      </div>
+                      <div class="w_center w_55">
+                        <div class="progress">
+                          <div class="progress-bar bg-green" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 5%;">
+                            <span class="sr-only">60% Complete</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="w_right w_20">
+                        <span>3k</span>
+                      </div>
+                      <div class="clearfix"></div>
+                    </div>
+                    <div class="widget_summary">
+                      <div class="w_left w_25">
+                        <span>0.1.5.6</span>
+                      </div>
+                      <div class="w_center w_55">
+                        <div class="progress">
+                          <div class="progress-bar bg-green" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 2%;">
+                            <span class="sr-only">60% Complete</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="w_right w_20">
+                        <span>1k</span>
+                      </div>
+                      <div class="clearfix"></div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-4 col-sm-6 ">
+                <div class="x_panel tile fixed_height_320">
+                  <div class="x_title">
+                    <h2>Daily users <small>Sessions</small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="#">Settings 1</a>
+                            <a class="dropdown-item" href="#">Settings 2</a>
+                          </div>
+                      </li>
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                  <table class="" style="width:100%">
+                    <tr>
+                      <th style="width:37%;">
+                        <p>Top 5</p>
+                      </th>
+                      <th>
+                        <div class="col-lg-7 col-md-7 col-sm-7 ">
+                          <p class="">Device</p>
+                        </div>
+                        <div class="col-lg-5 col-md-5 col-sm-5 ">
+                          <p class="">Progress</p>
+                        </div>
+                      </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <canvas class="canvasDoughnut" height="140" width="140" style="margin: 15px 10px 10px 0"></canvas>
+                          </td>
+                      <td>
+                        <table class="tile_info">
+                          <tr>
+                            <td>
+                              <p><i class="fa fa-square blue"></i>IOS </p>
+                            </td>
+                            <td>30%</td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <p><i class="fa fa-square green"></i>Android </p>
+                            </td>
+                            <td>10%</td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <p><i class="fa fa-square purple"></i>Blackberry </p>
+                            </td>
+                            <td>20%</td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <p><i class="fa fa-square aero"></i>Symbian </p>
+                            </td>
+                            <td>15%</td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <p><i class="fa fa-square red"></i>Others </p>
+                            </td>
+                            <td>30%</td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-4 col-sm-6 ">
+                <div class="x_panel fixed_height_320">
+                  <div class="x_title">
+                    <h2>Profile Settings <small>Sessions</small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="#">Settings 1</a>
+                            <a class="dropdown-item" href="#">Settings 2</a>
+                          </div>
+                      </li>
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                    <div class="dashboard-widget-content">
+                      <ul class="quick-list">
+                        <li><i class="fa fa-line-chart"></i><a href="#">Achievements</a></li>
+                        <li><i class="fa fa-thumbs-up"></i><a href="#">Favorites</a></li>
+                        <li><i class="fa fa-calendar-o"></i><a href="#">Activities</a></li>
+                        <li><i class="fa fa-cog"></i><a href="#">Settings</a></li>
+                        <li><i class="fa fa-area-chart"></i><a href="#">Logout</a></li>
+                      </ul>
+
+                      <div class="sidebar-widget">
+                        <h4>Profile Completion</h4>
+                        <canvas width="150" height="80" id="chart_gauge_01" class="" style="width: 160px; height: 100px;"></canvas>
+                        <div class="goal-wrapper">
+                          <span id="gauge-text" class="gauge-value gauge-chart pull-left">0</span>
+                          <span class="gauge-value pull-left">%</span>
+                          <span id="goal-text" class="goal-value pull-right">100%</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-4 col-sm-6  widget_tally_box">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>User Uptake</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="#">Settings 1</a>
+                            <a class="dropdown-item" href="#">Settings 2</a>
+                          </div>
+                      </li>
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+
+                    <div id="graph_bar" style="width:100%; height:200px;"></div>
+
+                    <div class=" bg-white progress_summary">
+
+                      <div class="row">
+                        <div class="progress_title">
+                          <span class="left">Escudor Wireless 1.0</span>
+                          <span class="right">This sis</span>
+                          <div class="clearfix"></div>
+                        </div>
+
+                        <div class="">
+                          <span>SSD</span>
+                        </div>
+                        <div class="">
+                          <div class="progress progress_sm">
+                            <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="89"></div>
+                          </div>
+                        </div>
+                        <div class=" more_info">
+                          <span>89%</span>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="progress_title">
+                          <span class="left">Mobile Access</span>
+                          <span class="right">Smart Phone</span>
+                          <div class="clearfix"></div>
+                        </div>
+
+                        <div class="">
+                          <span>App</span>
+                        </div>
+                        <div class="">
+                          <div class="progress progress_sm">
+                            <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="79"></div>
+                          </div>
+                        </div>
+                        <div class=" more_info">
+                          <span>79%</span>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="progress_title">
+                          <span class="left">WAN access users</span>
+                          <span class="right">Total 69%</span>
+                          <div class="clearfix"></div>
+                        </div>
+
+                        <div class="">
+                          <span>Usr</span>
+                        </div>
+                        <div class="">
+                          <div class="progress progress_sm">
+                            <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="69"></div>
+                          </div>
+                        </div>
+                        <div class=" more_info">
+                          <span>69%</span>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- start of weather widget -->
+              <div class="col-md-4 col-sm-6 ">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Today's Weather <small>Sessions</small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="#">Settings 1</a>
+                            <a class="dropdown-item" href="#">Settings 2</a>
+                          </div>
+                      </li>
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <div class="temperature"><b>Monday</b>, 07:30 AM
+                          <span>F</span>
+                          <span><b>C</b>
+                                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-4">
+                        <div class="weather-icon">
+                          <span>
+                                              <canvas height="84" width="84" id="partly-cloudy-day"></canvas>
+                                          </span>
+
+                        </div>
+                      </div>
+                      <div class="col-sm-8">
+                        <div class="weather-text">
+                          <h2>Texas
+                                              <br><i>Partly Cloudy Day</i>
+                                          </h2>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-12">
+                      <div class="weather-text pull-right">
+                        <h3 class="degrees">23</h3>
+                      </div>
+                    </div>
+                    <div class="clearfix"></div>
+
+
+                    <div class="row weather-days">
+                      <div class="col-sm-2">
+                        <div class="daily-weather">
+                          <h2 class="day">Mon</h2>
+                          <h3 class="degrees">25</h3>
+                          <span>
+                                                  <canvas id="clear-day" width="32" height="32">
+                                                  </canvas>
+
+                                          </span>
+                          <h5>15
+                                              <i>km/h</i>
+                                          </h5>
+                        </div>
+                      </div>
+                      <div class="col-sm-2">
+                        <div class="daily-weather">
+                          <h2 class="day">Tue</h2>
+                          <h3 class="degrees">25</h3>
+                          <canvas height="32" width="32" id="rain"></canvas>
+                          <h5>12
+                                              <i>km/h</i>
+                                          </h5>
+                        </div>
+                      </div>
+                      <div class="col-sm-2">
+                        <div class="daily-weather">
+                          <h2 class="day">Wed</h2>
+                          <h3 class="degrees">27</h3>
+                          <canvas height="32" width="32" id="snow"></canvas>
+                          <h5>14
+                                              <i>km/h</i>
+                                          </h5>
+                        </div>
+                      </div>
+                      <div class="col-sm-2">
+                        <div class="daily-weather">
+                          <h2 class="day">Thu</h2>
+                          <h3 class="degrees">28</h3>
+                          <canvas height="32" width="32" id="sleet"></canvas>
+                          <h5>15
+                                              <i>km/h</i>
+                                          </h5>
+                        </div>
+                      </div>
+                      <div class="col-sm-2">
+                        <div class="daily-weather">
+                          <h2 class="day">Fri</h2>
+                          <h3 class="degrees">28</h3>
+                          <canvas height="32" width="32" id="wind"></canvas>
+                          <h5>11
+                                              <i>km/h</i>
+                                          </h5>
+                        </div>
+                      </div>
+                      <div class="col-sm-2">
+                        <div class="daily-weather">
+                          <h2 class="day">Sat</h2>
+                          <h3 class="degrees">26</h3>
+                          <canvas height="32" width="32" id="cloudy"></canvas>
+                          <h5>10
+                                              <i>km/h</i>
+                                          </h5>
+                        </div>
+                      </div>
+                      <div class="clearfix"></div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+              <!-- end of weather widget -->
+
+              <div class="col-md-4 col-sm-6 ">
+                <div class="x_panel fixed_height_320">
+                  <div class="x_title">
+                    <h2>Incomes <small>Sessions</small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="#">Settings 1</a>
+                            <a class="dropdown-item" href="#">Settings 2</a>
+                          </div>
+                      </li>
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                    <div class="dashboard-widget-content">
+                      <ul class="quick-list">
+                        <li><i class="fa fa-bars"></i><a href="#">Subscription</a></li>
+                        <li><i class="fa fa-bar-chart"></i><a href="#">Auto Renewal</a> </li>
+                        <li><i class="fa fa-support"></i><a href="#">Help Desk</a> </li>
+                        <li><i class="fa fa-heart"></i><a href="#">Donations</a> </li>
+                      </ul>
+
+                      <div class="sidebar-widget">
+                        <h4>Goal</h4>
+                        <canvas width="150" height="80" id="chart_gauge_02" class="" style="width: 160px; height: 100px;"></canvas>
+                        <div class="goal-wrapper">
+                          <span class="gauge-value pull-left">$</span>
+                          <span id="gauge-text2" class="gauge-value pull-left">3,200</span>
+                          <span id="goal-text2" class="goal-value pull-right">$5,000</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /page content -->
+
+
+<div th:replace="~{admin/footer :: footer}"></div>
+      </div>
     
-    <div th:replace="~{admin/layout/layout :: head}"></div>
-    
-<body data-new-gr-c-s-check-loaded="14.1115.0" data-gr-ext-installed="" cz-shortcut-listen="true"><noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NKDMSK6" height=0 width=0 style=display:none;visibility:hidden></iframe></noscript><div class="wrapper"><div class="notifications"><span mode="out-in"></span></div>
-      
-        <div th:replace="~{admin/layout/sidenav :: nav}"></div>
-      
-        <div class="main-content"><nav class="navbar navbar-top navbar-expand navbar-light navbar-expand-lg bg- navbar-dark"><div class="container-fluid"><button type="button" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler collapsed"><span class="navbar-toggler-bar navbar-kebab"></span><span class="navbar-toggler-bar navbar-kebab"></span><span class="navbar-toggler-bar navbar-kebab"></span></button><button type="button" aria-label="Toggle navigation" class="navbar-toggler collapsed" aria-expanded="false" aria-controls="nav-text-collapse"><span class="navbar-toggler-icon"></span></button><div id="nav-text-collapse" class="navbar-custom-collapse collapse navbar-collapse collapse" style="display: none;"><a href="#" aria-current="page" class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block active router-link-active"> dashboard </a><ul class="navbar-nav align-items-center ml-md-auto"><li class="nav-item d-sm-none"><a href="#" data-action="search-show" data-target="#navbar-search-main" class="nav-link"><i class="ni ni-zoom-split-in"></i></a></li></ul><ul class="navbar-nav align-items-center ml-auto ml-md-0"><form id="navbar-search-main" class="navbar-search form-inline mr-sm-3 navbar-search-dark"><fieldset class="form-group mb-0" id="__BVID__63"><!----><div tabindex="-1" role="group" class="bv-no-focus-ring"><div role="group" class="input-group input-group-alternative input-group-merge"><!----><input type="text" placeholder="Search" class="form-control" id="__BVID__64"><div class="input-group-append"><span class="input-group-text"><i class="fas fa-search"></i></span></div><!----></div><!----><!----><!----></div></fieldset></form><li data-v-9e976cde="" class="nav-item dropdown"><a data-v-9e976cde="" href="#" class="nav-link pr-0"><div data-v-9e976cde="" class="media align-items-center"><span data-v-9e976cde="" class="avatar avatar-sm rounded-circle"><img data-v-9e976cde="" alt="Image placeholder" src="img/theme/team-4.jpg"></span><div data-v-9e976cde="" class="media-body ml-2 d-none d-lg-block"><span data-v-9e976cde="" class="mb-0 text-sm  font-weight-bold">John Snow</span></div></div></a><ul data-v-9e976cde="" class="dropdown-menu dropdown-menu-right"><li data-v-9e976cde="" role="presentation" class="noti-title"><header data-v-9e976cde="" role="heading" class="dropdown-header"><h6 data-v-9e976cde="" class="text-overflow m-0">Welcome!</h6></header></li><li role="presentation" data-v-9e976cde=""><a role="menuitem" href="#!" target="_self" class="dropdown-item"><i class="ni ni-single-02"></i><span>My profile</span></a></li><li role="presentation" data-v-9e976cde=""><a role="menuitem" href="#!" target="_self" class="dropdown-item"><i class="ni ni-settings-gear-65"></i><span>Settings</span></a></li><li role="presentation" data-v-9e976cde=""><a role="menuitem" href="#!" target="_self" class="dropdown-item"><i class="ni ni-calendar-grid-58"></i><span>Activity</span></a></li><li role="presentation" data-v-9e976cde=""><a role="menuitem" href="#!" target="_self" class="dropdown-item"><i class="ni ni-support-16"></i><span>Support</span></a></li><div data-v-9e976cde="" class="dropdown-divider"></div><li role="presentation" data-v-9e976cde=""><a role="menuitem" href="#!" target="_self" class="dropdown-item"><i class="ni ni-user-run"></i><span>Logout</span></a></li></ul></li></ul></div></div></nav>
-            <div>
-                <div>
-                    <div th:replace="~{admin/layout/header :: header}"></div>
-                                                        <div class="mt--7 container-fluid"><div class="row"><div class="mb-5 mb-xl-0 col-xl-8"><div class="card bg-default"><!----><!----><div class="card-header bg-transparent"><div class="row align-items-center"><div class="col"><h6 class="text-light text-uppercase ls-1 mb-1">Overview</h6><h5 class="h3 text-white mb-0">Sales value</h5></div><div class="col"><ul class="nav nav-pills justify-content-end"><li class="nav-item mr-2 mr-md-0"><a href="#" target="_self" class="nav-link active py-2 px-3"><span class="d-none d-md-block">Month</span><span class="d-md-none">M</span></a></li><li class="nav-item"><a href="#" target="_self" class="nav-link py-2 px-3"><span class="d-none d-md-block">Week</span><span class="d-md-none">W</span></a></li></ul></div></div></div><div class="card-body"><!----><!----><div class=""><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div><canvas id="line-chart" width="882" height="437" style="display: block; height: 350px; width: 706px;" class="chartjs-render-monitor"></canvas></div></div><!----><!----><!----><!----></div></div><div class="mb-5 mb-xl-0 col-xl-4"><div class="card"><!----><!----><div class="card-header bg-transparent"><div class="row align-items-center"><div class="col"><h6 class="text-uppercase text-muted ls-1 mb-1">Performance</h6><h5 class="h3 mb-0">Total orders</h5></div></div></div><div class="card-body"><!----><!----><div class=""><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div><canvas id="bar-chart" width="391" height="437" style="display: block; height: 350px; width: 313px;" class="chartjs-render-monitor"></canvas></div></div><!----><!----><!----><!----></div></div></div><div class="row mt-5"><div class="mb-5 mb-xl-0 col-xl-8"><div class="card"><!----><div class="card-header border-0"><div class="row align-items-center"><div class="col"><h3 class="mb-0">Page visits</h3></div><div class="text-right col"><a href="#!" class="btn btn-sm btn-primary">See all</a></div></div></div><div class="card-body p-0"><!----><!----><div class="el-table table-responsive table el-table--fit el-table--enable-row-hover el-table--enable-row-transition"><div class="hidden-columns"><div></div><div></div><div></div><div></div></div><div class="el-table__header-wrapper"><table cellspacing="0" cellpadding="0" border="0" class="el-table__header" style="width: 754px;"><colgroup><col name="el-table_1_column_1" width="260"><col name="el-table_1_column_2" width="138"><col name="el-table_1_column_3" width="178"><col name="el-table_1_column_4" width="178"><col name="gutter" width="0"></colgroup><thead class="has-gutter"><tr class="thead-light"><th colspan="1" rowspan="1" class="el-table_1_column_1     is-leaf"><div class="cell">Page name</div></th><th colspan="1" rowspan="1" class="el-table_1_column_2     is-leaf"><div class="cell">Visitors</div></th><th colspan="1" rowspan="1" class="el-table_1_column_3     is-leaf"><div class="cell">Unique users</div></th><th colspan="1" rowspan="1" class="el-table_1_column_4     is-leaf"><div class="cell">Bounce rate</div></th><th class="gutter" style="width: 0px; display: none;"></th></tr></thead></table></div><div class="el-table__body-wrapper is-scrolling-none"><table cellspacing="0" cellpadding="0" border="0" class="el-table__body" style="width: 754px;"><colgroup><col name="el-table_1_column_1" width="260"><col name="el-table_1_column_2" width="138"><col name="el-table_1_column_3" width="178"><col name="el-table_1_column_4" width="178"></colgroup><tbody><tr class="el-table__row"><td rowspan="1" colspan="1" class="el-table_1_column_1  "><div class="cell"><div class="font-weight-600">/argon/</div></div></td><td rowspan="1" colspan="1" class="el-table_1_column_2  "><div class="cell">4,569</div></td><td rowspan="1" colspan="1" class="el-table_1_column_3  "><div class="cell">340</div></td><td rowspan="1" colspan="1" class="el-table_1_column_4  "><div class="cell">
-        46,53%
-      </div></td></tr><tr class="el-table__row"><td rowspan="1" colspan="1" class="el-table_1_column_1  "><div class="cell"><div class="font-weight-600">/argon/index.html</div></div></td><td rowspan="1" colspan="1" class="el-table_1_column_2  "><div class="cell">3,985</div></td><td rowspan="1" colspan="1" class="el-table_1_column_3  "><div class="cell">319</div></td><td rowspan="1" colspan="1" class="el-table_1_column_4  "><div class="cell">
-        46,53%
-      </div></td></tr><tr class="el-table__row"><td rowspan="1" colspan="1" class="el-table_1_column_1  "><div class="cell"><div class="font-weight-600">/argon/charts.html</div></div></td><td rowspan="1" colspan="1" class="el-table_1_column_2  "><div class="cell">3,513</div></td><td rowspan="1" colspan="1" class="el-table_1_column_3  "><div class="cell">294</div></td><td rowspan="1" colspan="1" class="el-table_1_column_4  "><div class="cell">
-        36,49%
-      </div></td></tr><tr class="el-table__row"><td rowspan="1" colspan="1" class="el-table_1_column_1  "><div class="cell"><div class="font-weight-600">/argon/tables.html</div></div></td><td rowspan="1" colspan="1" class="el-table_1_column_2  "><div class="cell">2,050</div></td><td rowspan="1" colspan="1" class="el-table_1_column_3  "><div class="cell">147</div></td><td rowspan="1" colspan="1" class="el-table_1_column_4  "><div class="cell">
-        50,87%
-      </div></td></tr><tr class="el-table__row"><td rowspan="1" colspan="1" class="el-table_1_column_1  "><div class="cell"><div class="font-weight-600">/argon/profile.html</div></div></td><td rowspan="1" colspan="1" class="el-table_1_column_2  "><div class="cell">1,795</div></td><td rowspan="1" colspan="1" class="el-table_1_column_3  "><div class="cell">190</div></td><td rowspan="1" colspan="1" class="el-table_1_column_4  "><div class="cell">
-        46,53%
-      </div></td></tr><!----></tbody></table><!----><!----></div><!----><!----><!----><!----><div class="el-table__column-resize-proxy" style="display: none;"></div></div></div><!----><!----></div></div><div class="mb-5 mb-xl-0 col-xl-4"><div class="card"><!----><div class="card-header border-0"><div class="row align-items-center"><div class="col"><h3 class="mb-0">Social traffic</h3></div><div class="text-right col"><button type="button" class="btn base-button btn-primary btn-sm"><!---->See all</button></div></div></div><div class="card-body p-0"><!----><!----><div class="el-table table-responsive table el-table--fit el-table--scrollable-x el-table--enable-row-hover el-table--enable-row-transition"><div class="hidden-columns"><div></div><div></div><div></div></div><div class="el-table__header-wrapper"><table cellspacing="0" cellpadding="0" border="0" class="el-table__header" style="width: 445px;"><colgroup><col name="el-table_2_column_5" width="115"><col name="el-table_2_column_6" width="110"><col name="el-table_2_column_7" width="220"><col name="gutter" width="0"></colgroup><thead class="has-gutter"><tr class="thead-light"><th colspan="1" rowspan="1" class="el-table_2_column_5     is-leaf"><div class="cell">Referral</div></th><th colspan="1" rowspan="1" class="el-table_2_column_6     is-leaf"><div class="cell">Visitors</div></th><th colspan="1" rowspan="1" class="el-table_2_column_7     is-leaf"><div class="cell"></div></th><th class="gutter" style="width: 0px; display: none;"></th></tr></thead></table></div><div class="el-table__body-wrapper is-scrolling-left"><table cellspacing="0" cellpadding="0" border="0" class="el-table__body" style="width: 445px;"><colgroup><col name="el-table_2_column_5" width="115"><col name="el-table_2_column_6" width="110"><col name="el-table_2_column_7" width="220"></colgroup><tbody><tr class="el-table__row"><td rowspan="1" colspan="1" class="el-table_2_column_5  "><div class="cell"><div class="font-weight-600">Facebook</div></div></td><td rowspan="1" colspan="1" class="el-table_2_column_6  "><div class="cell">1,480</div></td><td rowspan="1" colspan="1" class="el-table_2_column_7  "><div class="cell"><div class="d-flex align-items-center"><span class="mr-2">60%</span><div class="wrapper"><!----><div class="progress" size="" style="height: 3px;"><div role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="60" class="progress-bar bg-gradient-danger" style="width: 60%;"><!----></div></div></div></div></div></td></tr><tr class="el-table__row"><td rowspan="1" colspan="1" class="el-table_2_column_5  "><div class="cell"><div class="font-weight-600">LinkedIn</div></div></td><td rowspan="1" colspan="1" class="el-table_2_column_6  "><div class="cell">5,480</div></td><td rowspan="1" colspan="1" class="el-table_2_column_7  "><div class="cell"><div class="d-flex align-items-center"><span class="mr-2">70%</span><div class="wrapper"><!----><div class="progress" size="" style="height: 3px;"><div role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="70" class="progress-bar bg-gradient-success" style="width: 70%;"><!----></div></div></div></div></div></td></tr><tr class="el-table__row"><td rowspan="1" colspan="1" class="el-table_2_column_5  "><div class="cell"><div class="font-weight-600">Google</div></div></td><td rowspan="1" colspan="1" class="el-table_2_column_6  "><div class="cell">4,807</div></td><td rowspan="1" colspan="1" class="el-table_2_column_7  "><div class="cell"><div class="d-flex align-items-center"><span class="mr-2">80%</span><div class="wrapper"><!----><div class="progress" size="" style="height: 3px;"><div role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="80" class="progress-bar bg-gradient-primary" style="width: 80%;"><!----></div></div></div></div></div></td></tr><tr class="el-table__row"><td rowspan="1" colspan="1" class="el-table_2_column_5  "><div class="cell"><div class="font-weight-600">Instagram</div></div></td><td rowspan="1" colspan="1" class="el-table_2_column_6  "><div class="cell">3,678</div></td><td rowspan="1" colspan="1" class="el-table_2_column_7  "><div class="cell"><div class="d-flex align-items-center"><span class="mr-2">75%</span><div class="wrapper"><!----><div class="progress" size="" style="height: 3px;"><div role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="75" class="progress-bar bg-gradient-info" style="width: 75%;"><!----></div></div></div></div></div></td></tr><tr class="el-table__row"><td rowspan="1" colspan="1" class="el-table_2_column_5  "><div class="cell"><div class="font-weight-600">Twitter</div></div></td><td rowspan="1" colspan="1" class="el-table_2_column_6  "><div class="cell">2,645</div></td><td rowspan="1" colspan="1" class="el-table_2_column_7  "><div class="cell"><div class="d-flex align-items-center"><span class="mr-2">30%</span><div class="wrapper"><!----><div class="progress" size="" style="height: 3px;"><div role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="30" class="progress-bar bg-gradient-warning" style="width: 30%;"><!----></div></div></div></div></div></td></tr><!----></tbody></table><!----><!----></div><!----><!----><!----><!----><div class="el-table__column-resize-proxy" style="display: none;"></div></div></div><!----><!----></div></div></div></div></div></div>
-            <div th:replace="~{admin/layout/footer :: footer}"></div>
-        </div></div><script src="/bootstrap-vue-argon-dashboard/js/chunk-vendors.41984cab.js"></script><script src="/bootstrap-vue-argon-dashboard/js/app.a17a1494.js"></script><script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/v52afc6f149f6479b8c77fa569edb01181681764108816" integrity="sha512-jGCTpDpBAYDGNYR5ztKt4BQPGef1P0giN6ZGVUi835kFF88FOmmn8jBQWNgrNd8g/Yu421NdgWhwQoaOPFflDw==" data-cf-beacon="{&quot;rayId&quot;:&quot;7e5855669c48045f&quot;,&quot;version&quot;:&quot;2023.4.0&quot;,&quot;r&quot;:1,&quot;token&quot;:&quot;1b7cbb72744b40c580f8633c6b62637e&quot;,&quot;si&quot;:100}" crossorigin="anonymous"></script>
+<div th:replace="~{admin/layout :: body}"></div>
 
-
-<style>
-  #ofBar {
-    background: #fff;
-    z-index: 999999999;
-    font-size: 16px;
-    color: #333;
-    padding: 16px 40px;
-    font-weight: 400;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: fixed;
-    top: 40px;
-    width: 80%;
-    border-radius: 8px;
-    left: 0;
-    right: 0;
-    margin-left: auto;
-    margin-right: auto;
-    box-shadow: 0 13px 27px -5px rgba(50,50,93,0.25), 0 8px 16px -8px rgba(0,0,0,0.3), 0 -6px 16px -6px rgba(0,0,0,0.025);
-  }
-
-  #ofBar-logo img {
-    height: 50px;
-  }
-
-  #ofBar-content {
-    display: inline;
-    padding: 0 15px;
-  }
-
-  #ofBar-right {
-    display: flex;
-    align-items: center;
-  }
-
-  #ofBar b {
-    font-size: 15px !important;
-  }
-  #count-down {
-    display: initial;
-    padding-left: 10px;
-    font-weight: bold;
-    font-size: 20px;
-  }
-  #close-bar {
-    font-size: 17px;
-    opacity: 0.5;
-    cursor: pointer;
-    color: #808080;
-    font-weight: bold;
-  }
-  #close-bar:hover{
-    opacity: 1;
-  }
-  #btn-bar {
-    background-image: linear-gradient(310deg, #141727 0%, #3A416F 100%);
-    color: #fff;
-    border-radius: 4px;
-    padding: 10px 20px;
-    font-weight: bold;
-    text-transform: uppercase;
-    text-align: center;
-    font-size: 12px;
-    opacity: .95;
-    margin-right: 20px;
-    box-shadow: 0 5px 10px -3px rgba(0,0,0,.23), 0 6px 10px -5px rgba(0,0,0,.25);
-  }
-   #btn-bar, #btn-bar:hover, #btn-bar:focus, #btn-bar:active {
-     text-decoration: none !important;
-     color: #fff !important;
- }
-  #btn-bar:hover{
-    opacity: 1;
-  }
-
-  #btn-bar span, #ofBar-content span {
-    color: red;
-    font-weight: 700;
-  }
-
-  #oldPriceBar {
-    text-decoration: line-through;
-    font-size: 16px;
-    color: #fff;
-    font-weight: 400;
-    top: 2px;
-    position: relative;
-  }
-  #newPrice{
-    color: #fff;
-    font-size: 19px;
-    font-weight: 700;
-    top: 2px;
-    position: relative;
-    margin-left: 7px;
-  }
-
-  #fromText {
-    font-size: 15px;
-    color: #fff;
-    font-weight: 400;
-    margin-right: 3px;
-    top: 0px;
-    position: relative;
-  }
-
-  @media(max-width: 991px){
-
-  }
-  @media (max-width: 768px) {
-    #count-down {
-      display: block;
-      margin-top: 15px;
-    }
-
-    #ofBar {
-      flex-direction: column;
-      align-items: normal;
-    }
-
-    #ofBar-content {
-      margin: 15px 0;
-      text-align: center;
-      font-size: 18px;
-    }
-
-    #ofBar-right {
-      justify-content: flex-end;
-    }
-  }
-</style>
-
-<script type="text/javascript" id="">function setCookie(b,d,c){var a=new Date;a.setTime(a.getTime()+864E5*c);c="expires\x3d"+a.toUTCString();document.cookie=b+"\x3d"+d+";"+c+";path\x3d/"}function readCookie(b){b+="\x3d";for(var d=document.cookie.split(";"),c=0;c<d.length;c++){for(var a=d[c];" "==a.charAt(0);)a=a.substring(1,a.length);if(0==a.indexOf(b))return a.substring(b.length,a.length)}return null}
-function createOfferBar(){var b=document.createElement("div");b.setAttribute("id","ofBar");b.innerHTML="\x3cdiv id\x3d'ofBar-logo'\x3e \x3cimg alt\x3d'creative-tim-logo' src\x3d'https://s3.amazonaws.com/creativetim_bucket/static-assets/logo-ct-black.png'\x3e\x3c/div\x3e\x3cdiv id\x3d'ofBar-content'\x3e \ud83c\udf89\ud83c\udf89 Join Creative Tim's Celebration! \x3cb\x3e10 Years Anniversary Bundle\x3c/b\x3e is here, with a big \x3cb\x3eThank You\x3c/b\x3e for your support  \u23f0 3 Days Left\x3c/div\x3e\x3cdiv id\x3d'ofBar-right'\x3e\x3ca href\x3d'https://www.creative-tim.com/campaign?ref\x3dct-demos' target\x3d'_blank' id\x3d'btn-bar'\x3eView Offer\x3c/a\x3e\x3ca id\x3d'close-bar'\x3e\u00d7\x3c/a\x3e\x3c/div\x3e";document.body.insertBefore(b,
-document.body.firstChild)}function closeOfferBar(){document.getElementById("ofBar").setAttribute("style","display:none");setCookie("view_offer_bar","true",1)}var value=readCookie("view_offer_bar");null==value&&(createOfferBar(),document.getElementById("close-bar").addEventListener("click",closeOfferBar));</script>
-	<script type="text/javascript" id="">!function(d,g,e){d.TiktokAnalyticsObject=e;var a=d[e]=d[e]||[];a.methods="page track identify instances debug on off once ready alias group enableCookie disableCookie".split(" ");a.setAndDefer=function(b,c){b[c]=function(){b.push([c].concat(Array.prototype.slice.call(arguments,0)))}};for(d=0;d<a.methods.length;d++)a.setAndDefer(a,a.methods[d]);a.instance=function(b){b=a._i[b]||[];for(var c=0;c<a.methods.length;c++)a.setAndDefer(b,a.methods[c]);return b};a.load=function(b,c){var f="https://analytics.tiktok.com/i18n/pixel/events.js";
-a._i=a._i||{};a._i[b]=[];a._i[b]._u=f;a._t=a._t||{};a._t[b]=+new Date;a._o=a._o||{};a._o[b]=c||{};c=document.createElement("script");c.type="text/javascript";c.async=!0;c.src=f+"?sdkid\x3d"+b+"\x26lib\x3d"+e;b=document.getElementsByTagName("script")[0];b.parentNode.insertBefore(c,b)};a.load("CC6UAQBC77U7GVKHLC4G");a.page()}(window,document,"ttq");</script>
-	<iframe id="_hjSafeContext_2137529" title="_hjSafeContext" tabindex="-1" aria-hidden="true" src="about:blank" style="display: none !important; width: 1px !important; height: 1px !important; opacity: 0 !important; pointer-events: none !important;"></iframe>
-
-<div th:replace="~{admin/layout/layout :: body}"></div>
-
-</body>
+  </body>
+</html>
