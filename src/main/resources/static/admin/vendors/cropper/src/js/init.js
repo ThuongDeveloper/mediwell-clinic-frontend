@@ -23,7 +23,7 @@
       }
 
       this.load(url);
-    };
+    },
 
     // A shortcut for triggering custom events
     trigger: function (type, data) {
@@ -32,7 +32,7 @@
       this.$element.trigger(e);
 
       return e;
-    };
+    },
 
     load: function (url) {
       var options = this.options;
@@ -84,7 +84,7 @@
       xhr.open('get', url);
       xhr.responseType = 'arraybuffer';
       xhr.send();
-    };
+    },
 
     read: function (arrayBuffer) {
       var options = this.options;
@@ -148,7 +148,7 @@
       }
 
       this.clone();
-    };
+    },
 
     clone: function () {
       var options = this.options;
@@ -188,7 +188,7 @@
           addClass(CLASS_HIDE).
           insertAfter($this);
       }
-    };
+    },
 
     start: function () {
       var $image = this.$element;
@@ -209,9 +209,9 @@
         this.isLoaded = true;
         this.build();
       }, this));
-    };
+    },
 
     stop: function () {
       this.$clone.remove();
       this.$clone = null;
-    };
+    },

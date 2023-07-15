@@ -399,4 +399,4 @@
       // Override
       this.startX = this.endX;
       this.startY = this.endY;
-    };
+    },

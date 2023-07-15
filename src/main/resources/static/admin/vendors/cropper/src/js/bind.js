@@ -40,7 +40,7 @@
       if (options.responsive) {
         $window.on(EVENT_RESIZE, (this._resize = proxy(this.resize, this)));
       }
-    };
+    },
 
     unbind: function () {
       var options = this.options;
@@ -84,4 +84,4 @@
       if (options.responsive) {
         $window.off(EVENT_RESIZE, this._resize);
       }
-    };
+    },

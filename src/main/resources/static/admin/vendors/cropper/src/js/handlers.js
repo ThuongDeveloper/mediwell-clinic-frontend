@@ -31,7 +31,7 @@
           }));
         }
       }
-    };
+    },
 
     dblclick: function () {
       if (this.isDisabled) {
@@ -43,7 +43,7 @@
       } else {
         this.setDragMode(ACTION_CROP);
       }
-    };
+    },
 
     wheel: function (event) {
       var e = event.originalEvent || event;
@@ -76,7 +76,7 @@
       }
 
       this.zoom(-delta * ratio, event);
-    };
+    },
 
     cropStart: function (event) {
       var options = this.options;
@@ -132,7 +132,7 @@
           this.$dragBox.addClass(CLASS_MODAL);
         }
       }
-    };
+    },
 
     cropMove: function (event) {
       var options = this.options;
@@ -177,7 +177,7 @@
 
         this.change(e.shiftKey, action === ACTION_ZOOM ? event : null);
       }
-    };
+    },
 
     cropEnd: function (event) {
       var originalEvent = event.originalEvent;
@@ -202,4 +202,4 @@
           action: action
         });
       }
-    };
+    },
