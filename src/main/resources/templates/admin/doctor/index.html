@@ -1,0 +1,83 @@
+<html  xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <div th:replace="~{admin/layout/layout :: head}"></div>
+
+
+    <body class="nav-md">
+        <div class="container body">
+            <div class="main_container">
+                <div th:replace="~{admin/layout/slidebar :: slidebarAdmin}"></div>
+                <div class="top_nav">
+                    <div th:replace="~{admin/layout/header :: div}"></div>
+                </div>
+                <!-- Content -->
+
+                <div class="right_col" role="main">
+                    <h1>Doctor Page</h1>
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 card_head">
+
+                            <button th:href="@{/admin}" type="button" class="btn btn-primary">Create </button>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+
+                                <table th:object="${listDoctor}" class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+
+                                    <thead>
+                                        <tr>
+
+                                            <th>ID</th>
+                                            <th>Name</th>
+                                            <th>Username</th>
+                                            <th>Password</th>
+                                            <th>Email</th>
+                                            <th>Address</th>
+                                            <th>Gender</th>
+                                        </tr>
+                                    </thead>
+                                </tbody>
+                                 <tr th:each="e : ${listDoctor}">
+                                        <th th:text="${e.getId()}"></th>
+                                        <th th:text="${e.getName()}"></th>
+                                        <th th:text="${e.getUsername()}"></th>
+                                        <th th:text="${e.getPassword()}"></th>
+                                        <th th:text="${e.getEmail()}"></th>
+                                        <th th:text="${e.getAddress()}"></th>
+                                        <th th:text="${e.getGender()}"></th>
+                                        
+                                    </tr>
+                                </tbody>
+                                   
+                                    <tfoot>
+                                        <tr>
+                                        
+                                            <th>ID</th>
+                                            <th>Name</th>
+                                            <th>Username</th>
+                                            <th>Password</th>
+                                            <th>Email</th>
+                                            <th>Address</th>
+                                            <th>Gender</th>
+                                        </tr>
+                                    </tfoot>
+
+                                    <tbody>
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Content -->
+                <div th:replace="~{admin/layout/footer :: footer}"></div>
+            </div>
+
+            <div th:replace="~{admin/layout/layout :: body}"></div>
+
+    </body>
+</html>

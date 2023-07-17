@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="group2_client_jar_0.0.1-SNAPSHOTPU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>group2.client.entities.Admin</class>
+    <class>group2.client.entities.Donthuoc</class>
+    <class>group2.client.entities.Thuoc</class>
+    <class>group2.client.entities.Sysdiagrams</class>
+    <class>group2.client.entities.ToathuocDetails</class>
+    <class>group2.client.entities.TypeDoctor</class>
+    <class>group2.client.entities.DonthuocDetails</class>
+    <class>group2.client.entities.Toathuoc</class>
+    <class>group2.client.entities.Doctor</class>
+    <class>group2.client.entities.Patient</class>
+    <class>group2.client.entities.Typethuoc</class>
+    <class>group2.client.entities.Casher</class>
+    <class>group2.client.entities.Lichlamviec</class>
+    <class>group2.client.entities.Taophieukham</class>
+    <class>group2.client.entities.Appointment</class>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://localhost:1433;databaseName=ProjectHK4;encrypt=true;trustServerCertificate=true;integratedSecurity=true"/>
+      <property name="javax.persistence.jdbc.user" value=""/>
+      <property name="javax.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
+      <property name="javax.persistence.jdbc.password" value=""/>
+    </properties>
+  </persistence-unit>
+</persistence>
