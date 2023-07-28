@@ -16,7 +16,8 @@
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 card_head">
 
-                            <button th:href="@{/admin}" type="button" class="btn btn-primary">Create </button>
+                            <a th:href="@{/admin/create-typethuoc}"  class="btn btn-primary">Create </a> <br><!-- comment -->
+                       
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -28,26 +29,19 @@
 
                                             <th>ID</th>
                                             <th>Name</th>
-
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     </tbody>
                                     <tr th:each="e : ${listTypethuoc}">
-                                        <th th:text="${e.getId()}"></th>
-                                        <th th:text="${e.getName()}"></th>
-
+                                        <td th:text="${e.getId()}"></td>
+                                        <td th:text="${e.getName()}"></td>
+                                         <td>
+                                        <a th:href="@{/edit-typethuoc/{id}(id=${e.getId()})}">Edit</a>
+                                        </td>
 
                                     </tr>
                                     </tbody>
-
-                                    <tfoot>
-                                        <tr>
-
-                                            <th>ID</th>
-                                            <th>Name</th>
-
-                                        </tr>
-                                    </tfoot>
 
                                     <tbody>
 

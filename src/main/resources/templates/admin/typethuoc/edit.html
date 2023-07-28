@@ -1,0 +1,50 @@
+<html  xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <div th:replace="~{admin/layout/layout :: head}"></div>
+
+
+    <body class="nav-md">
+        <div class="container body">
+            <div class="main_container">
+                <div th:replace="~{admin/layout/slidebar :: slidebarAdmin}"></div>
+                <div class="top_nav">
+                    <div th:replace="~{admin/layout/header :: div}"></div>
+                </div>
+                <!-- Content -->
+                <div class="right_col" role="main">
+                    <h1>Doctor Page</h1>
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 card_head">
+
+                           <div th:if="${successMessage}" style="color: green;">
+                                <p th:text="${successMessage}"></p>
+                            </div>
+
+                            <div th:if="${errorMessage}" style="color: red;">
+                                <p th:text="${errorMessage}"></p>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <form th:action="@{/edit-typethuoc/{id}(id=${typethuoc.id})}" th:object="${typethuoc}" method="post">
+
+                                <label>Name</label>
+                                <input type="text" name="name" th:field="*{name}" placeholder="Tên Typethuoc" /><br />
+                                <button type="submit">Save</button>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <!-- Content -->
+                <div th:replace="~{admin/layout/footer :: footer}"></div>
+            </div>
+
+            <div th:replace="~{admin/layout/layout :: body}"></div>
+
+    </body>
+</html>
+
+
+

@@ -1,0 +1,51 @@
+<html  xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <div th:replace="~{admin/layout/layout :: head}"></div>
+
+
+    <body class="nav-md">
+        <div class="container body">
+            <div class="main_container">
+                <div th:replace="~{admin/layout/slidebar :: slidebarAdmin}"></div>
+                <div class="top_nav">
+                    <div th:replace="~{admin/layout/header :: div}"></div>
+                </div>
+                <!-- Content -->
+                <div class="right_col" role="main">
+                    <h1>Create New Drug</h1>
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 card_head">
+                        </div>
+                        <div class="card-body">
+                           
+                            <form th:action="@{/admin/create-thuoc}" th:object="${thuoc}" method="post">
+                                <label>Name</label>
+                                <input type="text" th:field="*{name}"><br>
+                                <label>company_name</label>
+                                <input type="text" th:field="*{companyName}"><br>
+                                <label>composition</label>
+                                <input type="text" th:field="*{composition}"><br>                
+                                <label>quantity</label>
+                                <input type="number" th:field="*{quantity}"><br>  
+                                <label>Price</label>
+                                <input type="number" th:field="*{price}"><br>    
+                                <label >Type thuốc</label>
+                                <select th:field="*{typethuocId}">
+                                    <option th:each="listTypethuoc : ${listTypethuoc}" th:value="${listTypethuoc}" th:text="${listTypethuoc.name}"></option>
+                                </select>
+       
+  
+       
+                                <button type="submit">Create</button>
+                            </form>
+                      
+                            </div>
+                    </div>
+                </div>
+
+<!-- Content -->
+   <div th:replace="~{admin/layout/footer :: footer}"></div>
+    </div>
+<div th:replace="~{admin/layout/layout :: body}"></div>
+</body>
+</html>

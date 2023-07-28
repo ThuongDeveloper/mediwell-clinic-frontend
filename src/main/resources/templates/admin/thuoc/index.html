@@ -1,87 +1,65 @@
-<html  xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <html  xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
-    <div th:replace="~{admin/layout/layout :: head}"></div>
+        <div th:replace="~{admin/layout/layout :: head}"></div>
 
 
-    <body class="nav-md">
-        <div class="container body">
-            <div class="main_container">
-                <div th:replace="~{admin/layout/slidebar :: slidebarAdmin}"></div>
-                <div class="top_nav">
-                    <div th:replace="~{admin/layout/header :: div}"></div>
-                </div>
-                <!-- Content -->
-                <div class="right_col" role="main">
-                    <h1>Drug Page</h1>
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3 card_head">
+        <body class="nav-md">
+            <div class="container body">
+                <div class="main_container">
+                    <div th:replace="~{admin/layout/slidebar :: slidebarAdmin}"></div>
+                    <div class="top_nav">
+                        <div th:replace="~{admin/layout/header :: div}"></div>
+                    </div>
+                    <!-- Content -->
+                    <div class="right_col" role="main">
+                        <h1>Drug Page</h1>
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3 card_head">
 
-                            <button th:href="@{/admin}" type="button" class="btn btn-primary">Create </button>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
+                                <a th:href="@{/admin/create-thuoc}"  class="btn btn-primary">Create </a>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
 
-                                <table th:object="${listDoctor}" class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-
-                                    <thead>
-                                        <tr>
-
-                                            <th>ID</th>
-                                            <th>Name</th>
-                                            <th>Company Name</th>
-                                            <th>Composition</th>
-                                            <th>Quantity</th>
-                                            <th>Price</th>
-                                            <th>Drug Type</th>
-                                            <th>Create at</th>
+                                    <table  class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Name</th>
+                                                <th>Company Name</th>
+                                                <th>Composition</th>
+                                                <th>Quantity</th>
+                                                <th>Price</th>
+                                                <th>Drug Type</th>
+                                                <th>Create at</th>
+                                            </tr>
+                                        </thead>
+                                        </tbody>
+                                        <tr th:each="e : ${listthuoc}">
+                                            <th th:text="${e.getId()}"></th>
+                                            <th th:text="${e.getName()}"></th>
+                                            <th th:text="${e.getCompanyName()}"></th>
+                                            <th th:text="${e.getComposition()}"></th>
+                                            <th th:text="${e.getQuantity()}"></th>
+                                            <th th:text="${e.getPrice()}"></th>
+                                            <th th:text="${e.getTypethuocId().getName()}"></th>
+                                            <th th:text="${#dates.format(e.getCreateAt(), 'dd/MM/yyyy')}"></th>
                                         </tr>
-                                    </thead>
-                                    </tbody>
-                                    <tr th:each="e : ${listthuoc}">
-                                        <th th:text="${e.getId()}"></th>
-                                        <th th:text="${e.getName()}"></th>
-                                        <th th:text="${e.getCompanyName()}"></th>
-                                        <th th:text="${e.getComposition()}"></th>
-                                        <th th:text="${e.getQuantity()}"></th>
-                                        <th th:text="${e.getPrice()}"></th>
-                                        <th th:text="${e.getTypethuocId().getName()}"></th>
-                                        <th th:text="${#dates.format(e.getCreateAt(), 'dd/MM/yyyy')}"></th>
-
-                                    </tr>
-                                    </tbody>
-
-                                    <tfoot>
-                                        <tr>
-
-                                            <th>ID</th>
-                                            <th>Name</th>
-                                            <th>Company Name</th>
-                                            <th>Composition</th>
-                                            <th>Quantity</th>
-                                            <th>Price</th>
-                                            <th>Drug Type</th>
-                                            <th>Create at</th>
-
-                                        </tr>
-                                    </tfoot>
-
-                                    <tbody>
-
-
-                                    </tbody>
-                                </table>
+                                        
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
+
                     </div>
 
+
+                    <!-- Content -->
+                    <div th:replace="~{admin/layout/footer :: footer}"></div>
                 </div>
 
+                <div th:replace="~{admin/layout/layout :: body}"></div>
 
-                <!-- Content -->
-                <div th:replace="~{admin/layout/footer :: footer}"></div>
-            </div>
-
-            <div th:replace="~{admin/layout/layout :: body}"></div>
-
-    </body>
-</html>
+        </body>
+    </html>
