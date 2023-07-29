@@ -16,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -120,6 +121,11 @@ public class Casher implements Serializable {
         return createAt;
     }
 
+    @PrePersist
+    protected void onCreate() {
+        createAt = new Date();
+    }
+
     public void setCreateAt(Date createAt) {
         this.createAt = createAt;
     }
@@ -164,5 +170,5 @@ public class Casher implements Serializable {
     public String toString() {
         return "group2.client.entities.Casher[ id=" + id + " ]";
     }
-    
+
 }

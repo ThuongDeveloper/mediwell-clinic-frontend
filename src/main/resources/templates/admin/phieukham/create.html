@@ -1,0 +1,118 @@
+<html  xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <div th:replace="~{admin/layout/layoutfixbug :: head}"></div>
+
+
+    <body class="nav-md">
+        <div class="container body">
+            <div class="main_container">
+                <div th:replace="~{admin/layout/slidebarfixbug :: slidebarAdmin}"></div>
+                <div class="top_nav">
+                    <div th:replace="~{admin/layout/headerfixbug :: div}"></div>
+                </div>
+                <!-- Content -->
+
+                <div class="right_col" role="main">
+                    <div class="">
+                        <div class="page-title">
+                            <div class="title_left">
+                                <h3>Form Tạo Phiếu Khám</h3>
+                            </div>
+
+                            <div class="title_right">
+                                <div class="col-md-5 col-sm-5 form-group pull-right top_search">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Search for...">
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-default" type="button">Go!</button>
+                                            </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12">
+                                <div class="x_panel">
+                                    <div class="x_content">
+                                        <form th:action="@{/admin/phieukham/create}" th:object="${taophieukham}" method="post">
+                                            <span class="section">Personal Info</span>
+<!--                                            <div class="field item form-group">
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Số thứ tự<span class="required">*</span></label>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <input type="number" th:field="*{sothutu}" class="form-control" name="sothutu" required="required"
+                                                           pattern=".{1,}" title="Minimum 1 number" data-error="STT is required (minimum 1 number)">
+                                                        <div class="help-block with-errors"></div>
+                                                </div>
+                                            </div>-->
+                                            <div class="field item form-group">
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Name<span class="required">*</span></label>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <input type="text" th:field="*{name}" class="form-control" name="name" placeholder="ex. John f. Kennedy" required="required"
+                                                           pattern=".{6,}" title="Minimum 6 characters" data-error="Name is required (minimum 6 characters)">
+                                                        <div class="help-block with-errors"></div>
+                                                </div>
+                                            </div>
+                                            <div class="field item form-group">
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Phone<span class="required">*</span></label>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <input th:field="*{phone}" class="form-control" type="text" id="phone" name="phone"
+                                                           pattern="(?=.*\d).{10,}"
+                                                           title="Minimum 10 numbers"
+                                                           required="">
+                                                </div>
+                                            </div>
+                                            <div class="field item form-group">
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Address<span class="required">*</span></label>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <input class="form-control" th:field="*{address}" type="text" name="address" required="required">
+                                                </div>
+                                            </div>
+<!--                                            <div class="field item form-group">
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Casher Name<span class="required">*</span></label>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <select th:each="" th:field="*{casherId}" class="form-control-select">
+                                                        <option value="">---Select Option---</option>
+                                                        <option value="">---Select Option---</option>
+                                                    </select>
+                                                        <option value="first">text1</option>
+
+                                                    <input
+                                                           pattern="(?=.*\d).{1,}"
+                                                           title="Minimum 1 number"
+                                                           required="">
+                                                </div>
+                                            </div>-->
+                                            <div class="field item form-group">
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Total Money<span class="required">*</span></label>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <input th:field="*{totalMoney}" class="form-control" type="number" name="total_money"
+                                                           pattern="(?=.*\d).{1,}"
+                                                           title="Minimum 1 number"
+                                                           required="">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-md-6 offset-md-3">
+                                                    <input type="submit" value="Create" class="btn btn-primary"/>
+                                                    <input type="reset" value="Reset" class="btn btn-success"/>
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Content -->
+                <div th:replace="~{admin/layout/footer :: footer}"></div>
+            </div>
+
+            <div th:replace="~{admin/layout/layoutfixbug :: body}"></div>
+
+    </body>
+</html>
