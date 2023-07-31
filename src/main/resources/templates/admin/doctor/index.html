@@ -1,12 +1,12 @@
 <html  xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
-    <div th:replace="~{admin/layout/layout :: head}"></div>
+    <div th:replace="~{admin/layout/layoutfixbug :: head}"></div>
 
 
     <body class="nav-md">
         <div class="container body">
             <div class="main_container">
-                <div th:replace="~{admin/layout/slidebar :: slidebarAdmin}"></div>
+                <div th:replace="~{admin/layout/slidebarfixbug :: slidebarAdmin}"></div>
                 <div class="top_nav">
                     <div th:replace="~{admin/layout/header :: div}"></div>
                 </div>
@@ -17,8 +17,7 @@
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 card_head">
 
-                            <button th:href="@{/admin}" type="button" class="btn btn-primary">Create </button>
-                        </div>
+<a th:href="@{/admin/doctor/create}" class="btn btn-primary">Create</a>                        </div>
                         <div class="card-body">
                             <div class="table-responsive">
 
@@ -27,45 +26,34 @@
                                     <thead>
                                         <tr>
 
-                                            <th>ID</th>
+                                            <th>Type Doctor</th>
                                             <th>Name</th>
                                             <th>Username</th>
                                             <th>Password</th>
                                             <th>Email</th>
                                             <th>Address</th>
                                             <th>Gender</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                 </tbody>
                                  <tr th:each="e : ${listDoctor}">
-                                        <th th:text="${e.getId()}"></th>
-                                        <th th:text="${e.getName()}"></th>
-                                        <th th:text="${e.getUsername()}"></th>
-                                        <th th:text="${e.getPassword()}"></th>
-                                        <th th:text="${e.getEmail()}"></th>
-                                        <th th:text="${e.getAddress()}"></th>
-                                        <th th:text="${e.getGender()}"></th>
-                                        
+                                         <td th:text="${e.getTypeDoctorId().getName()}"></td>
+                                        <td th:text="${e.getName()}"></td>
+                                        <td th:text="${e.getUsername()}"></td>
+                                        <td th:text="${e.getPassword()}"></td>
+                                        <td th:text="${e.getEmail()}"></td>
+                                        <td th:text="${e.getAddress()}"></td>
+                                        <td th:text="${e.getGender()}"></td>
+                                             <td>
+                                               <a class="btn btn-info" th:href="@{/admin/doctor/edit/{id}(id=${e.getId()})}">Update</a> | 
+                                <a class="btn btn-warning" th:href="@{/admin/doctor/delete/{id}(id=${e.getId()})}">Delete</a>
+                                        </td>
                                     </tr>
                                 </tbody>
                                    
-                                    <tfoot>
-                                        <tr>
-                                        
-                                            <th>ID</th>
-                                            <th>Name</th>
-                                            <th>Username</th>
-                                            <th>Password</th>
-                                            <th>Email</th>
-                                            <th>Address</th>
-                                            <th>Gender</th>
-                                        </tr>
-                                    </tfoot>
+                                   
 
-                                    <tbody>
-
-
-                                    </tbody>
                                 </table>
                             </div>
                         </div>
@@ -77,7 +65,7 @@
                 <div th:replace="~{admin/layout/footer :: footer}"></div>
             </div>
 
-            <div th:replace="~{admin/layout/layout :: body}"></div>
-
+            <div th:replace="~{admin/layout/layoutfixbug :: body}"></div>
+            
     </body>
 </html>
