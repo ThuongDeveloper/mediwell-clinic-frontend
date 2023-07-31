@@ -16,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -133,6 +134,11 @@ public class Taophieukham implements Serializable {
         return createAt;
     }
 
+    @PrePersist
+    protected void onCreate() {
+        createAt = new Date();
+    }
+    
     public void setCreateAt(Date createAt) {
         this.createAt = createAt;
     }
