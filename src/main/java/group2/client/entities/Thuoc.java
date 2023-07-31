@@ -18,6 +18,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -177,5 +178,10 @@ public class Thuoc implements Serializable {
     public String toString() {
         return "group2.client.entities.Thuoc[ id=" + id + " ]";
     }
+      @PrePersist // Đánh dấu phương thức được gọi tự động trước khi lưu mới
+    public void prePersist() {
+        createAt = new Date();
+    }
+    
     
 }

@@ -16,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,16 +33,17 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  */
 @Controller
 public class TypethuocController {
-    
-   private String apiUrl = "http://localhost:8888/typethuoc/";
+
+    private String apiUrl = "http://localhost:8888/typethuoc/";
 
     RestTemplate restTemplate = new RestTemplate();
 
     @RequestMapping("/admin/typethuoc")
     public String page(Model model) {
         ResponseEntity<List<Typethuoc>> response = restTemplate.exchange(apiUrl, HttpMethod.GET, null,
-                new ParameterizedTypeReference<List<Typethuoc>>() {});
-              
+                new ParameterizedTypeReference<List<Typethuoc>>() {
+        });
+
         // Kiểm tra mã trạng thái của phản hồi
         if (response.getStatusCode().is2xxSuccessful()) {
             List<Typethuoc> listTypethuoc = response.getBody();
@@ -51,16 +53,16 @@ public class TypethuocController {
         }
         return "admin/typethuoc/index";
     }
-    
+
     @GetMapping("/admin/create-typethuoc")
     public String showCreateTypeThuocForm(Model model) {
         model.addAttribute("typethuoc", new Typethuoc());
-       
+
         return "admin/typethuoc/create";
     }
 
     @PostMapping("/admin/create-typethuoc")
-    public String createTypeThuoc(@ModelAttribute Typethuoc typethuoc, Model model,RedirectAttributes redirectAttributes) {
+    public String createTypeThuoc(@ModelAttribute Typethuoc typethuoc, Model model, RedirectAttributes redirectAttributes) {
         // Gửi yêu cầu POST tới server để tạo thuốc mới
         ResponseEntity<Typethuoc> response = restTemplate.postForEntity(apiUrl, typethuoc, Typethuoc.class);
         if (response.getStatusCode() == HttpStatus.CREATED) {
@@ -77,8 +79,8 @@ public class TypethuocController {
             return "error";
         }
     }
-    
-    @GetMapping("/edit-typethuoc/{id}")
+
+    @GetMapping("/admin/edit-typethuoc/{id}")
     public String editTypeThuocPage(@PathVariable Integer id, Model model) {
         // Gọi API để lấy thông tin của Typethuoc theo ID
         ResponseEntity<Typethuoc> response = restTemplate.exchange(apiUrl + "/" + id, HttpMethod.GET, null, Typethuoc.class);
@@ -87,36 +89,52 @@ public class TypethuocController {
         if (response.getStatusCode().is2xxSuccessful()) {
             Typethuoc typethuoc = response.getBody();
             model.addAttribute("typethuoc", typethuoc);
+            return "admin/typethuoc/edit";
         } else {
-        
+
+            return "admin/typethuoc/edit";
         }
 
-        return "admin/typethuoc/edit";
     }
 
     // Hàm để xử lý yêu cầu cập nhật thông tin Typethuoc
-    @PostMapping("/edit-typethuoc/{id}")
-    public String editTypeThuoc(@PathVariable Integer id, @ModelAttribute Typethuoc typethuoc, RedirectAttributes redirectAttributes) {
+    @PostMapping("/admin/edit-typethuoc/{id}")
+    public ResponseEntity<Typethuoc> editTypeThuoc(Model model, @PathVariable Integer id, @ModelAttribute Typethuoc typethuoc1, RedirectAttributes redirectAttributes) {
         // Thiết lập ID cho đối tượng typethuoc
-    typethuoc.setId(id);
+        typethuoc1.setId(id);
 
-    // Gửi yêu cầu PUT tới server để cập nhật thông tin Typethuoc
-    try {
+        // Gửi yêu cầu PUT tới server để cập nhật thông tin Typethuoc
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<Typethuoc> request = new HttpEntity<>(typethuoc, headers);
+        HttpEntity<Typethuoc> request = new HttpEntity<>(typethuoc1, headers);
         ResponseEntity<Typethuoc> response = restTemplate.exchange(apiUrl + "/" + id, HttpMethod.PUT, request, Typethuoc.class);
-
         // Kiểm tra mã trạng thái của phản hồi
         if (response.getStatusCode().is2xxSuccessful()) {
+
             redirectAttributes.addFlashAttribute("successMessage", "Cập nhật Typethuoc thành công!");
+            return ResponseEntity.status(HttpStatus.SEE_OTHER).header(HttpHeaders.LOCATION, "/admin/typethuoc").body(response.getBody());
         } else {
             redirectAttributes.addFlashAttribute("errorMessage", "Có lỗi xảy ra khi cập nhật Typethuoc.");
+            return response;
         }
-    } catch (RestClientException e) {
-        redirectAttributes.addFlashAttribute("errorMessage", "Lỗi kết nối đến server: " + e.getMessage());
+
     }
 
-    return "admin/typethuoc/edit";
+    @PostMapping("/admin/delete-typethuoc/{id}")
+    public String deleteTypeThuoc(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
+        try {
+            // Gọi API để xóa Typethuoc với id được truyền vào
+            restTemplate.delete(apiUrl + "/" + id);
+
+            // Thông báo xóa thành công
+            redirectAttributes.addFlashAttribute("successMessage", "Xóa Typethuoc thành công!");
+        } catch (Exception e) {
+            // Xử lý lỗi xóa Typethuoc
+            redirectAttributes.addFlashAttribute("errorMessage", "Có lỗi xảy ra khi xóa Typethuoc.");
+        }
+
+        // Chuyển hướng tới trang index sau khi xóa thành công hoặc không thành công
+        return "redirect:/admin/typethuoc";
     }
+
 }

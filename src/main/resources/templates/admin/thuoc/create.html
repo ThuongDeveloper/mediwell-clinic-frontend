@@ -17,35 +17,40 @@
                         <div class="card-header py-3 card_head">
                         </div>
                         <div class="card-body">
-                           
-                            <form th:action="@{/admin/create-thuoc}" th:object="${thuoc}" method="post">
-                                <label>Name</label>
-                                <input type="text" th:field="*{name}"><br>
-                                <label>company_name</label>
-                                <input type="text" th:field="*{companyName}"><br>
-                                <label>composition</label>
-                                <input type="text" th:field="*{composition}"><br>                
-                                <label>quantity</label>
-                                <input type="number" th:field="*{quantity}"><br>  
-                                <label>Price</label>
-                                <input type="number" th:field="*{price}"><br>    
-                                <label >Type thuốc</label>
-                                <select th:field="*{typethuocId}">
-                                    <option th:each="listTypethuoc : ${listTypethuoc}" th:value="${listTypethuoc}" th:text="${listTypethuoc.name}"></option>
+
+                            <form th:action="@{/admin/create-thuoc}" th:object="${thuoc}" method="post" enctype="application/x-www-form-urlencoded">
+                                <label for="name">Name:</label>
+                                <input type="text" id="name" th:field="*{name}" required />
+                                <br/>
+                                <label for="companyName">Company Name:</label>
+                                <input type="text" id="companyName" th:field="*{companyName}" required />
+                                <br/>
+                                <label for="composition">Composition:</label>
+                                <input type="text" id="composition" th:field="*{composition}" required />
+                                <br/>
+                                <label for="quantity">Quantity:</label>
+                                <input type="number" id="quantity" th:field="*{quantity}" required />
+                                <br/>
+                                <label for="price">Price:</label>
+                                <input type="number" id="price" th:field="*{price}" required />
+                                <br/>
+                                <label for="typethuocId">Type:</label>
+                                <select id="typethuocId" th:field="*{typethuocId}">
+                                    <option th:each="typethuoc : ${listTypethuoc}" th:value="${typethuoc.id}" th:text="${typethuoc.name}"></option>
                                 </select>
-       
-  
-       
+                                <br/>
+
+
                                 <button type="submit">Create</button>
                             </form>
-                      
-                            </div>
+
+                        </div>
                     </div>
                 </div>
 
-<!-- Content -->
-   <div th:replace="~{admin/layout/footer :: footer}"></div>
-    </div>
-<div th:replace="~{admin/layout/layout :: body}"></div>
-</body>
+                <!-- Content -->
+                <div th:replace="~{admin/layout/footer :: footer}"></div>
+            </div>
+            <div th:replace="~{admin/layout/layout :: body}"></div>
+    </body>
 </html>

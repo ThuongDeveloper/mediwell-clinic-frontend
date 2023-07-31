@@ -1,14 +1,14 @@
 <html  xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
-    <div th:replace="~{admin/layout/layout :: head}"></div>
+    <div th:replace="~{admin/layout/layoutfixbug :: head}"></div>
 
 
     <body class="nav-md">
         <div class="container body">
             <div class="main_container">
-                <div th:replace="~{admin/layout/slidebar :: slidebarAdmin}"></div>
+                <div th:replace="~{admin/layout/slidebarfixbug :: slidebarAdmin}"></div>
                 <div class="top_nav">
-                    <div th:replace="~{admin/layout/header :: div}"></div>
+                    <div th:replace="~{admin/layout/headerfixbug :: div}"></div>
                 </div>
                 <!-- Content -->
                 <div class="right_col" role="main">
@@ -17,7 +17,13 @@
                         <div class="card-header py-3 card_head">
 
                             <a th:href="@{/admin/create-typethuoc}"  class="btn btn-primary">Create </a> <br><!-- comment -->
-                       
+                                <div th:if="${successMessage}" style="color: green;">
+                                    <p th:text="${successMessage}"></p>
+                                </div>
+                                
+                                 <div th:if="${errorMessage}" style="color: red;">
+                                    <p th:text="${errorMessage}"></p>
+                                </div>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -36,9 +42,14 @@
                                     <tr th:each="e : ${listTypethuoc}">
                                         <td th:text="${e.getId()}"></td>
                                         <td th:text="${e.getName()}"></td>
-                                         <td>
-                                        <a th:href="@{/edit-typethuoc/{id}(id=${e.getId()})}">Edit</a>
+                                        <td>
+                                            <a th:href="@{/admin/edit-typethuoc/{id}(id=${e.getId()})}">Edit</a>
+
+                                            <form th:action="@{/admin/delete-typethuoc/{id}(id=${e.getId()})}" method="post">
+                                                <button type="submit">Delete</button>
+                                            </form>
                                         </td>
+
 
                                     </tr>
                                     </tbody>
@@ -59,7 +70,7 @@
                 <div th:replace="~{admin/layout/footer :: footer}"></div>
             </div>
 
-            <div th:replace="~{admin/layout/layout :: body}"></div>
+            <div th:replace="~{admin/layout/layoutfixbug :: body}"></div>
 
     </body>
 </html>
