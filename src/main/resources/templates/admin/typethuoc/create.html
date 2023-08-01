@@ -8,32 +8,26 @@
             <div class="main_container">
                 <div th:replace="~{admin/layout/slidebarfixbug :: slidebarAdmin}"></div>
                 <div class="top_nav">
-                    <div th:replace="~{admin/layout/headerfixbug :: div}"></div>
+                    <div th:replace="~{admin/layout/header :: div}"></div>
                 </div>
                 <!-- Content -->
-                <div class="right_col" role="main">
-                    <h1>Create New Type Drug</h1>
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3 card_head">
-                        </div>
-                        <div class="card-body">
-                           
-                            <form th:action="@{/admin/create-typethuoc}" th:object="${typethuoc}" method="post">
-                                <label>Name</label>
-                                
-                                <input type="text" th:field="*{name}"><br><br>
-                                   
-       
-                                <button type="submit">Create</button>
-                            </form>
-                      
-                            </div>
-                    </div>
-                </div>
+                
+                 <div class="right_col" role="main">
+                    <h1>Doctor Page</h1>
+                      <form th:action="@{/admin/typethuoc/create}" th:object="${typethuoc}" method="post">
+                    <label>Name</label> <input type="text"   th:field="*{name}" >
+                        <input type="submit" value="Xác nhận"></input>
+                </form>
 
-<!-- Content -->
-   <div th:replace="~{admin/layout/footer :: footer}"></div>
-    </div>
-<div th:replace="~{admin/layout/layout :: body}"></div>
-</body>
+                </div>
+             
+                
+
+                <!-- Content -->
+                <div th:replace="~{admin/layout/footer :: footer}"></div>
+            </div>
+
+            <div th:replace="~{admin/layout/layoutfixbug :: body}"></div>
+
+    </body>
 </html>

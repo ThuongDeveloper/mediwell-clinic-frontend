@@ -1,71 +1,70 @@
-    <html  xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html  xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
-        <div th:replace="~{admin/layout/layout :: head}"></div>
+    <div th:replace="~{admin/layout/layout :: head}"></div>
 
 
-        <body class="nav-md">
-            <div class="container body">
-                <div class="main_container">
-                    <div th:replace="~{admin/layout/slidebar :: slidebarAdmin}"></div>
-                    <div class="top_nav">
-                        <div th:replace="~{admin/layout/header :: div}"></div>
-                    </div>
-                    <!-- Content -->
-                    <div class="right_col" role="main">
-                        <h1>Drug Page</h1>
-                        <div class="card shadow mb-4">
-                            <div class="card-header py-3 card_head">
+    <body class="nav-md">
+        <div class="container body">
+            <div class="main_container">
+                <div th:replace="~{admin/layout/slidebar :: slidebarAdmin}"></div>
+                <div class="top_nav">
+                    <div th:replace="~{admin/layout/header :: div}"></div>
+                </div>
+                <!-- Content -->
+                <div class="right_col" role="main">
+                    <h1>Drug Page</h1>
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 card_head">
 
-                                <a th:href="@{/admin/create-thuoc}"  class="btn btn-primary">Create </a>
-                            </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
+                            <a th:href="@{/admin/thuoc/create}"  class="btn btn-primary">Create </a>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
 
-                                    <table  class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                        <thead>
-                                            <tr>
-                                                <th>ID</th>
-                                                <th>Name</th>
-                                                <th>Company Name</th>
-                                                <th>Composition</th>
-                                                <th>Quantity</th>
-                                                <th>Price</th>
-                                                <th>Drug Type</th>
-                                                <th>Create at</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        </tbody>
-                                        <tr th:each="e : ${listthuoc}">
-                                            <th th:text="${e.getId()}"></th>
-                                            <th th:text="${e.getName()}"></th>
-                                            <th th:text="${e.getCompanyName()}"></th>
-                                            <th th:text="${e.getComposition()}"></th>
-                                            <th th:text="${e.getQuantity()}"></th>
-                                            <th th:text="${e.getPrice()}"></th>
-                                            <th th:text="${e.getTypethuocId().getName()}"></th>
-                                            <th th:text="${#dates.format(e.getCreateAt(), 'dd/MM/yyyy')}"></th>
-                                            <td> 
-                                                   <a th:href="@{/admin/edit-thuoc/{id}(id=${e.getId()})}">Edit</a> ||
-                                                <form th:action="@{/admin/delete-thuoc/{id}(id=${e.getId()})}" method="post">
-                                                <button type="submit">Delete</button>
-                                            </form></td>
+                                <table  class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Name</th>
+                                            <th>Company Name</th>
+                                            <th>Composition</th>
+                                            <th>Quantity</th>
+                                            <th>Price</th>
+                                            <th>Drug Type</th>
+                                            <th>Create at</th>
+                                            <th>Action</th>
                                         </tr>
-                                        
-                                        </tbody>
-                                    </table>
-                                </div>
+                                    </thead>
+                                    </tbody>
+                                    <tr th:each="e : ${listThuoc}">
+                                        <th th:text="${e.getId()}"></th>
+                                        <th th:text="${e.getName()}"></th>
+                                        <th th:text="${e.getCompanyName()}"></th>
+                                        <th th:text="${e.getComposition()}"></th>
+                                        <th th:text="${e.getQuantity()}"></th>
+                                        <th th:text="${e.getPrice()}"></th>
+                                        <th th:text="${e.getTypethuocId().getName()}"></th>
+                                        <th th:text="${#dates.format(e.getCreateAt(), 'dd/MM/yyyy')}"></th>
+                                        <td>
+                                            <a class="btn btn-info" th:href="@{/admin/thuoc/edit/{id}(id=${e.getId()})}">Update</a> | 
+                                            <a class="btn btn-warning" th:href="@{/admin/thuoc/delete/{id}(id=${e.getId()})}">Delete</a>
+                                        </td>
+                                    </tr>
+
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
-
                     </div>
 
-
-                    <!-- Content -->
-                    <div th:replace="~{admin/layout/footer :: footer}"></div>
                 </div>
 
-                <div th:replace="~{admin/layout/layout :: body}"></div>
 
-        </body>
-    </html>
+                <!-- Content -->
+                <div th:replace="~{admin/layout/footer :: footer}"></div>
+            </div>
+
+            <div th:replace="~{admin/layout/layout :: body}"></div>
+
+    </body>
+</html>

@@ -11,14 +11,15 @@
                     <div th:replace="~{admin/layout/header :: div}"></div>
                 </div>
                 <!-- Content -->
+
                 <div class="right_col" role="main">
-                    <h1>Thuoc Page</h1>
+                    <h1>Doctor Page</h1>
                     <div class="row">
                         <div class="col-md-12 col-sm-12">
                             <div class="x_panel">
                                 <div class="x_content">
-                                    <form th:action="@{/admin/thuoc/create}" th:object="${thuoc}" method="post">
-                                        <span class="section">Create</span>
+                                    <form th:action="@{/admin/thuoc/edit}" th:object="${objThuoc}" method="post">
+                                        <span class="section">Edit</span>
                                         <div class="field item form-group">
                                             <label class="col-form-label col-md-3 col-sm-3 label-align">Name<span class="required">*</span></label>
                                             <div class="col-md-6 col-sm-6">
@@ -59,24 +60,25 @@
                                                     <div class="help-block with-errors"></div>
                                             </div>
                                         </div>
-
+                                       
                                         <div class="field item form-group">
-                                            <label class="col-form-label col-md-3 col-sm-3 label-align">Gender<span class="required">*</span></label>
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align">Type Doctor<span class="required">*</span></label>
                                             <div class="col-md-6 col-sm-6">
-
+                                                      <input  readonly th:value="${objThuoc.getTypethuocId().getName()}"/>
                                                 <select name="typeThuocID">
-                                                    <option value="">-- Chọn loại Thuốc --</option>
-
-                                                    <option th:each="typethuoc : ${listTypeThuoc}"
-                                                            th:value="${typethuoc.id}"
-                                                            th:text="${typethuoc.name}">
+                                                    
+                                                    <option th:each="typeThuoc : ${listTypeThuoc}"
+                                                            th:value="${typeThuoc.id}"
+                                                            th:text="${typeThuoc.name}">
                                                     </option>
                                                 </select>
+                                              
+
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <div class="col-md-6 offset-md-3">
-                                                <input type="submit" value="Create" class="btn btn-primary"/>
+                                                <input type="submit" value="Update" class="btn btn-primary"/>
                                                 <input type="reset" value="Reset" class="btn btn-success"/>
                                             </div>
                                         </div>
@@ -88,6 +90,8 @@
                     </div>
 
                 </div>
+
+                <!-- Content -->
                 <div th:replace="~{admin/layout/footer :: footer}"></div>
             </div>
 

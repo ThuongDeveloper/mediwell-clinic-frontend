@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -32,109 +33,106 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * @author dochi
  */
 @Controller
+@RequestMapping("/admin/typethuoc")
 public class TypethuocController {
 
-    private String apiUrl = "http://localhost:8888/typethuoc/";
+    private String apiUrl = "http://localhost:8888/api/typethuoc/";
 
     RestTemplate restTemplate = new RestTemplate();
 
-    @RequestMapping("/admin/typethuoc")
-    public String page(Model model) {
+    @RequestMapping("")
+    public String page(Model model, @ModelAttribute("MessageCreate") String MessageCreate
+    ) {
+
         ResponseEntity<List<Typethuoc>> response = restTemplate.exchange(apiUrl, HttpMethod.GET, null,
                 new ParameterizedTypeReference<List<Typethuoc>>() {
         });
 
         // Kiểm tra mã trạng thái của phản hồi
         if (response.getStatusCode().is2xxSuccessful()) {
-            List<Typethuoc> listTypethuoc = response.getBody();
+            List<Typethuoc> listTypeThuoc = response.getBody();
 
             // Xử lý dữ liệu theo nhu cầu của bạn
-            model.addAttribute("listTypethuoc", listTypethuoc);
+            model.addAttribute("listTypeThuoc", listTypeThuoc);
+        }
+
+        //Kiểm tra các thông báo 
+        if(MessageCreate != null){
+               model.addAttribute("messageCreate", MessageCreate);
         }
         return "admin/typethuoc/index";
     }
 
-    @GetMapping("/admin/create-typethuoc")
-    public String showCreateTypeThuocForm(Model model) {
+    @RequestMapping(value = "/create", method = RequestMethod.GET)
+    public String create(Model model) {
+
         model.addAttribute("typethuoc", new Typethuoc());
 
         return "admin/typethuoc/create";
     }
 
-    @PostMapping("/admin/create-typethuoc")
-    public String createTypeThuoc(@ModelAttribute Typethuoc typethuoc, Model model, RedirectAttributes redirectAttributes) {
-        // Gửi yêu cầu POST tới server để tạo thuốc mới
-        ResponseEntity<Typethuoc> response = restTemplate.postForEntity(apiUrl, typethuoc, Typethuoc.class);
-        if (response.getStatusCode() == HttpStatus.CREATED) {
-            // Lấy thuốc đã tạo thành công từ response
-            Typethuoc createdTypethuoc = response.getBody();
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    public String create(Model model, Typethuoc typethuoc, RedirectAttributes redirectAttributes) {
 
-            // Thêm thuốc vào model để hiển thị trong view
-            redirectAttributes.addFlashAttribute("createdTypethuoc", createdTypethuoc);
+        ResponseEntity<String> response = restTemplate.postForEntity(apiUrl + "/create", typethuoc, String.class);
+        if (Boolean.parseBoolean(response.getBody()) == true) {
 
-            // Chuyển hướng tới trang page
-            return "redirect:/admin/typethuoc";
-        } else {
-            // Xử lý lỗi tạo thuốc
-            return "error";
-        }
-    }
-
-    @GetMapping("/admin/edit-typethuoc/{id}")
-    public String editTypeThuocPage(@PathVariable Integer id, Model model) {
-        // Gọi API để lấy thông tin của Typethuoc theo ID
-        ResponseEntity<Typethuoc> response = restTemplate.exchange(apiUrl + "/" + id, HttpMethod.GET, null, Typethuoc.class);
-
-        // Kiểm tra mã trạng thái của phản hồi
-        if (response.getStatusCode().is2xxSuccessful()) {
-            Typethuoc typethuoc = response.getBody();
-            model.addAttribute("typethuoc", typethuoc);
-            return "admin/typethuoc/edit";
+            redirectAttributes.addFlashAttribute("MessageCreate", "Tạo thành công");
         } else {
 
-            return "admin/typethuoc/edit";
+            redirectAttributes.addFlashAttribute("MessageCreate", "Tạo thất bại");
         }
 
-    }
-
-    // Hàm để xử lý yêu cầu cập nhật thông tin Typethuoc
-    @PostMapping("/admin/edit-typethuoc/{id}")
-    public ResponseEntity<Typethuoc> editTypeThuoc(Model model, @PathVariable Integer id, @ModelAttribute Typethuoc typethuoc1, RedirectAttributes redirectAttributes) {
-        // Thiết lập ID cho đối tượng typethuoc
-        typethuoc1.setId(id);
-
-        // Gửi yêu cầu PUT tới server để cập nhật thông tin Typethuoc
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<Typethuoc> request = new HttpEntity<>(typethuoc1, headers);
-        ResponseEntity<Typethuoc> response = restTemplate.exchange(apiUrl + "/" + id, HttpMethod.PUT, request, Typethuoc.class);
-        // Kiểm tra mã trạng thái của phản hồi
-        if (response.getStatusCode().is2xxSuccessful()) {
-
-            redirectAttributes.addFlashAttribute("successMessage", "Cập nhật Typethuoc thành công!");
-            return ResponseEntity.status(HttpStatus.SEE_OTHER).header(HttpHeaders.LOCATION, "/admin/typethuoc").body(response.getBody());
-        } else {
-            redirectAttributes.addFlashAttribute("errorMessage", "Có lỗi xảy ra khi cập nhật Typethuoc.");
-            return response;
-        }
-
-    }
-
-    @PostMapping("/admin/delete-typethuoc/{id}")
-    public String deleteTypeThuoc(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
-        try {
-            // Gọi API để xóa Typethuoc với id được truyền vào
-            restTemplate.delete(apiUrl + "/" + id);
-
-            // Thông báo xóa thành công
-            redirectAttributes.addFlashAttribute("successMessage", "Xóa Typethuoc thành công!");
-        } catch (Exception e) {
-            // Xử lý lỗi xóa Typethuoc
-            redirectAttributes.addFlashAttribute("errorMessage", "Có lỗi xảy ra khi xóa Typethuoc.");
-        }
-
-        // Chuyển hướng tới trang index sau khi xóa thành công hoặc không thành công
         return "redirect:/admin/typethuoc";
+    }
+    
+    @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
+    public String edit(Model model, @PathVariable("id") Integer id) {
+
+            ResponseEntity<Typethuoc> response = restTemplate.getForEntity(apiUrl + "/edit/{id}", Typethuoc.class, id);
+       
+            if (response.getStatusCode().is2xxSuccessful()) {
+            Typethuoc typethuoc = response.getBody();
+
+            // Truyền thông tin TypeDoctor vào model để hiển thị trên trang edit.html
+            model.addAttribute("typethuoc", typethuoc);
+
+            return "admin/typethuoc/edit";
+        } else {
+            // Xử lý khi không tìm thấy TypeDoctor cần chỉnh sửa
+            return "redirect:/admin/typethuoc";
+        }
+    }
+    
+    @RequestMapping(value = "/edit/{id}", method = RequestMethod.POST)
+    public String update(Model model, @PathVariable("id") Integer id, Typethuoc updatedTypethuoc, RedirectAttributes redirectAttributes) {
+        // Gửi yêu cầu API để cập nhật thông tin TypeDoctor trong cơ sở dữ liệu
+       
+         restTemplate.put(apiUrl + "/edit", updatedTypethuoc);
+        // Chú ý rằng, phương thức put trả về void (không có phản hồi từ server)
+
+        // Điều hướng về trang danh sách TypeDoctor với thông báo thành công
+        redirectAttributes.addFlashAttribute("MessageCreate", "Cập nhật thành công");
+        return "redirect:/admin/typethuoc";
+    }
+    
+    
+    
+       @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
+    public String delete(Model model, @PathVariable("id") Integer id,RedirectAttributes redirectAttributes) {
+
+   try {
+      
+            restTemplate.delete(apiUrl+"/delete/"+id);
+
+            // Nếu không có lỗi, tức là xóa thành công
+   redirectAttributes.addFlashAttribute("MessageCreate", "Xóa thành công");
+        } catch (Exception e) {
+            // Xử lý lỗi nếu có
+         redirectAttributes.addFlashAttribute("MessageCreate", "Xóa thất bại");
+        }
+  
+     return "redirect:/admin/typethuoc";
     }
 
 }

@@ -16,19 +16,19 @@
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 card_head">
 
-                            <a th:href="@{/admin/create-typethuoc}"  class="btn btn-primary">Create </a> <br><!-- comment -->
+                            <a th:href="@{/admin/typethuoc/create}"  class="btn btn-primary">Create </a> <br><!-- comment -->
                                 <div th:if="${successMessage}" style="color: green;">
                                     <p th:text="${successMessage}"></p>
                                 </div>
-                                
-                                 <div th:if="${errorMessage}" style="color: red;">
+
+                                <div th:if="${errorMessage}" style="color: red;">
                                     <p th:text="${errorMessage}"></p>
                                 </div>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
 
-                                <table th:object="${listDoctor}" class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <table  class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
 
                                     <thead>
                                         <tr>
@@ -39,15 +39,12 @@
                                         </tr>
                                     </thead>
                                     </tbody>
-                                    <tr th:each="e : ${listTypethuoc}">
+                                    <tr th:each="e : ${listTypeThuoc}">
                                         <td th:text="${e.getId()}"></td>
                                         <td th:text="${e.getName()}"></td>
                                         <td>
-                                            <a th:href="@{/admin/edit-typethuoc/{id}(id=${e.getId()})}">Edit</a>
-
-                                            <form th:action="@{/admin/delete-typethuoc/{id}(id=${e.getId()})}" method="post">
-                                                <button type="submit">Delete</button>
-                                            </form>
+                                            <a class="btn btn-info" th:href="@{/admin/typethuoc/edit/{id}(id=${e.getId()})}">Update</a> | 
+                                            <a class="btn btn-warning" th:href="@{/admin/typethuoc/delete/{id}(id=${e.getId()})}">Delete</a>
                                         </td>
 
 
