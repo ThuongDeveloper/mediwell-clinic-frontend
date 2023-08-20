@@ -38,14 +38,6 @@
                                     <div class="x_content">
                                         <form th:action="@{/admin/phieukham/create}" th:object="${taophieukham}" method="post">
                                             <span class="section">Personal Info</span>
-<!--                                            <div class="field item form-group">
-                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Số thứ tự<span class="required">*</span></label>
-                                                <div class="col-md-6 col-sm-6">
-                                                    <input type="number" th:field="*{sothutu}" class="form-control" name="sothutu" required="required"
-                                                           pattern=".{1,}" title="Minimum 1 number" data-error="STT is required (minimum 1 number)">
-                                                        <div class="help-block with-errors"></div>
-                                                </div>
-                                            </div>-->
                                             <div class="field item form-group">
                                                 <label class="col-form-label col-md-3 col-sm-3 label-align">Name<span class="required">*</span></label>
                                                 <div class="col-md-6 col-sm-6">
@@ -69,21 +61,24 @@
                                                     <input class="form-control" th:field="*{address}" type="text" name="address" required="required">
                                                 </div>
                                             </div>
-<!--                                            <div class="field item form-group">
+                                            <div class="field item form-group">
                                                 <label class="col-form-label col-md-3 col-sm-3 label-align">Casher Name<span class="required">*</span></label>
                                                 <div class="col-md-6 col-sm-6">
-                                                    <select th:each="" th:field="*{casherId}" class="form-control-select">
+                                                    <select name="casherID" class="form-control">
                                                         <option value="">---Select Option---</option>
-                                                        <option value="">---Select Option---</option>
+                                                        <option th:each="c : ${listCasher}" th:value="${c.id}" th:text="${c.name}"></option>
                                                     </select>
-                                                        <option value="first">text1</option>
-
-                                                    <input
-                                                           pattern="(?=.*\d).{1,}"
-                                                           title="Minimum 1 number"
-                                                           required="">
                                                 </div>
-                                            </div>-->
+                                            </div>
+                                            <div class="field item form-group">
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Type Doctor<span class="required">*</span></label>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <select name="typeDoctorID" class="form-control">
+                                                        <option value="">---Select Option---</option>
+                                                        <option th:each="td : ${listTypeDoctor}" th:value="${td.id}" th:text="${td.name}"></option>
+                                                    </select>
+                                                </div>
+                                            </div>
                                             <div class="field item form-group">
                                                 <label class="col-form-label col-md-3 col-sm-3 label-align">Total Money<span class="required">*</span></label>
                                                 <div class="col-md-6 col-sm-6">

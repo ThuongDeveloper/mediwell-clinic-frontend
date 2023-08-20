@@ -39,9 +39,8 @@
                                         <form th:action="@{/admin/phieukham/edit}" th:object="${taophieukham}" method="post">
                                             <span class="section">Personal Info</span>
                                             <div class="field item form-group">
-                                                <label class="col-form-label col-md-3 col-sm-3 label-align">ID</label>
                                                 <div class="col-md-6 col-sm-6">
-                                                    <input class="form-control" th:field="*{id}" type="text" data-minlength="5" data-maxlength="15" readonly="true">
+                                                    <input class="form-control" th:field="*{id}" type="text" hidden="true">
                                                 </div>
                                             </div>
                                             <div class="field item form-group">
@@ -54,6 +53,31 @@
                                                 <label class="col-form-label col-md-3 col-sm-3 label-align">Name</label>
                                                 <div class="col-md-6 col-sm-6">
                                                     <input type="text" th:field="*{name}" class="form-control" readonly="true">
+                                                </div>
+                                            </div>
+                                            <div class="field item form-group">
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Casher Name</label>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <input name="casherID" type="hidden" />
+                                                    <input th:if="${taophieukham.casherId != null}" th:value="${taophieukham.casherId.name}" class="form-control" type="text" readonly="true">
+                                                </div>
+                                            </div>
+                                            <div class="field item form-group">
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Patients Name</label>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <input th:field="*{patientId}" class="form-control" type="text" readonly="true">
+                                                </div>
+                                            </div>
+                                            <div class="field item form-group">
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Type Doctor<span class="required">*</span></label>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <select name="typeDoctorID" class="form-control">
+                                                        <option th:each="td : ${listTypeDoctor}"
+                                                                th:value="${td.id}"
+                                                                th:text="${td.name}"
+                                                                th:selected="${td.id == taophieukham.typeDoctorId.id}"></option>
+                                                    </select>
+
                                                 </div>
                                             </div>
                                             <div class="field item form-group">
