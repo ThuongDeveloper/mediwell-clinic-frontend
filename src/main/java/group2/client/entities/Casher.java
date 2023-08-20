@@ -16,10 +16,10 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -44,14 +44,20 @@ public class Casher implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    @Size(max = 250)
     @Column(name = "name")
     private String name;
+    @Size(max = 250)
     @Column(name = "username")
     private String username;
+    @Size(max = 250)
     @Column(name = "password")
     private String password;
+    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
+    @Size(max = 250)
     @Column(name = "email")
     private String email;
+    @Size(max = 250)
     @Column(name = "address")
     private String address;
     @Column(name = "create_at")
@@ -121,11 +127,6 @@ public class Casher implements Serializable {
         return createAt;
     }
 
-    @PrePersist
-    protected void onCreate() {
-        createAt = new Date();
-    }
-
     public void setCreateAt(Date createAt) {
         this.createAt = createAt;
     }
@@ -170,5 +171,5 @@ public class Casher implements Serializable {
     public String toString() {
         return "group2.client.entities.Casher[ id=" + id + " ]";
     }
-
+    
 }

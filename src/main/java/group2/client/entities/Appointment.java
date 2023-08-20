@@ -19,6 +19,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -29,8 +30,8 @@ import javax.persistence.TemporalType;
 @NamedQueries({
     @NamedQuery(name = "Appointment.findAll", query = "SELECT a FROM Appointment a"),
     @NamedQuery(name = "Appointment.findById", query = "SELECT a FROM Appointment a WHERE a.id = :id"),
-    @NamedQuery(name = "Appointment.findByHourstart", query = "SELECT a FROM Appointment a WHERE a.hourstart = :hourstart"),
-    @NamedQuery(name = "Appointment.findByHourend", query = "SELECT a FROM Appointment a WHERE a.hourend = :hourend"),
+    @NamedQuery(name = "Appointment.findByStarttime", query = "SELECT a FROM Appointment a WHERE a.starttime = :starttime"),
+    @NamedQuery(name = "Appointment.findByEndtime", query = "SELECT a FROM Appointment a WHERE a.endtime = :endtime"),
     @NamedQuery(name = "Appointment.findBySymptom", query = "SELECT a FROM Appointment a WHERE a.symptom = :symptom"),
     @NamedQuery(name = "Appointment.findByTypePayment", query = "SELECT a FROM Appointment a WHERE a.typePayment = :typePayment"),
     @NamedQuery(name = "Appointment.findByPrice", query = "SELECT a FROM Appointment a WHERE a.price = :price"),
@@ -43,12 +44,16 @@ public class Appointment implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Column(name = "hourstart")
-    private Integer hourstart;
-    @Column(name = "hourend")
-    private Integer hourend;
+    @Column(name = "starttime")
+    @Temporal(TemporalType.TIME)
+    private Date starttime;
+    @Column(name = "endtime")
+    @Temporal(TemporalType.TIME)
+    private Date endtime;
+    @Size(max = 250)
     @Column(name = "symptom")
     private String symptom;
+    @Size(max = 250)
     @Column(name = "type_payment")
     private String typePayment;
     @Column(name = "price")
@@ -78,20 +83,20 @@ public class Appointment implements Serializable {
         this.id = id;
     }
 
-    public Integer getHourstart() {
-        return hourstart;
+    public Date getStarttime() {
+        return starttime;
     }
 
-    public void setHourstart(Integer hourstart) {
-        this.hourstart = hourstart;
+    public void setStarttime(Date starttime) {
+        this.starttime = starttime;
     }
 
-    public Integer getHourend() {
-        return hourend;
+    public Date getEndtime() {
+        return endtime;
     }
 
-    public void setHourend(Integer hourend) {
-        this.hourend = hourend;
+    public void setEndtime(Date endtime) {
+        this.endtime = endtime;
     }
 
     public String getSymptom() {

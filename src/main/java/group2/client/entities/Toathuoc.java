@@ -21,6 +21,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -46,14 +47,20 @@ public class Toathuoc implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    @Size(max = 250)
     @Column(name = "name")
     private String name;
+    // @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message="Invalid phone/fax format, should be as xxx-xxx-xxxx")//if the field contains phone or fax number consider using this annotation to enforce field validation
+    @Size(max = 250)
     @Column(name = "phone")
     private String phone;
+    @Size(max = 250)
     @Column(name = "address")
     private String address;
+    @Size(max = 250)
     @Column(name = "symptom")
     private String symptom;
+    @Size(max = 250)
     @Column(name = "description")
     private String description;
     @Column(name = "state")

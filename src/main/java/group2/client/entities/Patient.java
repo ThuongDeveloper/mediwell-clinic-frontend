@@ -16,6 +16,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -40,20 +41,30 @@ public class Patient implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    @Size(max = 250)
     @Column(name = "username")
     private String username;
+    @Size(max = 250)
     @Column(name = "password")
     private String password;
+    @Size(max = 250)
     @Column(name = "name")
     private String name;
+    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
+    @Size(max = 250)
     @Column(name = "email")
     private String email;
+    @Size(max = 250)
     @Column(name = "address")
     private String address;
+    // @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message="Invalid phone/fax format, should be as xxx-xxx-xxxx")//if the field contains phone or fax number consider using this annotation to enforce field validation
+    @Size(max = 50)
     @Column(name = "phone")
     private String phone;
     @OneToMany(mappedBy = "patientId")
     private List<Appointment> appointmentList;
+    @OneToMany(mappedBy = "patientId")
+    private List<Feedback> feedbackList;
 
     public Patient() {
     }
@@ -124,6 +135,14 @@ public class Patient implements Serializable {
 
     public void setAppointmentList(List<Appointment> appointmentList) {
         this.appointmentList = appointmentList;
+    }
+
+    public List<Feedback> getFeedbackList() {
+        return feedbackList;
+    }
+
+    public void setFeedbackList(List<Feedback> feedbackList) {
+        this.feedbackList = feedbackList;
     }
 
     @Override
