@@ -80,6 +80,15 @@
                                                 </div>
                                             </div>
                                             <div class="field item form-group">
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Patients<span class="required">*</span></label>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <select name="patientID" class="form-control">
+                                                        <option value="">---Select Option---</option>
+                                                        <option th:each="pt : ${listPatient}" th:value="${pt.id}" th:text="${pt.name}"></option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="field item form-group">
                                                 <label class="col-form-label col-md-3 col-sm-3 label-align">Total Money<span class="required">*</span></label>
                                                 <div class="col-md-6 col-sm-6">
                                                     <input th:field="*{totalMoney}" class="form-control" type="number" name="total_money"

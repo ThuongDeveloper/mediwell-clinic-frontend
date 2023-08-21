@@ -5,6 +5,7 @@
 package group2.client.controller;
 
 import group2.client.entities.Casher;
+import group2.client.entities.Patient;
 import group2.client.entities.Taophieukham;
 import group2.client.entities.TypeDoctor;
 import java.util.List;
@@ -27,6 +28,7 @@ public class TaophieukhamController {
     private String apiUrl = "http://localhost:8888/api/taophieukham/";
     private String apiUrlCasher = "http://localhost:8888/api/casher/";
     private String apiUrlTypeDoctor = "http://localhost:8888/api/typedoctor/";
+    private String apiUrlPatient = "http://localhost:8888/api/patient/";
     RestTemplate restTemplate = new RestTemplate();
 
     @RequestMapping("")
@@ -47,19 +49,23 @@ public class TaophieukhamController {
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public String create(Model model) {
-        // Lấy danh sách Casher từ API server
         ResponseEntity<List<Casher>> casherResponse = restTemplate.exchange(apiUrlCasher, HttpMethod.GET, null,
                 new ParameterizedTypeReference<List<Casher>>() {
         });
         ResponseEntity<List<TypeDoctor>> TDResponse = restTemplate.exchange(apiUrlTypeDoctor, HttpMethod.GET, null,
                 new ParameterizedTypeReference<List<TypeDoctor>>() {
         });
+        ResponseEntity<List<Patient>> patientResponse = restTemplate.exchange(apiUrlPatient, HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<Patient>>() {
+        });
 
-        if (casherResponse.getStatusCode().is2xxSuccessful() && TDResponse.getStatusCode().is2xxSuccessful()) {
+        if (casherResponse.getStatusCode().is2xxSuccessful() && TDResponse.getStatusCode().is2xxSuccessful() && patientResponse.getStatusCode().is2xxSuccessful()) {
             List<Casher> listCasher = casherResponse.getBody();
             List<TypeDoctor> listTypeDoctor = TDResponse.getBody();
+            List<Patient> listPatient = patientResponse.getBody();
             model.addAttribute("listTypeDoctor", listTypeDoctor);
             model.addAttribute("listCasher", listCasher);
+            model.addAttribute("listPatient", listPatient);
         }
 
         model.addAttribute("taophieukham", new Taophieukham());
@@ -67,7 +73,7 @@ public class TaophieukhamController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String create(Model model, Taophieukham taophieukham, @RequestParam("casherID") String casherID, @RequestParam("typeDoctorID") String typeDoctorID) {
+    public String create(Model model, Taophieukham taophieukham, @RequestParam("casherID") String casherID, @RequestParam("typeDoctorID") String typeDoctorID, @RequestParam("patientID") String patientID) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
@@ -91,6 +97,11 @@ public class TaophieukhamController {
         newTD.setId(Integer.parseInt(typeDoctorID));
         taophieukham.setTypeDoctorId(newTD);
         var b = taophieukham.getTypeDoctorId().getId();
+        
+//        Patient newPatient = new Patient();
+//        newPatient.setId(Integer.parseInt(patientID));
+        taophieukham.setPatientId(Integer.parseInt(patientID));
+        var c = taophieukham.getPatientId();
 
         // Tạo một HttpEntity với thông tin Casher để gửi yêu cầu POST
         HttpEntity<Taophieukham> request = new HttpEntity<>(taophieukham, headers);
