@@ -16,10 +16,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -47,10 +47,14 @@ public class Taophieukham implements Serializable {
     private Integer id;
     @Column(name = "sothutu")
     private Integer sothutu;
+    @Size(max = 250)
     @Column(name = "name")
     private String name;
+    // @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message="Invalid phone/fax format, should be as xxx-xxx-xxxx")//if the field contains phone or fax number consider using this annotation to enforce field validation
+    @Size(max = 250)
     @Column(name = "phone")
     private String phone;
+    @Size(max = 250)
     @Column(name = "address")
     private String address;
     @Column(name = "total_money")
@@ -134,11 +138,6 @@ public class Taophieukham implements Serializable {
         return createAt;
     }
 
-    @PrePersist
-    protected void onCreate() {
-        createAt = new Date();
-    }
-    
     public void setCreateAt(Date createAt) {
         this.createAt = createAt;
     }

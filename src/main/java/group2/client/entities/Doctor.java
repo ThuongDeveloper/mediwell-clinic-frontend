@@ -4,8 +4,6 @@
  */
 package group2.client.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -23,12 +21,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Size;
 
 /**
  *
  * @author DELL
  */
-
 @Entity
 @Table(name = "doctor")
 @NamedQueries({
@@ -49,14 +47,20 @@ public class Doctor implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    @Size(max = 250)
     @Column(name = "name")
     private String name;
+    @Size(max = 250)
     @Column(name = "username")
     private String username;
+    @Size(max = 250)
     @Column(name = "password")
     private String password;
+    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
+    @Size(max = 250)
     @Column(name = "email")
     private String email;
+    @Size(max = 250)
     @Column(name = "address")
     private String address;
     @Column(name = "gender")
@@ -64,17 +68,13 @@ public class Doctor implements Serializable {
     @Column(name = "create_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createAt;
-    @JsonIgnore
     @OneToMany(mappedBy = "doctorId")
     private List<Appointment> appointmentList;
-    @JsonIgnore
     @OneToMany(mappedBy = "doctorId")
     private List<Lichlamviec> lichlamviecList;
-   
     @JoinColumn(name = "type_doctor_id", referencedColumnName = "id")
     @ManyToOne
     private TypeDoctor typeDoctorId;
-    @JsonIgnore
     @OneToMany(mappedBy = "doctorId")
     private List<Toathuoc> toathuocList;
 

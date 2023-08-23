@@ -18,10 +18,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -46,10 +46,13 @@ public class Thuoc implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    @Size(max = 250)
     @Column(name = "name")
     private String name;
+    @Size(max = 250)
     @Column(name = "company_name")
     private String companyName;
+    @Size(max = 250)
     @Column(name = "composition")
     private String composition;
     @Column(name = "quantity")
@@ -178,10 +181,5 @@ public class Thuoc implements Serializable {
     public String toString() {
         return "group2.client.entities.Thuoc[ id=" + id + " ]";
     }
-      @PrePersist // Đánh dấu phương thức được gọi tự động trước khi lưu mới
-    public void prePersist() {
-        createAt = new Date();
-    }
-    
     
 }

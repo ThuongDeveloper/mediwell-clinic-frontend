@@ -16,7 +16,7 @@
                     <div class="">
                         <div class="page-title">
                             <div class="title_left">
-                                <h3>Edit Phiếu Khám</h3>
+                                <h3>Patient Form</h3>
                             </div>
 
                             <div class="title_right">
@@ -36,59 +36,54 @@
                             <div class="col-md-12 col-sm-12">
                                 <div class="x_panel">
                                     <div class="x_content">
-                                        <form th:action="@{/admin/phieukham/edit}" th:object="${taophieukham}" method="post">
-                                            <span class="section">Personal Info</span>
+                                        <form th:action="@{/admin/patient/create}" th:object="${patient}" method="post">
+                                            <span class="section">Patient Info</span>
                                             <div class="field item form-group">
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Name<span class="required">*</span></label>
                                                 <div class="col-md-6 col-sm-6">
-                                                    <input class="form-control" th:field="*{id}" type="text" hidden="true">
+                                                    <input type="text" th:field="*{name}" class="form-control" name="name" placeholder="ex. John f. Kennedy" required="required"
+                                                           pattern=".{6,}" title="Minimum 6 characters" data-error="Name is required (minimum 6 characters)">
+                                                        <div class="help-block with-errors"></div>
                                                 </div>
                                             </div>
                                             <div class="field item form-group">
-                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Số thứ tự</label>
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">User name<span class="required">*</span></label>
                                                 <div class="col-md-6 col-sm-6">
-                                                    <input class="form-control" th:field="*{sothutu}" type="text" readonly="true">
+                                                    <input class="form-control" th:field="*{username}" name="username" type="text" data-minlength="5" data-maxlength="15" pattern=".{2,}" title="Minimum 2 characters" data-error="Username is required (minimum 2 characters)">
+                                                        <div class="help-block with-errors"></div>
                                                 </div>
                                             </div>
                                             <div class="field item form-group">
-                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Name</label>
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Password<span class="required">*</span></label>
                                                 <div class="col-md-6 col-sm-6">
-                                                    <input type="text" th:field="*{name}" class="form-control" readonly="true">
+                                                    <input th:field="*{password}" class="form-control" type="password" id="password1" name="password"
+                                                           pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                                                           title="Minimum 8 Characters Including An Upper And Lower Case Letter, A Number"
+                                                           required="">
                                                 </div>
                                             </div>
                                             <div class="field item form-group">
-                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Casher Name</label>
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Phone<span class="required">*</span></label>
                                                 <div class="col-md-6 col-sm-6">
-                                                    <input name="casherID" type="hidden" />
-                                                    <input th:if="${taophieukham.casherId != null}" th:value="${taophieukham.casherId.name}" class="form-control" type="text" readonly="true">
+                                                    <input class="form-control" th:field="*{phone}" name="phone" type="number" data-minlength="10" data-maxlength="11" pattern=".{10,}" title="Minimum 10 number" data-error="Phone is required (minimum 10 number)">
+                                                        <div class="help-block with-errors"></div>
                                                 </div>
                                             </div>
                                             <div class="field item form-group">
-                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Patients Name</label>
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Email<span class="required">*</span></label>
                                                 <div class="col-md-6 col-sm-6">
-                                                    <input th:field="*{patientId}" class="form-control" type="text" readonly="true">
+                                                    <input class="form-control" th:field="*{email}" name="email" required="required" type="email">
                                                 </div>
                                             </div>
                                             <div class="field item form-group">
-                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Type Doctor<span class="required">*</span></label>
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Address<span class="required">*</span></label>
                                                 <div class="col-md-6 col-sm-6">
-                                                    <select name="typeDoctorID" class="form-control">
-                                                        <option th:each="td : ${listTypeDoctor}"
-                                                                th:value="${td.id}"
-                                                                th:text="${td.name}"
-                                                                th:selected="${td.id == taophieukham.typeDoctorId.id}"></option>
-                                                    </select>
-
-                                                </div>
-                                            </div>
-                                            <div class="field item form-group">
-                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Total Money</label>
-                                                <div class="col-md-6 col-sm-6">
-                                                    <input th:field="*{totalMoney}" class="form-control" type="number">
+                                                    <input class="form-control" th:field="*{address}" type="text" name="address" required="required">
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <div class="col-md-6 offset-md-3">
-                                                    <input type="submit" value="Update" class="btn btn-primary"/>
+                                                    <input type="submit" value="Create" class="btn btn-primary"/>
                                                     <input type="reset" value="Reset" class="btn btn-success"/>
                                                 </div>
                                             </div>

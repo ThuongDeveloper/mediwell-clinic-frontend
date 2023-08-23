@@ -50,23 +50,25 @@
                                 <table th:object="${listTaophieukham}" id="datatable" class="table table-striped table-bordered dataTable no-footer" style="width: 100%;" role="grid" aria-describedby="datatable_info">
                       <thead>
                         <tr role="row">
-                            <th class="sorting_asc" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Stt: activate to sort column descending" style="width: 80.2px;">Stt</th>
+                            <th class="sorting_asc" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Stt: activate to sort column descending" style="width: 50.2px;">Stt</th>
                             <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Name: activate to sort column ascending" style="width: 140.2px;">Name</th>
                             <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Phone: activate to sort column ascending" style="width: 70.2px;">Phone</th>
-                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Total Money: activate to sort column ascending" style="width: 100.2px;">Total Money</th>
-                            <!--<th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Casher Name: activate to sort column ascending" style="width: 120.2px;">Casher Name</th>-->
-                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Patient Id: activate to sort column ascending" style="width: 120.2px;">Patient Name</th>
-                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Create at: activate to sort column ascending" style="width: 250.2px;">Create at</th>
+                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Total Money: activate to sort column ascending" style="width: 80.2px;">Total Money</th>
+                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Casher Name: activate to sort column ascending" style="width: 80.2px;">Casher Name</th>
+                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Patient Id: activate to sort column ascending" style="width: 80.2px;">Patient Name</th>
+                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Type Doctor: activate to sort column ascending" style="width:80.2px;">Type Doctor</th>
+                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Create at: activate to sort column ascending" style="width: 200.2px;">Create at</th>
                             <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 200.2px;">Action</th>
                       </thead>
                       <tbody>
                         <tr role="row" class="odd" th:each="e : ${listTaophieukham}">
-                            <td class="sorting_1" th:text="${e.getSothutu()}"></th>
+                            <td class="sorting_1" th:text="${e.getSothutu()}"></td>
                             <td th:text="${e.getName()}"></td>
                             <td th:text="${e.getPhone()}"></td>
                             <td th:text="${e.getTotalMoney()}"></td>
-                            <!--<td th:text="${e.getCasherId().getName()}"></td>-->
+                            <td th:text="${e.getCasherId().getName()}"></td>
                             <td th:text="${e.getPatientId()}"></td>
+                            <td th:text="${e.getTypeDoctorId().getName()}"></td>
                             <td th:text="${e.getCreateAt()}"></td>
                             <td>
                                 <a class="btn btn-info" th:href="@{/admin/phieukham/edit/{id}(id=${e.getId()})}">Update</a> | 
