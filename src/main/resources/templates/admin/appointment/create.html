@@ -1,0 +1,168 @@
+<html  xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    
+    <div th:replace="~{admin/layout/layoutfixbug :: head}"></div>
+
+    <style>
+        .morning_time{
+            font-size: 18px;
+        }
+        .afternoon_time{
+            font-size: 18px;
+           
+        }
+        .dinner_time{
+            font-size: 18px;
+        }
+    </style>
+    <body class="nav-md">
+        <div class="container body">
+            <div class="main_container">
+                <div th:replace="~{admin/layout/slidebarfixbug :: slidebarAdmin}"></div>
+                <div class="top_nav">
+                    <div th:replace="~{admin/layout/headerfixbug :: div}"></div>
+                </div>
+                <!-- Content -->
+
+                <div class="right_col" role="main">
+                    <div class="">
+                        <div class="page-title">
+                            <div class="title_left">
+                                <h3>Appointment Form</h3>
+                            </div>
+
+                            <div class="title_right">
+                                <div class="col-md-5 col-sm-5 form-group pull-right top_search">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Search for...">
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-default" type="button">Go!</button>
+                                            </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12">
+                                <div class="x_panel">
+                                    <div class="x_content">
+                                        <form th:action="@{/admin/appointment/create}" th:object="${appointment}" method="post">
+                                            <span class="section">Personal Info</span>
+                                            <div class="field item form-group">
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Symptom<span class="required">*</span></label>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <input type="text" th:field="*{symptom}" class="form-control" name="symptom" placeholder="Enter symptom..." required="true">
+                                                        <div class="help-block with-errors"></div>
+                                                </div>
+                                            </div>
+                                            <div class="field item form-group">
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Type Payment<span class="required">*</span></label>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <input class="form-control" th:field="*{typePayment}" placeholder="Enter type payment..." name="typePayment" type="text" required="true"/>
+                                                        <div class="help-block with-errors"></div>
+                                                </div>
+                                            </div>
+                                            <div class="field item form-group">
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Price<span class="required">*</span></label>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <input class="form-control" th:field="*{price}" placeholder="Enter price..." name="price" type="number" required="true"/>
+                                                        <div class="help-block with-errors"></div>
+                                                </div>
+                                            </div>
+                                            <div class="field item form-group">
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Date<span class="required">*</span></label>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <input class="form-control" th:field="*{date}" name="date" type="date" id="date" required="true"/>
+                                                        <div class="help-block with-errors"></div>
+                                                </div>
+                                            </div>
+<!--                                            <div class="field item form-group">
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Start time<span class="required">*</span></label>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <input th:field="*{starttime}" class="form-control" type="time" id="password1" name="starttime" required="true">
+                                                </div>
+                                            </div>
+                                            <div class="field item form-group">
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">End time<span class="required">*</span></label>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <input class="form-control" th:field="*{endtime}" name="endtime" required="true" type="time">
+                                                </div>
+                                            </div>-->
+                                            <div class="field item form-group">
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Time<span class="required">*</span></label>
+                                                <div class="col-md-6 col-sm-6 mt-2">
+                                                    <div class="form-check-inline ">
+                                                        <label class="form-check-label">
+                                                            <input type="radio" checked="true" class="form-check-input" name="time_select" value="7:00 - 12:00"><span class="morning_time">7:00 - 12:00<span>
+                                                        </label>
+                                                      </div>
+                                                      <div class="form-check-inline">
+                                                        <label class="form-check-label time_group_display">
+                                                            <input type="radio" class="form-check-input" name="time_select" value="12:00 - 17:00"><span class="afternoon_time">12:00 - 17:00<span>
+                                                        </label>
+                                                      </div>
+                                                      <div class="form-check-inline">
+                                                        <label class="form-check-label time_group_display">
+                                                            <input type="radio" class="form-check-input" name="time_select" value="17:00 - 21:00"><span class="dinner_time">17:00 - 21:00<span>
+                                                        </label>
+                                                      </div>
+                                                </div>
+                                            </div>
+                                           <div class="field item form-group">
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Patient<span class="required">*</span></label>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <select name="patient" class="form-control" required="true">
+                                                        <option value="">---Select Patient---</option>
+                                                        <option th:each="td : ${listPatient}" th:value="${td.id}" th:text="${td.name}"></option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="field item form-group">
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Doctor<span class="required">*</span></label>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <select name="doctor" class="form-control" required="true">
+                                                        <option value="">---Select Doctor---</option>
+                                                        <option th:each="td : ${listDoctor}" th:value="${td.id}" th:text="${td.name}"></option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-md-6 offset-md-3">
+                                                    <input type="submit" value="Create" class="btn btn-primary"/>
+                                                    <input type="reset" value="Reset" class="btn btn-success"/>
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Content -->
+                <div th:replace="~{admin/layout/footer :: footer}"></div>
+            </div>
+
+            <div th:replace="~{admin/layout/layoutfixbug :: body}"></div>
+             <script>
+               
+                var todayDate = new Date();
+                var month = todayDate.getMonth() + 1;
+                var year = todayDate.getFullYear();
+                var tdate = todayDate.getDate();
+                if (month < 10) {
+                   month = "0" + month.toString();
+                }
+                if (tdate < 10) {
+                   tdate = "0" + tdate.toString();
+                }
+                var maxDate = year + "-" + month + "-" + tdate;
+                document.getElementById("date").setAttribute("min", maxDate);
+                console.log(maxDate);
+
+            </script>
+    </body>
+</html>
