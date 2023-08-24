@@ -4,6 +4,7 @@
  */
 package group2.client.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -20,6 +21,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  *
@@ -47,17 +49,20 @@ public class Lichlamviec implements Serializable {
     @Column(name = "thu")
     private String thu;
     @Column(name = "date")
-    @Temporal(TemporalType.DATE)
+//    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date date;
     @Column(name = "create_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createAt;
     @Column(name = "starttime")
-    @Temporal(TemporalType.TIME)
-    private Date starttime;
+ @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
+//    @Temporal(TemporalType.TIME)
+    private String starttime;
     @Column(name = "endtime")
-    @Temporal(TemporalType.TIME)
-    private Date endtime;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
+//    @Temporal(TemporalType.TIME)
+    private String endtime;
     @JoinColumn(name = "doctor_id", referencedColumnName = "id")
     @ManyToOne
     private Doctor doctorId;
@@ -101,19 +106,19 @@ public class Lichlamviec implements Serializable {
         this.createAt = createAt;
     }
 
-    public Date getStarttime() {
+    public String getStarttime() {
         return starttime;
     }
 
-    public void setStarttime(Date starttime) {
+    public void setStarttime(String starttime) {
         this.starttime = starttime;
     }
 
-    public Date getEndtime() {
+    public String getEndtime() {
         return endtime;
     }
 
-    public void setEndtime(Date endtime) {
+    public void setEndtime(String endtime) {
         this.endtime = endtime;
     }
 
