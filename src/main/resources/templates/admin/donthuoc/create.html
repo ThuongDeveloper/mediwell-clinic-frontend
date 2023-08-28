@@ -1,0 +1,151 @@
+<html  xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="~{admin/layout/layoutfixbug :: head}"></div>
+
+
+<body class="nav-md">
+<div class="container body">
+    <div class="main_container">
+        <div th:replace="~{admin/layout/slidebarfixbug :: slidebarAdmin}"></div>
+        <div class="top_nav">
+            <div th:replace="~{admin/layout/header :: div}"></div>
+        </div>
+        <!-- Content -->
+
+        <div class="right_col" role="main">
+            <h1>Doctor Page</h1>
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <div class="x_panel">
+                        <div class="x_content">
+                            <form th:action="@{/admin/donthuoc/create}" th:object="${donthuoc}" method="post">
+                                <span class="section">Create</span>
+                                <div class=" form-group">
+                                    <button type="button" id="addButton">Thêm</button>
+                                    <div id="boxes"></div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-6 offset-md-3">
+                                        <input type="submit" value="Create" class="btn btn-primary" />
+                                        <input type="reset" value="Reset" class="btn btn-success" />
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ... -->
+    </div>
+
+    <!-- ... -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        const addButton = document.getElementById('addButton');
+        const boxesContainer = document.getElementById('boxes');
+
+        let boxCount = 0;
+
+        addButton.addEventListener('click', () => {
+            const box = createBox();
+            boxesContainer.appendChild(box);
+        });
+
+        function createBox() {
+            const box = document.createElement('div');
+            box.classList.add('box');
+
+            const selectLabel = document.createElement('label');
+            selectLabel.textContent = 'Chọn thuốc:';
+            box.appendChild(selectLabel);
+
+            const select = createSelect();
+            box.appendChild(select);
+
+            const priceLabel = document.createElement('label');
+            priceLabel.textContent = 'Price:';
+            box.appendChild(priceLabel);
+
+            const input = createInput();
+            box.appendChild(input);
+
+            const quantityLabel = document.createElement('label');
+            quantityLabel.textContent = 'Quantity:';
+            box.appendChild(quantityLabel);
+
+            const quantityInput = createQuantityInput();
+            box.appendChild(quantityInput);
+
+            const result = document.createElement('div');
+            result.classList.add('result');
+
+            select.addEventListener('change', async () => {
+                const selectedOption = select.options[select.selectedIndex];
+                input.value = selectedOption.getAttribute('data-price');
+            });
+
+            box.appendChild(result);
+
+            return box;
+        }
+
+        async function fetchThuocData() {
+            try {
+                const response = await axios.get('http://localhost:8888/api/thuoc');
+                return response.data;
+            } catch (error) {
+                console.error('Lỗi khi tải dữ liệu thuốc:', error);
+                return [];
+            }
+        }
+
+        async function populateDropdown(select) {
+            const thuocData = await fetchThuocData();
+
+            thuocData.forEach(thuoc => {
+                const option = createOption(thuoc.id, thuoc.name, thuoc.price);
+                select.appendChild(option);
+            });
+        }
+
+        function createSelect() {
+            const select = document.createElement('select');
+            select.classList.add('dropdown');
+
+            populateDropdown(select);
+
+            return select;
+        }
+
+        function createOption(id, name, price) {
+            const option = document.createElement('option');
+            option.value = id;
+            option.textContent = name;
+            option.setAttribute('data-price', price);
+            return option;
+        }
+
+        function createInput() {
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.classList.add('input');
+            return input;
+        }
+
+        function createQuantityInput() {
+            const quantityInput = document.createElement('input');
+            quantityInput.type = 'number';
+            quantityInput.classList.add('input');
+            return quantityInput;
+        }
+
+    </script>
+    <!-- Content -->
+    <div th:replace="~{admin/layout/footer :: footer}"></div>
+</div>
+
+<div th:replace="~{admin/layout/layoutfixbug :: body}"></div>
+
+</body>
+</html>
