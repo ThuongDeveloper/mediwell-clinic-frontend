@@ -1,0 +1,73 @@
+<html  xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <div th:replace="~{admin/layout/layoutfixbug :: head}"></div>
+
+
+    <body class="nav-md">
+        <div class="container body">
+            <div class="main_container">
+                <div th:replace="~{admin/layout/slidebarfixbug :: slidebarAdmin}"></div>
+                <div class="top_nav">
+                    <div th:replace="~{admin/layout/header :: div}"></div>
+                </div>
+                <!-- Content -->
+
+                <div class="right_col" role="main">
+                    <h1>Appointment Page</h1>
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 card_head">
+
+<a th:href="@{/admin/appointment/create}" class="btn btn-primary">Create</a>                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+
+                                <table th:object="${listAppointment}" class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+
+                                    <thead>
+                                        <tr>
+
+                                            <th>Doctor Name</th>
+                                            <th>Patient Name</th>
+                                            <th>Symptom</th>
+                                            <th>Type Payment</th>
+                                            <th>Price</th>
+                                            <th>Date</th>
+                                            <th>Start time</th>
+                                            <th>End time</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                </tbody>
+                                 <tr th:each="e : ${listAppointment}">
+                                         <td th:text="${e.getDoctorId().getName()}"></td>
+                                        <td th:text="${e.getPatientId().getName()}"></td>
+                                        <td th:text="${e.getSymptom()}"></td>
+                                        <td th:text="${e.getTypePayment()}"></td>
+                                        <td th:text="${e.getPrice()}"></td>
+                                        <td th:text="${e.getDate()}"></td>
+                                        <td th:text="${e.getStarttime()}"></td>
+                                        <td th:text="${e.getEndtime()}"></td>
+                                             <td>
+                                               <a class="btn btn-info" th:href="@{/admin/appointment/edit/{id}(id=${e.getId()})}">Update</a> | 
+                                <a class="btn btn-warning" th:href="@{/admin/appointment/delete/{id}(id=${e.getId()})}">Delete</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                   
+                                   
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Content -->
+                <div th:replace="~{admin/layout/footer :: footer}"></div>
+            </div>
+
+            <div th:replace="~{admin/layout/layoutfixbug :: body}"></div>
+            
+    </body>
+</html>

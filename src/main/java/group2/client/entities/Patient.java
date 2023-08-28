@@ -5,7 +5,7 @@
 package group2.client.entities;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,7 +32,8 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Patient.findByName", query = "SELECT p FROM Patient p WHERE p.name = :name"),
     @NamedQuery(name = "Patient.findByEmail", query = "SELECT p FROM Patient p WHERE p.email = :email"),
     @NamedQuery(name = "Patient.findByAddress", query = "SELECT p FROM Patient p WHERE p.address = :address"),
-    @NamedQuery(name = "Patient.findByPhone", query = "SELECT p FROM Patient p WHERE p.phone = :phone")})
+    @NamedQuery(name = "Patient.findByPhone", query = "SELECT p FROM Patient p WHERE p.phone = :phone"),
+    @NamedQuery(name = "Patient.findByImage", query = "SELECT p FROM Patient p WHERE p.image = :image")})
 public class Patient implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -61,10 +62,15 @@ public class Patient implements Serializable {
     @Size(max = 50)
     @Column(name = "phone")
     private String phone;
+    @Size(max = 250)
+    @Column(name = "image")
+    private String image;
     @OneToMany(mappedBy = "patientId")
-    private List<Appointment> appointmentList;
+    private Collection<Rating> ratingCollection;
     @OneToMany(mappedBy = "patientId")
-    private List<Feedback> feedbackList;
+    private Collection<Appointment> appointmentCollection;
+    @OneToMany(mappedBy = "patientId")
+    private Collection<Feedback> feedbackCollection;
 
     public Patient() {
     }
@@ -129,20 +135,36 @@ public class Patient implements Serializable {
         this.phone = phone;
     }
 
-    public List<Appointment> getAppointmentList() {
-        return appointmentList;
+    public String getImage() {
+        return image;
     }
 
-    public void setAppointmentList(List<Appointment> appointmentList) {
-        this.appointmentList = appointmentList;
+    public void setImage(String image) {
+        this.image = image;
     }
 
-    public List<Feedback> getFeedbackList() {
-        return feedbackList;
+    public Collection<Rating> getRatingCollection() {
+        return ratingCollection;
     }
 
-    public void setFeedbackList(List<Feedback> feedbackList) {
-        this.feedbackList = feedbackList;
+    public void setRatingCollection(Collection<Rating> ratingCollection) {
+        this.ratingCollection = ratingCollection;
+    }
+
+    public Collection<Appointment> getAppointmentCollection() {
+        return appointmentCollection;
+    }
+
+    public void setAppointmentCollection(Collection<Appointment> appointmentCollection) {
+        this.appointmentCollection = appointmentCollection;
+    }
+
+    public Collection<Feedback> getFeedbackCollection() {
+        return feedbackCollection;
+    }
+
+    public void setFeedbackCollection(Collection<Feedback> feedbackCollection) {
+        this.feedbackCollection = feedbackCollection;
     }
 
     @Override

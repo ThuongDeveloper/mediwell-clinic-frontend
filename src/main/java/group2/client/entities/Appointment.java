@@ -4,6 +4,7 @@
  */
 package group2.client.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -20,6 +21,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  *
@@ -45,11 +47,13 @@ public class Appointment implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Column(name = "starttime")
-    @Temporal(TemporalType.TIME)
-    private Date starttime;
+//    @Temporal(TemporalType.TIME)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
+    private String starttime;
     @Column(name = "endtime")
-    @Temporal(TemporalType.TIME)
-    private Date endtime;
+//    @Temporal(TemporalType.TIME)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
+    private String endtime;
     @Size(max = 250)
     @Column(name = "symptom")
     private String symptom;
@@ -59,7 +63,8 @@ public class Appointment implements Serializable {
     @Column(name = "price")
     private Integer price;
     @Column(name = "date")
-    @Temporal(TemporalType.DATE)
+//    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date date;
     @JoinColumn(name = "doctor_id", referencedColumnName = "id")
     @ManyToOne
@@ -83,19 +88,19 @@ public class Appointment implements Serializable {
         this.id = id;
     }
 
-    public Date getStarttime() {
+    public String getStarttime() {
         return starttime;
     }
 
-    public void setStarttime(Date starttime) {
+    public void setStarttime(String starttime) {
         this.starttime = starttime;
     }
 
-    public Date getEndtime() {
+    public String getEndtime() {
         return endtime;
     }
 
-    public void setEndtime(Date endtime) {
+    public void setEndtime(String endtime) {
         this.endtime = endtime;
     }
 

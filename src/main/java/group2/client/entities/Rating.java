@@ -4,7 +4,6 @@
  */
 package group2.client.entities;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -21,23 +20,20 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
-import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  *
  * @author DELL
  */
 @Entity
-@Table(name = "lichlamviec")
+@Table(name = "rating")
 @NamedQueries({
-    @NamedQuery(name = "Lichlamviec.findAll", query = "SELECT l FROM Lichlamviec l"),
-    @NamedQuery(name = "Lichlamviec.findById", query = "SELECT l FROM Lichlamviec l WHERE l.id = :id"),
-    @NamedQuery(name = "Lichlamviec.findByThu", query = "SELECT l FROM Lichlamviec l WHERE l.thu = :thu"),
-    @NamedQuery(name = "Lichlamviec.findByDate", query = "SELECT l FROM Lichlamviec l WHERE l.date = :date"),
-    @NamedQuery(name = "Lichlamviec.findByCreateAt", query = "SELECT l FROM Lichlamviec l WHERE l.createAt = :createAt"),
-    @NamedQuery(name = "Lichlamviec.findByStarttime", query = "SELECT l FROM Lichlamviec l WHERE l.starttime = :starttime"),
-    @NamedQuery(name = "Lichlamviec.findByEndtime", query = "SELECT l FROM Lichlamviec l WHERE l.endtime = :endtime")})
-public class Lichlamviec implements Serializable {
+    @NamedQuery(name = "Rating.findAll", query = "SELECT r FROM Rating r"),
+    @NamedQuery(name = "Rating.findById", query = "SELECT r FROM Rating r WHERE r.id = :id"),
+    @NamedQuery(name = "Rating.findByRating", query = "SELECT r FROM Rating r WHERE r.rating = :rating"),
+    @NamedQuery(name = "Rating.findByComment", query = "SELECT r FROM Rating r WHERE r.comment = :comment"),
+    @NamedQuery(name = "Rating.findByCreateAt", query = "SELECT r FROM Rating r WHERE r.createAt = :createAt")})
+public class Rating implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -45,32 +41,25 @@ public class Lichlamviec implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    @Column(name = "rating")
+    private Integer rating;
     @Size(max = 250)
-    @Column(name = "thu")
-    private String thu;
-    @Column(name = "date")
-//    @Temporal(TemporalType.DATE)
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date date;
+    @Column(name = "comment")
+    private String comment;
     @Column(name = "create_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createAt;
-    @Column(name = "starttime")
- @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
-//    @Temporal(TemporalType.TIME)
-    private String starttime;
-    @Column(name = "endtime")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
-//    @Temporal(TemporalType.TIME)
-    private String endtime;
     @JoinColumn(name = "doctor_id", referencedColumnName = "id")
     @ManyToOne
     private Doctor doctorId;
+    @JoinColumn(name = "patient_id", referencedColumnName = "id")
+    @ManyToOne
+    private Patient patientId;
 
-    public Lichlamviec() {
+    public Rating() {
     }
 
-    public Lichlamviec(Integer id) {
+    public Rating(Integer id) {
         this.id = id;
     }
 
@@ -82,20 +71,20 @@ public class Lichlamviec implements Serializable {
         this.id = id;
     }
 
-    public String getThu() {
-        return thu;
+    public Integer getRating() {
+        return rating;
     }
 
-    public void setThu(String thu) {
-        this.thu = thu;
+    public void setRating(Integer rating) {
+        this.rating = rating;
     }
 
-    public Date getDate() {
-        return date;
+    public String getComment() {
+        return comment;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     public Date getCreateAt() {
@@ -106,28 +95,20 @@ public class Lichlamviec implements Serializable {
         this.createAt = createAt;
     }
 
-    public String getStarttime() {
-        return starttime;
-    }
-
-    public void setStarttime(String starttime) {
-        this.starttime = starttime;
-    }
-
-    public String getEndtime() {
-        return endtime;
-    }
-
-    public void setEndtime(String endtime) {
-        this.endtime = endtime;
-    }
-
     public Doctor getDoctorId() {
         return doctorId;
     }
 
     public void setDoctorId(Doctor doctorId) {
         this.doctorId = doctorId;
+    }
+
+    public Patient getPatientId() {
+        return patientId;
+    }
+
+    public void setPatientId(Patient patientId) {
+        this.patientId = patientId;
     }
 
     @Override
@@ -140,10 +121,10 @@ public class Lichlamviec implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Lichlamviec)) {
+        if (!(object instanceof Rating)) {
             return false;
         }
-        Lichlamviec other = (Lichlamviec) object;
+        Rating other = (Rating) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -152,7 +133,7 @@ public class Lichlamviec implements Serializable {
 
     @Override
     public String toString() {
-        return "group2.client.entities.Lichlamviec[ id=" + id + " ]";
+        return "group2.client.entities.Rating[ id=" + id + " ]";
     }
     
 }

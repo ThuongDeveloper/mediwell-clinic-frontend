@@ -5,8 +5,8 @@
 package group2.client.entities;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -50,7 +50,7 @@ public class Donthuoc implements Serializable {
     @ManyToOne
     private Casher casherId;
     @OneToMany(mappedBy = "donthuocId")
-    private List<DonthuocDetails> donthuocDetailsList;
+    private Collection<DonthuocDetails> donthuocDetailsCollection;
 
     public Donthuoc() {
     }
@@ -91,12 +91,12 @@ public class Donthuoc implements Serializable {
         this.casherId = casherId;
     }
 
-    public List<DonthuocDetails> getDonthuocDetailsList() {
-        return donthuocDetailsList;
+    public Collection<DonthuocDetails> getDonthuocDetailsCollection() {
+        return donthuocDetailsCollection;
     }
 
-    public void setDonthuocDetailsList(List<DonthuocDetails> donthuocDetailsList) {
-        this.donthuocDetailsList = donthuocDetailsList;
+    public void setDonthuocDetailsCollection(Collection<DonthuocDetails> donthuocDetailsCollection) {
+        this.donthuocDetailsCollection = donthuocDetailsCollection;
     }
 
     @Override
