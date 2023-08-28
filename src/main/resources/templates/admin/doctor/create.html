@@ -18,7 +18,7 @@
                         <div class="col-md-12 col-sm-12">
                             <div class="x_panel">
                                 <div class="x_content">
-                                    <form th:action="@{/admin/doctor/create}" th:object="${Doctor}" method="post">
+                                    <form th:action="@{/admin/doctor/create}" th:object="${Doctor}" method="post" enctype="multipart/form-data">
                                         <span class="section">Create</span>
                                         <div class="field item form-group">
                                             <label class="col-form-label col-md-3 col-sm-3 label-align">Name<span class="required">*</span></label>
@@ -56,6 +56,14 @@
                                             <label class="col-form-label col-md-3 col-sm-3 label-align">Address<span class="required">*</span></label>
                                             <div class="col-md-6 col-sm-6">
                                                 <input type="text" th:field="*{address}" class="form-control" required="required"
+                                                       pattern=".{6,}" title="Minimum 6 characters" data-error="Name is required (minimum 6 characters)">
+                                                    <div class="help-block with-errors"></div>
+                                            </div>
+                                        </div>
+                                            <div class="field item form-group">
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align">Image<span class="required">*</span></label>
+                                            <div class="col-md-6 col-sm-6">
+                                                <input type="file" name="file" class="form-control" required="required"
                                                        pattern=".{6,}" title="Minimum 6 characters" data-error="Name is required (minimum 6 characters)">
                                                     <div class="help-block with-errors"></div>
                                             </div>

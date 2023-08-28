@@ -5,7 +5,7 @@
 package group2.client.entities;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -40,7 +40,7 @@ public class Typethuoc implements Serializable {
     @Column(name = "name")
     private String name;
     @OneToMany(mappedBy = "typethuocId")
-    private List<Thuoc> thuocList;
+    private Collection<Thuoc> thuocCollection;
 
     public Typethuoc() {
     }
@@ -65,12 +65,12 @@ public class Typethuoc implements Serializable {
         this.name = name;
     }
 
-    public List<Thuoc> getThuocList() {
-        return thuocList;
+    public Collection<Thuoc> getThuocCollection() {
+        return thuocCollection;
     }
 
-    public void setThuocList(List<Thuoc> thuocList) {
-        this.thuocList = thuocList;
+    public void setThuocCollection(Collection<Thuoc> thuocCollection) {
+        this.thuocCollection = thuocCollection;
     }
 
     @Override
