@@ -1,0 +1,125 @@
+
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this template
+-->
+<html  xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>Forbien Page</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background-image: linear-gradient(to right, #7ab0d5, #007acc, #6600ff);
+        height: 100vh;
+        width: 900px;
+      }
+      .box {
+        width: 800px;
+        height: 550px;
+        background-color: #fff;
+        position: relative;
+        margin: auto 0;
+        top: 15%;
+        left: 42%;
+      }
+      .box nav {
+        height: 20px;
+        background-color: #e5e5e5;
+        padding: 5px;
+      }
+      .main img {
+        height: 220px;
+        width: 250px;
+        position: absolute;
+        top: 20%;
+        left: 35%;
+        z-index: 1;
+      }
+      .main h1 {
+        font-size: 150px;
+        position: absolute;
+        top: 25%;
+        left: 35%;
+        text-shadow: 5px 5px 10px rgb(252, 190, 173);
+        color: #fff;
+        font-weight: bold;
+      }
+      .second {
+        align-items: center;
+        text-align: center;
+        padding-top: 40%;
+      }
+      .second h3 {
+        font-family: sans-serif;
+        font-size: 30px;
+        color: #6e6d6e;
+        letter-spacing: 1px;
+      }
+      .second p {
+        font-family: sans-serif;
+        color: #9cacbc;
+        letter-spacing: 1.5px;
+        word-spacing: 2.5px;
+        padding: 14px 0 8px 0;
+      }
+      .second h4 {
+        font-family: sans-serif;
+        color: #9cacbc;
+        letter-spacing: 1px;
+        word-spacing: 1.5px;
+      }
+      .second h4 a {
+        color: #ff7545;
+      }
+    </style>
+    </head>
+
+    <body>
+        <div class="box">
+      <nav>
+        <img
+          src="http://www.wildlifeasia.org.au/wp-content/uploads/revslider/parallax_slider/boat.png"
+          alt="circle"
+          width="15px"
+          ;
+          height="15px;"
+        />
+        <img
+          src="http://www.wildlifeasia.org.au/wp-content/uploads/revslider/parallax_slider/boat.png"
+          alt="circle"
+          width="15px"
+          ;
+          height="15px;"
+        />
+        <img
+          src="http://www.wildlifeasia.org.au/wp-content/uploads/revslider/parallax_slider/boat.png"
+          alt="circle"
+          width="15px"
+          ;
+          height="15px;"
+        />
+      </nav>
+      <div class="main">
+        <img
+          src="https://static1.squarespace.com/static/533ac697e4b0885962ac8ede/5a71ac71e4966be6e6f33842/5a71b5db71c10b8bbaca2f4d/1520609106557/security.png?format=500w"
+          alt="lock"
+        />
+        <h1>403</h1>
+        <div class="second">
+          <h3>Access forbidden</h3>
+          <p>
+            You tried to access a page you did not have prior authorization for
+          </p>
+          <h4><a th:href="@{/previousUrl}">Go back</a></h4>
+        </div>
+      </div>
+    </div>
+    </body>
+
+</html>

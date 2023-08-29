@@ -4,11 +4,16 @@
  */
 package group2.client.controller;
 
+import group2.client.entities.Admin;
 import group2.client.entities.Casher;
+import group2.client.entities.Doctor;
 import group2.client.entities.Patient;
 import group2.client.entities.Taophieukham;
 import group2.client.entities.TypeDoctor;
+import group2.client.service.AuthService;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
@@ -30,46 +35,147 @@ public class TaophieukhamController {
     private String apiUrlTypeDoctor = "http://localhost:8888/api/typedoctor/";
     private String apiUrlPatient = "http://localhost:8888/api/patient/";
     RestTemplate restTemplate = new RestTemplate();
+    
+     @Autowired
+    private AuthService authService;
 
     @RequestMapping("")
-    public String page(Model model) {
-        ResponseEntity<List<Taophieukham>> response = restTemplate.exchange(apiUrl, HttpMethod.GET, null,
-                new ParameterizedTypeReference<List<Taophieukham>>() {
-        });
+    public String page(Model model, HttpServletRequest request) {
+        
+        Admin currentAdmin = authService.isAuthenticatedAdmin(request);
+        Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
+        Patient currentPatient = authService.isAuthenticatedPatient(request);
+        Casher currentCasher = authService.isAuthenticatedCasher(request);
+        
+         if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
+            return "redirect:/forbien";
+        }else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
+            ResponseEntity<List<Taophieukham>> response = restTemplate.exchange(apiUrl, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<List<Taophieukham>>() {
+            });
 
-        // Kiểm tra mã trạng thái của phản hồi
-        if (response.getStatusCode().is2xxSuccessful()) {
-            List<Taophieukham> listTaophieukham = response.getBody();
+            // Kiểm tra mã trạng thái của phản hồi
+            if (response.getStatusCode().is2xxSuccessful()) {
+                List<Taophieukham> listTaophieukham = response.getBody();
 
-            // Xử lý dữ liệu theo nhu cầu của bạn
-            model.addAttribute("listTaophieukham", listTaophieukham);
+                // Xử lý dữ liệu theo nhu cầu của bạn
+                model.addAttribute("listTaophieukham", listTaophieukham);
+            }
+            return "admin/phieukham/index";
+        }else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
+            ResponseEntity<List<Taophieukham>> response = restTemplate.exchange(apiUrl, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<List<Taophieukham>>() {
+            });
+
+            // Kiểm tra mã trạng thái của phản hồi
+            if (response.getStatusCode().is2xxSuccessful()) {
+                List<Taophieukham> listTaophieukham = response.getBody();
+
+                // Xử lý dữ liệu theo nhu cầu của bạn
+                model.addAttribute("listTaophieukham", listTaophieukham);
+            }
+            return "admin/phieukham/index";
+        }else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
+             ResponseEntity<List<Taophieukham>> response = restTemplate.exchange(apiUrl, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<List<Taophieukham>>() {
+            });
+
+            // Kiểm tra mã trạng thái của phản hồi
+            if (response.getStatusCode().is2xxSuccessful()) {
+                List<Taophieukham> listTaophieukham = response.getBody();
+
+                // Xử lý dữ liệu theo nhu cầu của bạn
+                model.addAttribute("listTaophieukham", listTaophieukham);
+            }
+            return "admin/phieukham/index";
+        }else {
+            return "redirect:/login";
         }
-        return "admin/phieukham/index";
+        
+        
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
-    public String create(Model model) {
-        ResponseEntity<List<Casher>> casherResponse = restTemplate.exchange(apiUrlCasher, HttpMethod.GET, null,
+    public String create(Model model, HttpServletRequest request) {
+        
+         Admin currentAdmin = authService.isAuthenticatedAdmin(request);
+        Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
+        Patient currentPatient = authService.isAuthenticatedPatient(request);
+        Casher currentCasher = authService.isAuthenticatedCasher(request);
+        
+        if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
+            return "redirect:/forbien";
+        }else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
+            ResponseEntity<List<Casher>> casherResponse = restTemplate.exchange(apiUrlCasher, HttpMethod.GET, null,
                 new ParameterizedTypeReference<List<Casher>>() {
-        });
-        ResponseEntity<List<TypeDoctor>> TDResponse = restTemplate.exchange(apiUrlTypeDoctor, HttpMethod.GET, null,
-                new ParameterizedTypeReference<List<TypeDoctor>>() {
-        });
-        ResponseEntity<List<Patient>> patientResponse = restTemplate.exchange(apiUrlPatient, HttpMethod.GET, null,
-                new ParameterizedTypeReference<List<Patient>>() {
-        });
+            });
+            ResponseEntity<List<TypeDoctor>> TDResponse = restTemplate.exchange(apiUrlTypeDoctor, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<List<TypeDoctor>>() {
+            });
+            ResponseEntity<List<Patient>> patientResponse = restTemplate.exchange(apiUrlPatient, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<List<Patient>>() {
+            });
 
-        if (casherResponse.getStatusCode().is2xxSuccessful() && TDResponse.getStatusCode().is2xxSuccessful() && patientResponse.getStatusCode().is2xxSuccessful()) {
-            List<Casher> listCasher = casherResponse.getBody();
-            List<TypeDoctor> listTypeDoctor = TDResponse.getBody();
-            List<Patient> listPatient = patientResponse.getBody();
-            model.addAttribute("listTypeDoctor", listTypeDoctor);
-            model.addAttribute("listCasher", listCasher);
-            model.addAttribute("listPatient", listPatient);
+            if (casherResponse.getStatusCode().is2xxSuccessful() && TDResponse.getStatusCode().is2xxSuccessful() && patientResponse.getStatusCode().is2xxSuccessful()) {
+                List<Casher> listCasher = casherResponse.getBody();
+                List<TypeDoctor> listTypeDoctor = TDResponse.getBody();
+                List<Patient> listPatient = patientResponse.getBody();
+                model.addAttribute("listTypeDoctor", listTypeDoctor);
+                model.addAttribute("listCasher", listCasher);
+                model.addAttribute("listPatient", listPatient);
+            }
+
+            model.addAttribute("taophieukham", new Taophieukham());
+            return "admin/phieukham/create";
+        }else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
+            ResponseEntity<List<Casher>> casherResponse = restTemplate.exchange(apiUrlCasher, HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<Casher>>() {
+            });
+            ResponseEntity<List<TypeDoctor>> TDResponse = restTemplate.exchange(apiUrlTypeDoctor, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<List<TypeDoctor>>() {
+            });
+            ResponseEntity<List<Patient>> patientResponse = restTemplate.exchange(apiUrlPatient, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<List<Patient>>() {
+            });
+
+            if (casherResponse.getStatusCode().is2xxSuccessful() && TDResponse.getStatusCode().is2xxSuccessful() && patientResponse.getStatusCode().is2xxSuccessful()) {
+                List<Casher> listCasher = casherResponse.getBody();
+                List<TypeDoctor> listTypeDoctor = TDResponse.getBody();
+                List<Patient> listPatient = patientResponse.getBody();
+                model.addAttribute("listTypeDoctor", listTypeDoctor);
+                model.addAttribute("listCasher", listCasher);
+                model.addAttribute("listPatient", listPatient);
+            }
+
+            model.addAttribute("taophieukham", new Taophieukham());
+            return "admin/phieukham/create";
+        }else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
+            ResponseEntity<List<Casher>> casherResponse = restTemplate.exchange(apiUrlCasher, HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<Casher>>() {
+            });
+            ResponseEntity<List<TypeDoctor>> TDResponse = restTemplate.exchange(apiUrlTypeDoctor, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<List<TypeDoctor>>() {
+            });
+            ResponseEntity<List<Patient>> patientResponse = restTemplate.exchange(apiUrlPatient, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<List<Patient>>() {
+            });
+
+            if (casherResponse.getStatusCode().is2xxSuccessful() && TDResponse.getStatusCode().is2xxSuccessful() && patientResponse.getStatusCode().is2xxSuccessful()) {
+                List<Casher> listCasher = casherResponse.getBody();
+                List<TypeDoctor> listTypeDoctor = TDResponse.getBody();
+                List<Patient> listPatient = patientResponse.getBody();
+                model.addAttribute("listTypeDoctor", listTypeDoctor);
+                model.addAttribute("listCasher", listCasher);
+                model.addAttribute("listPatient", listPatient);
+            }
+
+            model.addAttribute("taophieukham", new Taophieukham());
+            return "admin/phieukham/create";
+        }else {
+            return "redirect:/login";
         }
-
-        model.addAttribute("taophieukham", new Taophieukham());
-        return "admin/phieukham/create";
+        
+        
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
@@ -120,26 +226,80 @@ public class TaophieukhamController {
     }
 
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
-    public String edit(Model model, @PathVariable("id") int id) {
-        Taophieukham taophieukham = restTemplate.getForObject(apiUrl + "/" + id, Taophieukham.class);
+    public String edit(Model model, @PathVariable("id") int id, HttpServletRequest request) {
+        
+         Admin currentAdmin = authService.isAuthenticatedAdmin(request);
+        Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
+        Patient currentPatient = authService.isAuthenticatedPatient(request);
+        Casher currentCasher = authService.isAuthenticatedCasher(request);
+        
+         if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
+            return "redirect:/forbien";
+        }else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
+            Taophieukham taophieukham = restTemplate.getForObject(apiUrl + "/" + id, Taophieukham.class);
 
-        ResponseEntity<List<Casher>> casherResponse = restTemplate.exchange(apiUrlCasher, HttpMethod.GET, null,
-                new ParameterizedTypeReference<List<Casher>>() {
-        });
-        ResponseEntity<List<TypeDoctor>> TDResponse = restTemplate.exchange(apiUrlTypeDoctor, HttpMethod.GET, null,
-                new ParameterizedTypeReference<List<TypeDoctor>>() {
-        });
+            ResponseEntity<List<Casher>> casherResponse = restTemplate.exchange(apiUrlCasher, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<List<Casher>>() {
+            });
+            ResponseEntity<List<TypeDoctor>> TDResponse = restTemplate.exchange(apiUrlTypeDoctor, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<List<TypeDoctor>>() {
+            });
 
-        if (casherResponse.getStatusCode().is2xxSuccessful() && TDResponse.getStatusCode().is2xxSuccessful()) {
-            List<Casher> listCasher = casherResponse.getBody();
-            List<TypeDoctor> listTypeDoctor = TDResponse.getBody();
-            model.addAttribute("listTypeDoctor", listTypeDoctor);
-            model.addAttribute("listCasher", listCasher);
-            model.addAttribute("taophieukham", taophieukham);
-            return "/admin/phieukham/edit";
-        } else {
-            return "redirect:/admin/phieukham";
+            if (casherResponse.getStatusCode().is2xxSuccessful() && TDResponse.getStatusCode().is2xxSuccessful()) {
+                List<Casher> listCasher = casherResponse.getBody();
+                List<TypeDoctor> listTypeDoctor = TDResponse.getBody();
+                model.addAttribute("listTypeDoctor", listTypeDoctor);
+                model.addAttribute("listCasher", listCasher);
+                model.addAttribute("taophieukham", taophieukham);
+                return "/admin/phieukham/edit";
+            } else {
+                return "redirect:/admin/phieukham";
+            }
+        }else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
+            Taophieukham taophieukham = restTemplate.getForObject(apiUrl + "/" + id, Taophieukham.class);
+
+            ResponseEntity<List<Casher>> casherResponse = restTemplate.exchange(apiUrlCasher, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<List<Casher>>() {
+            });
+            ResponseEntity<List<TypeDoctor>> TDResponse = restTemplate.exchange(apiUrlTypeDoctor, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<List<TypeDoctor>>() {
+            });
+
+            if (casherResponse.getStatusCode().is2xxSuccessful() && TDResponse.getStatusCode().is2xxSuccessful()) {
+                List<Casher> listCasher = casherResponse.getBody();
+                List<TypeDoctor> listTypeDoctor = TDResponse.getBody();
+                model.addAttribute("listTypeDoctor", listTypeDoctor);
+                model.addAttribute("listCasher", listCasher);
+                model.addAttribute("taophieukham", taophieukham);
+                return "/admin/phieukham/edit";
+            } else {
+                return "redirect:/admin/phieukham";
+            }
+        }else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
+            Taophieukham taophieukham = restTemplate.getForObject(apiUrl + "/" + id, Taophieukham.class);
+
+            ResponseEntity<List<Casher>> casherResponse = restTemplate.exchange(apiUrlCasher, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<List<Casher>>() {
+            });
+            ResponseEntity<List<TypeDoctor>> TDResponse = restTemplate.exchange(apiUrlTypeDoctor, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<List<TypeDoctor>>() {
+            });
+
+            if (casherResponse.getStatusCode().is2xxSuccessful() && TDResponse.getStatusCode().is2xxSuccessful()) {
+                List<Casher> listCasher = casherResponse.getBody();
+                List<TypeDoctor> listTypeDoctor = TDResponse.getBody();
+                model.addAttribute("listTypeDoctor", listTypeDoctor);
+                model.addAttribute("listCasher", listCasher);
+                model.addAttribute("taophieukham", taophieukham);
+                return "/admin/phieukham/edit";
+            } else {
+                return "redirect:/admin/phieukham";
+            }
+        }else {
+            return "redirect:/login";
         }
+        
+        
 
     }
 
@@ -169,11 +329,37 @@ public class TaophieukhamController {
     }
 
     @RequestMapping(value = "/delete/{id}")
-    public String delete(@PathVariable("id") Integer id) {
-        restTemplate.delete(apiUrl + "delete/" + id);
-        // Thực hiện thêm xử lý sau khi xóa Taophieukham thành công (nếu cần)
+    public String delete(@PathVariable("id") Integer id, HttpServletRequest request) {
+        
+         Admin currentAdmin = authService.isAuthenticatedAdmin(request);
+        Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
+        Patient currentPatient = authService.isAuthenticatedPatient(request);
+        Casher currentCasher = authService.isAuthenticatedCasher(request);
+        
+         if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
+            return "redirect:/forbien";
+        }else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
+              restTemplate.delete(apiUrl + "delete/" + id);
+            // Thực hiện thêm xử lý sau khi xóa Taophieukham thành công (nếu cần)
 
-        // Chuyển hướng về trang danh sách Taophieukham
-        return "redirect:/admin/phieukham";
+            // Chuyển hướng về trang danh sách Taophieukham
+              return "redirect:/admin/phieukham";
+        }else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
+              restTemplate.delete(apiUrl + "delete/" + id);
+            // Thực hiện thêm xử lý sau khi xóa Taophieukham thành công (nếu cần)
+
+            // Chuyển hướng về trang danh sách Taophieukham
+              return "redirect:/admin/phieukham";
+        }else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
+              restTemplate.delete(apiUrl + "delete/" + id);
+            // Thực hiện thêm xử lý sau khi xóa Taophieukham thành công (nếu cần)
+
+            // Chuyển hướng về trang danh sách Taophieukham
+              return "redirect:/admin/phieukham";
+        }else {
+            return "redirect:/login";
+        }
+        
+      
     }
 }

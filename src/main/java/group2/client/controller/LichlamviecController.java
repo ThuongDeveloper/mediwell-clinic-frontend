@@ -4,10 +4,15 @@
  */
 package group2.client.controller;
 
+import group2.client.entities.Admin;
 import group2.client.entities.Casher;
 import group2.client.entities.Doctor;
 import group2.client.entities.Lichlamviec;
+import group2.client.entities.Patient;
+import group2.client.service.AuthService;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -31,42 +36,130 @@ import org.springframework.web.client.RestTemplate;
 @Controller
 public class LichlamviecController {
 
-String apiUrl = "http://localhost:8888/api/lichlamviec/";
-private String apiUrlDoctor = "http://localhost:8888/api/doctor/";
+    String apiUrl = "http://localhost:8888/api/lichlamviec/";
+    private String apiUrlDoctor = "http://localhost:8888/api/doctor/";
+
     RestTemplate restTemplate = new RestTemplate();
+    
+    @Autowired
+    private AuthService authService;
 
     @RequestMapping("/admin/lichlamviec")
-    public String page(Model model) {
-        ResponseEntity<List<Lichlamviec>> response = restTemplate.exchange(apiUrl, HttpMethod.GET, null,
+    public String page(Model model, HttpServletRequest request) {
+        
+        Admin currentAdmin = authService.isAuthenticatedAdmin(request);
+        Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
+        Patient currentPatient = authService.isAuthenticatedPatient(request);
+        Casher currentCasher = authService.isAuthenticatedCasher(request);
+        
+         if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
+            return "redirect:/forbien";
+        } else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
+             ResponseEntity<List<Lichlamviec>> response = restTemplate.exchange(apiUrl, HttpMethod.GET, null,
                 new ParameterizedTypeReference<List<Lichlamviec>>() {
-        });
+            });
 
-        // Kiểm tra mã trạng thái của phản hồi
-        if (response.getStatusCode().is2xxSuccessful()) {
-            List<Lichlamviec> listLich = response.getBody();
+            // Kiểm tra mã trạng thái của phản hồi
+            if (response.getStatusCode().is2xxSuccessful()) {
+                List<Lichlamviec> listLich = response.getBody();
 
-            // Xử lý dữ liệu theo nhu cầu của bạn
-            model.addAttribute("listLich", listLich);
+                // Xử lý dữ liệu theo nhu cầu của bạn
+                model.addAttribute("listLich", listLich);
+            }
+            return "/admin/lichlamviec/index";
+        }else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
+             ResponseEntity<List<Lichlamviec>> response = restTemplate.exchange(apiUrl, HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<Lichlamviec>>() {
+            });
+
+            // Kiểm tra mã trạng thái của phản hồi
+            if (response.getStatusCode().is2xxSuccessful()) {
+                List<Lichlamviec> listLich = response.getBody();
+
+                // Xử lý dữ liệu theo nhu cầu của bạn
+                model.addAttribute("listLich", listLich);
+            }
+            return "/admin/lichlamviec/index";
+        }else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
+             ResponseEntity<List<Lichlamviec>> response = restTemplate.exchange(apiUrl, HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<Lichlamviec>>() {
+            });
+
+            // Kiểm tra mã trạng thái của phản hồi
+            if (response.getStatusCode().is2xxSuccessful()) {
+                List<Lichlamviec> listLich = response.getBody();
+
+                // Xử lý dữ liệu theo nhu cầu của bạn
+                model.addAttribute("listLich", listLich);
+            }
+            return "/admin/lichlamviec/index";
+        }else {
+            return "redirect:/login";
         }
-        return "/admin/lichlamviec/index";
+        
+       
     }
 
     @RequestMapping("/admin/lichlamviec/create")
-    public String create(Model model) {
-        ResponseEntity<List<Doctor>> DResponse = restTemplate.exchange(apiUrlDoctor, HttpMethod.GET, null,
-                new ParameterizedTypeReference<List<Doctor>>() {
-        });
+    public String create(Model model, HttpServletRequest request) {
         
-        if (DResponse.getStatusCode().is2xxSuccessful()) {
-            // Thực hiện thêm xử lý sau khi tạo Casher thành công (nếu cần)
-            List<Doctor> listDoctor = DResponse.getBody();
-            model.addAttribute("listDoctor", listDoctor);
-            // Chuyển hướng về trang danh sách Casher
-            
-        } 
-        // Tạo một đối tượng Casher trống để gửi thông tin tới form tạo mới
-        model.addAttribute("lich", new Lichlamviec());
-        return "/admin/lichlamviec/create";
+        Admin currentAdmin = authService.isAuthenticatedAdmin(request);
+        Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
+        Patient currentPatient = authService.isAuthenticatedPatient(request);
+        Casher currentCasher = authService.isAuthenticatedCasher(request);
+        
+         if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
+            return "redirect:/forbien";
+        } else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
+             ResponseEntity<List<Doctor>> DResponse = restTemplate.exchange(apiUrlDoctor, HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<Doctor>>() {
+            });
+
+            if (DResponse.getStatusCode().is2xxSuccessful()) {
+                // Thực hiện thêm xử lý sau khi tạo Casher thành công (nếu cần)
+                List<Doctor> listDoctor = DResponse.getBody();
+                model.addAttribute("listDoctor", listDoctor);
+                // Chuyển hướng về trang danh sách Casher
+
+            } 
+            // Tạo một đối tượng Casher trống để gửi thông tin tới form tạo mới
+            model.addAttribute("lich", new Lichlamviec());
+            return "/admin/lichlamviec/create";
+        }else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
+            ResponseEntity<List<Doctor>> DResponse = restTemplate.exchange(apiUrlDoctor, HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<Doctor>>() {
+            });
+
+            if (DResponse.getStatusCode().is2xxSuccessful()) {
+                // Thực hiện thêm xử lý sau khi tạo Casher thành công (nếu cần)
+                List<Doctor> listDoctor = DResponse.getBody();
+                model.addAttribute("listDoctor", listDoctor);
+                // Chuyển hướng về trang danh sách Casher
+
+            } 
+            // Tạo một đối tượng Casher trống để gửi thông tin tới form tạo mới
+            model.addAttribute("lich", new Lichlamviec());
+            return "/admin/lichlamviec/create";
+        }else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
+            ResponseEntity<List<Doctor>> DResponse = restTemplate.exchange(apiUrlDoctor, HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<Doctor>>() {
+            });
+
+            if (DResponse.getStatusCode().is2xxSuccessful()) {
+                // Thực hiện thêm xử lý sau khi tạo Casher thành công (nếu cần)
+                List<Doctor> listDoctor = DResponse.getBody();
+                model.addAttribute("listDoctor", listDoctor);
+                // Chuyển hướng về trang danh sách Casher
+
+            } 
+            // Tạo một đối tượng Casher trống để gửi thông tin tới form tạo mới
+            model.addAttribute("lich", new Lichlamviec());
+            return "/admin/lichlamviec/create";
+        }else {
+            return "redirect:/login";
+        }
+        
+       
     }
 
     @RequestMapping(value = "/admin/lichlamviec/create", method = RequestMethod.POST)
@@ -110,22 +203,68 @@ private String apiUrlDoctor = "http://localhost:8888/api/doctor/";
     }
 
     @RequestMapping(value = "/admin/lichlamviec/edit/{id}", method = RequestMethod.GET)
-    public String edit(Model model, @PathVariable("id") Integer id) {
-        Lichlamviec lich = restTemplate.getForObject(apiUrl + "/" + id, Lichlamviec.class);
-//        model.addAttribute("lich", lich);
-         ResponseEntity<List<Doctor>> DResponse = restTemplate.exchange(apiUrlDoctor, HttpMethod.GET, null,
-                new ParameterizedTypeReference<List<Doctor>>() {
-        });
+    public String edit(Model model, @PathVariable("id") Integer id, HttpServletRequest request) {
+        
+        Admin currentAdmin = authService.isAuthenticatedAdmin(request);
+        Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
+        Patient currentPatient = authService.isAuthenticatedPatient(request);
+        Casher currentCasher = authService.isAuthenticatedCasher(request);
+        
+         if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
+            return "redirect:/forbien";
+        } else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
+              Lichlamviec lich = restTemplate.getForObject(apiUrl + "/" + id, Lichlamviec.class);
+    //        model.addAttribute("lich", lich);
+             ResponseEntity<List<Doctor>> DResponse = restTemplate.exchange(apiUrlDoctor, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<List<Doctor>>() {
+            });
 
-        if (DResponse.getStatusCode().is2xxSuccessful()) {
-            
-            List<Doctor> listDoctor = DResponse.getBody();
-            model.addAttribute("listDoctor", listDoctor);
-            model.addAttribute("lich", lich);
-            return "/admin/lichlamviec/edit";
-        } else {
-            return "redirect:/admin/lichlamviec";
+            if (DResponse.getStatusCode().is2xxSuccessful()) {
+
+                List<Doctor> listDoctor = DResponse.getBody();
+                model.addAttribute("listDoctor", listDoctor);
+                model.addAttribute("lich", lich);
+                return "/admin/lichlamviec/edit";
+            } else {
+                return "redirect:/admin/lichlamviec";
+            }
+        }else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
+              Lichlamviec lich = restTemplate.getForObject(apiUrl + "/" + id, Lichlamviec.class);
+    //        model.addAttribute("lich", lich);
+             ResponseEntity<List<Doctor>> DResponse = restTemplate.exchange(apiUrlDoctor, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<List<Doctor>>() {
+            });
+
+            if (DResponse.getStatusCode().is2xxSuccessful()) {
+
+                List<Doctor> listDoctor = DResponse.getBody();
+                model.addAttribute("listDoctor", listDoctor);
+                model.addAttribute("lich", lich);
+                return "/admin/lichlamviec/edit";
+            } else {
+                return "redirect:/admin/lichlamviec";
+            }
+        }else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
+               Lichlamviec lich = restTemplate.getForObject(apiUrl + "/" + id, Lichlamviec.class);
+    //        model.addAttribute("lich", lich);
+             ResponseEntity<List<Doctor>> DResponse = restTemplate.exchange(apiUrlDoctor, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<List<Doctor>>() {
+            });
+
+            if (DResponse.getStatusCode().is2xxSuccessful()) {
+
+                List<Doctor> listDoctor = DResponse.getBody();
+                model.addAttribute("listDoctor", listDoctor);
+                model.addAttribute("lich", lich);
+                return "/admin/lichlamviec/edit";
+            } else {
+                return "redirect:/admin/lichlamviec";
+            }
+        }else {
+            return "redirect:/login";
         }
+        
+      
     }
 
     @RequestMapping(value = "/admin/lichlamviec/edit", method = RequestMethod.POST)
@@ -170,12 +309,38 @@ private String apiUrlDoctor = "http://localhost:8888/api/doctor/";
     }
 
     @RequestMapping(value = "/admin/lichlamviec/delete/{id}", method = RequestMethod.GET)
-    public String delete(@PathVariable("id") Integer id) {
-        restTemplate.delete(apiUrl + "/" + id);
-        // Thực hiện thêm xử lý sau khi xóa Casher thành công (nếu cần)
+    public String delete(@PathVariable("id") Integer id, HttpServletRequest request) {
+        
+         Admin currentAdmin = authService.isAuthenticatedAdmin(request);
+        Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
+        Patient currentPatient = authService.isAuthenticatedPatient(request);
+        Casher currentCasher = authService.isAuthenticatedCasher(request);
+        
+         if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
+            return "redirect:/forbien";
+        } else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
+            restTemplate.delete(apiUrl + "/" + id);
+            // Thực hiện thêm xử lý sau khi xóa Casher thành công (nếu cần)
 
-        // Chuyển hướng về trang danh sách Casher
-        return "redirect:/admin/lichlamviec";
+            // Chuyển hướng về trang danh sách Casher
+            return "redirect:/admin/lichlamviec";
+        }else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
+             restTemplate.delete(apiUrl + "/" + id);
+            // Thực hiện thêm xử lý sau khi xóa Casher thành công (nếu cần)
+
+            // Chuyển hướng về trang danh sách Casher
+            return "redirect:/admin/lichlamviec";
+        }else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
+             restTemplate.delete(apiUrl + "/" + id);
+            // Thực hiện thêm xử lý sau khi xóa Casher thành công (nếu cần)
+
+            // Chuyển hướng về trang danh sách Casher
+            return "redirect:/admin/lichlamviec";
+        }else {
+            return "redirect:/login";
+        }
+        
+        
     }
 
    

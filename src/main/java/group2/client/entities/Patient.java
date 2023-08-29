@@ -32,7 +32,8 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Patient.findByName", query = "SELECT p FROM Patient p WHERE p.name = :name"),
     @NamedQuery(name = "Patient.findByEmail", query = "SELECT p FROM Patient p WHERE p.email = :email"),
     @NamedQuery(name = "Patient.findByAddress", query = "SELECT p FROM Patient p WHERE p.address = :address"),
-    @NamedQuery(name = "Patient.findByPhone", query = "SELECT p FROM Patient p WHERE p.phone = :phone")})
+    @NamedQuery(name = "Patient.findByPhone", query = "SELECT p FROM Patient p WHERE p.phone = :phone"),
+    @NamedQuery(name = "Patient.findByRole", query = "SELECT p FROM Patient p WHERE p.role = :role")})
 public class Patient implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -57,10 +58,14 @@ public class Patient implements Serializable {
     @Size(max = 250)
     @Column(name = "address")
     private String address;
+     @Size(max = 50)
+    @Column(name = "role")
+    private String role;
     // @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message="Invalid phone/fax format, should be as xxx-xxx-xxxx")//if the field contains phone or fax number consider using this annotation to enforce field validation
     @Size(max = 50)
     @Column(name = "phone")
     private String phone;
+   
     @OneToMany(mappedBy = "patientId")
     private List<Appointment> appointmentList;
     @OneToMany(mappedBy = "patientId")
@@ -127,6 +132,13 @@ public class Patient implements Serializable {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+     public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public List<Appointment> getAppointmentList() {

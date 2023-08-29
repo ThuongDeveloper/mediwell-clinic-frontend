@@ -38,7 +38,8 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Doctor.findByEmail", query = "SELECT d FROM Doctor d WHERE d.email = :email"),
     @NamedQuery(name = "Doctor.findByAddress", query = "SELECT d FROM Doctor d WHERE d.address = :address"),
     @NamedQuery(name = "Doctor.findByGender", query = "SELECT d FROM Doctor d WHERE d.gender = :gender"),
-    @NamedQuery(name = "Doctor.findByCreateAt", query = "SELECT d FROM Doctor d WHERE d.createAt = :createAt")})
+    @NamedQuery(name = "Doctor.findByCreateAt", query = "SELECT d FROM Doctor d WHERE d.createAt = :createAt"),
+    @NamedQuery(name = "Doctor.findByRole", query = "SELECT d FROM Doctor d WHERE d.role = :role")})
 public class Doctor implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -68,6 +69,9 @@ public class Doctor implements Serializable {
     @Column(name = "create_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createAt;
+     @Size(max = 50)
+    @Column(name = "role")
+    private String role;
     @OneToMany(mappedBy = "doctorId")
     private List<Appointment> appointmentList;
     @OneToMany(mappedBy = "doctorId")
@@ -147,6 +151,13 @@ public class Doctor implements Serializable {
 
     public void setCreateAt(Date createAt) {
         this.createAt = createAt;
+    }
+     public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public List<Appointment> getAppointmentList() {

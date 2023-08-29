@@ -157,9 +157,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
 		</div>
 		<br>
 		<div class="login">
-				<input type="text" placeholder="username" name="user"><br>
-				<input type="password" placeholder="password" name="password"><br>
-				<input type="button" value="Login">
+                    <form th:action="@{/sign-in}" method="post">
+                        <input type="text" placeholder="username" name="user"><br>
+                        <input type="password" placeholder="password" name="password"><br>
+			<input type="submit" value="Login">
+                    </form>
+				
 		</div>
     </body>
 
