@@ -10,6 +10,8 @@ import group2.client.entities.Doctor;
 import group2.client.entities.Patient;
 import group2.client.entities.TypeDoctor;
 import group2.client.service.AuthService;
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -18,15 +20,24 @@ import javax.servlet.http.HttpServletRequest;
 import org.eclipse.persistence.jpa.jpql.parser.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
@@ -142,13 +153,13 @@ public class DoctorController {
         } else {
             return "redirect:/login";
         }
-        
 
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String create(Model model, Doctor Doctor, @RequestParam("typeDoctorID") String typeDoctorID) {
+    public String create(Model model, Doctor Doctor, @RequestParam("typeDoctorID") String typeDoctorID, @RequestParam("file") MultipartFile file) throws IOException {
 
+        String fileName = file.getOriginalFilename();
         //Set các giá trị còn thiếu
         TypeDoctor newTD = new TypeDoctor();
         newTD.setId(Integer.parseInt(typeDoctorID));
@@ -156,8 +167,25 @@ public class DoctorController {
         Doctor.setCreateAt(new Date());
         Doctor.setTypeDoctorId(newTD);
 
-        var a = Doctor.getTypeDoctorId().getId();
-        var response = restTemplate.postForObject(apiUrl_Doctor + "/create", Doctor, Boolean.class);
+
+        ByteArrayResource fileResource = new ByteArrayResource(file.getBytes()) {
+            @Override
+            public String getFilename() {
+                return file.getOriginalFilename();
+            }
+        };
+
+        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+        body.add("Doctor", Doctor);
+        body.add("file", fileResource);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
+
+       
+        var response = restTemplate.postForObject(apiUrl_Doctor + "/create", requestEntity, Boolean.class);
 
         if (response) {
             System.out.println("Kết quả là True");
@@ -187,7 +215,11 @@ public class DoctorController {
             });
             List<TypeDoctor> listTypeDoctor = responseTypeDoctor.getBody();
             model.addAttribute("listTypeDoctor", listTypeDoctor);
+//            if (response.getStatusCode().is2xxSuccessful()) {
+//                Doctor objDoctor = response.getBody();
 
+            // Truyền thông tin TypeDoctor vào model để hiển thị trên trang edit.html
+//                model.addAttribute("objDoctor", objDoctor);
             //Lấy One Doctor theo ID
             ResponseEntity<Doctor> response = restTemplate.getForEntity(apiUrl_Doctor + "/edit/{id}", Doctor.class, id);
 
@@ -248,9 +280,10 @@ public class DoctorController {
             }
         } else {
             return "redirect:/login";
-        }
 
+        }
     }
+
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     public String update(Model model, Doctor objDoctor, @RequestParam String typeDoctorID, RedirectAttributes redirectAttributes) {
@@ -319,7 +352,7 @@ public class DoctorController {
         } else {
             return "redirect:/login";
         }
-
     }
+
 
 }

@@ -5,8 +5,8 @@
 package group2.client.entities;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -37,7 +37,9 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Thuoc.findByComposition", query = "SELECT t FROM Thuoc t WHERE t.composition = :composition"),
     @NamedQuery(name = "Thuoc.findByQuantity", query = "SELECT t FROM Thuoc t WHERE t.quantity = :quantity"),
     @NamedQuery(name = "Thuoc.findByPrice", query = "SELECT t FROM Thuoc t WHERE t.price = :price"),
-    @NamedQuery(name = "Thuoc.findByCreateAt", query = "SELECT t FROM Thuoc t WHERE t.createAt = :createAt")})
+    @NamedQuery(name = "Thuoc.findByCreateAt", query = "SELECT t FROM Thuoc t WHERE t.createAt = :createAt"),
+    @NamedQuery(name = "Thuoc.findByManufacturingDate", query = "SELECT t FROM Thuoc t WHERE t.manufacturingDate = :manufacturingDate"),
+    @NamedQuery(name = "Thuoc.findByExpiryDate", query = "SELECT t FROM Thuoc t WHERE t.expiryDate = :expiryDate")})
 public class Thuoc implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -62,13 +64,19 @@ public class Thuoc implements Serializable {
     @Column(name = "create_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createAt;
+    @Column(name = "manufacturing_date")
+    @Temporal(TemporalType.DATE)
+    private Date manufacturingDate;
+    @Column(name = "expiry_date")
+    @Temporal(TemporalType.DATE)
+    private Date expiryDate;
     @OneToMany(mappedBy = "thuocId")
-    private List<DonthuocDetails> donthuocDetailsList;
+    private Collection<DonthuocDetails> donthuocDetailsCollection;
     @JoinColumn(name = "typethuoc_id", referencedColumnName = "id")
     @ManyToOne
     private Typethuoc typethuocId;
     @OneToMany(mappedBy = "thuocId")
-    private List<ToathuocDetails> toathuocDetailsList;
+    private Collection<ToathuocDetails> toathuocDetailsCollection;
 
     public Thuoc() {
     }
@@ -133,12 +141,28 @@ public class Thuoc implements Serializable {
         this.createAt = createAt;
     }
 
-    public List<DonthuocDetails> getDonthuocDetailsList() {
-        return donthuocDetailsList;
+    public Date getManufacturingDate() {
+        return manufacturingDate;
     }
 
-    public void setDonthuocDetailsList(List<DonthuocDetails> donthuocDetailsList) {
-        this.donthuocDetailsList = donthuocDetailsList;
+    public void setManufacturingDate(Date manufacturingDate) {
+        this.manufacturingDate = manufacturingDate;
+    }
+
+    public Date getExpiryDate() {
+        return expiryDate;
+    }
+
+    public void setExpiryDate(Date expiryDate) {
+        this.expiryDate = expiryDate;
+    }
+
+    public Collection<DonthuocDetails> getDonthuocDetailsCollection() {
+        return donthuocDetailsCollection;
+    }
+
+    public void setDonthuocDetailsCollection(Collection<DonthuocDetails> donthuocDetailsCollection) {
+        this.donthuocDetailsCollection = donthuocDetailsCollection;
     }
 
     public Typethuoc getTypethuocId() {
@@ -149,12 +173,12 @@ public class Thuoc implements Serializable {
         this.typethuocId = typethuocId;
     }
 
-    public List<ToathuocDetails> getToathuocDetailsList() {
-        return toathuocDetailsList;
+    public Collection<ToathuocDetails> getToathuocDetailsCollection() {
+        return toathuocDetailsCollection;
     }
 
-    public void setToathuocDetailsList(List<ToathuocDetails> toathuocDetailsList) {
-        this.toathuocDetailsList = toathuocDetailsList;
+    public void setToathuocDetailsCollection(Collection<ToathuocDetails> toathuocDetailsCollection) {
+        this.toathuocDetailsCollection = toathuocDetailsCollection;
     }
 
     @Override

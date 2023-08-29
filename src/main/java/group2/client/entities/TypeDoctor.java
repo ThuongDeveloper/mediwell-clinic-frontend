@@ -5,7 +5,7 @@
 package group2.client.entities;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -40,9 +40,9 @@ public class TypeDoctor implements Serializable {
     @Column(name = "name")
     private String name;
     @OneToMany(mappedBy = "typeDoctorId")
-    private List<Doctor> doctorList;
+    private Collection<Doctor> doctorCollection;
     @OneToMany(mappedBy = "typeDoctorId")
-    private List<Taophieukham> taophieukhamList;
+    private Collection<Taophieukham> taophieukhamCollection;
 
     public TypeDoctor() {
     }
@@ -67,20 +67,20 @@ public class TypeDoctor implements Serializable {
         this.name = name;
     }
 
-    public List<Doctor> getDoctorList() {
-        return doctorList;
+    public Collection<Doctor> getDoctorCollection() {
+        return doctorCollection;
     }
 
-    public void setDoctorList(List<Doctor> doctorList) {
-        this.doctorList = doctorList;
+    public void setDoctorCollection(Collection<Doctor> doctorCollection) {
+        this.doctorCollection = doctorCollection;
     }
 
-    public List<Taophieukham> getTaophieukhamList() {
-        return taophieukhamList;
+    public Collection<Taophieukham> getTaophieukhamCollection() {
+        return taophieukhamCollection;
     }
 
-    public void setTaophieukhamList(List<Taophieukham> taophieukhamList) {
-        this.taophieukhamList = taophieukhamList;
+    public void setTaophieukhamCollection(Collection<Taophieukham> taophieukhamCollection) {
+        this.taophieukhamCollection = taophieukhamCollection;
     }
 
     @Override

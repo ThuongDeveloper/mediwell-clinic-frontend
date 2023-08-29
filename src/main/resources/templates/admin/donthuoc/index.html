@@ -1,0 +1,58 @@
+<html  xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <div th:replace="~{admin/layout/layoutfixbug :: head}"></div>
+
+
+    <body class="nav-md">
+        <div class="container body">
+            <div class="main_container">
+                <div th:replace="~{admin/layout/slidebarfixbug :: slidebarAdmin}"></div>
+                <div class="top_nav">
+                    <div th:replace="~{admin/layout/header :: div}"></div>
+                </div>
+                <!-- Content -->
+
+                <div class="right_col" role="main">
+                    <h1>Doctor Page</h1>
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 card_head">
+
+<a th:href="@{/admin/donthuoc/create}" class="btn btn-primary">Create</a>                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+
+                                <table th:object="${listDonthuoc}" class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+
+                                    <thead>
+                                        <tr>
+
+                                            <th>Id</th>
+                                            <th>Total Money</th>
+                                        </tr>
+                                    </thead>
+                                </tbody>
+                                 <tr th:each="e : ${listDonthuoc}">
+                                         <td th:text="${e.getId()}"></td>
+                                        <td th:text="${e.getTotalMoney()}"></td>
+
+
+                                    </tr>
+                                </tbody>
+                                   
+                                   
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Content -->
+                <div th:replace="~{admin/layout/footer :: footer}"></div>
+            </div>
+
+            <div th:replace="~{admin/layout/layoutfixbug :: body}"></div>
+            
+    </body>
+</html>

@@ -5,7 +5,6 @@
 package group2.client.entities;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -17,23 +16,24 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Size;
 
 /**
  *
  * @author DELL
  */
 @Entity
-@Table(name = "donthuoc")
+@Table(name = "rating")
 @NamedQueries({
-    @NamedQuery(name = "Donthuoc.findAll", query = "SELECT d FROM Donthuoc d"),
-    @NamedQuery(name = "Donthuoc.findById", query = "SELECT d FROM Donthuoc d WHERE d.id = :id"),
-    @NamedQuery(name = "Donthuoc.findByTotalMoney", query = "SELECT d FROM Donthuoc d WHERE d.totalMoney = :totalMoney"),
-    @NamedQuery(name = "Donthuoc.findByCreateAt", query = "SELECT d FROM Donthuoc d WHERE d.createAt = :createAt")})
-public class Donthuoc implements Serializable {
+    @NamedQuery(name = "Rating.findAll", query = "SELECT r FROM Rating r"),
+    @NamedQuery(name = "Rating.findById", query = "SELECT r FROM Rating r WHERE r.id = :id"),
+    @NamedQuery(name = "Rating.findByRating", query = "SELECT r FROM Rating r WHERE r.rating = :rating"),
+    @NamedQuery(name = "Rating.findByComment", query = "SELECT r FROM Rating r WHERE r.comment = :comment"),
+    @NamedQuery(name = "Rating.findByCreateAt", query = "SELECT r FROM Rating r WHERE r.createAt = :createAt")})
+public class Rating implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -41,21 +41,25 @@ public class Donthuoc implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Column(name = "total_money")
-    private Integer totalMoney;
+    @Column(name = "rating")
+    private Integer rating;
+    @Size(max = 250)
+    @Column(name = "comment")
+    private String comment;
     @Column(name = "create_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createAt;
-    @JoinColumn(name = "casher_id", referencedColumnName = "id")
+    @JoinColumn(name = "doctor_id", referencedColumnName = "id")
     @ManyToOne
-    private Casher casherId;
-    @OneToMany(mappedBy = "donthuocId")
-    private Collection<DonthuocDetails> donthuocDetailsCollection;
+    private Doctor doctorId;
+    @JoinColumn(name = "patient_id", referencedColumnName = "id")
+    @ManyToOne
+    private Patient patientId;
 
-    public Donthuoc() {
+    public Rating() {
     }
 
-    public Donthuoc(Integer id) {
+    public Rating(Integer id) {
         this.id = id;
     }
 
@@ -67,12 +71,20 @@ public class Donthuoc implements Serializable {
         this.id = id;
     }
 
-    public Integer getTotalMoney() {
-        return totalMoney;
+    public Integer getRating() {
+        return rating;
     }
 
-    public void setTotalMoney(Integer totalMoney) {
-        this.totalMoney = totalMoney;
+    public void setRating(Integer rating) {
+        this.rating = rating;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     public Date getCreateAt() {
@@ -83,20 +95,20 @@ public class Donthuoc implements Serializable {
         this.createAt = createAt;
     }
 
-    public Casher getCasherId() {
-        return casherId;
+    public Doctor getDoctorId() {
+        return doctorId;
     }
 
-    public void setCasherId(Casher casherId) {
-        this.casherId = casherId;
+    public void setDoctorId(Doctor doctorId) {
+        this.doctorId = doctorId;
     }
 
-    public Collection<DonthuocDetails> getDonthuocDetailsCollection() {
-        return donthuocDetailsCollection;
+    public Patient getPatientId() {
+        return patientId;
     }
 
-    public void setDonthuocDetailsCollection(Collection<DonthuocDetails> donthuocDetailsCollection) {
-        this.donthuocDetailsCollection = donthuocDetailsCollection;
+    public void setPatientId(Patient patientId) {
+        this.patientId = patientId;
     }
 
     @Override
@@ -109,10 +121,10 @@ public class Donthuoc implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Donthuoc)) {
+        if (!(object instanceof Rating)) {
             return false;
         }
-        Donthuoc other = (Donthuoc) object;
+        Rating other = (Rating) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -121,7 +133,7 @@ public class Donthuoc implements Serializable {
 
     @Override
     public String toString() {
-        return "group2.client.entities.Donthuoc[ id=" + id + " ]";
+        return "group2.client.entities.Rating[ id=" + id + " ]";
     }
     
 }

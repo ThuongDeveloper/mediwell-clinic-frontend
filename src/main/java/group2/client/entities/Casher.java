@@ -5,8 +5,8 @@
 package group2.client.entities;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -70,9 +70,9 @@ public class Casher implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createAt;
     @OneToMany(mappedBy = "casherId")
-    private List<Donthuoc> donthuocList;
+    private Collection<Donthuoc> donthuocCollection;
     @OneToMany(mappedBy = "casherId")
-    private List<Taophieukham> taophieukhamList;
+    private Collection<Taophieukham> taophieukhamCollection;
 
     public Casher() {
     }
@@ -145,17 +145,35 @@ public class Casher implements Serializable {
         this.createAt = createAt;
     }
     
-    public List<Donthuoc> getDonthuocList() {
-        return donthuocList;
+//    public List<Donthuoc> getDonthuocList() {
+//        return donthuocList;
+//    }
+//    public void setDonthuocList(List<Donthuoc> donthuocList) {
+//        this.donthuocList = donthuocList;
+//    }
+//    public List<Taophieukham> getTaophieukhamList() {
+//        return taophieukhamList;
+//    }
+//    public void setTaophieukhamList(List<Taophieukham> taophieukhamList) {
+//        this.taophieukhamList = taophieukhamList;
+//    }
+    
+    
+
+    public Collection<Donthuoc> getDonthuocCollection() {
+        return donthuocCollection;
     }
-    public void setDonthuocList(List<Donthuoc> donthuocList) {
-        this.donthuocList = donthuocList;
+
+    public void setDonthuocCollection(Collection<Donthuoc> donthuocCollection) {
+        this.donthuocCollection = donthuocCollection;
     }
-    public List<Taophieukham> getTaophieukhamList() {
-        return taophieukhamList;
+
+    public Collection<Taophieukham> getTaophieukhamCollection() {
+        return taophieukhamCollection;
     }
-    public void setTaophieukhamList(List<Taophieukham> taophieukhamList) {
-        this.taophieukhamList = taophieukhamList;
+
+    public void setTaophieukhamCollection(Collection<Taophieukham> taophieukhamCollection) {
+        this.taophieukhamCollection = taophieukhamCollection;
     }
 
     @Override
