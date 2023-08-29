@@ -43,12 +43,6 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Doctor.findByImage", query = "SELECT d FROM Doctor d WHERE d.image = :image")})
 public class Doctor implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "id")
-    private Integer id;
     @Size(max = 250)
     @Column(name = "name")
     private String name;
@@ -65,17 +59,24 @@ public class Doctor implements Serializable {
     @Size(max = 250)
     @Column(name = "address")
     private String address;
-    @Column(name = "gender")
-    private Boolean gender;
-    @Column(name = "create_at")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createAt;
-     @Size(max = 50)
+    @Size(max = 50)
     @Column(name = "role")
     private String role;
     @Size(max = 250)
     @Column(name = "image")
     private String image;
+
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
+    @Column(name = "gender")
+    private Boolean gender;
+    @Column(name = "create_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createAt;
     @OneToMany(mappedBy = "doctorId")
     private Collection<Rating> ratingCollection;
     @OneToMany(mappedBy = "doctorId")
@@ -103,45 +104,6 @@ public class Doctor implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
 
     public Boolean getGender() {
         return gender;
@@ -157,21 +119,6 @@ public class Doctor implements Serializable {
 
     public void setCreateAt(Date createAt) {
         this.createAt = createAt;
-    }
-     public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
     }
 
     public Collection<Rating> getRatingCollection() {
@@ -237,6 +184,62 @@ public class Doctor implements Serializable {
     @Override
     public String toString() {
         return "group2.client.entities.Doctor[ id=" + id + " ]";
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
     
 }
