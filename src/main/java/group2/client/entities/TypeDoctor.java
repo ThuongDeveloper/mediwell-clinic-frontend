@@ -30,15 +30,16 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "TypeDoctor.findByName", query = "SELECT t FROM TypeDoctor t WHERE t.name = :name")})
 public class TypeDoctor implements Serializable {
 
+    @Size(max = 150)
+    @Column(name = "name")
+    private String name;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Size(max = 150)
-    @Column(name = "name")
-    private String name;
     @OneToMany(mappedBy = "typeDoctorId")
     private Collection<Doctor> doctorCollection;
     @OneToMany(mappedBy = "typeDoctorId")
@@ -59,13 +60,6 @@ public class TypeDoctor implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public Collection<Doctor> getDoctorCollection() {
         return doctorCollection;
@@ -106,6 +100,14 @@ public class TypeDoctor implements Serializable {
     @Override
     public String toString() {
         return "group2.client.entities.TypeDoctor[ id=" + id + " ]";
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
     
 }

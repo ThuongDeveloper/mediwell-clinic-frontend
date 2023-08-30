@@ -20,13 +20,15 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author DELL
+ * @author hokim
  */
 @Entity
 @Table(name = "casher")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Casher.findAll", query = "SELECT c FROM Casher c"),
     @NamedQuery(name = "Casher.findById", query = "SELECT c FROM Casher c WHERE c.id = :id"),
@@ -35,6 +37,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Casher.findByPassword", query = "SELECT c FROM Casher c WHERE c.password = :password"),
     @NamedQuery(name = "Casher.findByEmail", query = "SELECT c FROM Casher c WHERE c.email = :email"),
     @NamedQuery(name = "Casher.findByAddress", query = "SELECT c FROM Casher c WHERE c.address = :address"),
+    @NamedQuery(name = "Casher.findByRole", query = "SELECT c FROM Casher c WHERE c.role = :role"),
     @NamedQuery(name = "Casher.findByCreateAt", query = "SELECT c FROM Casher c WHERE c.createAt = :createAt")})
 public class Casher implements Serializable {
 
@@ -60,6 +63,9 @@ public class Casher implements Serializable {
     @Size(max = 250)
     @Column(name = "address")
     private String address;
+    @Size(max = 50)
+    @Column(name = "role")
+    private String role;
     @Column(name = "create_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createAt;
@@ -123,6 +129,14 @@ public class Casher implements Serializable {
         this.address = address;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     public Date getCreateAt() {
         return createAt;
     }
@@ -130,6 +144,21 @@ public class Casher implements Serializable {
     public void setCreateAt(Date createAt) {
         this.createAt = createAt;
     }
+    
+//    public List<Donthuoc> getDonthuocList() {
+//        return donthuocList;
+//    }
+//    public void setDonthuocList(List<Donthuoc> donthuocList) {
+//        this.donthuocList = donthuocList;
+//    }
+//    public List<Taophieukham> getTaophieukhamList() {
+//        return taophieukhamList;
+//    }
+//    public void setTaophieukhamList(List<Taophieukham> taophieukhamList) {
+//        this.taophieukhamList = taophieukhamList;
+//    }
+    
+    
 
     public Collection<Donthuoc> getDonthuocCollection() {
         return donthuocCollection;

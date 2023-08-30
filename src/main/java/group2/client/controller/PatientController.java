@@ -4,8 +4,14 @@
  */
 package group2.client.controller;
 
+import group2.client.entities.Admin;
+import group2.client.entities.Casher;
+import group2.client.entities.Doctor;
 import group2.client.entities.Patient;
+import group2.client.service.AuthService;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -28,38 +34,104 @@ import org.springframework.web.client.RestTemplate;
 @Controller
 @RequestMapping("/admin/patient")
 public class PatientController {
-    
-//    @RequestMapping("/url")
-//    public String page(Model model) {
-//        model.addAttribute("attribute", "value");
-//        return "view.name";
-//    }
-    
-    
+   
+   
     String apiUrl = "http://localhost:8888/api/patient";
     RestTemplate restTemplate = new RestTemplate();
+    
+     @Autowired
+    private AuthService authService;
 
     @RequestMapping("")
-    public String page(Model model) {
-        ResponseEntity<List<Patient>> response = restTemplate.exchange(apiUrl, HttpMethod.GET, null,
+    public String page(Model model, HttpServletRequest request) {
+        
+         Admin currentAdmin = authService.isAuthenticatedAdmin(request);
+        Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
+        Patient currentPatient = authService.isAuthenticatedPatient(request);
+        Casher currentCasher = authService.isAuthenticatedCasher(request);
+        
+        if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
+            return "redirect:/forbien";
+        }else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
+             ResponseEntity<List<Patient>> response = restTemplate.exchange(apiUrl, HttpMethod.GET, null,
                 new ParameterizedTypeReference<List<Patient>>() {
-        });
+                });
 
-        // Kiểm tra mã trạng thái của phản hồi
-        if (response.getStatusCode().is2xxSuccessful()) {
-            List<Patient> listPatient = response.getBody();
+                // Kiểm tra mã trạng thái của phản hồi
+                if (response.getStatusCode().is2xxSuccessful()) {
+                    List<Patient> listPatient = response.getBody();
 
-            // Xử lý dữ liệu theo nhu cầu của bạn
-            model.addAttribute("listPatient", listPatient);
+                    // Xử lý dữ liệu theo nhu cầu của bạn
+                    model.addAttribute("listPatient", listPatient);
+                }
+                return "/admin/patient/index";
+        }else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
+              ResponseEntity<List<Patient>> response = restTemplate.exchange(apiUrl, HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<Patient>>() {
+                });
+
+                // Kiểm tra mã trạng thái của phản hồi
+                if (response.getStatusCode().is2xxSuccessful()) {
+                    List<Patient> listPatient = response.getBody();
+
+                    // Xử lý dữ liệu theo nhu cầu của bạn
+                    model.addAttribute("listPatient", listPatient);
+                }
+                return "/admin/patient/index";
+        }else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
+            ResponseEntity<List<Patient>> response = restTemplate.exchange(apiUrl, HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<Patient>>() {
+                });
+
+                // Kiểm tra mã trạng thái của phản hồi
+                if (response.getStatusCode().is2xxSuccessful()) {
+                    List<Patient> listPatient = response.getBody();
+
+                    // Xử lý dữ liệu theo nhu cầu của bạn
+                    model.addAttribute("listPatient", listPatient);
+                }
+                return "/admin/patient/index";
+        }else {
+            return "redirect:/login";
         }
-        return "/admin/patient/index";
+        
+       
     }
 
     @RequestMapping("/create")
-    public String create(Model model) {
+    public String create(Model model, HttpServletRequest request) {
+        
+          Admin currentAdmin = authService.isAuthenticatedAdmin(request);
+        Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
+        Patient currentPatient = authService.isAuthenticatedPatient(request);
+        Casher currentCasher = authService.isAuthenticatedCasher(request);
+        
+         if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
+            return "redirect:/forbien";
+        }else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
+            model.addAttribute("patient", new Patient());
+            return "/admin/patient/create";
+        }else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
+            model.addAttribute("patient", new Patient());
+            return "/admin/patient/create";
+        }else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
+            ResponseEntity<List<Patient>> response = restTemplate.exchange(apiUrl, HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<Patient>>() {
+                });
+
+                // Kiểm tra mã trạng thái của phản hồi
+                if (response.getStatusCode().is2xxSuccessful()) {
+                    List<Patient> listPatient = response.getBody();
+
+                    // Xử lý dữ liệu theo nhu cầu của bạn
+                    model.addAttribute("listPatient", listPatient);
+                }
+                return "/admin/patient/index";
+        }else {
+            return "redirect:/login";
+        }
         // Tạo một đối tượng Casher trống để gửi thông tin tới form tạo mới
-        model.addAttribute("patient", new Patient());
-        return "/admin/patient/create";
+        
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
@@ -85,10 +157,32 @@ public class PatientController {
     }
 
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
-    public String edit(Model model, @PathVariable("id") Integer id) {
-        Patient patient = restTemplate.getForObject(apiUrl + "/" + id, Patient.class);
-        model.addAttribute("patient", patient);
-        return "/admin/patient/edit";
+    public String edit(Model model, @PathVariable("id") Integer id, HttpServletRequest request) {
+        
+          Admin currentAdmin = authService.isAuthenticatedAdmin(request);
+        Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
+        Patient currentPatient = authService.isAuthenticatedPatient(request);
+        Casher currentCasher = authService.isAuthenticatedCasher(request);
+        
+        if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
+            return "redirect:/forbien";
+        }else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
+             Patient patient = restTemplate.getForObject(apiUrl + "/" + id, Patient.class);
+            model.addAttribute("patient", patient);
+            return "/admin/patient/edit";
+        }else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
+             Patient patient = restTemplate.getForObject(apiUrl + "/" + id, Patient.class);
+            model.addAttribute("patient", patient);
+            return "/admin/patient/edit";
+        }else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
+              Patient patient = restTemplate.getForObject(apiUrl + "/" + id, Patient.class);
+            model.addAttribute("patient", patient);
+            return "/admin/patient/edit";
+        }else {
+            return "redirect:/login";
+        }
+        
+       
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
@@ -116,12 +210,38 @@ public class PatientController {
     }
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
-    public String delete(@PathVariable("id") Integer id) {
-        restTemplate.delete(apiUrl + "/" + id);
-        // Thực hiện thêm xử lý sau khi xóa Casher thành công (nếu cần)
+    public String delete(@PathVariable("id") Integer id, HttpServletRequest request) {
+        
+        Admin currentAdmin = authService.isAuthenticatedAdmin(request);
+        Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
+        Patient currentPatient = authService.isAuthenticatedPatient(request);
+        Casher currentCasher = authService.isAuthenticatedCasher(request);
+        
+        if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
+            return "redirect:/forbien";
+        }else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
+            restTemplate.delete(apiUrl + "/" + id);
+            // Thực hiện thêm xử lý sau khi xóa Casher thành công (nếu cần)
 
-        // Chuyển hướng về trang danh sách Casher
-        return "redirect:/admin/patient";
+            // Chuyển hướng về trang danh sách Casher
+            return "redirect:/admin/patient";
+        }else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
+            restTemplate.delete(apiUrl + "/" + id);
+            // Thực hiện thêm xử lý sau khi xóa Casher thành công (nếu cần)
+
+            // Chuyển hướng về trang danh sách Casher
+            return "redirect:/admin/patient";
+        }else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
+            restTemplate.delete(apiUrl + "/" + id);
+            // Thực hiện thêm xử lý sau khi xóa Casher thành công (nếu cần)
+
+            // Chuyển hướng về trang danh sách Casher
+            return "redirect:/admin/patient";
+        }else {
+            return "redirect:/login";
+        }
+        
+        
     }
     
 }

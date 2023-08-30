@@ -4,11 +4,16 @@
  */
 package group2.client.controller;
 
+import group2.client.entities.Admin;
 import group2.client.entities.Appointment;
+import group2.client.entities.Casher;
 import group2.client.entities.Doctor;
 import group2.client.entities.Lichlamviec;
 import group2.client.entities.Patient;
+import group2.client.service.AuthService;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -32,25 +37,68 @@ import org.springframework.web.client.RestTemplate;
 @Controller
 public class AppointmentController {
 
-String apiUrl = "http://localhost:8888/api/appointment/";
-private String apiUrlDoctor = "http://localhost:8888/api/doctor/";
-private String apiUrlPatient = "http://localhost:8888/api/patient/";
+    String apiUrl = "http://localhost:8888/api/appointment/";
+    private String apiUrlDoctor = "http://localhost:8888/api/doctor/";
+    private String apiUrlPatient = "http://localhost:8888/api/patient/";
     RestTemplate restTemplate = new RestTemplate();
+    
+     @Autowired
+    private AuthService authService;
 
     @RequestMapping("/admin/appointment")
-    public String page(Model model) {
-        ResponseEntity<List<Appointment>> response = restTemplate.exchange(apiUrl, HttpMethod.GET, null,
+    public String page(Model model, HttpServletRequest request) {
+        
+        Admin currentAdmin = authService.isAuthenticatedAdmin(request);
+        Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
+        Patient currentPatient = authService.isAuthenticatedPatient(request);
+        Casher currentCasher = authService.isAuthenticatedCasher(request);
+        
+         if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
+            return "redirect:/forbien";
+        } else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
+            ResponseEntity<List<Appointment>> response = restTemplate.exchange(apiUrl, HttpMethod.GET, null,
                 new ParameterizedTypeReference<List<Appointment>>() {
-        });
+            });
 
-        // Kiểm tra mã trạng thái của phản hồi
-        if (response.getStatusCode().is2xxSuccessful()) {
-            List<Appointment> listAppointment = response.getBody();
+            // Kiểm tra mã trạng thái của phản hồi
+            if (response.getStatusCode().is2xxSuccessful()) {
+                List<Appointment> listAppointment = response.getBody();
 
-            // Xử lý dữ liệu theo nhu cầu của bạn
-            model.addAttribute("listAppointment", listAppointment);
+                // Xử lý dữ liệu theo nhu cầu của bạn
+                model.addAttribute("listAppointment", listAppointment);
+            }
+            return "/admin/appointment/index";
+        }else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
+            ResponseEntity<List<Appointment>> response = restTemplate.exchange(apiUrl, HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<Appointment>>() {
+            });
+
+            // Kiểm tra mã trạng thái của phản hồi
+            if (response.getStatusCode().is2xxSuccessful()) {
+                List<Appointment> listAppointment = response.getBody();
+
+                // Xử lý dữ liệu theo nhu cầu của bạn
+                model.addAttribute("listAppointment", listAppointment);
+            }
+            return "/admin/appointment/index";
+        }else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
+             ResponseEntity<List<Appointment>> response = restTemplate.exchange(apiUrl, HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<Appointment>>() {
+            });
+
+            // Kiểm tra mã trạng thái của phản hồi
+            if (response.getStatusCode().is2xxSuccessful()) {
+                List<Appointment> listAppointment = response.getBody();
+
+                // Xử lý dữ liệu theo nhu cầu của bạn
+                model.addAttribute("listAppointment", listAppointment);
+            }
+            return "/admin/appointment/index";
+        }else {
+            return "redirect:/login";
         }
-        return "/admin/appointment/index";
+        
+        
     }
 
     @RequestMapping("/admin/appointment/create")
