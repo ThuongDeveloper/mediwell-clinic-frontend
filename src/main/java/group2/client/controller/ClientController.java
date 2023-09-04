@@ -72,7 +72,7 @@ public class ClientController {
         });
         if (response.getStatusCode().is2xxSuccessful()) {
             Patient patient = response.getBody();
-            model.addAttribute("patient", patient);
+            model.addAttribute("patientProfile", patient);
         }
 
         return "/client/profile";

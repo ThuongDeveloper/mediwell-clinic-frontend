@@ -1,7 +1,14 @@
 <html  xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en-US" class="no-js">
 
     <div th:replace="~{client/layout/layout :: head}"></div>
-
+    <style>
+          .avatar {
+                width: 150px; /* Điều chỉnh kích thước avatar theo ý muốn */
+                height: 50px;
+                border-radius: 50%; /* Làm tròn avatar */
+                margin-right: 10px; /* Tạo khoảng cách giữa avatar và tên đăng nhập */
+          }
+    </style>
 
     <body class="home page-template-default page page-id-7684 theme-mediz gdlr-core-body woocommerce-no-js mediz-body mediz-body-front mediz-full  mediz-with-sticky-navigation  mediz-blockquote-style-1 gdlr-core-link-to-lightbox" data-home-url="https://demo.goodlayers.com/mediz/hospital/" >
         <div class="mediz-top-bar" >
@@ -521,9 +528,15 @@
                                                                                                 <div class="mediz-page-title-wrap  mediz-style-custom mediz-left-align"><div class="mediz-header-transparent-substitute"></div><div class="mediz-page-title-overlay"></div><div class="mediz-page-title-container mediz-container"><div class="mediz-page-title-content mediz-item-pdlr"><h1 class="mediz-page-title">My Account</h1></div></div></div>
                                                                                                 <div class="mediz-page-wrapper" id="mediz-page-wrapper"><div class="mediz-content-container mediz-container"><div class="mediz-content-area mediz-item-pdlr mediz-sidebar-style-none clearfix"><div class="woocommerce"><div class="woocommerce-notices-wrapper"></div>
                                                                                                 <h3>Profile</h3>
-                                                                                                <form class="woocommerce-form" th:action="@{/profile}" th:object="${patient}" method="post">
+                                                                                                <form class="woocommerce-form" th:action="@{/profile}" th:object="${patientProfile}" method="post">
                                                                                                         <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
                                                                                                             <input type="text" hidden="true" th:field="*{id}" class="woocommerce-Input woocommerce-Input--text input-text">
+                                                                                                        </p>
+                                                                                                        <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+                                                                                                                <label for="avt">Avatar</label>
+                                                                                                                <img th:if="${patientProfile.image != null}" th:src="@{${patientProfile.image}}" alt="Avatar" class="avatar">
+                                                                                                                <img th:unless="${patientProfile.image != null}" src="../client/image/avatar-default.jpg" alt="Default Avatar" class="avatar">
+                                                                                                                <input th:field="*{image}" class="woocommerce-Input" type="file" name="avt" id="avt">
                                                                                                         </p>
                                                                                                         <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
                                                                                                                 <label for="name">Name</label>
@@ -540,10 +553,6 @@
                                                                                                         <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
                                                                                                                 <label for="phone">Phone</label>
                                                                                                                 <input th:field="*{phone}" class="woocommerce-Input woocommerce-Input--text input-text" type="text" name="phone" id="phone">
-                                                                                                        </p>
-                                                                                                        <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
-                                                                                                                <label for="avt">Avatar</label>
-                                                                                                                <input th:field="*{image}" class="woocommerce-Input" type="file" name="avt" id="avt">
                                                                                                         </p>
                                                                                                         <p class="form-row">
                                                                                                         <button type="submit" class="woocommerce-button button" name="save">Save</button>

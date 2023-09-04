@@ -11,6 +11,12 @@
             margin-top: -30px !important;
             text-decoration: none !important;
       }
+      .avatar {
+            width: 30px; /* Điều chỉnh kích thước avatar theo ý muốn */
+            height: 30px;
+            border-radius: 50%; /* Làm tròn avatar */
+            margin-right: 5px; /* Tạo khoảng cách giữa avatar và tên đăng nhập */
+      }
   </style>
 
     <body class="home page-template-default page page-id-7684 theme-mediz gdlr-core-body woocommerce-no-js mediz-body mediz-body-front mediz-full  mediz-with-sticky-navigation  mediz-blockquote-style-1 gdlr-core-link-to-lightbox" data-home-url="https://demo.goodlayers.com/mediz/hospital/" >
@@ -523,11 +529,14 @@
                                                                                                     </div>
                                                                                                 </div>
                                                                                                 <div class="dropdown">
-                                                                                                    <a th:if="${patient != null}" class="mediz-main-menu-right-button mediz-button-1 mediz-style-round dropdown-toggle  menu-user" href="#" data-toggle="dropdown" target="_self" >[[${patient.username}]]</a>
+                                                                                                    <a th:if="${patient != null}" class="mediz-main-menu-right-button mediz-button-1 mediz-style-round dropdown-toggle menu-user" href="#" data-toggle="dropdown" target="_self">
+                                                                                                        <img th:if="${patient.image != null}" th:src="@{${patient.image}}" alt="Avatar" class="avatar">
+                                                                                                        <img th:unless="${patient.image != null}" src="../client/image/avatar-default.jpg" alt="Default Avatar" class="avatar">
+                                                                                                        [[${patient.username}]]
+                                                                                                    </a>
                                                                                                     <div th:if="${patient != null}" class="dropdown-menu">
-                                                                                                       <a class="dropdown-item" th:href="@{/profile/{id}(id=${patient.id})}">Profile</a>
+                                                                                                        <a class="dropdown-item" th:href="@{/profile/{id}(id=${patient.id})}">Profile</a>
                                                                                                         <a class="dropdown-item" th:href="@{/logout}">Logout</a>
-                                                                                                        
                                                                                                     </div>
                                                                                                 </div>
                                                                                                
