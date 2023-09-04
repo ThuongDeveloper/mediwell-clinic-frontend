@@ -51,7 +51,7 @@ public class ClientController {
         Casher currentCasher = authService.isAuthenticatedCasher(request);
 
         if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
-            model.addAttribute("username", currentPatient);
+            model.addAttribute("patient", currentPatient);
             return "/client/home";
         } else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
             return "redirect:/forbien";
