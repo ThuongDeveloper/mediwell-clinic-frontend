@@ -45,7 +45,7 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler{
             cookie.setMaxAge(3600); // Thời gian sống của cookie (tính bằng giây)
             cookie.setPath("/"); // Đường dẫn áp dụng cookie (có thể là "/" để áp dụng cho tất cả các đường dẫn)
             response.addCookie(cookie);
-            response.sendRedirect("/appointment/create");
+            response.sendRedirect("/");
 
         }
 
