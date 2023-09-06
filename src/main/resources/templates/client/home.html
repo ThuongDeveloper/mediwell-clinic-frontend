@@ -513,15 +513,15 @@
                                                                                                     </div>
                                                                                                 </div>
                                                                                                 <div class="dropdown">
-                                                                                                    <a th:if="${username != null}" class="mediz-main-menu-right-button mediz-button-1 mediz-style-round dropdown-toggle menu-user" href="#" data-bs-toggle="dropdown" target="_self" >[[${username}]]</a>
-                                                                                                    <div th:if="${username != null}" class="dropdown-menu">
+                                                                                                    <a th:if="${patient != null}" class="mediz-main-menu-right-button mediz-button-1 mediz-style-round dropdown-toggle menu-user" href="#" data-bs-toggle="dropdown" target="_self" >[[${patient.username}]]</a>
+                                                                                                    <div th:if="${patient != null}" class="dropdown-menu">
                                                                                                        <a class="dropdown-item" href="#">Profile</a>
                                                                                                         <a class="dropdown-item" th:href="@{/logout}">Logout</a>
                                                                                                         
                                                                                                     </div>
                                                                                                 </div>
                                                                                                
-                                                                                                <a th:if="${username == null}" class="mediz-main-menu-right-button mediz-button-1 mediz-style-round menu-user" th:href="@{/login}" target="_self" >Login</a>
+                                                                                                <a th:if="${patient == null}" class="mediz-main-menu-right-button mediz-button-1 mediz-style-round menu-user" th:href="@{/login}" target="_self" >Login</a>
                                                                                                 </div>		
                                                                                                 </div><!-- mediz-navigation -->
 
