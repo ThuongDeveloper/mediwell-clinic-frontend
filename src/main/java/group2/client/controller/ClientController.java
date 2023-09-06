@@ -66,7 +66,7 @@ public class ClientController {
         
         
         if(currentPatient != null && currentPatient.getRole().equals("PATIENT")){
-            model.addAttribute("username", currentPatient.getUsername());
+            model.addAttribute("patient", currentPatient);
             return "/client/home";
         } 
         else if(currentAdmin != null && currentAdmin.getRole().equals("ADMIN")){
