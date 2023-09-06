@@ -49,6 +49,8 @@ public class ClientController {
         Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
         Patient currentPatient = authService.isAuthenticatedPatient(request);
         Casher currentCasher = authService.isAuthenticatedCasher(request);
+        
+       
 
         if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
             model.addAttribute("patient", currentPatient);
@@ -128,10 +130,7 @@ public class ClientController {
 
         if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
 
-//            String loggedPatient = currentPatient.getName();
-//            if(loggedPatient != ""){
-//                 model.addAttribute("loggedPatient", loggedPatient);
-//            }
+
             model.addAttribute("currentPatient", currentPatient);
 
             ResponseEntity<List<Doctor>> DResponse = restTemplate.exchange(apiUrlDoctor, HttpMethod.GET, null,
