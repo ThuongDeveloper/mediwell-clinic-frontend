@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/springframework/Controller.java to edit this template
  */
-package group2.client.controller;
+package group2.client.controller.Client;
 
 import group2.client.entities.*;
 import group2.client.repository.PatientRepository;
@@ -66,15 +66,37 @@ public class ClientController {
         }
 
     }
+    
+    @RequestMapping("/listDoctors")
+    public String listDoctors(Model model, HttpServletRequest request) {
+
+        Patient currentPatient = authService.isAuthenticatedPatient(request);
+        
+        ResponseEntity<List<Doctor>> response = restTemplate.exchange(apiUrlDoctor, HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<Doctor>>() {
+        });
+        if (response.getStatusCode().is2xxSuccessful() && currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
+            List<Doctor> listDoctor = response.getBody();
+            model.addAttribute("listDoctor", listDoctor);
+            model.addAttribute("patient", currentPatient);
+        }
+
+        return "/client/listDoctors";
+
+    }
 
     @RequestMapping(value = "/profile/{id}", method = RequestMethod.GET)
     public String editProfile(Model model, @PathVariable("id") Integer id, HttpServletRequest request) {
+        
+        Patient currentPatient = authService.isAuthenticatedPatient(request);
+        
         ResponseEntity<Patient> response = restTemplate.exchange(apiUrlPatient + "/" + id, HttpMethod.GET, null,
                 new ParameterizedTypeReference<Patient>() {
         });
-        if (response.getStatusCode().is2xxSuccessful()) {
+        if (response.getStatusCode().is2xxSuccessful() && currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
             Patient patient = response.getBody();
             model.addAttribute("patientProfile", patient);
+            model.addAttribute("patient", currentPatient);
         }
 
         return "/client/profile";

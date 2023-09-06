@@ -1,8 +1,11 @@
 <html  xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en-US" class="no-js">
 
     <div th:replace="~{client/layout/layout :: head}"></div>
+    
+    <link rel="stylesheet" href="../client/css/barwrap.css"/>
+  
     <style>
-          .avatar {
+          .avatarProfile {
                 width: 150px; /* Điều chỉnh kích thước avatar theo ý muốn */
                 height: 50px;
                 border-radius: 50%; /* Làm tròn avatar */
@@ -11,34 +14,7 @@
     </style>
 
     <body class="home page-template-default page page-id-7684 theme-mediz gdlr-core-body woocommerce-no-js mediz-body mediz-body-front mediz-full  mediz-with-sticky-navigation  mediz-blockquote-style-1 gdlr-core-link-to-lightbox" data-home-url="https://demo.goodlayers.com/mediz/hospital/" >
-        <div class="mediz-top-bar" >
-            <div class="mediz-top-bar-background" >
-
-            </div>
-            <div class="mediz-top-bar-container mediz-container " >
-                <div class="mediz-top-bar-container-inner clearfix" >
-                    <div class="mediz-top-bar-left mediz-item-pdlr">
-                        <i class="bi bi-clock" style="font-size: 18px ;color: #17449E ;margin-right: 10px ;"  >
-
-                        </i>Mon - Sun  07:00 - 21:00
-                        <i class="icon-phone" style="font-size: 19px ;color: #17449E ;margin-left: 25px ;margin-right: 10px ;"  ></i>+1-2345-3455-33<i class="icon-envelope" style="font-size: 19px ;color: #17449E ;margin-left: 25px ;margin-right: 10px ;"  ></i><a href="/cdn-cgi/l/email-protection#c8aba7a6bca9abbc88a5adaca1b2bca0ada5ade6aba7"><span class="__cf_email__" data-cfemail="c3a0acadb7a2a0b783aea6a7aab9b7aba6aea6eda0ac">[email&#160;protected]</span></a> 
-                    </div>
-                    <div class="mediz-top-bar-right mediz-item-pdlr">
-                        <div class="mediz-top-bar-right-social" >
-                            <a href="https://www.facebook.com/" target="_blank" class="mediz-top-bar-social-icon" title="facebook" >
-                                <i class="fa fa-facebook" ></i>
-                            </a>
-                            <a href="https://twitter.com/" target="_blank" class="mediz-top-bar-social-icon" title="twitter" >
-                                <i class="fa fa-twitter" ></i>
-                            </a>
-                            <a href="https://www.instagram.com/" target="_blank" class="mediz-top-bar-social-icon" title="instagram" >
-                                <i class="fa fa-instagram" ></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div th:replace="~{client/layout/topbar :: div}"></div>
         <div class="mediz-mobile-header-wrap" ><div class="mediz-mobile-header mediz-header-background mediz-style-slide mediz-sticky-mobile-navigation " id="mediz-mobile-header" ><div class="mediz-mobile-header-container mediz-container clearfix" ><div class="mediz-logo  mediz-item-pdlr"><div class="mediz-logo-inner"><a class="" href="https://demo.goodlayers.com/mediz/hospital/" ><img src="https://a6e8z9v6.stackpathcdn.com/mediz/hospital/wp-content/uploads/sites/2/2019/12/logo-1.png" alt="" width="290" height="76" title="logo" /></a></div></div><div class="mediz-mobile-menu-right" ><div class="mediz-main-menu-search" id="mediz-mobile-top-search" ><i class="fa fa-search" ></i></div><div class="mediz-top-search-wrap" >
                             <div class="mediz-top-search-close" ></div>
 
@@ -269,261 +245,7 @@
 
                                                         <div th:replace="~{client/layout/header :: header}"></div>
 
-                                                        <div class="mediz-navigation-bar-wrap  mediz-style-solid mediz-sticky-navigation mediz-sticky-navigation-height mediz-style-left  mediz-style-fixed" >
-                                                            <div class="mediz-navigation-background" ></div>
-                                                            <div class="mediz-navigation-container clearfix  mediz-container">
-                                                                <div class="mediz-navigation mediz-item-pdlr clearfix " >
-                                                                    <div class="mediz-main-menu" id="mediz-main-menu" ><ul id="menu-main-navigation-1" class="sf-menu"><li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-7684 current_page_item menu-item-7736 mediz-normal-menu"><a href="https://demo.goodlayers.com/mediz/hospital/">Home</a></li>
-                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-7552 mediz-normal-menu"><a href="https://demo.goodlayers.com/mediz/hospital/about-us/" class="sf-with-ul-pre">About Us</a>
-                                                                                <ul class="sub-menu">
-                                                                                    <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8266" data-size="60"><a href="https://demo.goodlayers.com/mediz/hospital/timetable/">Timetable</a></li>
-                                                                                    <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7970" data-size="60"><a href="https://demo.goodlayers.com/mediz/hospital/about-us/">About Us</a></li>
-                                                                                    <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7553" data-size="60"><a href="https://demo.goodlayers.com/mediz/hospital/about-us-2/">About Us 2</a></li>
-                                                                                    <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7971" data-size="60"><a href="https://demo.goodlayers.com/mediz/hospital/our-services/">Our Services</a></li>
-                                                                                    <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7972" data-size="60"><a href="https://demo.goodlayers.com/mediz/hospital/our-services-2/">Our Services 2</a></li>
-                                                                                    <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8008" data-size="60"><a href="https://demo.goodlayers.com/mediz/hospital/our-services-3/">Our Services 3</a></li>
-                                                                                </ul>
-                                                                            </li>
-                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-7554 mediz-mega-menu"><a href="https://demo.goodlayers.com/mediz/hospital/our-services/" class="sf-with-ul-pre">Our Services</a><div class="sf-mega sf-mega-full" style=" background-image: url('https://a6e8z9v6.stackpathcdn.com/mediz/hospital/wp-content/uploads/sites/2/2019/12/mega-nav-bg.jpg');  background-position: top left;  background-repeat: no-repeat; " >
-                                                                                    <ul class="sub-menu">
-                                                                                        <li  class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7813" data-size="15"><div class="mediz-mega-menu-section-content"><span class="gdlr-core-space-shortcode" style="margin-top: 140px ;"  ></span>
-                                                                                                <div style="display: block; margin-left: 15px;">
-                                                                                                    <img src="https://a6e8z9v6.stackpathcdn.com/mediz/hospital/wp-content/uploads/sites/2/2019/12/mega-nav-logo.png"  width="98" alt="" /><span class="gdlr-core-space-shortcode" style="margin-top: 10px ;"  ></span>
-                                                                                                    <span style="font-size: 14px;">One of the first major discov eries relevant to the field of pulmo nology was the disco very </span></div>
-                                                                                            </div></li>
-                                                                                        <li  class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-7803" data-size="15"><a href="#" class="sf-with-ul-pre">Our Services</a>
-                                                                                            <ul class="sub-menu">
-                                                                                                <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7555"><a href="https://demo.goodlayers.com/mediz/hospital/our-services/lung-diseases/">Lung Diseases</a></li>
-                                                                                                <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7962"><a href="https://demo.goodlayers.com/mediz/hospital/our-services/heart/">Heart Diseases</a></li>
-                                                                                                <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7809"><a href="https://demo.goodlayers.com/mediz/hospital/our-services/orthopaedic/">Orthopaedic</a></li>
-                                                                                                <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7812"><a href="https://demo.goodlayers.com/mediz/hospital/our-services/general-surgery/">General Surgery</a></li>
-                                                                                                <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7806"><a href="https://demo.goodlayers.com/mediz/hospital/our-services/eye-care/">Eye Care</a></li>
-                                                                                                <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7807"><a href="https://demo.goodlayers.com/mediz/hospital/our-services/dental-service/">Dental Service</a></li>
-                                                                                                <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7811"><a href="https://demo.goodlayers.com/mediz/hospital/our-services/sport-injury/">Sport Injury</a></li>
-                                                                                            </ul>
-                                                                                        </li>
-                                                                                        <li  class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-7825" data-size="15"><a href="#" class="sf-with-ul-pre">Sub Services</a>
-                                                                                            <ul class="sub-menu">
-                                                                                                <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7821"><a href="https://demo.goodlayers.com/mediz/hospital/our-services/orthopaedic/lumbar-discectomy/">Lumbar Discectomy</a></li>
-                                                                                                <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7818"><a href="https://demo.goodlayers.com/mediz/hospital/our-services/general-surgery/endoscopy/">Endoscopy</a></li>
-                                                                                                <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7822"><a href="https://demo.goodlayers.com/mediz/hospital/our-services/orthopaedic/knee-arthroscopy-2/">Elbow Arthroscopy</a></li>
-                                                                                                <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7819"><a href="https://demo.goodlayers.com/mediz/hospital/our-services/general-surgery/colorectal/">Colorectal</a></li>
-                                                                                                <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7823"><a href="https://demo.goodlayers.com/mediz/hospital/our-services/orthopaedic/knee-arthroscopy/">Knee Arthroscopy</a></li>
-                                                                                                <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7820"><a href="https://demo.goodlayers.com/mediz/hospital/our-services/general-surgery/hemorrhoids/">Hemorrhoids</a></li>
-                                                                                                <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7824"><a href="https://demo.goodlayers.com/mediz/hospital/our-services/heart/cardio-oncology/">Cardio Oncology</a></li>
-                                                                                            </ul>
-                                                                                        </li>
-                                                                                        <li  class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-7826" data-size="15"><a href="#" class="sf-with-ul-pre">Service Listing Style</a>
-                                                                                            <ul class="sub-menu">
-                                                                                                <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7973"><a href="https://demo.goodlayers.com/mediz/hospital/our-services/">Our Services</a></li>
-                                                                                                <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7974"><a href="https://demo.goodlayers.com/mediz/hospital/our-services-2/">Our Services 2</a></li>
-                                                                                                <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8009"><a href="https://demo.goodlayers.com/mediz/hospital/our-services-3/">Our Services 3</a></li>
-                                                                                            </ul>
-                                                                                        </li>
-                                                                                    </ul>
-                                                                                </div></li>
-                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-8049 mediz-normal-menu"><a href="https://demo.goodlayers.com/mediz/hospital/our-doctor/" class="sf-with-ul-pre">Our Doctor</a>
-                                                                                <ul class="sub-menu">
-                                                                                    <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8050" data-size="60"><a href="https://demo.goodlayers.com/mediz/hospital/our-doctor/">Our Doctor</a></li>
-                                                                                    <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8120" data-size="60"><a href="https://demo.goodlayers.com/mediz/hospital/our-doctor-2/">Our Doctor 2</a></li>
-                                                                                </ul>
-                                                                            </li>
-                                                                            <li  class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-7092 mediz-normal-menu"><a href="#" class="sf-with-ul-pre">Pages</a>
-                                                                                <ul class="sub-menu">
-                                                                                    <li  class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-7090" data-size="60"><a href="#" class="sf-with-ul-pre">Contact</a>
-                                                                                        <ul class="sub-menu">
-                                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7129"><a href="https://demo.goodlayers.com/mediz/hospital/contact/">Contact</a></li>
-                                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7128"><a href="https://demo.goodlayers.com/mediz/hospital/contact-2/">Contact 2</a></li>
-                                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7127"><a href="https://demo.goodlayers.com/mediz/hospital/contact-3/">Contact 3</a></li>
-                                                                                        </ul>
-                                                                                    </li>
-                                                                                    <li  class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-7084" data-size="60"><a href="#" class="sf-with-ul-pre">Features</a>
-                                                                                        <ul class="sub-menu">
-                                                                                            <li  class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-7085"><a href="#" class="sf-with-ul-pre">Set 1</a>
-                                                                                                <ul class="sub-menu">
-                                                                                                    <li  class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7097"><a target="_blank" href="https://demo.goodlayers.com/features/">Accordions &#038; Toggles</a></li>
-                                                                                                    <li  class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7098"><a target="_blank" href="https://demo.goodlayers.com/features/alert-box/">Alert Box</a></li>
-                                                                                                    <li  class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7099"><a target="_blank" href="https://demo.goodlayers.com/features/blockquotes/">Blockquotes</a></li>
-                                                                                                    <li  class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7100"><a target="_blank" href="https://demo.goodlayers.com/features/buttons/">Buttons</a></li>
-                                                                                                    <li  class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7101"><a target="_blank" href="https://demo.goodlayers.com/features/call-to-action/">Call To Action</a></li>
-                                                                                                    <li  class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7102"><a target="_blank" href="https://demo.goodlayers.com/features/column-services/">Column Services</a></li>
-                                                                                                    <li  class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7103"><a target="_blank" href="https://demo.goodlayers.com/features/columns/">Columns</a></li>
-                                                                                                </ul>
-                                                                                            </li>
-                                                                                            <li  class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-7087"><a href="#" class="sf-with-ul-pre">Set 2</a>
-                                                                                                <ul class="sub-menu">
-                                                                                                    <li  class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7104"><a target="_blank" href="https://demo.goodlayers.com/features/counters/">Counters</a></li>
-                                                                                                    <li  class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7105"><a target="_blank" href="https://demo.goodlayers.com/features/count-down/">Count Down</a></li>
-                                                                                                    <li  class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7106"><a target="_blank" href="https://demo.goodlayers.com/features/dividers/">Dividers</a></li>
-                                                                                                    <li  class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7107"><a target="_blank" href="https://demo.goodlayers.com/features/dropcaps/">Dropcaps</a></li>
-                                                                                                    <li  class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7108"><a target="_blank" href="https://demo.goodlayers.com/features/featured-boxes/">Featured Boxes</a></li>
-                                                                                                    <li  class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7109"><a target="_blank" href="https://demo.goodlayers.com/features/flip-boxes/">Flip Boxes</a></li>
-                                                                                                    <li  class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7110"><a target="_blank" href="https://demo.goodlayers.com/features/icon-list/">Icon Lists</a></li>
-                                                                                                </ul>
-                                                                                            </li>
-                                                                                            <li  class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-7088"><a href="#" class="sf-with-ul-pre">Set 3</a>
-                                                                                                <ul class="sub-menu">
-                                                                                                    <li  class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7111"><a target="_blank" href="https://demo.goodlayers.com/features/icons/">Icons</a></li>
-                                                                                                    <li  class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7112"><a target="_blank" href="https://demo.goodlayers.com/features/images/">Images</a></li>
-                                                                                                    <li  class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7113"><a target="_blank" href="https://demo.goodlayers.com/features/price-table/">Price Table</a></li>
-                                                                                                    <li  class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7114"><a target="_blank" href="https://demo.goodlayers.com/features/promo-boxes/">Promo Boxes</a></li>
-                                                                                                    <li  class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7115"><a target="_blank" href="https://demo.goodlayers.com/features/skill-bar/">Skill Bar</a></li>
-                                                                                                    <li  class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7116"><a target="_blank" href="https://demo.goodlayers.com/features/skill-circle/">Skill Circle</a></li>
-                                                                                                </ul>
-                                                                                            </li>
-                                                                                            <li  class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-7089"><a href="#" class="sf-with-ul-pre">Set 4</a>
-                                                                                                <ul class="sub-menu">
-                                                                                                    <li  class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7117"><a target="_blank" href="https://demo.goodlayers.com/features/social-shares/">Social Shares</a></li>
-                                                                                                    <li  class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7118"><a target="_blank" href="https://demo.goodlayers.com/features/stunning-texts/">Stunning Texts</a></li>
-                                                                                                    <li  class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7119"><a target="_blank" href="https://demo.goodlayers.com/features/tabs-horizontal/">Tabs Horizontal</a></li>
-                                                                                                    <li  class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7120"><a target="_blank" href="https://demo.goodlayers.com/features/tabs-vertical/">Tabs Vertical</a></li>
-                                                                                                    <li  class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7121"><a target="_blank" href="https://demo.goodlayers.com/features/testimonial/">Testimonial</a></li>
-                                                                                                    <li  class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7122"><a target="_blank" href="https://demo.goodlayers.com/features/titles/">Titles</a></li>
-                                                                                                    <li  class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7123"><a target="_blank" href="https://demo.goodlayers.com/features/typography/">Typography</a></li>
-                                                                                                </ul>
-                                                                                            </li>
-                                                                                        </ul>
-                                                                                    </li>
-                                                                                    <li  class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-7091" data-size="60"><a href="#" class="sf-with-ul-pre">Team</a>
-                                                                                        <ul class="sub-menu">
-                                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7132"><a href="https://demo.goodlayers.com/mediz/hospital/team-plain-style/">Team / Plain Style</a></li>
-                                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7130"><a href="https://demo.goodlayers.com/mediz/hospital/team-thumbnail-style/">Team / Thumbnail Style</a></li>
-                                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7131"><a href="https://demo.goodlayers.com/mediz/hospital/team-frame-style/">Team / Frame Style</a></li>
-                                                                                        </ul>
-                                                                                    </li>
-                                                                                    <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7192" data-size="60"><a href="https://demo.goodlayers.com/mediz/hospital/gallery/">Gallery</a></li>
-                                                                                    <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7133" data-size="60"><a href="https://demo.goodlayers.com/mediz/hospital/price-table/">Price Table</a></li>
-                                                                                    <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7134" data-size="60"><a href="https://demo.goodlayers.com/mediz/hospital/maintenance/">Maintenance</a></li>
-                                                                                    <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7135" data-size="60"><a href="https://demo.goodlayers.com/mediz/hospital/coming-soon/">Coming Soon</a></li>
-                                                                                    <li  class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7086" data-size="60"><a href="https://demo.goodlayers.com/mediz/hospital/404">404 Page</a></li>
-                                                                                </ul>
-                                                                            </li>
-                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-7140 mediz-normal-menu"><a href="https://demo.goodlayers.com/mediz/hospital/portfolio-3-columns/" class="sf-with-ul-pre">Portfolio</a>
-                                                                                <ul class="sub-menu">
-                                                                                    <li  class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-7093" data-size="60"><a class="sf-with-ul-pre">Portfolio Grid</a>
-                                                                                        <ul class="sub-menu">
-                                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7139"><a href="https://demo.goodlayers.com/mediz/hospital/portfolio-2-columns/">Portfolio 2 Columns</a></li>
-                                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7138"><a href="https://demo.goodlayers.com/mediz/hospital/portfolio-3-columns/">Portfolio 3 Columns</a></li>
-                                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7137"><a href="https://demo.goodlayers.com/mediz/hospital/portfolio-4-columns/">Portfolio 4 Columns</a></li>
-                                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7183"><a href="https://demo.goodlayers.com/mediz/hospital/portfolio-2-columns-with-frame/">Portfolio 2 Columns With Frame</a></li>
-                                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7182"><a href="https://demo.goodlayers.com/mediz/hospital/portfolio-3-columns-with-frame/">Portfolio 3 Columns With Frame</a></li>
-                                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7181"><a href="https://demo.goodlayers.com/mediz/hospital/portfolio-4-columns-with-frame/">Portfolio 4 Columns With Frame</a></li>
-                                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7143"><a href="https://demo.goodlayers.com/mediz/hospital/portfolio-2-columns-no-space/">Portfolio 2 Columns No Space</a></li>
-                                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7142"><a href="https://demo.goodlayers.com/mediz/hospital/portfolio-3-columns-no-space/">Portfolio 3 Columns No Space</a></li>
-                                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7141"><a href="https://demo.goodlayers.com/mediz/hospital/portfolio-4-columns-no-space/">Portfolio 4 Columns No Space</a></li>
-                                                                                        </ul>
-                                                                                    </li>
-                                                                                    <li  class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-7094" data-size="60"><a class="sf-with-ul-pre">Portfolio Modern</a>
-                                                                                        <ul class="sub-menu">
-                                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7149"><a href="https://demo.goodlayers.com/mediz/hospital/portfolio-modern-2-columns/">Modern 2 Columns</a></li>
-                                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7147"><a href="https://demo.goodlayers.com/mediz/hospital/portfolio-modern-3-columns/">Modern 3 Columns</a></li>
-                                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7145"><a href="https://demo.goodlayers.com/mediz/hospital/portfolio-modern-4-columns/">Modern 4 Columns</a></li>
-                                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7148"><a href="https://demo.goodlayers.com/mediz/hospital/portfolio-modern-2-columns-no-space/">Modern 2 Columns No Space</a></li>
-                                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7146"><a href="https://demo.goodlayers.com/mediz/hospital/portfolio-modern-3-columns-no-space/">Modern 3 Columns No Space</a></li>
-                                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7144"><a href="https://demo.goodlayers.com/mediz/hospital/portfolio-modern-4-columns-no-space/">Modern 4 Columns No Space</a></li>
-                                                                                        </ul>
-                                                                                    </li>
-                                                                                    <li  class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-7095" data-size="60"><a class="sf-with-ul-pre">Portfolio Side Thumbnail</a>
-                                                                                        <ul class="sub-menu">
-                                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7150"><a href="https://demo.goodlayers.com/mediz/hospital/portfolio-left-right-large-thumbnail/">Portfolio Left &#038; Right Large Thumbnail</a></li>
-                                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7152"><a href="https://demo.goodlayers.com/mediz/hospital/portfolio-left-large-thumbnail/">Portfolio Left Large Thumbnail</a></li>
-                                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7151"><a href="https://demo.goodlayers.com/mediz/hospital/portfolio-right-large-thumbnail/">Portfolio Right Large Thumbnail</a></li>
-                                                                                        </ul>
-                                                                                    </li>
-                                                                                </ul>
-                                                                            </li>
-                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-8238 mediz-normal-menu"><a href="https://demo.goodlayers.com/mediz/hospital/blog-full-right-sidebar/" class="sf-with-ul-pre">Blog</a>
-                                                                                <ul class="sub-menu">
-                                                                                    <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-7173" data-size="60"><a href="https://demo.goodlayers.com/mediz/hospital/blog-full-right-sidebar-with-frame/" class="sf-with-ul-pre">Blog Full</a>
-                                                                                        <ul class="sub-menu">
-                                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7161"><a href="https://demo.goodlayers.com/mediz/hospital/blog-full-right-sidebar-with-frame/">Blog Full Right Sidebar With Frame</a></li>
-                                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7160"><a href="https://demo.goodlayers.com/mediz/hospital/blog-full-left-sidebar-with-frame/">Blog Full Left Sidebar With Frame</a></li>
-                                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7159"><a href="https://demo.goodlayers.com/mediz/hospital/blog-full-both-sidebar-with-frame/">Blog Full Both Sidebar With Frame</a></li>
-                                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7164"><a href="https://demo.goodlayers.com/mediz/hospital/blog-full-right-sidebar/">Blog Full Right Sidebar</a></li>
-                                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7163"><a href="https://demo.goodlayers.com/mediz/hospital/blog-full-left-sidebar/">Blog Full Left Sidebar</a></li>
-                                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7162"><a href="https://demo.goodlayers.com/mediz/hospital/blog-full-both-sidebar/">Blog Full Both Sidebar</a></li>
-                                                                                        </ul>
-                                                                                    </li>
-                                                                                    <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-7168" data-size="60"><a href="https://demo.goodlayers.com/mediz/hospital/blog-grid-3-columns-no-space/" class="sf-with-ul-pre">Blog Grid</a>
-                                                                                        <ul class="sub-menu">
-                                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7171"><a href="https://demo.goodlayers.com/mediz/hospital/blog-grid-2-columns/">Blog Grid 2 Columns</a></li>
-                                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7170"><a href="https://demo.goodlayers.com/mediz/hospital/blog-grid-3-columns/">Blog Grid 3 Columns</a></li>
-                                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7169"><a href="https://demo.goodlayers.com/mediz/hospital/blog-grid-4-columns/">Blog Grid 4 Columns</a></li>
-                                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7167"><a href="https://demo.goodlayers.com/mediz/hospital/blog-grid-2-columns-no-space/">Blog Grid 2 Columns No Space</a></li>
-                                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7166"><a href="https://demo.goodlayers.com/mediz/hospital/blog-grid-3-columns-no-space/">Blog Grid 3 Columns No Space</a></li>
-                                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7165"><a href="https://demo.goodlayers.com/mediz/hospital/blog-grid-4-columns-no-space/">Blog Grid 4 Columns No Space</a></li>
-                                                                                        </ul>
-                                                                                    </li>
-                                                                                    <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-7174" data-size="60"><a href="https://demo.goodlayers.com/mediz/hospital/blog-3-columns-with-frame/" class="sf-with-ul-pre">Blog Columns</a>
-                                                                                        <ul class="sub-menu">
-                                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7155"><a href="https://demo.goodlayers.com/mediz/hospital/blog-2-columns-with-frame/">Blog 2 Columns With Frame</a></li>
-                                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7154"><a href="https://demo.goodlayers.com/mediz/hospital/blog-3-columns-with-frame/">Blog 3 Columns With Frame</a></li>
-                                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7153"><a href="https://demo.goodlayers.com/mediz/hospital/blog-4-columns-with-frame/">Blog 4 Columns With Frame</a></li>
-                                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7158"><a href="https://demo.goodlayers.com/mediz/hospital/blog-2-columns/">Blog 2 Columns</a></li>
-                                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7157"><a href="https://demo.goodlayers.com/mediz/hospital/blog-3-columns/">Blog 3 Columns</a></li>
-                                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7156"><a href="https://demo.goodlayers.com/mediz/hospital/blog-4-columns/">Blog 4 Columns</a></li>
-                                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7193"><a href="https://demo.goodlayers.com/mediz/hospital/blog-3-columns-with-frame-post-format/">Blog Columns With Post Format</a></li>
-                                                                                        </ul>
-                                                                                    </li>
-                                                                                    <li  class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-7096" data-size="60"><a href="#" class="sf-with-ul-pre">Single Posts</a>
-                                                                                        <ul class="sub-menu">
-                                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-post menu-item-7190"><a href="https://demo.goodlayers.com/mediz/hospital/2016/06/06/standard-post-type/">Standard Post Format</a></li>
-                                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-post menu-item-7184"><a href="https://demo.goodlayers.com/mediz/hospital/2016/06/06/aside-post-format/">Aside Post Format</a></li>
-                                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-post menu-item-7185"><a href="https://demo.goodlayers.com/mediz/hospital/2016/06/06/audio-post-format/">Audio Post Format</a></li>
-                                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-post menu-item-7186"><a href="https://demo.goodlayers.com/mediz/hospital/2016/06/06/gallery-post-format/">Gallery Post Format</a></li>
-                                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-post menu-item-7187"><a href="https://demo.goodlayers.com/mediz/hospital/2016/06/06/image-post-format/">Image Post Format</a></li>
-                                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-post menu-item-7188"><a href="https://demo.goodlayers.com/mediz/hospital/2016/06/06/link-post-format/">Link Post Format</a></li>
-                                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-post menu-item-7189"><a href="https://demo.goodlayers.com/mediz/hospital/2016/06/06/quote-post-format/">Quote Post Format</a></li>
-                                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-post menu-item-7191"><a href="https://demo.goodlayers.com/mediz/hospital/2016/06/06/video-post-format/">Video Post Format</a></li>
-                                                                                        </ul>
-                                                                                    </li>
-                                                                                </ul>
-                                                                            </li>
-                                                                            <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-7180 mediz-normal-menu"><a href="https://demo.goodlayers.com/mediz/hospital/woocommerce-page/" class="sf-with-ul-pre">Shop</a>
-                                                                                <ul class="sub-menu">
-                                                                                    <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7175" data-size="60"><a href="https://demo.goodlayers.com/mediz/hospital/woocommerce-page/">Woocommerce Page Item</a></li>
-                                                                                    <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7179" data-size="60"><a href="https://demo.goodlayers.com/mediz/hospital/shop/">Shop</a></li>
-                                                                                    <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7176" data-size="60"><a th:href="@{/profile}">My Account</a></li>
-                                                                                    <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7177" data-size="60"><a href="https://demo.goodlayers.com/mediz/hospital/checkout/">Checkout</a></li>
-                                                                                    <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7178" data-size="60"><a href="https://demo.goodlayers.com/mediz/hospital/cart/">Cart</a></li>
-                                                                                </ul>
-                                                                            </li>
-                                                                        </ul><div class="mediz-navigation-slide-bar  mediz-navigation-slide-bar-style-2"  data-size-offset="0"  id="mediz-navigation-slide-bar" ></div></div><div class="mediz-main-menu-right-wrap clearfix " ><div class="mediz-main-menu-search" id="mediz-top-search" ><i class="icon-magnifier" ></i></div><div class="mediz-top-search-wrap" >
-                                                                            <div class="mediz-top-search-close" ></div>
-
-                                                                            <div class="mediz-top-search-row" >
-                                                                                <div class="mediz-top-search-cell" >
-                                                                                    <form role="search" method="get" class="search-form" action="https://demo.goodlayers.com/mediz/hospital/">
-                                                                                        <input type="text" class="search-field mediz-title-font" placeholder="Search..." value="" name="s">
-                                                                                            <div class="mediz-top-search-submit"><i class="fa fa-search" ></i></div>
-                                                                                            <input type="submit" class="search-submit" value="Search">
-                                                                                                <div class="mediz-top-search-close"><i class="icon_close" ></i></div>
-                                                                                                </form>
-                                                                                                </div>
-                                                                                                </div>
-
-                                                                                                </div>
-                                                                                                <div class="mediz-main-menu-cart" id="mediz-main-menu-cart" >
-                                                                                                    <i class="icon-bag" data-mediz-lb="top-bar" ></i>
-                                                                                                    <span class="mediz-top-cart-count" >0</span>
-                                                                                                    <div class="mediz-lightbox-content-wrap mediz-top-cart-content-wrap" data-mediz-lb-id="top-bar" >
-                                                                                                        <i class="icon_close mediz-lightbox-close" ></i>
-                                                                                                        <div class="mediz-top-cart-title" >You have 
-                                                                                                            <span class="mediz-highlight" >0 items</span> in your cart
-                                                                                                        </div>
-                                                                                                        <div class="mediz-top-cart-item-wrap" >
-                                                                                                            <div class="mediz-top-cart-item-divider" ></div>
-                                                                                                            <div class="mediz-top-cart-button-wrap mediz-center-align" >
-                                                                                                                <a class="mediz-top-cart-button-2 mediz-button" href="https://demo.goodlayers.com/mediz/hospital/shop/" >Go To Shopping</a>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                                <a class="mediz-main-menu-right-button mediz-button-1 mediz-style-round" th:href="@{/login}" target="_self" >Login</a>
-                                                                                                </div>		
-                                                                                                </div><!-- mediz-navigation -->
-
-                                                                                                </div><!-- mediz-header-container -->
+                                                        <div th:replace="~{client/layout/barwrap :: div}"></div>
                                                                                                 </div><!-- mediz-navigation-bar-wrap -->
                                                                                                 <div class="mediz-page-title-wrap  mediz-style-custom mediz-left-align"><div class="mediz-header-transparent-substitute"></div><div class="mediz-page-title-overlay"></div><div class="mediz-page-title-container mediz-container"><div class="mediz-page-title-content mediz-item-pdlr"><h1 class="mediz-page-title">My Account</h1></div></div></div>
                                                                                                 <div class="mediz-page-wrapper" id="mediz-page-wrapper"><div class="mediz-content-container mediz-container"><div class="mediz-content-area mediz-item-pdlr mediz-sidebar-style-none clearfix"><div class="woocommerce"><div class="woocommerce-notices-wrapper"></div>
@@ -534,8 +256,8 @@
                                                                                                         </p>
                                                                                                         <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
                                                                                                                 <label for="avt">Avatar</label>
-                                                                                                                <img th:if="${patientProfile.image != null}" th:src="@{${patientProfile.image}}" alt="Avatar" class="avatar">
-                                                                                                                <img th:unless="${patientProfile.image != null}" src="../client/image/avatar-default.jpg" alt="Default Avatar" class="avatar">
+                                                                                                                <img th:if="${patientProfile.image != null}" th:src="@{${patientProfile.image}}" alt="Avatar" class="avatarProfile">
+                                                                                                                <img th:unless="${patientProfile.image != null}" src="../client/image/avatar-default.jpg" alt="Default Avatar" class="avatarProfile">
                                                                                                                 <input th:field="*{image}" class="woocommerce-Input" type="file" name="avt" id="avt">
                                                                                                         </p>
                                                                                                         <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
