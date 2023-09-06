@@ -13,19 +13,19 @@
         <!-- Content -->
 
         <div class="right_col" role="main">
-            <h1>Doctor Page</h1>
+          
             <div class="row">
                 <div class="col-md-12 col-sm-12">
                     <div class="x_panel">
                         <div class="x_content">
                             <form th:action="@{/admin/donthuoc/create}" th:object="${donthuoc}" method="post">
-                                <span class="section">Create</span>
+                                 <h1 style="text-align: center">Create Medication Invoice</h1>
                                 <div class=" form-group">
-                                    <button type="button" id="addButton">Thêm</button>
+                                    <button class="btn btn-secondary" type="button" id="addButton">Thêm</button>
                                     <div id="boxes"></div>
                                 </div>
                                 <div class="form-group">
-                                    <div class="col-md-6 offset-md-3">
+                                    <div    >
                                         <input type="submit" value="Create" class="btn btn-primary" />
                                         <input type="reset" value="Reset" class="btn btn-success" />
                                     </div>
@@ -54,29 +54,57 @@
 
         function createBox() {
             const box = document.createElement('div');
-            box.classList.add('box');
-
+            box.className = "row my-2";
+           
+       
+            
+            const colRow1 = document.createElement('div');
+            colRow1.className = "col-4";
+             const colRow2 = document.createElement('div');
+            colRow2.className = "col";
+             const colRow3 = document.createElement('div');
+            colRow3.className = "col";
+             const colRow4 = document.createElement('div');
+            colRow4.className = "col";
+            const colRowRemove = document.createElement('div');
+            colRowRemove.style="display:flex;align-items:end;";
+            colRowRemove.className = "col-1";
+           
+            
             const selectLabel = document.createElement('label');
-            selectLabel.textContent = 'Chọn thuốc:';
-            box.appendChild(selectLabel);
-
+            selectLabel.textContent = 'Select drug';
+            colRow1.appendChild(selectLabel);         
             const select = createSelect();
-            box.appendChild(select);
-
+            select.className ='form-control';
+            colRow1.appendChild(select);
+            
+            box.appendChild(colRow1);
+            //Row 1
+            
             const priceLabel = document.createElement('label');
-            priceLabel.textContent = 'Price:';
-            box.appendChild(priceLabel);
-
-            const input = createInput();
-            box.appendChild(input);
-
+            priceLabel.textContent = 'Price';       
+            colRow2.appendChild(priceLabel);           
+            const input = createInput(); 
+            input.className ='form-control';
+            colRow2.appendChild(input);             
+            box.appendChild(colRow2);
+            //Row 2
+            
             const quantityLabel = document.createElement('label');
-            quantityLabel.textContent = 'Quantity:';
-            box.appendChild(quantityLabel);
-
+            quantityLabel.textContent = 'Quantity';
+            colRow3.appendChild(quantityLabel);
             const quantityInput = createQuantityInput();
-            box.appendChild(quantityInput);
-
+            quantityInput.className ='form-control';
+            colRow3.appendChild(quantityInput);
+            box.appendChild(colRow3);
+            //Row 3 
+              const removeButton = createRemoveButton();
+    removeButton.addEventListener('click', () => {
+        boxesContainer.removeChild(box);
+    });
+    colRowRemove.appendChild(removeButton);
+    box.appendChild(colRowRemove);
+    
             const result = document.createElement('div');
             result.classList.add('result');
 
@@ -112,7 +140,7 @@
         function createSelect() {
             const select = document.createElement('select');
             select.classList.add('dropdown');
-
+            select.name = 'thuocID';
             populateDropdown(select);
 
             return select;
@@ -121,6 +149,7 @@
         function createOption(id, name, price) {
             const option = document.createElement('option');
             option.value = id;
+                
             option.textContent = name;
             option.setAttribute('data-price', price);
             return option;
@@ -128,7 +157,9 @@
 
         function createInput() {
             const input = document.createElement('input');
-            input.type = 'text';
+            input.type = 'text';        
+            input.name = 'price';
+            input.setAttribute('readonly', true); 
             input.classList.add('input');
             return input;
         }
@@ -136,9 +167,17 @@
         function createQuantityInput() {
             const quantityInput = document.createElement('input');
             quantityInput.type = 'number';
+            quantityInput.name = 'quantity';
             quantityInput.classList.add('input');
             return quantityInput;
         }
+        function createRemoveButton() {
+    const removeButton = document.createElement('button');
+    removeButton.textContent = '-';
+    removeButton.className = 'btn btn-danger';
+    removeButton.style ="margin-bottom:0";
+    return removeButton;
+}
 
     </script>
     <!-- Content -->
