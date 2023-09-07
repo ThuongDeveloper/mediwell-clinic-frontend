@@ -1,7 +1,7 @@
+
 <html  xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
     <div th:replace="~{admin/layout/layoutfixbug :: head}"></div>
-    <link rel="stylesheet" type="text/css" href="../../css/rating.css">
 
 
     <body class="nav-md">
@@ -17,7 +17,7 @@
                     <div class="">
                         <div class="page-title">
                             <div class="title_left">
-                                <h3>Edit Rating</h3>
+                                <h3>Edit News</h3>
                             </div>
 
                             <div class="title_right">
@@ -37,53 +37,34 @@
                             <div class="col-md-12 col-sm-12">
                                 <div class="x_panel">
                                     <div class="x_content">
-                                        <form th:action="@{/admin/rating/edit}" th:object="${rating}" method="post">
-                                            <span class="section">Personal Info</span>
+                                        <form th:action="@{/admin/news/edit}" th:object="${news}" method="post">
+                                            <span class="section">News Info</span>
                                             <div class="field item form-group">
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">ID</label>
                                                 <div class="col-md-6 col-sm-6">
-                                                    <input class="form-control" th:field="*{id}" type="text" hidden="true">
+                                                    <input class="form-control" th:field="*{id}" type="text" data-minlength="5" data-maxlength="15" readonly="true">
                                                 </div>
                                             </div>
                                             <div class="field item form-group">
-                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Rating<span class="required">*</span></label>
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Title</label>
                                                 <div class="col-md-6 col-sm-6">
-                                                    <div id="rating">
-                                                        <input type="radio" id="star5" name="rating" value="5"/>
-                                                        <label class="full" for="star5" title="Awesome - 5 stars"></label>
-
-                                                        <input type="radio" id="star4" name="rating" value="4" />
-                                                        <label class = "full" for="star4" title="Pretty good - 4 stars"></label>
-
-                                                        <input type="radio" id="star3" name="rating" value="3" />
-                                                        <label class = "full" for="star3" title="Meh - 3 stars"></label>
-
-                                                        <input type="radio" id="star2" name="rating" value="2" />
-                                                        <label class = "full" for="star2" title="Kinda bad - 2 stars"></label>
-
-                                                        <input type="radio" id="star1" name="rating" value="1" />
-                                                        <label class = "full" for="star1" title="Sucks big time - 1 star"></label>
-                                                    </div>
+                                                    <input type="text" th:field="*{title}" class="form-control" required="true">
                                                 </div>
                                             </div>
                                             <div class="field item form-group">
-                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Comment<span class="required">*</span></label>
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Content</label>
                                                 <div class="col-md-6 col-sm-6">
-                                                    <input class="form-control" th:field="*{comment}" type="text" name="comment" required="required">
-                                                    <span th:if="${#fields.hasErrors('comment')}" th:errors="*{comment}" class="error"></span>
+                                                    <input class="form-control" th:field="*{content}" type="text" required="true">
                                                 </div>
                                             </div>
                                             <div class="field item form-group">
-                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Doctor Name</label>
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Status</label>
                                                 <div class="col-md-6 col-sm-6">
-                                                    <input name="doctorID" type="hidden" />
-                                                    <input th:if="${rating.doctorId != null}" th:value="${rating.doctorId.name}" class="form-control" type="text" readonly="true">
-                                                </div>
-                                            </div>
-                                            <div class="field item form-group">
-                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Patients Name</label>
-                                                <div class="col-md-6 col-sm-6">
-                                                    <input name="patientID" type="hidden" />
-                                                    <input th:if="${rating.patientId != null}" th:value="${rating.patientId.name}" class="form-control" type="text" readonly="true">
+                                                    <select name="status" class="form-control" required="true">
+                                                        <option value="">---Select Status---</option>
+                                                        <option value="true">True</option>
+                                                        <option value="false">False</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -92,11 +73,7 @@
                                                     <input type="reset" value="Reset" class="btn btn-success"/>
                                                 </div>
                                             </div>
-                                            <span th:if="${error}" class="error">
-                                                <span th:text="${error}"></span>
-                                            </span>
                                         </form>
-
                                     </div>
                                 </div>
                             </div>
@@ -107,7 +84,7 @@
                 <!-- Content -->
                 <div th:replace="~{admin/layout/footer :: footer}"></div>
             </div>
-            <script src="../../js/rating.js"></script>
+
             <div th:replace="~{admin/layout/layoutfixbug :: body}"></div>
 
     </body>

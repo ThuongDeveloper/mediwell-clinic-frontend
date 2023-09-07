@@ -1,0 +1,88 @@
+
+<html  xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <div th:replace="~{admin/layout/layoutfixbug :: head}"></div>
+
+
+    <body class="nav-md">
+        <div class="container body">
+            <div class="main_container">
+                <div th:replace="~{admin/layout/slidebarfixbug :: slidebarAdmin}"></div>
+                <div class="top_nav">
+                    <div th:replace="~{admin/layout/headerfixbug :: div}"></div>
+                </div>
+                <!-- Content -->
+
+                <div class="right_col" role="main">
+                    <div class="">
+                        <div class="page-title">
+                            <div class="title_left">
+                                <h3>News Form</h3>
+                            </div>
+
+                            <div class="title_right">
+                                <div class="col-md-5 col-sm-5 form-group pull-right top_search">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Search for...">
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-default" type="button">Go!</button>
+                                            </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12">
+                                <div class="x_panel">
+                                    <div class="x_content">
+                                        <form th:action="@{/admin/news/create}" th:object="${news}" method="post">
+                                            <span class="section">News Info</span>
+                                            <div class="field item form-group">
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Title<span class="required">*</span></label>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <input type="text" th:field="*{title}" class="form-control" name="title" required="required">
+                                                        <div class="help-block with-errors"></div>
+                                                </div>
+                                            </div>
+                                            <div class="field item form-group">
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Content<span class="required">*</span></label>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <input class="form-control" th:field="*{content}" name="content" type="text" required="true">
+                                                        <div class="help-block with-errors"></div>
+                                                </div>
+                                            </div>
+                                            <div class="field item form-group">
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Status<span class="required">*</span></label>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <select name="status" class="form-control" required="true">
+                                                        <option value="">---Select Status---</option>
+                                                        <option value="true">True</option>
+                                                        <option value="false">False</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-md-6 offset-md-3">
+                                                    <input type="submit" value="Create" class="btn btn-primary"/>
+                                                    <input type="reset" value="Reset" class="btn btn-success"/>
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Content -->
+                <div th:replace="~{admin/layout/footer :: footer}"></div>
+            </div>
+
+            <div th:replace="~{admin/layout/layoutfixbug :: body}"></div>
+
+    </body>
+</html>
