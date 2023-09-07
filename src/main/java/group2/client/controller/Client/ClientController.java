@@ -28,6 +28,7 @@ public class ClientController {
     String apiUrl = "http://localhost:8888/api/appointment/";
     private String apiUrlDoctor = "http://localhost:8888/api/doctor/";
     private String apiUrlPatient = "http://localhost:8888/api/patient/";
+    private String apiUrlTypeDoctor = "http://localhost:8888/api/typedoctor/";
     RestTemplate restTemplate = new RestTemplate();
 
     @Autowired
@@ -75,12 +76,22 @@ public class ClientController {
         ResponseEntity<List<Doctor>> response = restTemplate.exchange(apiUrlDoctor, HttpMethod.GET, null,
                 new ParameterizedTypeReference<List<Doctor>>() {
         });
-        if (response.getStatusCode().is2xxSuccessful() && currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
+        ResponseEntity<List<TypeDoctor>> responseTD = restTemplate.exchange(apiUrlTypeDoctor, HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<TypeDoctor>>() {
+        });
+        if (response.getStatusCode().is2xxSuccessful() && responseTD.getStatusCode().is2xxSuccessful() && currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
             List<Doctor> listDoctor = response.getBody();
+            List<TypeDoctor> listTypeDoctor = responseTD.getBody();
             model.addAttribute("listDoctor", listDoctor);
+            model.addAttribute("listTypeDoctor", listTypeDoctor);
             model.addAttribute("patient", currentPatient);
+        } else if (response.getStatusCode().is2xxSuccessful() && responseTD.getStatusCode().is2xxSuccessful() && currentPatient == null) {
+            List<Doctor> listDoctor = response.getBody();
+            List<TypeDoctor> listTypeDoctor = responseTD.getBody();
+            model.addAttribute("listDoctor", listDoctor);
+            model.addAttribute("listTypeDoctor", listTypeDoctor);
+            model.addAttribute("listDoctor", listDoctor);
         }
-
         return "/client/listDoctors";
 
     }
