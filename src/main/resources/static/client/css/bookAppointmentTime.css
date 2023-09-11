@@ -1,0 +1,45 @@
+.time-detail{
+    margin-top: 80px;
+    margin-bottom: 40px;
+}
+.time-detail h4{
+    color: #17449e;
+}
+.time-list-detail{
+    display: flex;
+    margin-left: -20px;
+}
+.time-list-detail span{
+    color: #17449e;
+    font-size: 15px;
+    font-weight: bold;
+}
+.hours-input{
+    margin-left: 20px;
+    margin-right: 5px;
+    cursor: pointer;
+}
+.symptom-input{
+    width: 450px;
+    margin-left: 5px;
+}
+.getDetailTime{
+    margin-bottom: 80px;
+}
+
+.working-hours-group{
+    display: flex;
+}
+.working-hours-group input{
+     border: none;
+    outline: none;
+    background: transparent;
+    margin-top: -18px;
+    margin-left: 10px;
+    color: #17449e;
+    font-size: 30px;
+}
+.notify-error{
+    margin-top: 60px;
+
+}
