@@ -39,30 +39,28 @@
                                         <form th:action="@{/admin/phieukham/create}" th:object="${taophieukham}" method="post">
                                             <span class="section">Personal Info</span>
                                             <div class="field item form-group">
-                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Name<span class="required">*</span></label>
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Name<span class="required" style="color: red">*</span></label>
                                                 <div class="col-md-6 col-sm-6">
-                                                    <input type="text" th:field="*{name}" class="form-control" name="name" placeholder="ex. John f. Kennedy" required="required"
-                                                           pattern=".{6,}" title="Minimum 6 characters" data-error="Name is required (minimum 6 characters)">
-                                                        <div class="help-block with-errors"></div>
+                                                    <input type="text" th:field="*{name}" class="form-control" name="name" placeholder="ex. John f. Kennedy" th:attr="style=${taophieukham.name == null} ? 'border-color: red' : ''">
+                                                        <div style="color: red" class="help-block with-errors" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
                                                 </div>
                                             </div>
                                             <div class="field item form-group">
-                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Phone<span class="required">*</span></label>
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Phone<span class="required" style="color: red">*</span></label>
                                                 <div class="col-md-6 col-sm-6">
-                                                    <input th:field="*{phone}" class="form-control" type="text" id="phone" name="phone"
-                                                           pattern="(?=.*\d).{10,}"
-                                                           title="Minimum 10 numbers"
-                                                           required="">
+                                                    <input th:field="*{phone}" class="form-control" type="text" id="phone" name="phone" th:attr="style=${taophieukham.phone == null} ? 'border-color: red' : ''">
+                                                        <div style="color: red" class="help-block with-errors" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></div>
                                                 </div>
                                             </div>
                                             <div class="field item form-group">
-                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Address<span class="required">*</span></label>
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Address<span class="required" style="color: red">*</span></label>
                                                 <div class="col-md-6 col-sm-6">
-                                                    <input class="form-control" th:field="*{address}" type="text" name="address" required="required">
+                                                    <input class="form-control" th:field="*{address}" type="text" name="address" th:attr="style=${taophieukham.address == null} ? 'border-color: red' : ''">
+                                                        <div style="color: red" class="help-block with-errors" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></div>
                                                 </div>
                                             </div>
                                             <div class="field item form-group">
-                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Casher Name<span class="required">*</span></label>
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Casher Name<span class="required" style="color: red">*</span></label>
                                                 <div class="col-md-6 col-sm-6">
                                                     <select name="casherID" class="form-control">
                                                         <option value="">---Select Option---</option>
@@ -71,7 +69,7 @@
                                                 </div>
                                             </div>
                                             <div class="field item form-group">
-                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Type Doctor<span class="required">*</span></label>
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Type Doctor<span class="required" style="color: red">*</span></label>
                                                 <div class="col-md-6 col-sm-6">
                                                     <select name="typeDoctorID" class="form-control">
                                                         <option value="">---Select Option---</option>
@@ -80,7 +78,7 @@
                                                 </div>
                                             </div>
                                             <div class="field item form-group">
-                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Patients<span class="required">*</span></label>
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Patients<span class="required" style="color: red">*</span></label>
                                                 <div class="col-md-6 col-sm-6">
                                                     <select name="patientID" class="form-control">
                                                         <option value="">---Select Option---</option>
@@ -89,18 +87,16 @@
                                                 </div>
                                             </div>
                                             <div class="field item form-group">
-                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Total Money<span class="required">*</span></label>
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Total Money<span class="required" style="color: red">*</span></label>
                                                 <div class="col-md-6 col-sm-6">
-                                                    <input th:field="*{totalMoney}" class="form-control" type="number" name="total_money"
-                                                           pattern="(?=.*\d).{1,}"
-                                                           title="Minimum 1 number"
-                                                           required="">
+                                                    <input th:field="*{totalMoney}" class="form-control" type="number" name="total_money" th:attr="style=${taophieukham.totalMoney == null} ? 'border-color: red' : ''">
+                                                        <div style="color: red" class="help-block with-errors" th:if="${#fields.hasErrors('totalMoney')}" th:errors="*{totalMoney}"></div>
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <div class="col-md-6 offset-md-3">
                                                     <input type="submit" value="Create" class="btn btn-primary"/>
-                                                    <input type="reset" value="Reset" class="btn btn-success"/>
+                                                    <a th:href="@{/admin/phieukham}" class="btn btn-success">Cancel</a>
                                                 </div>
                                             </div>
                                         </form>
