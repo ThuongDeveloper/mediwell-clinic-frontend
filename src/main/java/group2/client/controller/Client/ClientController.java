@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/springframework/Controller.java to edit this template
  */
-package group2.client.controller;
+package group2.client.controller.Client;
 
 import group2.client.entities.*;
 import group2.client.repository.PatientRepository;
@@ -28,6 +28,7 @@ public class ClientController {
     String apiUrl = "http://localhost:8888/api/appointment/";
     private String apiUrlDoctor = "http://localhost:8888/api/doctor/";
     private String apiUrlPatient = "http://localhost:8888/api/patient/";
+    private String apiUrlTypeDoctor = "http://localhost:8888/api/typedoctor/";
     RestTemplate restTemplate = new RestTemplate();
 
     @Autowired
@@ -66,15 +67,47 @@ public class ClientController {
         }
 
     }
+    
+    @RequestMapping("/listDoctors")
+    public String listDoctors(Model model, HttpServletRequest request) {
+
+        Patient currentPatient = authService.isAuthenticatedPatient(request);
+        
+        ResponseEntity<List<Doctor>> response = restTemplate.exchange(apiUrlDoctor, HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<Doctor>>() {
+        });
+        ResponseEntity<List<TypeDoctor>> responseTD = restTemplate.exchange(apiUrlTypeDoctor, HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<TypeDoctor>>() {
+        });
+        if (response.getStatusCode().is2xxSuccessful() && responseTD.getStatusCode().is2xxSuccessful() && currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
+            List<Doctor> listDoctor = response.getBody();
+            List<TypeDoctor> listTypeDoctor = responseTD.getBody();
+            model.addAttribute("listDoctor", listDoctor);
+            model.addAttribute("listTypeDoctor", listTypeDoctor);
+            model.addAttribute("patient", currentPatient);
+        } else if (response.getStatusCode().is2xxSuccessful() && responseTD.getStatusCode().is2xxSuccessful() && currentPatient == null) {
+            List<Doctor> listDoctor = response.getBody();
+            List<TypeDoctor> listTypeDoctor = responseTD.getBody();
+            model.addAttribute("listDoctor", listDoctor);
+            model.addAttribute("listTypeDoctor", listTypeDoctor);
+            model.addAttribute("listDoctor", listDoctor);
+        }
+        return "/client/listDoctors";
+
+    }
 
     @RequestMapping(value = "/profile/{id}", method = RequestMethod.GET)
     public String editProfile(Model model, @PathVariable("id") Integer id, HttpServletRequest request) {
+        
+        Patient currentPatient = authService.isAuthenticatedPatient(request);
+        
         ResponseEntity<Patient> response = restTemplate.exchange(apiUrlPatient + "/" + id, HttpMethod.GET, null,
                 new ParameterizedTypeReference<Patient>() {
         });
-        if (response.getStatusCode().is2xxSuccessful()) {
+        if (response.getStatusCode().is2xxSuccessful() && currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
             Patient patient = response.getBody();
             model.addAttribute("patientProfile", patient);
+            model.addAttribute("patient", currentPatient);
         }
 
         return "/client/profile";
