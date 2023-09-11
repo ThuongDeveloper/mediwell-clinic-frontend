@@ -59,7 +59,7 @@ public class DonthuocController {
     }
     
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String create(Model model,int[] thuocID,int[] price,int[] quantity) {
+    public String create(Model model,int[] thuocID,int[] price,int[] quantity,String name,String phone) {
             List<HoaDonThuocDAO> list = new ArrayList<HoaDonThuocDAO>();
             for(int i = 0; i < thuocID.length;i++){
                 HoaDonThuocDAO obj = new HoaDonThuocDAO(thuocID[i],price[i],quantity[i]);
@@ -67,7 +67,8 @@ public class DonthuocController {
             }
             ListHoaDonThuocDAO listHDTD = new ListHoaDonThuocDAO();
             listHDTD.setListHDT(list);
-            listHDTD.setName("Trần Minh Khôi");
+            listHDTD.setName(name);
+            listHDTD.setPhone(phone);
             
                 HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -82,10 +83,10 @@ public class DonthuocController {
             // Thực hiện thêm xử lý sau khi tạo Casher thành công (nếu cần)
 
             // Chuyển hướng về trang danh sách Casher
-            return "redirect:/admin/casher";
+            return "redirect:/admin/donthuoc";
         } else {
             // Xử lý lỗi nếu cần thiết
-            return "/admin/casher/create";
+            return "redirect:/admin/donthuoc";
         }      
     }
     
