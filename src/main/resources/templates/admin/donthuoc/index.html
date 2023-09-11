@@ -27,13 +27,26 @@
                                         <tr>
 
                                             <th>Id</th>
+                                            <th>Name</th>
+                                            <th>Phone</th>
                                             <th>Total Money</th>
+                                            <th>Date</th>
+                                            <th>Casher</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                 </tbody>
                                  <tr th:each="e : ${listDonthuoc}">
                                          <td th:text="${e.getId()}"></td>
+                                         <td th:text="${e.getName()}"></td>
+                                         <td th:text="${e.getPhone()}"></td>
+                                         
                                         <td th:text="${e.getTotalMoney()}"></td>
+                                        <td th:text="${e.getCreateAt()}"></td>
+                                        <td >Chưa thêm</td>
+                                        <td>
+                                            <button class="btn btn-primary">Details</button>
+                                        </td>
 
 
                                     </tr>

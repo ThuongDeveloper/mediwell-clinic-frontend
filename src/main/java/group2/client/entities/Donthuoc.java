@@ -41,6 +41,26 @@ public class Donthuoc implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+     @Column(name = "name")
+    private String name;
+    @Column(name = "phone")
+    private String phone;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
     @Column(name = "total_money")
     private Integer totalMoney;
     @Column(name = "create_at")
