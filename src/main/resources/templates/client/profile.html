@@ -250,7 +250,7 @@
                                                                                                 <div class="mediz-page-title-wrap  mediz-style-custom mediz-left-align"><div class="mediz-header-transparent-substitute"></div><div class="mediz-page-title-overlay"></div><div class="mediz-page-title-container mediz-container"><div class="mediz-page-title-content mediz-item-pdlr"><h1 class="mediz-page-title">My Account</h1></div></div></div>
                                                                                                 <div class="mediz-page-wrapper" id="mediz-page-wrapper"><div class="mediz-content-container mediz-container"><div class="mediz-content-area mediz-item-pdlr mediz-sidebar-style-none clearfix"><div class="woocommerce"><div class="woocommerce-notices-wrapper"></div>
                                                                                                 <h3>Profile</h3>
-                                                                                                <form class="woocommerce-form" th:action="@{/profile}" th:object="${patientProfile}" method="post">
+                                                                                                <form class="woocommerce-form" th:action="@{/profile/{id}(id=${patientProfile.id})}" th:object="${patientProfile}" method="post">
                                                                                                         <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
                                                                                                             <input type="text" hidden="true" th:field="*{id}" class="woocommerce-Input woocommerce-Input--text input-text">
                                                                                                         </p>
@@ -262,7 +262,8 @@
                                                                                                         </p>
                                                                                                         <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
                                                                                                                 <label for="name">Name</label>
-                                                                                                                <input type="text" th:field="*{name}" class="woocommerce-Input woocommerce-Input--text input-text" name="name" id="name" value="">
+                                                                                                                <input type="text" th:field="*{name}" class="woocommerce-Input woocommerce-Input--text input-text" name="name" id="name" value="" required>
+                                                                                                                    <div style="color: red" id="nameError"></div>
                                                                                                         </p>
                                                                                                         <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
                                                                                                                 <label for="email">Email</label>
@@ -271,22 +272,23 @@
                                                                                                         <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
                                                                                                                 <label for="address">Address</label>
                                                                                                                 <input th:field="*{address}" class="woocommerce-Input woocommerce-Input--text input-text" type="text" name="address" id="address">
+                                                                                                                    <div style="color: red" id="addressError"></div>
                                                                                                         </p>
                                                                                                         <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
                                                                                                                 <label for="phone">Phone</label>
                                                                                                                 <input th:field="*{phone}" class="woocommerce-Input woocommerce-Input--text input-text" type="text" name="phone" id="phone">
+                                                                                                                    <div style="color: red" id="phoneError"></div>
                                                                                                         </p>
                                                                                                         <p class="form-row">
                                                                                                         <button type="submit" class="woocommerce-button button" name="save">Save</button>
-                                                                                                        <button type="reset" class="woocommerce-button button" name="reset">Reset</button>
                                                                                                 </form>
 
 
                                                                                 </div>
                                                                                 </div></div><div class="gdlr-core-page-builder-body"></div></div>
                                                                                                 <div th:replace="~{client/layout/footer :: footer}"></div>
-                                                                                                </div></div>
 
+                                                                                                <script src="../client/js/client.js"></script>
 
                                                                                                 <div th:replace="~{client/layout/layout :: body}"></div>	
                                                                                                 </body>

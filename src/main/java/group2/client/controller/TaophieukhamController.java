@@ -12,12 +12,16 @@ import group2.client.entities.Taophieukham;
 import group2.client.entities.TypeDoctor;
 import group2.client.service.AuthService;
 import java.util.List;
+import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -35,21 +39,21 @@ public class TaophieukhamController {
     private String apiUrlTypeDoctor = "http://localhost:8888/api/typedoctor/";
     private String apiUrlPatient = "http://localhost:8888/api/patient/";
     RestTemplate restTemplate = new RestTemplate();
-    
-     @Autowired
+
+    @Autowired
     private AuthService authService;
 
     @RequestMapping("")
     public String page(Model model, HttpServletRequest request) {
-        
+
         Admin currentAdmin = authService.isAuthenticatedAdmin(request);
         Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
         Patient currentPatient = authService.isAuthenticatedPatient(request);
         Casher currentCasher = authService.isAuthenticatedCasher(request);
-        
-         if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
+
+        if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
             return "redirect:/forbien";
-        }else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
+        } else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
             ResponseEntity<List<Taophieukham>> response = restTemplate.exchange(apiUrl, HttpMethod.GET, null,
                     new ParameterizedTypeReference<List<Taophieukham>>() {
             });
@@ -62,7 +66,7 @@ public class TaophieukhamController {
                 model.addAttribute("listTaophieukham", listTaophieukham);
             }
             return "admin/phieukham/index";
-        }else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
+        } else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
             ResponseEntity<List<Taophieukham>> response = restTemplate.exchange(apiUrl, HttpMethod.GET, null,
                     new ParameterizedTypeReference<List<Taophieukham>>() {
             });
@@ -75,8 +79,8 @@ public class TaophieukhamController {
                 model.addAttribute("listTaophieukham", listTaophieukham);
             }
             return "admin/phieukham/index";
-        }else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
-             ResponseEntity<List<Taophieukham>> response = restTemplate.exchange(apiUrl, HttpMethod.GET, null,
+        } else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
+            ResponseEntity<List<Taophieukham>> response = restTemplate.exchange(apiUrl, HttpMethod.GET, null,
                     new ParameterizedTypeReference<List<Taophieukham>>() {
             });
 
@@ -88,26 +92,25 @@ public class TaophieukhamController {
                 model.addAttribute("listTaophieukham", listTaophieukham);
             }
             return "admin/phieukham/index";
-        }else {
+        } else {
             return "redirect:/login";
         }
-        
-        
+
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public String create(Model model, HttpServletRequest request) {
-        
-         Admin currentAdmin = authService.isAuthenticatedAdmin(request);
+
+        Admin currentAdmin = authService.isAuthenticatedAdmin(request);
         Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
         Patient currentPatient = authService.isAuthenticatedPatient(request);
         Casher currentCasher = authService.isAuthenticatedCasher(request);
-        
+
         if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
             return "redirect:/forbien";
-        }else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
+        } else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
             ResponseEntity<List<Casher>> casherResponse = restTemplate.exchange(apiUrlCasher, HttpMethod.GET, null,
-                new ParameterizedTypeReference<List<Casher>>() {
+                    new ParameterizedTypeReference<List<Casher>>() {
             });
             ResponseEntity<List<TypeDoctor>> TDResponse = restTemplate.exchange(apiUrlTypeDoctor, HttpMethod.GET, null,
                     new ParameterizedTypeReference<List<TypeDoctor>>() {
@@ -127,9 +130,9 @@ public class TaophieukhamController {
 
             model.addAttribute("taophieukham", new Taophieukham());
             return "admin/phieukham/create";
-        }else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
+        } else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
             ResponseEntity<List<Casher>> casherResponse = restTemplate.exchange(apiUrlCasher, HttpMethod.GET, null,
-                new ParameterizedTypeReference<List<Casher>>() {
+                    new ParameterizedTypeReference<List<Casher>>() {
             });
             ResponseEntity<List<TypeDoctor>> TDResponse = restTemplate.exchange(apiUrlTypeDoctor, HttpMethod.GET, null,
                     new ParameterizedTypeReference<List<TypeDoctor>>() {
@@ -149,9 +152,9 @@ public class TaophieukhamController {
 
             model.addAttribute("taophieukham", new Taophieukham());
             return "admin/phieukham/create";
-        }else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
+        } else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
             ResponseEntity<List<Casher>> casherResponse = restTemplate.exchange(apiUrlCasher, HttpMethod.GET, null,
-                new ParameterizedTypeReference<List<Casher>>() {
+                    new ParameterizedTypeReference<List<Casher>>() {
             });
             ResponseEntity<List<TypeDoctor>> TDResponse = restTemplate.exchange(apiUrlTypeDoctor, HttpMethod.GET, null,
                     new ParameterizedTypeReference<List<TypeDoctor>>() {
@@ -171,15 +174,14 @@ public class TaophieukhamController {
 
             model.addAttribute("taophieukham", new Taophieukham());
             return "admin/phieukham/create";
-        }else {
+        } else {
             return "redirect:/login";
         }
-        
-        
+
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String create(Model model, Taophieukham taophieukham, @RequestParam("casherID") String casherID, @RequestParam("typeDoctorID") String typeDoctorID, @RequestParam("patientID") String patientID) {
+    public String create(Model model,@Valid @ModelAttribute Taophieukham taophieukham, BindingResult bindingResult, @RequestParam("casherID") String casherID, @RequestParam("typeDoctorID") String typeDoctorID, @RequestParam("patientID") String patientID) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
@@ -195,19 +197,32 @@ public class TaophieukhamController {
         taophieukham.setSothutu(maxSoThuTu + 1);
 
         Casher newCasher = new Casher();
-        newCasher.setId(Integer.parseInt(casherID));
-        taophieukham.setCasherId(newCasher);
-        var a = taophieukham.getCasherId().getId();
-
         TypeDoctor newTD = new TypeDoctor();
-        newTD.setId(Integer.parseInt(typeDoctorID));
-        taophieukham.setTypeDoctorId(newTD);
-        var b = taophieukham.getTypeDoctorId().getId();
+
+        if (casherID == "") {
+            newCasher.setId(null);
+        } else {
+            newCasher.setId(Integer.parseInt(casherID));
+            taophieukham.setCasherId(newCasher);
+        }
         
-//        Patient newPatient = new Patient();
-//        newPatient.setId(Integer.parseInt(patientID));
-        taophieukham.setPatientId(Integer.parseInt(patientID));
-        var c = taophieukham.getPatientId();
+        if (typeDoctorID == "") {
+            newTD.setId(null);
+        } else {
+            newTD.setId(Integer.parseInt(typeDoctorID));
+            taophieukham.setTypeDoctorId(newTD);
+        }
+        
+        if (patientID == "") {
+            taophieukham.setPatientId(null);
+        } else {
+            taophieukham.setPatientId(Integer.parseInt(patientID));
+        }
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("taophieukham", taophieukham);
+            return "/admin/phieukham/create";
+        }
 
         // Tạo một HttpEntity với thông tin Casher để gửi yêu cầu POST
         HttpEntity<Taophieukham> request = new HttpEntity<>(taophieukham, headers);
@@ -217,25 +232,25 @@ public class TaophieukhamController {
         // Kiểm tra mã trạng thái của phản hồi
         if (response.getStatusCode().is2xxSuccessful()) {
             // Chuyển hướng về trang danh sách Taophieukham
-            model.addAttribute("taophieukham", new Taophieukham());
             return "redirect:/admin/phieukham";
         } else {
             // Xử lý lỗi nếu cần thiết
+            model.addAttribute("taophieukham", taophieukham);
             return "/admin/phieukham/create";
         }
     }
 
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
     public String edit(Model model, @PathVariable("id") int id, HttpServletRequest request) {
-        
-         Admin currentAdmin = authService.isAuthenticatedAdmin(request);
+
+        Admin currentAdmin = authService.isAuthenticatedAdmin(request);
         Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
         Patient currentPatient = authService.isAuthenticatedPatient(request);
         Casher currentCasher = authService.isAuthenticatedCasher(request);
-        
-         if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
+
+        if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
             return "redirect:/forbien";
-        }else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
+        } else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
             Taophieukham taophieukham = restTemplate.getForObject(apiUrl + "/" + id, Taophieukham.class);
 
             ResponseEntity<List<Casher>> casherResponse = restTemplate.exchange(apiUrlCasher, HttpMethod.GET, null,
@@ -255,7 +270,7 @@ public class TaophieukhamController {
             } else {
                 return "redirect:/admin/phieukham";
             }
-        }else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
+        } else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
             Taophieukham taophieukham = restTemplate.getForObject(apiUrl + "/" + id, Taophieukham.class);
 
             ResponseEntity<List<Casher>> casherResponse = restTemplate.exchange(apiUrlCasher, HttpMethod.GET, null,
@@ -275,7 +290,7 @@ public class TaophieukhamController {
             } else {
                 return "redirect:/admin/phieukham";
             }
-        }else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
+        } else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
             Taophieukham taophieukham = restTemplate.getForObject(apiUrl + "/" + id, Taophieukham.class);
 
             ResponseEntity<List<Casher>> casherResponse = restTemplate.exchange(apiUrlCasher, HttpMethod.GET, null,
@@ -295,11 +310,9 @@ public class TaophieukhamController {
             } else {
                 return "redirect:/admin/phieukham";
             }
-        }else {
+        } else {
             return "redirect:/login";
         }
-        
-        
 
     }
 
@@ -330,36 +343,35 @@ public class TaophieukhamController {
 
     @RequestMapping(value = "/delete/{id}")
     public String delete(@PathVariable("id") Integer id, HttpServletRequest request) {
-        
-         Admin currentAdmin = authService.isAuthenticatedAdmin(request);
+
+        Admin currentAdmin = authService.isAuthenticatedAdmin(request);
         Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
         Patient currentPatient = authService.isAuthenticatedPatient(request);
         Casher currentCasher = authService.isAuthenticatedCasher(request);
-        
-         if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
+
+        if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
             return "redirect:/forbien";
-        }else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
-              restTemplate.delete(apiUrl + "delete/" + id);
+        } else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
+            restTemplate.delete(apiUrl + "delete/" + id);
             // Thực hiện thêm xử lý sau khi xóa Taophieukham thành công (nếu cần)
 
             // Chuyển hướng về trang danh sách Taophieukham
-              return "redirect:/admin/phieukham";
-        }else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
-              restTemplate.delete(apiUrl + "delete/" + id);
+            return "redirect:/admin/phieukham";
+        } else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
+            restTemplate.delete(apiUrl + "delete/" + id);
             // Thực hiện thêm xử lý sau khi xóa Taophieukham thành công (nếu cần)
 
             // Chuyển hướng về trang danh sách Taophieukham
-              return "redirect:/admin/phieukham";
-        }else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
-              restTemplate.delete(apiUrl + "delete/" + id);
+            return "redirect:/admin/phieukham";
+        } else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
+            restTemplate.delete(apiUrl + "delete/" + id);
             // Thực hiện thêm xử lý sau khi xóa Taophieukham thành công (nếu cần)
 
             // Chuyển hướng về trang danh sách Taophieukham
-              return "redirect:/admin/phieukham";
-        }else {
+            return "redirect:/admin/phieukham";
+        } else {
             return "redirect:/login";
         }
-        
-      
+
     }
 }

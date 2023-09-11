@@ -50,8 +50,6 @@ public class ClientController {
         Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
         Patient currentPatient = authService.isAuthenticatedPatient(request);
         Casher currentCasher = authService.isAuthenticatedCasher(request);
-        
-       
 
         if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
             model.addAttribute("patient", currentPatient);
@@ -67,12 +65,12 @@ public class ClientController {
         }
 
     }
-    
+
     @RequestMapping("/listDoctors")
     public String listDoctors(Model model, HttpServletRequest request) {
 
         Patient currentPatient = authService.isAuthenticatedPatient(request);
-        
+
         ResponseEntity<List<Doctor>> response = restTemplate.exchange(apiUrlDoctor, HttpMethod.GET, null,
                 new ParameterizedTypeReference<List<Doctor>>() {
         });
@@ -98,9 +96,9 @@ public class ClientController {
 
     @RequestMapping(value = "/profile/{id}", method = RequestMethod.GET)
     public String editProfile(Model model, @PathVariable("id") Integer id, HttpServletRequest request) {
-        
+
         Patient currentPatient = authService.isAuthenticatedPatient(request);
-        
+
         ResponseEntity<Patient> response = restTemplate.exchange(apiUrlPatient + "/" + id, HttpMethod.GET, null,
                 new ParameterizedTypeReference<Patient>() {
         });
@@ -113,22 +111,32 @@ public class ClientController {
         return "/client/profile";
     }
 
-    @RequestMapping(value = "/profile", method = RequestMethod.POST)
-    public String update(Model model, @ModelAttribute Patient updatedPatient) {
+    @RequestMapping(value = "/profile/{id}", method = RequestMethod.POST)
+    public String update(Model model, @ModelAttribute Patient updatedPatient, @PathVariable("id") Integer id) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+        id = updatedPatient.getId();
 
         // Kiểm tra dữ liệu đã cập nhật có thay đổi so với dữ liệu hiện có trong cơ sở dữ liệu hay không
-        Patient existingPatient = restTemplate.getForObject(apiUrlPatient + "/" + updatedPatient.getId(), Patient.class);
+        Patient existingPatient = restTemplate.getForObject(apiUrlPatient + "/" + id, Patient.class);
 
         // Bổ sung id vào URL khi thực hiện PUT
-        String url = apiUrlPatient + "/" + updatedPatient.getId();
+        String url = apiUrlPatient + "/" + id;
 
         // Tạo một HttpEntity với thông tin Casher cập nhật để gửi yêu cầu PUT
         HttpEntity<Patient> request = new HttpEntity<>(updatedPatient, headers);
 
-        restTemplate.exchange(url, HttpMethod.PUT, request, Patient.class);
-        return "/client/profile";
+        var response = restTemplate.exchange(url, HttpMethod.PUT, request, Patient.class);
+
+        if (response.getStatusCode().is2xxSuccessful()) {
+            // Cập nhật thành công, thực hiện chuyển hướng đến trang hồ sơ với id của người dùng
+            return "redirect:/profile/" + id;
+        } else {
+            // Xử lý lỗi nếu cần thiết và hiển thị trang hồ sơ
+            Patient patient = response.getBody();
+            model.addAttribute("patientProfile", patient);
+            return "/client/profile";
+        }
     }
 
     @RequestMapping("/appointment/create")
@@ -140,7 +148,6 @@ public class ClientController {
         Casher currentCasher = authService.isAuthenticatedCasher(request);
 
         if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
-
 
             model.addAttribute("currentPatient", currentPatient);
 

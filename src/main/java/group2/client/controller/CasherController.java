@@ -4,21 +4,19 @@
  */
 package group2.client.controller;
 
-import group2.client.entities.Admin;
-import group2.client.entities.Casher;
-import group2.client.entities.Doctor;
-import group2.client.entities.Patient;
+import group2.client.entities.*;
 import group2.client.service.AuthService;
-import java.util.List;
+import java.util.*;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestClientException;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.*;
 
 /**
  *
@@ -111,15 +109,19 @@ public class CasherController {
     }
 
     @RequestMapping(value = "/admin/casher/create", method = RequestMethod.POST)
-    public String create(Model model, @ModelAttribute Casher casher) {
+    public String create(Model model, @Valid @ModelAttribute Casher casher, BindingResult bindingResult) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+        
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("casher", casher);
+            return "/admin/casher/create";
+        }
 
         // Tạo một HttpEntity với thông tin Casher để gửi yêu cầu POST
         HttpEntity<Casher> request = new HttpEntity<>(casher, headers);
 
         ResponseEntity<Casher> response = restTemplate.exchange(apiUrl, HttpMethod.POST, request, Casher.class);
-
         // Kiểm tra mã trạng thái của phản hồi
         if (response.getStatusCode().is2xxSuccessful()) {
             // Thực hiện thêm xử lý sau khi tạo Casher thành công (nếu cần)
@@ -127,7 +129,7 @@ public class CasherController {
             // Chuyển hướng về trang danh sách Casher
             return "redirect:/admin/casher";
         } else {
-            // Xử lý lỗi nếu cần thiết
+            model.addAttribute("casher", casher);
             return "/admin/casher/create";
         }
     }
