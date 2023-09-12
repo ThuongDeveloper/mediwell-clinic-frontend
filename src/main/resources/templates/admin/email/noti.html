@@ -1,0 +1,40 @@
+<html  xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="~{admin/layout/layoutfixbug :: head}"></div>
+
+
+<body class="nav-md">
+<div class="container body">
+    <div class="main_container">
+        <div th:replace="~{admin/layout/slidebarfixbug :: slidebarAdmin}"></div>
+        <div class="top_nav">
+            <div th:replace="~{admin/layout/header :: div}"></div>
+        </div>
+        <!-- Content -->
+
+        <div class="right_col" role="main">
+            <h1>Doctor Page</h1>
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 card_head">
+
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+
+                            <h1>Gửi mail thành công</h1>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Content -->
+        <div th:replace="~{admin/layout/footer :: footer}"></div>
+    </div>
+
+    <div th:replace="~{admin/layout/layoutfixbug :: body}"></div>
+</div>
+
+</div>
+</body>
+</html>
