@@ -68,7 +68,7 @@
                                                 <div class="col-md-6 col-sm-6">
                                                     <input class="form-control" th:field="*{email}" type="email">
                                                         <div style="color: red" class="help-block with-errors" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
-                                                        <div style="color: red" th:if="${#fields.hasErrors('email')}">Email is already registered.</div>
+                                                        <div style="color: red" th:if="${#fields.hasErrors('email')}"></div>
                                                 </div>
                                             </div>
                                             <div class="field item form-group">
