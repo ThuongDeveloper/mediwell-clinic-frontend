@@ -1,0 +1,33 @@
+.book-already-container{
+    padding: 100px 50px;
+    margin: 180px auto;
+    text-align: center;
+    width: 950px;
+    border: 1px solid #17449e;
+}
+.book-already-answer{
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+}
+.book-already-title{
+    color: #17449e;
+}
+.book-already-yes{
+    color: #fff;
+    background: #17449e;
+    text-decoration: none;
+    padding: 10px 20px;
+    border: none;
+    outline: none;
+    margin-right: 10px;
+}
+.book-already-no{
+    color: #fff;
+    background: #17449e;
+    text-decoration: none;
+    padding: 10px 20px;
+}
+.notify-already-create-error{
+    margin-top: -80px;
+}

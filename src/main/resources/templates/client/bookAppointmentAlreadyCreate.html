@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this template
+-->
+<html  xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>Mediz &#8211; Hospital</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+            <link rel="stylesheet" href="../client/css/bookAppointmentAlreadyCreate.css"/>
+    </head>
+
+    <body>
+        <div class="book-already-container">
+            <div th:if="${session.msg}">
+                <div class="alert alert-danger alert-dismissible fade show notify-already-create-error">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    <span th:text="${session.msg}"></span>
+                </div>
+                <th:block th:text="${#session.removeAttribute('msg')}"></th:block>
+            </div>
+            <h1 class="book-already-title">Bạn đã có lịch hẹn vào ngày này, bạn có muốn tiếp tục đặt không?</h1>
+            <div class="book-already-answer">
+                <form th:action="@{/book-appointment-already-create/{id}(id=${lichlamviec.id})}" method="post">
+                    <input type="hidden" name="symptom" th:value="${symptom}"/>
+                    <input type="hidden" name="select-hours" th:value="${hours}">
+                        <input type="submit" class="book-already-yes" value="YES"/>
+                </form>
+
+                <a th:href="@{/book-appointment-time/{id}(id=${lichlamviec.id})}" class="book-already-no">NO</a>
+            </div>
+        </div>
+    </body>
+
+</html>

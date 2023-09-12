@@ -272,7 +272,9 @@
                                                                                                                     </div>
                                                                                                                 </div>
                                                                                                                                                                            
-                                                                                                                <p th:if="${lichlamviec == null}">No Schedule Found</p>
+                                                                                                                <div th:if="${#lists.isEmpty(lichlamviec)}">
+                                                                                                                    <div class="not-found-schedule">No Schedule Found</div>
+                                                                                                                </div>
                                                                                                             </div>
                                                                                                         </div>
                                                                                                     </div>

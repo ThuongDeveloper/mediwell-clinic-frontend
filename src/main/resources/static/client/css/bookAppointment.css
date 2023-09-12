@@ -26,6 +26,13 @@
     width: 140px;
     text-align: center;
 }
+.not-found-schedule{
+    background: #17449e;
+    color: #fff;
+    padding: 15px 20px;
+    width: 220px;
+    text-align: center;
+}
 .doctor-list-schedule{
     display: flex;
 }

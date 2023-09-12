@@ -6,6 +6,7 @@ package group2.client.repository;
 
 import group2.client.entities.Appointment;
 import java.util.Date;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -13,5 +14,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author hokim
  */
 public interface AppointmentRepository extends JpaRepository<Appointment, Integer> {
-    public Appointment findByDate(Date date);
+    public List<Appointment> findByDate(Date date);
+    public Appointment findByStarttimeAndEndtime(String starttime, String endtime);
 }

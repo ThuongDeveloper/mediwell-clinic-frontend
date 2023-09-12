@@ -247,7 +247,7 @@
                                                                                                             <form th:action="@{/book-appointment-create/{id}(id=${lichlamviec.id})}" th:object="${appointment}" method="post">
                                                                                                                 <div th:if="${session.msg}">
                                                                                                                   
-                                                                                                                    <div class="alert alert-danger alert-dismissible fade show notify-error">
+                                                                                                                    <div class="alert alert-success alert-dismissible fade show notify-error">
                                                                                                                         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                                                                                                                         <span th:text="${session.msg}"></span>
                                                                                                                       </div>
@@ -256,100 +256,100 @@
                                                                                                             <div th:if="${lichlamviec != null}" class="time-detail">
                                                                                                                 <div class="working-hours-group">
                                                                                                                      <h4>Working hours of the day:</h4>
-                                                                                                                     <input type="text" class="date-input" th:value="${#dates.format(lichlamviec.date, 'dd-MM-yyyy')}"/>
+                                                                                                                     <input type="text" class="date-input" readonly="true" th:value="${#dates.format(lichlamviec.date, 'dd-MM-yyyy')}"/>
                                                                                                                 </div>
                                                                                                                
                                                                                                                 
                                                                                                                 <div th:if="${lichlamviec.starttime == '07:00:00' && lichlamviec.endtime == '12:00:00'}" class="time-list-detail">
-                                                                                                                    <div th:if="${appointment.starttime != '07:00:00' && appointment.endtime != '07:30:00'}">
+                                                                                                                    <div>
                                                                                                                         <input class="hours-input" type="radio" name="select-hours" checked="true" value="7:00 - 7:30"><span>7:00 - 7:30</span>
                                                                                                                     </div>
-                                                                                                                    <div th:if="${appointment.starttime != '07:30:00' && appointment.endtime != '08:00:00'}">
+                                                                                                                    <div>
                                                                                                                          <input class="hours-input" type="radio" name="select-hours" value="7:30 - 8:00"><span>7:30 - 8:00</span>
                                                                                                                     </div>
-                                                                                                                    <div th:if="${appointment.starttime != '8:00:00' && appointment.endtime != '08:30:00'}">
+                                                                                                                    <div>
                                                                                                                         <input class="hours-input" type="radio" name="select-hours" value="8:00 - 8:30"><span>8:00 - 8:30</span>
                                                                                                                     </div>
-                                                                                                                    <div th:if="${appointment.starttime != '8:30:00' && appointment.endtime != '9:00:00'}">
+                                                                                                                    <div>
                                                                                                                         <input class="hours-input" type="radio" name="select-hours" value="8:30 - 9:00"><span>8:30 - 9:00</span>
                                                                                                                     </div>
-                                                                                                                    <div th:if="${appointment.starttime != '9:00:00' && appointment.endtime != '9:30:00'}">
+                                                                                                                    <div>
                                                                                                                         <input class="hours-input" type="radio" name="select-hours" value="9:00 - 9:30"><span>9:00 - 9:30</span>
                                                                                                                     </div>
-                                                                                                                    <div th:if="${appointment.starttime != '9:30:00' && appointment.endtime != '10:00:00'}">
+                                                                                                                    <div>
                                                                                                                         <input class="hours-input" type="radio" name="select-hours" value="9:30 - 10:00"><span>9:30 - 10:00</span>
                                                                                                                     </div>
-                                                                                                                    <div th:if="${appointment.starttime != '10:00:00' && appointment.endtime != '10:30:00'}">
+                                                                                                                    <div>
                                                                                                                         <input class="hours-input" type="radio" name="select-hours" value="10:00 - 10:30"><span>10:00 - 10:30</span>
                                                                                                                     </div>
-                                                                                                                    <div th:if="${appointment.starttime != '10:30:00' && appointment.endtime != '11:00:00'}">
+                                                                                                                    <div>
                                                                                                                         <input class="hours-input" type="radio" name="select-hours" value="10:30 - 11:00"><span>10:30 - 11:00</span>
                                                                                                                     </div>
-                                                                                                                    <div th:if="${appointment.starttime != '11:00:00' && appointment.endtime != '11:30:00'}">
+                                                                                                                    <div>
                                                                                                                         <input class="hours-input" type="radio" name="select-hours" value="11:00 - 11:30"><span>11:00 - 11:30</span>
                                                                                                                     </div>
-                                                                                                                    <div th:if="${appointment.starttime != '11:30:00' && appointment.endtime != '12:00:00'}">
+                                                                                                                    <div>
                                                                                                                         <input class="hours-input" type="radio" name="select-hours" value="11:30 - 12:00"><span>11:30 - 12:00</span>
                                                                                                                     </div>
                                                                                                                     
                                                                                                                 </div>
                                                                                                                  <div th:if="${lichlamviec.starttime == '12:00:00' && lichlamviec.endtime == '17:00:00'}" class="time-list-detail">
-                                                                                                                     <div th:if="${appointment.starttime != '12:00:00' && appointment.endtime != '12:30:00'}">
+                                                                                                                     <div>
                                                                                                                           <input class="hours-input" type="radio" name="select-hours" checked="true" value="12:00 - 12:30"><span>12:00 - 12:30</span>
                                                                                                                      </div>
-                                                                                                                     <div th:if="${appointment.starttime != '12:30:00' && appointment.endtime != '13:00:00'}">
+                                                                                                                     <div>
                                                                                                                          <input class="hours-input" type="radio" name="select-hours" value="12:30 - 13:00"><span>12:30 - 13:00</span>
                                                                                                                      </div>
-                                                                                                                     <div th:if="${appointment.starttime != '13:00:00' && appointment.endtime != '13:30:00'}">
+                                                                                                                     <div>
                                                                                                                          <input class="hours-input" type="radio" name="select-hours" value="13:00 - 13:30"><span>13:00 - 13:30</span>
                                                                                                                      </div>
-                                                                                                                     <div th:if="${appointment.starttime != '13:30:00' && appointment.endtime != '14:00:00'}">
+                                                                                                                     <div>
                                                                                                                          <input class="hours-input" type="radio" name="select-hours" value="13:30 - 14:00"><span>13:30 - 14:00</span>
                                                                                                                      </div>
-                                                                                                                     <div th:if="${appointment.starttime != '14:00:00' && appointment.endtime != '14:30:00'}">
+                                                                                                                     <div>
                                                                                                                          <input class="hours-input" type="radio" name="select-hours" value="14:00 - 14:30"><span>14:00 - 14:30</span>
                                                                                                                      </div>
-                                                                                                                     <div th:if="${appointment.starttime != '14:30:00' && appointment.endtime != '15:00:00'}">
+                                                                                                                     <div>
                                                                                                                          <input class="hours-input" type="radio" name="select-hours" value="14:30 - 15:00"><span>14:30 - 15:00</span>
                                                                                                                      </div>
-                                                                                                                     <div th:if="${appointment.starttime != '15:00:00' && appointment.endtime != '15:30:00'}">
+                                                                                                                     <div>
                                                                                                                          <input class="hours-input" type="radio" name="select-hours" value="15:00 - 15:30"><span>15:00 - 15:30</span>
                                                                                                                      </div>
-                                                                                                                     <div th:if="${appointment.starttime != '15:30:00' && appointment.endtime != '16:00:00'}">
+                                                                                                                     <div>
                                                                                                                          <input class="hours-input" type="radio" name="select-hours" value="15:30 - 16:00"><span>15:30 - 16:00</span>
                                                                                                                      </div>
-                                                                                                                     <div th:if="${appointment.starttime != '16:00:00' && appointment.endtime != '16:30:00'}">
+                                                                                                                     <div>
                                                                                                                          <input class="hours-input" type="radio" name="select-hours" value="16:00 - 16:30"><span>16:00 - 16:30</span>
                                                                                                                      </div>
-                                                                                                                     <div th:if="${appointment.starttime != '16:30:00' && appointment.endtime != '17:00:00'}">
+                                                                                                                     <div>
                                                                                                                          <input class="hours-input" type="radio" name="select-hours" value="16:30 - 17:00"><span>16:30 - 17:00</span>
                                                                                                                      </div>
                                                                                                                     
                                                                                                                   
                                                                                                                 </div>
                                                                                                                  <div th:if="${lichlamviec.starttime == '17:00:00' && lichlamviec.endtime == '21:00:00'}" class="time-list-detail">
-                                                                                                                     <div th:if="${appointment.starttime != '17:00:00' && appointment.endtime != '17:30:00'}">
+                                                                                                                     <div>
                                                                                                                          <input class="hours-input" type="radio" name="select-hours" checked="true" value="17:00 - 17:30"><span>17:00 - 17:30</span>
                                                                                                                      </div>
-                                                                                                                     <div th:if="${appointment.starttime != '17:30:00' && appointment.endtime != '18:00:00'}">
+                                                                                                                     <div>
                                                                                                                          <input class="hours-input" type="radio" name="select-hours" value="17:30 -18:00"><span>17:30 - 18:00</span>
                                                                                                                      </div>
-                                                                                                                     <div th:if="${appointment.starttime != '18:00:00' && appointment.endtime != '18:30:00'}">
+                                                                                                                     <div>
                                                                                                                          <input class="hours-input" type="radio" name="select-hours" value="18:00 - 18:30"><span>18:00 - 18:30</span>
                                                                                                                      </div>
-                                                                                                                     <div th:if="${appointment.starttime != '18:30:00' && appointment.endtime != '19:00:00'}">
+                                                                                                                     <div>
                                                                                                                          <input class="hours-input" type="radio" name="select-hours" value="18:30 - 19:00"><span>18:30 - 19:00</span>
                                                                                                                      </div>
-                                                                                                                     <div th:if="${appointment.starttime != '19:00:00' && appointment.endtime != '19:30:00'}">
+                                                                                                                     <div>
                                                                                                                          <input class="hours-input" type="radio" name="select-hours" value="19:00 - 19:30"><span>19:00 - 19:30</span>
                                                                                                                      </div>
-                                                                                                                     <div th:if="${appointment.starttime != '19:30:00' && appointment.endtime != '20:00:00'}">
+                                                                                                                     <div>
                                                                                                                           <input class="hours-input" type="radio" name="select-hours" value="19:30 - 20:00"><span>19:30 - 20:00</span>
                                                                                                                      </div>
-                                                                                                                     <div th:if="${appointment.starttime != '20:00:00' && appointment.endtime != '20:30:00'}">
+                                                                                                                     <div>
                                                                                                                          <input class="hours-input" type="radio" name="select-hours" value="20:00 - 20:30"><span>20:00 - 20:30</span>
                                                                                                                      </div>
-                                                                                                                     <div th:if="${appointment.starttime != '20:30:00' && appointment.endtime != '21:00:00'}">
+                                                                                                                     <div>
                                                                                                                          <input class="hours-input" type="radio" name="select-hours" value="20:30 - 21:00"><span>20:30 - 21:00</span>
                                                                                                                      </div>
                                                                                                                     
@@ -359,15 +359,17 @@
                                                                                                                                                                            
                                                                                                                 
                                                                                                             </div>
-                                                                                                            <p th:if="${lichlamviec == null}">No Schedule Time Found</p>
+                                                                                                            <div th:if="${lichlamviec == null}">No Schedule Time Found</div>
                                                                                                             <div class="form-group">
                                                                                                                 <label>Symptom:</label>
-                                                                                                                <input type="text" th:field="*{symptom}" required="true" class="form-control symptom-input" placeholder="Your symptom..."/>
+                                                                                                                <input type="text" name="symptom" th:field="*{symptom}" required="true" class="form-control symptom-input" placeholder="Your symptom..."/>
                                                                                                             </div>
                                                                                                             <br/>
                                                                                                             <h4>Price: 50$</h4>
                                                                                                             <br/>
                                                                                                             <input type="submit" class="create-appointment-btn" value="Create appointment"/>
+                                                                                                           
+                                                                                                            
                                                                                                            </form>
                                                                                                         </div>
                                                                                                     </div>
@@ -377,13 +379,6 @@
 
 
                                                                                                 <div th:replace="~{client/layout/layout :: body}"></div>
-                                                                                                <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-                                                                                                <script>
-                                                                                                    function addAlert(){
-                                                                                                        swal("Are you sure you want to do this?", {
-                                                                                                            buttons: ["Oh noez!", "Aww yiss!"]
-                                                                                                          });
-                                                                                                    }
-                                                                                                </script>
+                                                                                               
                                                                                                 </body>
                                                                                                 </html>
