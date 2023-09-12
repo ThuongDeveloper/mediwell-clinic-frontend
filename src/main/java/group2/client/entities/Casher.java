@@ -4,6 +4,7 @@
  */
 package group2.client.entities;
 
+import group2.client.exception.UniqueEmail;
 import java.io.Serializable;
 import java.util.*;
 import javax.persistence.*;
@@ -48,13 +49,14 @@ public class Casher implements Serializable {
     private String username;
     @Column(name = "password")
     @NotNull(message = "Password cannot be left blank!!!")
-    @Length(min = 3, max = 250, message = "Password must be from 3 to 250 characters")
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$", message = "Invalid password")
+    @Length(min = 8, max = 250, message = "Password must be from 8 to 250 characters")
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=]).*$", message = "Invalid password")
     private String password;
     @Column(name = "email")
     @NotNull(message = "Email cannot be left blank!!!")
     @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")
     @Length(min = 11, message = "Email must have at least 11 characters")
+    @UniqueEmail(message = "Email must be unique")
     private String email;
     @Column(name = "address")
     @NotNull(message = "Address cannot be left blank!!!")

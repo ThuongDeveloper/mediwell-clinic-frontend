@@ -66,6 +66,7 @@
                                             <div class="col-md-6 col-sm-6">
                                                 <input th:field="*{email}" class="form-control" name="email" th:attr="style=${casher.email == null} ? 'border-color: red' : ''" type="email">
                                                 <div style="color: red" class="help-block with-errors" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+                                                <div style="color: red" th:if="${#fields.hasErrors('email')}">Email is already registered.</div>
                                             </div>
                                         </div>
                                         <div class="field item form-group">

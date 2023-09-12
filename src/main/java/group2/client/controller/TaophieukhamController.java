@@ -181,7 +181,7 @@ public class TaophieukhamController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String create(Model model,@Valid @ModelAttribute Taophieukham taophieukham, BindingResult bindingResult, @RequestParam("casherID") String casherID, @RequestParam("typeDoctorID") String typeDoctorID, @RequestParam("patientID") String patientID) {
+    public String create(Model model, @Valid @ModelAttribute Taophieukham taophieukham, BindingResult bindingResult, @RequestParam("casherID") String casherID, @RequestParam("typeDoctorID") String typeDoctorID, @RequestParam("patientID") String patientID) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
@@ -205,14 +205,14 @@ public class TaophieukhamController {
             newCasher.setId(Integer.parseInt(casherID));
             taophieukham.setCasherId(newCasher);
         }
-        
+
         if (typeDoctorID == "") {
             newTD.setId(null);
         } else {
             newTD.setId(Integer.parseInt(typeDoctorID));
             taophieukham.setTypeDoctorId(newTD);
         }
-        
+
         if (patientID == "") {
             taophieukham.setPatientId(null);
         } else {
@@ -317,16 +317,32 @@ public class TaophieukhamController {
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public String update(Model model, @ModelAttribute Taophieukham updatedTaophieukham, @RequestParam String casherID, @RequestParam String typeDoctorID) {
+    public String update(Model model, @Valid @ModelAttribute Taophieukham updatedTaophieukham, BindingResult bindingResult, @RequestParam String typeDoctorID) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         // Lấy phiếu khám hiện có từ API server
         Taophieukham existingTaophieukham = restTemplate.getForObject(apiUrl + "/" + updatedTaophieukham.getId(), Taophieukham.class);
 
+        ResponseEntity<List<TypeDoctor>> TDResponse = restTemplate.exchange(apiUrlTypeDoctor, HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<TypeDoctor>>() {
+        });
+
         TypeDoctor newTD = new TypeDoctor();
-        newTD.setId(Integer.parseInt(typeDoctorID));
-        existingTaophieukham.setTypeDoctorId(newTD);
+
+        if (typeDoctorID == "") {
+            newTD.setId(null);
+        } else {
+            newTD.setId(Integer.parseInt(typeDoctorID));
+            updatedTaophieukham.setTypeDoctorId(newTD);
+        }
+
+        if (bindingResult.hasErrors()) {
+            List<TypeDoctor> listTypeDoctor = TDResponse.getBody();
+            model.addAttribute("listTypeDoctor", listTypeDoctor);
+            model.addAttribute("taophieukham", updatedTaophieukham);
+            return "/admin/phieukham/edit";
+        }
 
         // Bổ sung id vào URL khi thực hiện PUT
         String url = apiUrl + "edit/" + updatedTaophieukham.getId(); // Đảm bảo URL đúng
@@ -336,9 +352,9 @@ public class TaophieukhamController {
 
         // Thực hiện PUT request để cập nhật phiếu khám
         restTemplate.exchange(url, HttpMethod.PUT, request, Taophieukham.class);
-
         // Sau khi cập nhật thành công, chuyển hướng về trang danh sách phiếu khám
         return "redirect:/admin/phieukham";
+
     }
 
     @RequestMapping(value = "/delete/{id}")
