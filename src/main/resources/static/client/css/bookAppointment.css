@@ -1,0 +1,41 @@
+.getDetailDoctor{
+    margin: 80px 0px;
+}
+.doctor-detail{
+    display: flex;
+    justify-content: space-between;
+}
+.doctor-info{
+    margin-right: 450px;
+}
+.doctor-info h1{
+    color: #17449e;
+}
+.doctor-img{
+    border-radius: 50%;
+   
+}
+.doctor-schedule{
+    margin-top: 50px;
+    margin-left: 40px;
+}
+.doctor-schedule p{
+    background: #17449e;
+    color: #fff;
+    padding: 15px 20px;
+    width: 140px;
+    text-align: center;
+}
+.not-found-schedule{
+    background: #17449e;
+    color: #fff;
+    padding: 15px 20px;
+    width: 220px;
+    text-align: center;
+}
+.doctor-list-schedule{
+    display: flex;
+}
+.doctor-date{
+    margin-right: 20px;
+}
