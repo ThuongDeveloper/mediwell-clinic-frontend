@@ -6,70 +6,72 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
 <html  xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
 
-         <div th:fragment="slidebarAdmin" class="col-md-3 left_col">
-          <div class="left_col scroll-view">
+    <div th:fragment="slidebarAdmin" class="col-md-3 left_col">
+        <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span>Gentelella Alela!</span></a>
+                <a th:href="@{/admin}" class="site_title">
+                    <img src="../admin/images/logo-1.png" alt="" width="210" height="50" title="logo" />
+                </a>
             </div>
 
             <div class="clearfix"></div>
 
             <!-- menu profile quick info -->
             <div class="profile clearfix">
-              <div class="profile_pic">
-                  <img src="../admin/../admin/images/img.jpg" alt="..." class="img-circle profile_img">
-              </div>
-              <div class="profile_info">
-                <span>Welcome,</span>
-                <h2>John Doe</h2>
-              </div>
-            </div>
-            <!-- /menu profile quick info -->
+                <div class="profile_pic">
+                    <img src="../admin/images/img.jpg" alt="..." class="img-circle profile_img">
+                                </div>
+                                <div class="profile_info">
+                                    <span>Welcome,</span>
+                                    <h2>John Doe</h2>
+                                </div>
+                                </div>
+                                <!-- /menu profile quick info -->
 
-            <br />
+                                <br />
 
-            <!-- sidebar menu -->
-            <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
-              <div class="menu_section">
-                <h3>General</h3>
-                <ul class="nav side-menu">
-                  <li><a><i class="fa fa-home"></i> Quản lý<span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                      <li><a th:href="@{/admin/thuoc}">Quản lý thuốc</a></li>
-                      <li><a th:href="@{/admin/typethuoc}">Loại thuốc</a></li>
-                      <li><a th:href="@{/admin/doctor}">Quản lý Bác sĩ</a></li>
-                      <li><a th:href="@{/admin/casher}">Quản lý nhân viên thu ngân</a></li>
-                      <li><a th:href="@{/admin/phieukham}">Quản lý phiếu khám</a></li>
-                      <li><a th:href="@{/admin/typedoctor}">Loại Bác sĩ</a></li>
-                       <li><a th:href="@{/admin/patient}">Bệnh nhân</a></li>
-                        <li><a th:href="@{/admin/donthuoc}">Quản lý Đơn thuốc</a></li>
-                        <li><a th:href="@{/admin/lichlamviec}">Lịch làm việc</a></li>
-                        <li><a th:href="@{/admin/appointment}">Cuộc hẹn</a></li>
-                      <li><a th:href="@{/admin/rating}">Quản lý đánh giá và bình luận</a></li>
-                      <li><a th:href="@{/admin/email}">Quản lý Email</a></li>
-                      <li><a th:href="@{/admin/feedback}">Phản hồi</a></li>
-                      <li><a th:href="@{/admin/news}">Bản tin</a></li>
+                                <!-- sidebar menu -->
+                                <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+                                    <div class="menu_section">
+                                        <h3>General</h3>
+                                        <ul class="nav side-menu">
+                                            <li><a><i class="fa fa-home"></i>Data Management<span class="fa fa-chevron-down"></span></a>
+                                                <ul class="nav child_menu">
+                                                    <li><a th:href="@{/admin/thuoc}">Medication Management</a></li>
+                                                    <li><a th:href="@{/admin/typethuoc}">Medication Types</a></li>
+                                                    <li><a th:href="@{/admin/doctor}">Physician Management</a></li>
+                                                    <li><a th:href="@{/admin/casher}">Cashier Staff Management</a></li>
+                                                    <li><a th:href="@{/admin/phieukham}">Medical Examination Form Management</a></li>
+                                                    <li><a th:href="@{/admin/typedoctor}">Physician Categorization</a></li>
+                                                    <li><a th:href="@{/admin/patient}">Patient</a></li>
+                                                    <li><a th:href="@{/admin/donthuoc}">Prescription Management</a></li>
+                                                    <li><a th:href="@{/admin/lichlamviec}">Work Schedule</a></li>
+                                                    <li><a th:href="@{/admin/appointment}">Appointments</a></li>
+                                                    <li><a th:href="@{/admin/rating}">Review and Comment Management</a></li>
+                                                    <li><a th:href="@{/admin/email}">Email Management</a></li>
+                                                    <li><a th:href="@{/admin/feedback}">Feedback</a></li>
+                                                    <li><a th:href="@{/admin/news}">Newsletter</a></li>
 
-                    </ul>
-                  </li>
-<!--                  <li><a><i class="fa fa-edit"></i> Forms <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                      <li><a href="form.html">General Form</a></li>
-                      <li><a href="form_advanced.html">Advanced Components</a></li>
-                      <li><a href="form_validation.html">Form Validation</a></li>
-                      <li><a href="form_wizards.html">Form Wizard</a></li>
-                      <li><a href="form_upload.html">Form Upload</a></li>
-                      <li><a href="form_buttons.html">Form Buttons</a></li>
-                    </ul>
-                  </li>-->
-                </ul>
-              </div>
+                                                </ul>
+                                            </li>
+                                            <!--                  <li><a><i class="fa fa-edit"></i> Forms <span class="fa fa-chevron-down"></span></a>
+                                                                <ul class="nav child_menu">
+                                                                  <li><a href="form.html">General Form</a></li>
+                                                                  <li><a href="form_advanced.html">Advanced Components</a></li>
+                                                                  <li><a href="form_validation.html">Form Validation</a></li>
+                                                                  <li><a href="form_wizards.html">Form Wizard</a></li>
+                                                                  <li><a href="form_upload.html">Form Upload</a></li>
+                                                                  <li><a href="form_buttons.html">Form Buttons</a></li>
+                                                                </ul>
+                                                              </li>-->
+                                        </ul>
+                                    </div>
 
-            </div>
-            <!-- /sidebar menu -->
-          </div>
-        </div>
+                                </div>
+                                <!-- /sidebar menu -->
+                                </div>
+                                </div>
 
 
 
-</html>
+                                </html>
