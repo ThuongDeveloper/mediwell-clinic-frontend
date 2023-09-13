@@ -5,6 +5,7 @@
 package group2.client.repository;
 
 import group2.client.entities.Casher;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -13,6 +14,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface CasherRepository extends JpaRepository<Casher, Integer> {
     public Casher findByEmail(String email);
-    public Casher findByRole(String role);
+    public List<Casher> findByRole(String role);
     boolean existsByEmail(String email);
+
 }
