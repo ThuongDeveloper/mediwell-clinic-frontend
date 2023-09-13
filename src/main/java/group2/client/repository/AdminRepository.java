@@ -5,6 +5,7 @@
 package group2.client.repository;
 
 import group2.client.entities.Admin;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -13,5 +14,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface AdminRepository extends JpaRepository<Admin, Integer> {
     public Admin findByEmail(String email);
-    public Admin findByRole(String role);
+    public List<Admin> findByRole(String role);
 }

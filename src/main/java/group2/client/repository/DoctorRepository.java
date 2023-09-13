@@ -5,6 +5,7 @@
 package group2.client.repository;
 
 import group2.client.entities.Doctor;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -13,5 +14,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface DoctorRepository extends JpaRepository<Doctor, Integer> {
     public Doctor findByEmail(String email);
-    public Doctor findByRole(String role);
+    public List<Doctor> findByRole(String role);
 }
