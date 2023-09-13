@@ -56,12 +56,24 @@
                                                 </div>
                                             </div>
                                             <div class="field item form-group">
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Phone</label>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <input type="text" th:field="*{phone}" class="form-control" readonly="true">
+                                                </div>
+                                            </div>
+                                            <div class="field item form-group">
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Address</label>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <input type="text" th:field="*{address}" class="form-control" readonly="true">
+                                                </div>
+                                            </div>
+<!--                                            <div class="field item form-group">
                                                 <label class="col-form-label col-md-3 col-sm-3 label-align">Casher Name</label>
                                                 <div class="col-md-6 col-sm-6">
                                                     <input name="casherID" type="hidden" />
                                                     <input th:if="${taophieukham.casherId != null}" th:value="${taophieukham.casherId.name}" class="form-control" type="text" readonly="true">
                                                 </div>
-                                            </div>
+                                            </div>-->
                                             <div class="field item form-group">
                                                 <label class="col-form-label col-md-3 col-sm-3 label-align">Patients Name</label>
                                                 <div class="col-md-6 col-sm-6">
@@ -77,19 +89,19 @@
                                                                 th:text="${td.name}"
                                                                 th:selected="${td.id == taophieukham.typeDoctorId.id}"></option>
                                                     </select>
-
                                                 </div>
                                             </div>
                                             <div class="field item form-group">
                                                 <label class="col-form-label col-md-3 col-sm-3 label-align">Total Money</label>
                                                 <div class="col-md-6 col-sm-6">
                                                     <input th:field="*{totalMoney}" class="form-control" type="number">
+                                                        <div style="color: red" class="help-block with-errors" th:if="${#fields.hasErrors('totalMoney')}" th:errors="*{totalMoney}"></div>
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <div class="col-md-6 offset-md-3">
                                                     <input type="submit" value="Update" class="btn btn-primary"/>
-                                                    <input type="reset" value="Reset" class="btn btn-success"/>
+                                                    <a th:href="@{/admin/phieukham}" class="btn btn-success">Cancel</a>
                                                 </div>
                                             </div>
                                         </form>

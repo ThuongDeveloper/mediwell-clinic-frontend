@@ -6,7 +6,7 @@
 
     <body class="home page-template-default page page-id-7684 theme-mediz gdlr-core-body woocommerce-no-js mediz-body mediz-body-front mediz-full  mediz-with-sticky-navigation  mediz-blockquote-style-1 gdlr-core-link-to-lightbox" data-home-url="https://demo.goodlayers.com/mediz/hospital/" >
         <div th:replace="~{client/layout/topbar :: div}"></div>
-        <div class="mediz-mobile-header-wrap" ><div class="mediz-mobile-header mediz-header-background mediz-style-slide mediz-sticky-mobile-navigation " id="mediz-mobile-header" ><div class="mediz-mobile-header-container mediz-container clearfix" ><div class="mediz-logo  mediz-item-pdlr"><div class="mediz-logo-inner"><a class="" href="https://demo.goodlayers.com/mediz/hospital/" ><img src="https://a6e8z9v6.stackpathcdn.com/mediz/hospital/wp-content/uploads/sites/2/2019/12/logo-1.png" alt="" width="290" height="76" title="logo" /></a></div></div><div class="mediz-mobile-menu-right" ><div class="mediz-main-menu-search" id="mediz-mobile-top-search" ><i class="fa fa-search" ></i></div><div class="mediz-top-search-wrap" >
+        <div class="mediz-mobile-header-wrap" ><div class="mediz-mobile-header mediz-header-background mediz-style-slide mediz-sticky-mobile-navigation " id="mediz-mobile-header" ><div class="mediz-mobile-header-container mediz-container clearfix" ><div class="mediz-logo  mediz-item-pdlr"><div class="mediz-logo-inner"><a class="" th:href="@{/}" ><img src="../client/image/logo-1.png" alt="" width="290" height="76" title="logo" /></a></div></div><div class="mediz-mobile-menu-right" ><div class="mediz-main-menu-search" id="mediz-mobile-top-search" ><i class="fa fa-search" ></i></div><div class="mediz-top-search-wrap" >
                             <div class="mediz-top-search-close" ></div>
 
                             <div class="mediz-top-search-row" >
@@ -245,11 +245,15 @@
                                                                                                             <div class="auto-in4 row text-center">
                                                                                                                 <div th:each="e : ${listDoctor}" class="col-lg-4 col-md-3 col-sm-12 col-xs-12 wow fadeIn" data-wow-duration="1s" data-wow-delay="0.2s" style="visibility: visible; animation-duration: 1s; animation-delay: 0.2s; animation-name: fadeIn;">
                                                                                                                     <div class="widget server clearfix">
-                                                                                                                        <img style="width:300px;height:250px;" class="img-fluid" th:src="${e.getImage()}"></img>
-                                                                                                                        <div class="in4 widget-title">
-                                                                                                                            <h3 th:text="${e.getName()}"></h3>
-                                                                                                                            <h4 th:text="${e.getTypeDoctorId().getName()}"></h4>
-                                                                                                                        </div>
+                                                                                                                        <a th:href="@{/book-appointment/{id}(id=${e.id})}">
+<!--                                                                                                                                  <img style="width:300px;height:250px;" class="img-fluid" th:src="${e.getImage()}"></img>-->
+                                                                                                                            <img style="width:300px;height:250px;" class="img-fluid" src="../client/image/p-9-400x400.jpg"></img>
+                                                                                                                            <div class="in4 widget-title">
+                                                                                                                                <h3 th:text="${e.getName()}"></h3>
+                                                                                                                                <h4 th:text="${e.getTypeDoctorId().getName()}"></h4>
+                                                                                                                            </div>
+                                                                                                                        </a>
+                                                                                                                  
                                                                                                                     </div>
                                                                                                                 </div>
                                                                                                             </div>
