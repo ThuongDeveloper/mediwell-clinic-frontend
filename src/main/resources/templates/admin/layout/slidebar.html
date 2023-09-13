@@ -20,8 +20,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
             <div class="profile clearfix">
                 <div class="profile_pic">
                     <img src="../admin/images/img.jpg" alt="..." class="img-circle profile_img">
-<!--                        <img th:if="${currentAdmin.image != null}" th:src="@{${patient.image}}" alt="Avatar" class="avatar">
-                            <img th:if="${currentAdmin.image == null}" src="../admin/images/img.jpg" alt="Default Avatar" class="img-circle profile_img">-->
                                 </div>
                                 <div class="profile_info">
                                     <span>Welcome,</span>
@@ -43,7 +41,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                                                     <li><a th:href="@{/admin/typethuoc}">Medication Types</a></li>
                                                     <li><a th:href="@{/admin/doctor}">Physician Management</a></li>
                                                     <li><a th:href="@{/admin/casher}">Cashier Staff Management</a></li>
-                                                    <li><a th:href="@{/admin/phieukham}">Consultation Form Management</a></li>
+                                                    <li><a th:href="@{/admin/phieukham}">Medical Examination Form Management</a></li>
                                                     <li><a th:href="@{/admin/typedoctor}">Physician Categorization</a></li>
                                                     <li><a th:href="@{/admin/patient}">Patient</a></li>
                                                     <li><a th:href="@{/admin/donthuoc}">Prescription Management</a></li>

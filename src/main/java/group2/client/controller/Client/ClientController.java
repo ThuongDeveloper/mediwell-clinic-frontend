@@ -11,6 +11,7 @@ import group2.client.repository.LichlamviecRepository;
 import group2.client.repository.PatientRepository;
 import group2.client.service.*;
 import java.io.IOException;
+import static java.lang.System.in;
 import java.util.Date;
 import java.util.List;
 import javax.servlet.http.*;
@@ -39,8 +40,11 @@ public class ClientController {
     @Autowired
     private AuthService authService;
 
+<<<<<<< HEAD
   
 
+=======
+>>>>>>> e28a9a2f5b983358e6d0da9222df00b068e43397
     @Autowired
     private JwtService jwtService;
 
@@ -152,8 +156,12 @@ public class ClientController {
             model.addAttribute("patient", currentPatient);
            
             Lichlamviec lichlamviec = lichlamviecRepository.findById(id).get();
-            model.addAttribute("lichlamviec", lichlamviec);
-            
+            Doctor objDoctor = new Doctor();
+
+            List<Appointment> listAPPDOCTOR = appointmentRepository.findByDateAndDoctorId(lichlamviec.getDate(), lichlamviec.getDoctorId());
+            model.addAttribute("lichlamviec", lichlamviec);   
+//                        model.addAttribute("lichlamviec", listAPPDOCTOR);       
+
             model.addAttribute("appointment", new Appointment());
              return "/client/bookAppointmentTime";
         } else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
@@ -183,7 +191,8 @@ public class ClientController {
         if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
             
             Lichlamviec lichlamviec = lichlamviecRepository.findById(id).get();
-            List<Appointment> appointmentByDate = appointmentRepository.findByDate(lichlamviec.getDate());
+            
+            List<Appointment> appointmentByDate = appointmentRepository.findByDateAndPatientId(lichlamviec.getDate(), currentPatient);
             
             if(appointmentByDate.size() > 0){
                 return "redirect:/book-appointment-already/{id}va" + selectHours + "va" + symptom;
@@ -374,12 +383,20 @@ public class ClientController {
 
             String[] parts = time.split("-");
             
-            Appointment currentAppointment = appointmentRepository.findByStarttimeAndEndtime(parts[0], parts[1]);
+            Appointment currentAppointmentByTime = appointmentRepository.findByStarttimeAndEndtime(parts[0], parts[1]);
             
-            if(currentAppointment != null){
+            List<Appointment> appointmentByDate = appointmentRepository.findByDateAndPatientId(appointment.getDate(), appointment.getPatientId());
+            for(int i = 0; i < appointmentByDate.size();i++){
+              if (appointmentByDate.get(i).getStarttime().equals(parts[0]) && appointmentByDate.get(i).getEndtime().equals(parts[1])){
+                  
+              }
+            }
+            
+            if(currentAppointmentByTime != null){
                 session.setAttribute("msg", "Bạn không thể đặt cùng giờ trong một ngày. Vui lòng chọn khung giờ khác");
                 return "redirect:/book-appointment-already/{id}va" + selectHours + "va" + symptom;
-            }else{
+            }
+            else{
                 Lichlamviec lichlamviec = lichlamviecRepository.findById(id).get();
                
                 Doctor newDoctor = new Doctor();

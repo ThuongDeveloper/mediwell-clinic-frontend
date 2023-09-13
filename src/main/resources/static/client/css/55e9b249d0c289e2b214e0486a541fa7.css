@@ -31278,7 +31278,7 @@ ul.gdlr-core-category-background-widget li.gdlr-core-with-bg a,ul.gdlr-core-cate
     height:65px
 }
 .gdlr-core-gallery-with-thumbnail-wrap .gdlr-core-image-overlay{
-    background:url(../include/images/gallery/gallery-shadow.png) bottom center repeat-x
+    background:url() bottom center repeat-x
 }
 .gdlr-core-gallery-with-thumbnail-wrap.gdlr-core-inside-slider{
     position:relative
@@ -43051,7 +43051,7 @@ html.mm-opening.mediz-mmenu-right .mediz-mobile-header-wrap .mediz-top-bar,html.
     right:0;
     left:0;
     height:95px;
-    background:url(https://a6e8z9v6.stackpathcdn.com/mediz/hospital/wp-content/themes/mediz/images/featured-tab-shadow.png) top repeat-x
+    background:url(../image/featured-tab-shadow.png) top repeat-x
 }
 .gdlr-core-tab-feature3-item .gdlr-core-tab-feature3-content-bottom-overlay{
     position:absolute;
