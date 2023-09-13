@@ -18,5 +18,9 @@ public class PatientService {
     public boolean updatePasswordByEmail(String email, String newPassword) {
         int updatedRows = patientRepository.updatePasswordByEmail(email, newPassword);
         return updatedRows > 0;
+    }  
+    public boolean isEmailAndPhoneMatch(String email, String phone) {
+        return patientRepository.existsByEmailAndPhone(email, phone);
     }
+    
 }
