@@ -39,8 +39,7 @@ public class ClientController {
     @Autowired
     private AuthService authService;
 
-    @Autowired
-    private UserService userService;
+  
 
     @Autowired
     private JwtService jwtService;
