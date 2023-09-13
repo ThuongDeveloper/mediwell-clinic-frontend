@@ -88,6 +88,8 @@ public class AuthService {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("jwt")) {
                     String role = jwtService.extractRole(cookie.getValue());
+                     String email = jwtService.extractRole(cookie.getValue());
+                
                     if (role.equals("CASHER")) {
                         Casher casher = casherRepo.findByRole(role);
                         return casher;
