@@ -5,6 +5,8 @@
 package group2.client.controller;
 
 import group2.client.entities.*;
+import group2.client.exception.EmailAlreadyExistsException;
+import group2.client.repository.CasherRepository;
 import group2.client.service.AuthService;
 import java.util.*;
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +29,9 @@ public class CasherController {
 
     String apiUrl = "http://localhost:8888/api/casher";
     RestTemplate restTemplate = new RestTemplate();
+
+    @Autowired
+    private CasherRepository casherRepository;
 
     @Autowired
     private AuthService authService;
@@ -112,10 +117,14 @@ public class CasherController {
     public String create(Model model, @Valid @ModelAttribute Casher casher, BindingResult bindingResult) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        
+
         if (bindingResult.hasErrors()) {
             model.addAttribute("casher", casher);
             return "/admin/casher/create";
+        }
+
+        if (casherRepository.existsByEmail(casher.getEmail())) {
+            throw new EmailAlreadyExistsException("Email already exists.");
         }
 
         // Tạo một HttpEntity với thông tin Casher để gửi yêu cầu POST
@@ -163,16 +172,31 @@ public class CasherController {
     }
 
     @RequestMapping(value = "/admin/casher/edit", method = RequestMethod.POST)
-    public String update(Model model, @ModelAttribute Casher updatedCasher) {
+    public String update(Model model, @Valid @ModelAttribute Casher updatedCasher, BindingResult bindingResult) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        // Kiểm tra dữ liệu đã cập nhật có thay đổi so với dữ liệu hiện có trong cơ sở dữ liệu hay không
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("casher", updatedCasher);
+            return "/admin/casher/edit";
+        }
+
+        // Lấy Casher hiện có từ API server
         Casher existingCasher = restTemplate.getForObject(apiUrl + "/" + updatedCasher.getId(), Casher.class);
 
         // Bổ sung id vào URL khi thực hiện PUT
         String url = apiUrl + "/" + updatedCasher.getId();
 
+        // Kiểm tra xem email trong biểu mẫu có thay đổi không
+        if (!updatedCasher.getEmail().equals(existingCasher.getEmail())) {
+            // Nếu email đã thay đổi, kiểm tra trùng email
+            if (casherRepository.existsByEmail(updatedCasher.getEmail())) {
+                bindingResult.rejectValue("email", "error.email", "Email đã tồn tại.");
+                model.addAttribute("casher", existingCasher);
+                return "/admin/casher/edit";
+            }
+        }
+        
         // Tạo một HttpEntity với thông tin Casher cập nhật để gửi yêu cầu PUT
         HttpEntity<Casher> request = new HttpEntity<>(updatedCasher, headers);
 
