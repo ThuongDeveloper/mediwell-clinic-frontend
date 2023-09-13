@@ -44,7 +44,7 @@ public class Rating implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Column(name = "rating")
-    private Integer rating;
+    private Double rating;
     @Size(max = 250)
     @Column(name = "comment")
     private String comment;
@@ -73,11 +73,11 @@ public class Rating implements Serializable {
         this.id = id;
     }
 
-    public Integer getRating() {
+    public Double getRating() {
         return rating;
     }
 
-    public void setRating(Integer rating) {
+    public void setRating(Double rating) {
         this.rating = rating;
     }
 
