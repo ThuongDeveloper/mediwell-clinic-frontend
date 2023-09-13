@@ -1,4 +1,5 @@
-@charset "UTF-8";.wp-block-archives{
+@charset "UTF-8";
+.wp-block-archives{
     box-sizing:border-box
 }
 .wp-block-archives-dropdown label{
@@ -35382,7 +35383,8 @@ body.ilightbox-noscroll{
 .rtl .woocommerce .col2-set .col-2,.rtl .woocommerce-page .col2-set .col-2{
     float:left
 }
-@charset "UTF-8";:root{
+@charset "UTF-8";
+:root{
     --woocommerce:#a46497;
     --wc-green:#7ad03a;
     --wc-red:#a00;
@@ -43519,7 +43521,7 @@ body.mediz-boxed .mediz-body-wrapper{
     opacity:0
 }
 .mediz-page-title-wrap{
-    background-image:url(https://a6e8z9v6.stackpathcdn.com/mediz/hospital/wp-content/uploads/sites/2/2019/12/page-title.jpg)
+    background-image:url(../image/page-title.jpg)
 }
 .mediz-not-found-wrap .mediz-not-found-background{
     opacity:.27
