@@ -15,4 +15,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface DoctorRepository extends JpaRepository<Doctor, Integer> {
     public Doctor findByEmail(String email);
     public List<Doctor> findByRole(String role);
+    boolean existsByEmail(String email);
 }
