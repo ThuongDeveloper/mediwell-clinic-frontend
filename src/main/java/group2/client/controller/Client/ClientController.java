@@ -4,6 +4,11 @@
  */
 package group2.client.controller.Client;
 
+import com.paypal.api.payments.Links;
+import com.paypal.api.payments.Payment;
+import com.paypal.base.rest.PayPalRESTException;
+import static group2.client.controller.Client.PaypalController.CANCEL_URL;
+import static group2.client.controller.Client.PaypalController.SUCCESS_URL;
 import group2.client.entities.*;
 import group2.client.repository.AppointmentRepository;
 import group2.client.repository.DoctorRepository;
@@ -23,7 +28,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.*;
 
-
 /**
  *
  * @author Ann
@@ -38,6 +42,9 @@ public class ClientController {
     RestTemplate restTemplate = new RestTemplate();
 
     @Autowired
+    private PaypalService service;
+
+    @Autowired
     private AuthService authService;
 
     @Autowired
@@ -45,15 +52,17 @@ public class ClientController {
 
     @Autowired
     private PatientRepository patientRepository;
-    
-     @Autowired
+
+    @Autowired
     private DoctorRepository doctorRepository;
-     
+
     @Autowired
     private LichlamviecRepository lichlamviecRepository;
-      
+
     @Autowired
     private AppointmentRepository appointmentRepository;
+    
+    public static final String SUCCESS_URL = "client/paypal/success";
 
     @RequestMapping("/")
     public String home(Model model, HttpServletRequest request) {
@@ -105,23 +114,22 @@ public class ClientController {
         return "/client/listDoctors";
 
     }
-    
-     @RequestMapping("/book-appointment/{id}")
+
+    @RequestMapping("/book-appointment/{id}")
     public String bookAppointment(Model model, @PathVariable(value = "id") int id, HttpServletRequest request) {
-        
+
         Admin currentAdmin = authService.isAuthenticatedAdmin(request);
         Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
         Patient currentPatient = authService.isAuthenticatedPatient(request);
         Casher currentCasher = authService.isAuthenticatedCasher(request);
-        
-      
+
         if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
             model.addAttribute("patient", currentPatient);
             Doctor doctor = doctorRepository.findById(id).get();
             List<Lichlamviec> lichlamviec = lichlamviecRepository.findByDoctorId(doctor);
             model.addAttribute("lichlamviec", lichlamviec);
             model.addAttribute("doctor", doctor);
-             return "/client/bookAppointment";
+            return "/client/bookAppointment";
         } else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
             return "redirect:/forbien";
         } else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
@@ -129,71 +137,68 @@ public class ClientController {
         } else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
             return "redirect:/forbien";
         } else {
-             Doctor doctor = doctorRepository.findById(id).get();
-             List<Lichlamviec> lichlamviec = lichlamviecRepository.findByDoctorId(doctor);
-             model.addAttribute("lichlamviec", lichlamviec);
-             model.addAttribute("doctor", doctor);
-             return "/client/bookAppointment";
+            Doctor doctor = doctorRepository.findById(id).get();
+            List<Lichlamviec> lichlamviec = lichlamviecRepository.findByDoctorId(doctor);
+            model.addAttribute("lichlamviec", lichlamviec);
+            model.addAttribute("doctor", doctor);
+            return "/client/bookAppointment";
         }
-        
-       
+
     }
-    
-     @RequestMapping("/book-appointment-time/{id}")
+
+    @RequestMapping("/book-appointment-time/{id}")
     public String bookAppointmentTime(Model model, @PathVariable(value = "id") int id, HttpServletRequest request) {
-         Admin currentAdmin = authService.isAuthenticatedAdmin(request);
-        Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
-        Patient currentPatient = authService.isAuthenticatedPatient(request);
-        Casher currentCasher = authService.isAuthenticatedCasher(request);
-        
-      
-        if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
-            model.addAttribute("patient", currentPatient);
-           
-            Lichlamviec lichlamviec = lichlamviecRepository.findById(id).get();
-            Doctor objDoctor = new Doctor();
-
-            List<Appointment> listAPPDOCTOR = appointmentRepository.findByDateAndDoctorId(lichlamviec.getDate(), lichlamviec.getDoctorId());
-            model.addAttribute("lichlamviec", lichlamviec);   
-//                        model.addAttribute("lichlamviec", listAPPDOCTOR);       
-
-            model.addAttribute("appointment", new Appointment());
-             return "/client/bookAppointmentTime";
-        } else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
-            return "redirect:/forbien";
-        } else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
-            return "redirect:/forbien";
-        } else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
-            return "redirect:/forbien";
-        } else {
-            
-             Lichlamviec lichlamviec = lichlamviecRepository.findById(id).get();
-             model.addAttribute("lichlamviec", lichlamviec);
-               
-             model.addAttribute("appointment", new Appointment());
-             return "/client/bookAppointmentTime";
-        }
-    }
-    
-    @RequestMapping(value = "/book-appointment-create/{id}", method = RequestMethod.POST)
-    public String bookAppointmentCreate(Model model, @PathVariable(value = "id") int id, @ModelAttribute Appointment appointment, HttpServletRequest request, HttpSession session, @RequestParam("select-hours") String selectHours, @RequestParam("symptom") String symptom) {
-        
         Admin currentAdmin = authService.isAuthenticatedAdmin(request);
         Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
         Patient currentPatient = authService.isAuthenticatedPatient(request);
         Casher currentCasher = authService.isAuthenticatedCasher(request);
-        
-        if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
-            
-            Lichlamviec lichlamviec = lichlamviecRepository.findById(id).get();
-            
-            List<Appointment> appointmentByDate = appointmentRepository.findByDateAndPatientId(lichlamviec.getDate(), currentPatient);
-            
-            if(appointmentByDate.size() > 0){
-                return "redirect:/book-appointment-already/{id}va" + selectHours + "va" + symptom;
-            }else{
 
-               
+        if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
+            model.addAttribute("patient", currentPatient);
+
+            Lichlamviec lichlamviec = lichlamviecRepository.findById(id).get();
+            Doctor objDoctor = new Doctor();
+
+            List<Appointment> listAPPDOCTOR = appointmentRepository.findByDateAndDoctorId(lichlamviec.getDate(), lichlamviec.getDoctorId());
+            model.addAttribute("lichlamviec", lichlamviec);
+//                        model.addAttribute("lichlamviec", listAPPDOCTOR);       
+
+            model.addAttribute("appointment", new Appointment());
+            return "/client/bookAppointmentTime";
+        } else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
+            return "redirect:/forbien";
+        } else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
+            return "redirect:/forbien";
+        } else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
+            return "redirect:/forbien";
+        } else {
+
+            Lichlamviec lichlamviec = lichlamviecRepository.findById(id).get();
+            model.addAttribute("lichlamviec", lichlamviec);
+
+            model.addAttribute("appointment", new Appointment());
+            return "/client/bookAppointmentTime";
+        }
+    }
+
+    @RequestMapping(value = "/book-appointment-create/{id}", method = RequestMethod.POST)
+    public String bookAppointmentCreate(Model model, @PathVariable(value = "id") int id, @ModelAttribute Appointment appointment, HttpServletRequest request, HttpSession session, @RequestParam("select-hours") String selectHours, @RequestParam("symptom") String symptom) throws PayPalRESTException {
+
+        Admin currentAdmin = authService.isAuthenticatedAdmin(request);
+        Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
+        Patient currentPatient = authService.isAuthenticatedPatient(request);
+        Casher currentCasher = authService.isAuthenticatedCasher(request);
+
+        if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
+
+            Lichlamviec lichlamviec = lichlamviecRepository.findById(id).get();
+
+            List<Appointment> appointmentByDate = appointmentRepository.findByDateAndPatientId(lichlamviec.getDate(), currentPatient);
+
+            if (appointmentByDate.size() > 0) {
+                return "redirect:/book-appointment-already/{id}va" + selectHours + "va" + symptom;
+            } else {
+
                 Doctor newDoctor = new Doctor();
                 newDoctor.setId(lichlamviec.getDoctorId().getId());
                 appointment.setDoctorId(newDoctor);
@@ -204,196 +209,213 @@ public class ClientController {
 
                 appointment.setDate(lichlamviec.getDate());
 
-                if(selectHours.equals("7:00 - 7:30")){
+                if (selectHours.equals("7:00 - 7:30")) {
                     appointment.setStarttime("7:00");
                     appointment.setEndtime("7:30");
-                    
+
                 }
-                if(selectHours.equals("7:30 - 8:00")){
+                if (selectHours.equals("7:30 - 8:00")) {
                     appointment.setStarttime("7:30");
                     appointment.setEndtime("8:00");
-                    
+
                 }
-                if(selectHours.equals("8:00 - 8:30")){
+                if (selectHours.equals("8:00 - 8:30")) {
                     appointment.setStarttime("8:00");
                     appointment.setEndtime("8:30");
-                    
+
                 }
-                if(selectHours.equals("8:30 - 9:00")){
+                if (selectHours.equals("8:30 - 9:00")) {
                     appointment.setStarttime("8:30");
                     appointment.setEndtime("9:00");
-                    
+
                 }
-                if(selectHours.equals("9:00 - 9:30")){
+                if (selectHours.equals("9:00 - 9:30")) {
                     appointment.setStarttime("9:00");
                     appointment.setEndtime("9:30");
-                    
+
                 }
-                if(selectHours.equals("9:30 - 10:00")){
+                if (selectHours.equals("9:30 - 10:00")) {
                     appointment.setStarttime("9:30");
                     appointment.setEndtime("10:00");
-                    
+
                 }
-                if(selectHours.equals("10:00 - 10:30")){
+                if (selectHours.equals("10:00 - 10:30")) {
                     appointment.setStarttime("10:00");
                     appointment.setEndtime("10:30");
-                    
+
                 }
-                if(selectHours.equals("10:30 - 11:00")){
+                if (selectHours.equals("10:30 - 11:00")) {
                     appointment.setStarttime("10:30");
                     appointment.setEndtime("11:00");
-                    
+
                 }
-                if(selectHours.equals("11:00 - 11:30")){
+                if (selectHours.equals("11:00 - 11:30")) {
                     appointment.setStarttime("11:00");
                     appointment.setEndtime("11:30");
-                    
+
                 }
-                if(selectHours.equals("11:30 - 12:00")){
+                if (selectHours.equals("11:30 - 12:00")) {
                     appointment.setStarttime("11:30");
                     appointment.setEndtime("12:00");
-                    
+
                 }
-                if(selectHours.equals("12:00 - 12:30")){
+                if (selectHours.equals("12:00 - 12:30")) {
                     appointment.setStarttime("12:00");
                     appointment.setEndtime("12:30");
-                    
+
                 }
-                if(selectHours.equals("12:30 - 13:00")){
+                if (selectHours.equals("12:30 - 13:00")) {
                     appointment.setStarttime("12:30");
                     appointment.setEndtime("13:00");
-                    
+
                 }
-                if(selectHours.equals("13:00 - 13:30")){
+                if (selectHours.equals("13:00 - 13:30")) {
                     appointment.setStarttime("13:00");
                     appointment.setEndtime("13:30");
-                    
+
                 }
-                if(selectHours.equals("13:30 - 14:00")){
+                if (selectHours.equals("13:30 - 14:00")) {
                     appointment.setStarttime("13:30");
                     appointment.setEndtime("14:00");
-                    
+
                 }
-                if(selectHours.equals("14:00 - 14:30")){
+                if (selectHours.equals("14:00 - 14:30")) {
                     appointment.setStarttime("14:00");
                     appointment.setEndtime("14:30");
-                    
+
                 }
-                if(selectHours.equals("14:30 - 15:00")){
+                if (selectHours.equals("14:30 - 15:00")) {
                     appointment.setStarttime("14:30");
                     appointment.setEndtime("15:00");
-                    
+
                 }
-                if(selectHours.equals("15:00 - 15:30")){
+                if (selectHours.equals("15:00 - 15:30")) {
                     appointment.setStarttime("15:00");
                     appointment.setEndtime("15:30");
-                    
+
                 }
-                if(selectHours.equals("15:30 - 16:00")){
+                if (selectHours.equals("15:30 - 16:00")) {
                     appointment.setStarttime("15:30");
                     appointment.setEndtime("16:00");
-                    
+
                 }
-                 if(selectHours.equals("16:00 - 16:30")){
+                if (selectHours.equals("16:00 - 16:30")) {
                     appointment.setStarttime("16:00");
                     appointment.setEndtime("16:30");
-                   
+
                 }
-                if(selectHours.equals("16:30 - 17:00")){
+                if (selectHours.equals("16:30 - 17:00")) {
                     appointment.setStarttime("16:30");
                     appointment.setEndtime("17:00");
-                    
+
                 }
-                if(selectHours.equals("17:00 - 17:30")){
+                if (selectHours.equals("17:00 - 17:30")) {
                     appointment.setStarttime("17:00");
                     appointment.setEndtime("17:30");
-                    
+
                 }
-                if(selectHours.equals("17:30 - 18:00")){
+                if (selectHours.equals("17:30 - 18:00")) {
                     appointment.setStarttime("17:30");
                     appointment.setEndtime("18:00");
-                    
+
                 }
-                if(selectHours.equals("18:00 - 18:30")){
+                if (selectHours.equals("18:00 - 18:30")) {
                     appointment.setStarttime("18:00");
                     appointment.setEndtime("18:30");
-                    
+
                 }
-                if(selectHours.equals("18:30 - 19:00")){
+                if (selectHours.equals("18:30 - 19:00")) {
                     appointment.setStarttime("18:30");
                     appointment.setEndtime("19:00");
-                    
+
                 }
-                if(selectHours.equals("19:00 - 19:30")){
+                if (selectHours.equals("19:00 - 19:30")) {
                     appointment.setStarttime("19:00");
                     appointment.setEndtime("19:30");
-                    
+
                 }
-                if(selectHours.equals("19:30 - 20:00")){
+                if (selectHours.equals("19:30 - 20:00")) {
                     appointment.setStarttime("19:30");
                     appointment.setEndtime("20:00");
-                   
+
                 }
-                if(selectHours.equals("20:00 - 20:30")){
+                if (selectHours.equals("20:00 - 20:30")) {
                     appointment.setStarttime("20:00");
                     appointment.setEndtime("20:30");
-                    
+
                 }
-                if(selectHours.equals("20:30 - 21:00")){
+                if (selectHours.equals("20:30 - 21:00")) {
                     appointment.setStarttime("20:30");
                     appointment.setEndtime("21:00");
-                   
-                }
-         
-                   
-                
-                restTemplate.postForObject(apiUrl, appointment, Appointment.class);
-                session.setAttribute("msg", "Bạn đã đặt lịch thành công");
-                return "redirect:/book-appointment-time/{id}";
-            }
-            
 
-        }else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
+                }
+
+                Payment payment = service.createPayment(50.0, "USD", "Paypal", "SALE", "http://localhost:9999/" + CANCEL_URL, "http://localhost:9999/" + SUCCESS_URL);
+                for (Links link : payment.getLinks()) {
+                    if (link.getRel().equals("approval_url")) {
+                        restTemplate.postForObject(apiUrl, appointment, Appointment.class);
+                        return "redirect:" + link.getHref();
+                    }
+                }
+                return "redirect:/book-appointment-time/{id}";
+//                session.setAttribute("msg", "Bạn đã đặt lịch thành công");
+//                return "redirect:/book-appointment-time/{id}";
+            }
+
+        } else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
             return "redirect:/forbien";
         } else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
             return "redirect:/forbien";
         } else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
             return "redirect:/forbien";
         } else {
-            return "redirect:/login";          
+            return "redirect:/login";
         }
     }
-    
+
+    @GetMapping(value = SUCCESS_URL)
+    public String successPay(@RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId) {
+        try {
+            Payment payment = service.executePayment(paymentId, payerId);
+//            System.out.println(payment.toJSON());
+            if (payment.getState().equals("approved")) {
+                return "client/paypal/success";
+            }
+        } catch (PayPalRESTException e) {
+            System.out.println(e.getMessage());
+        }
+        return "redirect:/";
+    }
+
     @RequestMapping(value = "/book-appointment-already-create/{id}", method = RequestMethod.POST)
     public String bookAppointmentCreateAlready(Model model, @PathVariable(value = "id") int id, @ModelAttribute Appointment appointment, HttpServletRequest request, HttpSession session, @RequestParam("select-hours") String selectHours, @RequestParam("symptom") String symptom) {
 
-       Admin currentAdmin = authService.isAuthenticatedAdmin(request);
+        Admin currentAdmin = authService.isAuthenticatedAdmin(request);
         Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
         Patient currentPatient = authService.isAuthenticatedPatient(request);
         Casher currentCasher = authService.isAuthenticatedCasher(request);
-        
+
         if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
-            
+
             String time = selectHours;
 
             String[] parts = time.split("-");
-            
+
             Appointment currentAppointmentByTime = appointmentRepository.findByStarttimeAndEndtime(parts[0], parts[1]);
-            
+
             List<Appointment> appointmentByDate = appointmentRepository.findByDateAndPatientId(appointment.getDate(), appointment.getPatientId());
-            for(int i = 0; i < appointmentByDate.size();i++){
-              if (appointmentByDate.get(i).getStarttime().equals(parts[0]) && appointmentByDate.get(i).getEndtime().equals(parts[1])){
-                  
-              }
+            for (int i = 0; i < appointmentByDate.size(); i++) {
+                if (appointmentByDate.get(i).getStarttime().equals(parts[0]) && appointmentByDate.get(i).getEndtime().equals(parts[1])) {
+
+                }
             }
-            
-            if(currentAppointmentByTime != null){
+
+            if (currentAppointmentByTime != null) {
                 session.setAttribute("msg", "Bạn không thể đặt cùng giờ trong một ngày. Vui lòng chọn khung giờ khác");
                 return "redirect:/book-appointment-already/{id}va" + selectHours + "va" + symptom;
-            }
-            else{
+            } else {
                 Lichlamviec lichlamviec = lichlamviecRepository.findById(id).get();
-               
+
                 Doctor newDoctor = new Doctor();
                 newDoctor.setId(lichlamviec.getDoctorId().getId());
                 appointment.setDoctorId(newDoctor);
@@ -403,201 +425,194 @@ public class ClientController {
                 appointment.setPatientId(newPatient);
 
                 appointment.setDate(lichlamviec.getDate());
-                
+
                 appointment.setSymptom(symptom);
 
-                if(selectHours.equals("7:00 - 7:30")){
+                if (selectHours.equals("7:00 - 7:30")) {
                     appointment.setStarttime("7:00");
                     appointment.setEndtime("7:30");
-                    
+
                 }
-                if(selectHours.equals("7:30 - 8:00")){
+                if (selectHours.equals("7:30 - 8:00")) {
                     appointment.setStarttime("7:30");
                     appointment.setEndtime("8:00");
-                    
+
                 }
-                if(selectHours.equals("8:00 - 8:30")){
+                if (selectHours.equals("8:00 - 8:30")) {
                     appointment.setStarttime("8:00");
                     appointment.setEndtime("8:30");
-                    
+
                 }
-                if(selectHours.equals("8:30 - 9:00")){
+                if (selectHours.equals("8:30 - 9:00")) {
                     appointment.setStarttime("8:30");
                     appointment.setEndtime("9:00");
-                    
+
                 }
-                if(selectHours.equals("9:00 - 9:30")){
+                if (selectHours.equals("9:00 - 9:30")) {
                     appointment.setStarttime("9:00");
                     appointment.setEndtime("9:30");
-                    
+
                 }
-                if(selectHours.equals("9:30 - 10:00")){
+                if (selectHours.equals("9:30 - 10:00")) {
                     appointment.setStarttime("9:30");
                     appointment.setEndtime("10:00");
-                    
+
                 }
-                if(selectHours.equals("10:00 - 10:30")){
+                if (selectHours.equals("10:00 - 10:30")) {
                     appointment.setStarttime("10:00");
                     appointment.setEndtime("10:30");
-                    
+
                 }
-                if(selectHours.equals("10:30 - 11:00")){
+                if (selectHours.equals("10:30 - 11:00")) {
                     appointment.setStarttime("10:30");
                     appointment.setEndtime("11:00");
-                    
+
                 }
-                if(selectHours.equals("11:00 - 11:30")){
+                if (selectHours.equals("11:00 - 11:30")) {
                     appointment.setStarttime("11:00");
                     appointment.setEndtime("11:30");
-                    
+
                 }
-                if(selectHours.equals("11:30 - 12:00")){
+                if (selectHours.equals("11:30 - 12:00")) {
                     appointment.setStarttime("11:30");
                     appointment.setEndtime("12:00");
-                    
+
                 }
-                if(selectHours.equals("12:00 - 12:30")){
+                if (selectHours.equals("12:00 - 12:30")) {
                     appointment.setStarttime("12:00");
                     appointment.setEndtime("12:30");
-                    
+
                 }
-                if(selectHours.equals("12:30 - 13:00")){
+                if (selectHours.equals("12:30 - 13:00")) {
                     appointment.setStarttime("12:30");
                     appointment.setEndtime("13:00");
-                    
+
                 }
-                if(selectHours.equals("13:00 - 13:30")){
+                if (selectHours.equals("13:00 - 13:30")) {
                     appointment.setStarttime("13:00");
                     appointment.setEndtime("13:30");
-                    
+
                 }
-                if(selectHours.equals("13:30 - 14:00")){
+                if (selectHours.equals("13:30 - 14:00")) {
                     appointment.setStarttime("13:30");
                     appointment.setEndtime("14:00");
-                    
+
                 }
-                if(selectHours.equals("14:00 - 14:30")){
+                if (selectHours.equals("14:00 - 14:30")) {
                     appointment.setStarttime("14:00");
                     appointment.setEndtime("14:30");
-                    
+
                 }
-                if(selectHours.equals("14:30 - 15:00")){
+                if (selectHours.equals("14:30 - 15:00")) {
                     appointment.setStarttime("14:30");
                     appointment.setEndtime("15:00");
-                    
+
                 }
-                if(selectHours.equals("15:00 - 15:30")){
+                if (selectHours.equals("15:00 - 15:30")) {
                     appointment.setStarttime("15:00");
                     appointment.setEndtime("15:30");
-                    
+
                 }
-                if(selectHours.equals("15:30 - 16:00")){
+                if (selectHours.equals("15:30 - 16:00")) {
                     appointment.setStarttime("15:30");
                     appointment.setEndtime("16:00");
-                    
+
                 }
-                 if(selectHours.equals("16:00 - 16:30")){
+                if (selectHours.equals("16:00 - 16:30")) {
                     appointment.setStarttime("16:00");
                     appointment.setEndtime("16:30");
-                   
+
                 }
-                if(selectHours.equals("16:30 - 17:00")){
+                if (selectHours.equals("16:30 - 17:00")) {
                     appointment.setStarttime("16:30");
                     appointment.setEndtime("17:00");
-                    
+
                 }
-                if(selectHours.equals("17:00 - 17:30")){
+                if (selectHours.equals("17:00 - 17:30")) {
                     appointment.setStarttime("17:00");
                     appointment.setEndtime("17:30");
-                    
+
                 }
-                if(selectHours.equals("17:30 - 18:00")){
+                if (selectHours.equals("17:30 - 18:00")) {
                     appointment.setStarttime("17:30");
                     appointment.setEndtime("18:00");
-                    
+
                 }
-                if(selectHours.equals("18:00 - 18:30")){
+                if (selectHours.equals("18:00 - 18:30")) {
                     appointment.setStarttime("18:00");
                     appointment.setEndtime("18:30");
-                    
+
                 }
-                if(selectHours.equals("18:30 - 19:00")){
+                if (selectHours.equals("18:30 - 19:00")) {
                     appointment.setStarttime("18:30");
                     appointment.setEndtime("19:00");
-                    
+
                 }
-                if(selectHours.equals("19:00 - 19:30")){
+                if (selectHours.equals("19:00 - 19:30")) {
                     appointment.setStarttime("19:00");
                     appointment.setEndtime("19:30");
-                    
+
                 }
-                if(selectHours.equals("19:30 - 20:00")){
+                if (selectHours.equals("19:30 - 20:00")) {
                     appointment.setStarttime("19:30");
                     appointment.setEndtime("20:00");
-                   
+
                 }
-                if(selectHours.equals("20:00 - 20:30")){
+                if (selectHours.equals("20:00 - 20:30")) {
                     appointment.setStarttime("20:00");
                     appointment.setEndtime("20:30");
-                    
+
                 }
-                if(selectHours.equals("20:30 - 21:00")){
+                if (selectHours.equals("20:30 - 21:00")) {
                     appointment.setStarttime("20:30");
                     appointment.setEndtime("21:00");
-                   
-                }
-         
 
-                
+                }
+
                 restTemplate.postForObject(apiUrl, appointment, Appointment.class);
                 session.setAttribute("msg", "Bạn đã đặt lịch thành công");
                 return "redirect:/book-appointment-time/{id}";
             }
-            
-            
-            
-           
-        }else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
+
+        } else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
             return "redirect:/forbien";
         } else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
             return "redirect:/forbien";
         } else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
             return "redirect:/forbien";
         } else {
-            return "redirect:/login";          
+            return "redirect:/login";
         }
 
     }
 
-    
-    
     @RequestMapping("/book-appointment-already/{id}va{gio}va{symptom}")
     public String bookAppointmentAlreadyCreate(Model model, @PathVariable(value = "id") int id, @PathVariable(value = "gio") String gio, @PathVariable(value = "symptom") String symptom, HttpServletRequest request) {
-        
-         Admin currentAdmin = authService.isAuthenticatedAdmin(request);
+
+        Admin currentAdmin = authService.isAuthenticatedAdmin(request);
         Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
         Patient currentPatient = authService.isAuthenticatedPatient(request);
         Casher currentCasher = authService.isAuthenticatedCasher(request);
-        
+
         var hours = gio;
         var symptoms = symptom;
-        
+
         if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
             Lichlamviec lichlamviec = lichlamviecRepository.findById(id).get();
             model.addAttribute("hours", hours);
             model.addAttribute("symptoms", symptoms);
             model.addAttribute("lichlamviec", lichlamviec);
             return "/client/bookAppointmentAlreadyCreate";
-        }else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
+        } else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
             return "redirect:/forbien";
         } else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
             return "redirect:/forbien";
         } else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
             return "redirect:/forbien";
         } else {
-            return "redirect:/login";          
+            return "redirect:/login";
         }
-            
+
     }
 
     @RequestMapping(value = "/profile/{id}", method = RequestMethod.GET)
