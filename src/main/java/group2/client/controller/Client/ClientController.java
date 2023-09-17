@@ -4,6 +4,9 @@
  */
 package group2.client.controller.Client;
 
+import com.paypal.api.payments.Links;
+import com.paypal.api.payments.Payment;
+import com.paypal.base.rest.PayPalRESTException;
 import group2.client.entities.*;
 import group2.client.repository.AppointmentRepository;
 import group2.client.repository.DoctorRepository;
@@ -54,6 +57,12 @@ public class ClientController {
       
     @Autowired
     private AppointmentRepository appointmentRepository;
+    
+    @Autowired
+    private PaypalService service;
+    
+    public static final String SUCCESS_URL = "pay/success";
+    public static final String CANCEL_URL = "pay/cancel";
 
     @RequestMapping("/")
     public String home(Model model, HttpServletRequest request) {
@@ -151,11 +160,11 @@ public class ClientController {
             model.addAttribute("patient", currentPatient);
            
             Lichlamviec lichlamviec = lichlamviecRepository.findById(id).get();
-            Doctor objDoctor = new Doctor();
+            
 
             List<Appointment> listAPPDOCTOR = appointmentRepository.findByDateAndDoctorId(lichlamviec.getDate(), lichlamviec.getDoctorId());
             model.addAttribute("lichlamviec", lichlamviec);   
-//                        model.addAttribute("lichlamviec", listAPPDOCTOR);       
+            model.addAttribute("listAPPDOCTOR", listAPPDOCTOR);       
 
             model.addAttribute("appointment", new Appointment());
              return "/client/bookAppointmentTime";
@@ -175,15 +184,17 @@ public class ClientController {
         }
     }
     
+    
     @RequestMapping(value = "/book-appointment-create/{id}", method = RequestMethod.POST)
-    public String bookAppointmentCreate(Model model, @PathVariable(value = "id") int id, @ModelAttribute Appointment appointment, HttpServletRequest request, HttpSession session, @RequestParam("select-hours") String selectHours, @RequestParam("symptom") String symptom) {
-        
+    public String bookAppointmentCreate(Model model, @PathVariable(value = "id") int id, @ModelAttribute Appointment appointment, HttpServletRequest request, HttpSession session, @RequestParam("select-hours") String selectHours, @RequestParam("symptom") String symptom) throws PayPalRESTException {
         Admin currentAdmin = authService.isAuthenticatedAdmin(request);
         Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
         Patient currentPatient = authService.isAuthenticatedPatient(request);
         Casher currentCasher = authService.isAuthenticatedCasher(request);
-        
+
         if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
+           
+               
             
             Lichlamviec lichlamviec = lichlamviecRepository.findById(id).get();
             
@@ -345,13 +356,24 @@ public class ClientController {
                    
                 }
          
-                   
+                Payment paymentCreate = service.createPayment(50.0, "USD", "PAYPAL", "SALE", "http://localhost:9999/" + CANCEL_URL, "http://localhost:9999/" + SUCCESS_URL);
+                    for (Links link : paymentCreate.getLinks()) {
+                        if (link.getRel().equals("approval_url")) {
+                            
+                            restTemplate.postForObject(apiUrl, appointment, Appointment.class);
+                            return "redirect:" + link.getHref();
+                            
+                        }
+                    }
+                    
                 
-                restTemplate.postForObject(apiUrl, appointment, Appointment.class);
+             
+              
                 session.setAttribute("msg", "Bạn đã đặt lịch thành công");
                 return "redirect:/book-appointment-time/{id}";
             }
-            
+                
+                     
 
         }else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
             return "redirect:/forbien";
@@ -362,6 +384,27 @@ public class ClientController {
         } else {
             return "redirect:/login";          
         }
+      
+       
+    }
+    
+     @GetMapping(value = SUCCESS_URL)
+    public String successPay(@RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId) {
+        try {
+            Payment payment = service.executePayment(paymentId, payerId);
+//            System.out.println(payment.toJSON());
+            if (payment.getState().equals("approved")) {
+                return "/client/success";
+            }
+        } catch (PayPalRESTException e) {
+            System.out.println(e.getMessage());
+        }
+        return "redirect:/";
+    }
+    
+    @GetMapping(value = CANCEL_URL)
+    public String cancelPay() {
+        return "redirect:/";
     }
     
     @RequestMapping(value = "/book-appointment-already-create/{id}", method = RequestMethod.POST)
@@ -380,12 +423,7 @@ public class ClientController {
             
             Appointment currentAppointmentByTime = appointmentRepository.findByStarttimeAndEndtime(parts[0], parts[1]);
             
-            List<Appointment> appointmentByDate = appointmentRepository.findByDateAndPatientId(appointment.getDate(), appointment.getPatientId());
-            for(int i = 0; i < appointmentByDate.size();i++){
-              if (appointmentByDate.get(i).getStarttime().equals(parts[0]) && appointmentByDate.get(i).getEndtime().equals(parts[1])){
-                  
-              }
-            }
+
             
             if(currentAppointmentByTime != null){
                 session.setAttribute("msg", "Bạn không thể đặt cùng giờ trong một ngày. Vui lòng chọn khung giờ khác");

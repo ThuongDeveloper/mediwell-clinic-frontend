@@ -261,7 +261,8 @@
                                                                                                                
                                                                                                                 
                                                                                                                 <div th:if="${lichlamviec.starttime == '07:00:00' && lichlamviec.endtime == '12:00:00'}" class="time-list-detail">
-                                                                                                                    <div>
+                                                                                                                    
+                                                                                                                    <div th:if="${listAPPDOCTOR.get(0).starttime != '07:00:00'}">
                                                                                                                         <input class="hours-input" type="radio" name="select-hours" checked="true" value="7:00 - 7:30"><span>7:00 - 7:30</span>
                                                                                                                     </div>
                                                                                                                     <div>
