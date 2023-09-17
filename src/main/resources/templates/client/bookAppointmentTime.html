@@ -253,6 +253,14 @@
                                                                                                                       </div>
                                                                                                                     <th:block th:text="${#session.removeAttribute('msg')}"></th:block>
                                                                                                                 </div>
+                                                                                                                <div th:if="${session.cancel}">
+                                                                                                                  
+                                                                                                                    <div class="alert alert-danger alert-dismissible fade show notify-error">
+                                                                                                                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                                                                                                        <span th:text="${session.cancel}"></span>
+                                                                                                                      </div>
+                                                                                                                    <th:block th:text="${#session.removeAttribute('cancel')}"></th:block>
+                                                                                                                </div>
                                                                                                             <div th:if="${lichlamviec != null}" class="time-detail">
                                                                                                                 <div class="working-hours-group">
                                                                                                                      <h4>Working hours of the day:</h4>

@@ -362,8 +362,8 @@ public class ClientController {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 String formattedDate = sdf.format(lichlamviec.getDate());
 
-                Payment payment = service.createPayment(50.0, "USD", "Paypal", "SALE",
-                        "http://localhost:9999/" + CANCEL_URL,
+                Payment payment = service.createPayment(100000000.0, "USD", "Paypal", "SALE",
+                        "http://localhost:9999/" + "id=" + lichlamviec.getId() + "/" + CANCEL_URL,
                         "http://localhost:9999/" + "patientid=" + currentPatient.getId() + "va" + "doctorid=" + lichlamviec.getDoctorId().getId()
                         + "va" + "date=" + formattedDate
                         + "va" + "starttime=" + appointment.getStarttime()
@@ -373,7 +373,6 @@ public class ClientController {
                 );
                 for (Links link : payment.getLinks()) {
                     if (link.getRel().equals("approval_url")) {
-                        System.out.println(link.getHref());
                         return "redirect:" + link.getHref();
                     }
                 }
@@ -428,6 +427,12 @@ public class ClientController {
             System.out.println(e.getMessage());
         }
         return "redirect:/";
+    }
+
+    @RequestMapping(value = "id={id}/" + CANCEL_URL, method = RequestMethod.GET)
+    public String cancelPay(@PathVariable(value = "id") int id, HttpSession session) {
+        session.setAttribute("cancel", "The transaction has been canceled by you.");
+        return "redirect:/book-appointment-time/{id}";
     }
 
     @RequestMapping(value = "/book-appointment-already-create/{id}", method = RequestMethod.POST)
@@ -616,7 +621,7 @@ public class ClientController {
                 String formattedDate = sdf.format(lichlamviec.getDate());
 
                 Payment payment = service.createPayment(50.0, "USD", "Paypal", "SALE",
-                        "http://localhost:9999/" + CANCEL_URL,
+                        "http://localhost:9999/" + "id=" + lichlamviec.getId() + "/" + CANCEL_URL,
                         "http://localhost:9999/" + "patientid=" + currentPatient.getId() + "va" + "doctorid=" + lichlamviec.getDoctorId().getId()
                         + "va" + "date=" + formattedDate
                         + "va" + "starttime=" + appointment.getStarttime()
