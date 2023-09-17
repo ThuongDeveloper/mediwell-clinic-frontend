@@ -6,7 +6,10 @@ package group2.client.controller;
 
 import group2.client.entities.*;
 import group2.client.exception.EmailAlreadyExistsException;
+import group2.client.repository.AdminRepository;
 import group2.client.repository.CasherRepository;
+import group2.client.repository.DoctorRepository;
+import group2.client.repository.PatientRepository;
 import group2.client.service.AuthService;
 import java.util.*;
 import javax.servlet.http.HttpServletRequest;
@@ -31,10 +34,32 @@ public class CasherController {
     RestTemplate restTemplate = new RestTemplate();
 
     @Autowired
+    private AdminRepository adminRepository;
+
+    @Autowired
     private CasherRepository casherRepository;
 
     @Autowired
+    private DoctorRepository doctorRepository;
+
+    @Autowired
+    private PatientRepository patientRepository;
+
+    @Autowired
     private AuthService authService;
+
+    private boolean emailExistsInAnyRole(String... emails) {
+        for (String email : emails) {
+            if (email != null
+                    && (casherRepository.existsByEmail(email)
+                    || adminRepository.existsByEmail(email)
+                    || doctorRepository.existsByEmail(email)
+                    || patientRepository.existsByEmail(email))) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     @RequestMapping("/admin/casher")
     public String page(Model model, HttpServletRequest request) {
@@ -123,9 +148,16 @@ public class CasherController {
             return "/admin/casher/create";
         }
 
-        if (casherRepository.existsByEmail(casher.getEmail())) {
-            throw new EmailAlreadyExistsException("Email already exists.");
-        }
+        // Kiểm tra xem email đã tồn tại trong cơ sở dữ liệu chưa
+//        if (casherRepository.existsByEmail(casher.getEmail())) {
+//            bindingResult.rejectValue("email", "error.email", "Email already exists.");
+//            model.addAttribute("casher", casher);
+//            return "/admin/casher/create";
+//        }
+
+//        if (emailExistsInAnyRole(casher.getEmail(), admin.getEmail(), doctor.getEmail(), patient.getEmail())) {
+//            throw new EmailAlreadyExistsException("Email already exists.");
+//        }
 
         // Tạo một HttpEntity với thông tin Casher để gửi yêu cầu POST
         HttpEntity<Casher> request = new HttpEntity<>(casher, headers);
@@ -196,7 +228,7 @@ public class CasherController {
                 return "/admin/casher/edit";
             }
         }
-        
+
         // Tạo một HttpEntity với thông tin Casher cập nhật để gửi yêu cầu PUT
         HttpEntity<Casher> request = new HttpEntity<>(updatedCasher, headers);
 
