@@ -1,16 +1,82 @@
+/* Định dạng phần tử cha "getAllDoctors" */
 .getAllDoctors {
     display: flex;
-    justify-content: space-between;
-    margin: 30px 248px;
-    max-width: 800px;
+    flex-wrap: wrap;
+    /*justify-content: space-between;*/
+    padding: 20px;
 }
+
+/* CSS cho tất cả các phần tử .widget-doctor trước khi lọc */
+.widget-doctor {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+/* CSS cho các phần tử .widget-doctor khi đã lọc */
+.widget-doctor.filtered {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+/* Định dạng hình ảnh */
+.img-fluid {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Định dạng tiêu đề "widget-title-doctor" */
+.widget-title-doctor {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.widget-title-doctor h3 {
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+.widget-title-doctor h4 {
+    font-size: 1rem;
+    margin: 0;
+    color: #777;
+}
+
+/* Hiệu ứng hover cho phần tử "widget-doctor" */
+.widget-doctor:hover {
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Định dạng đường link "a-doctor" */
+a.a-doctor {
+    text-decoration: none;
+    color: #333;
+}
+
+/* Định dạng đường link hover "a-doctor" */
+a.a-doctor:hover {
+    color: #007bff;
+}
+
+/* Định dạng phần tử "in4" */
 .in4 {
-    flex: 1;
-    margin: 30px 20px;
     background-color: #ccc;
     padding: 10px;
+    text-align: center;
 }
+
+/* Định dạng phần tử "auto-in4" */
 .auto-in4 {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     margin-left: 20px;
     margin-right: 20px;
 }
