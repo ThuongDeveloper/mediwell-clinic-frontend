@@ -7,8 +7,6 @@ package group2.client.controller.Client;
 import com.paypal.api.payments.Links;
 import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.PayPalRESTException;
-import static group2.client.controller.Client.PaypalController.CANCEL_URL;
-import static group2.client.controller.Client.PaypalController.SUCCESS_URL;
 import group2.client.entities.*;
 import group2.client.repository.AppointmentRepository;
 import group2.client.repository.DoctorRepository;
@@ -16,7 +14,14 @@ import group2.client.repository.LichlamviecRepository;
 import group2.client.repository.PatientRepository;
 import group2.client.service.*;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import static java.lang.System.in;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import javax.servlet.http.*;
@@ -61,8 +66,10 @@ public class ClientController {
 
     @Autowired
     private AppointmentRepository appointmentRepository;
-    
-    public static final String SUCCESS_URL = "client/paypal/success";
+
+    public static final String SUCCESS_URL = "pay/success";
+
+    public static final String CANCEL_URL = "pay/cancel";
 
     @RequestMapping("/")
     public String home(Model model, HttpServletRequest request) {
@@ -182,7 +189,9 @@ public class ClientController {
     }
 
     @RequestMapping(value = "/book-appointment-create/{id}", method = RequestMethod.POST)
-    public String bookAppointmentCreate(Model model, @PathVariable(value = "id") int id, @ModelAttribute Appointment appointment, HttpServletRequest request, HttpSession session, @RequestParam("select-hours") String selectHours, @RequestParam("symptom") String symptom) throws PayPalRESTException {
+    public String bookAppointmentCreate(Model model, @PathVariable(value = "id") int id,
+            @ModelAttribute Appointment appointment, HttpServletRequest request, HttpSession session,
+            @RequestParam("select-hours") String selectHours, @RequestParam("symptom") String symptom) throws PayPalRESTException {
 
         Admin currentAdmin = authService.isAuthenticatedAdmin(request);
         Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
@@ -350,16 +359,25 @@ public class ClientController {
 
                 }
 
-                Payment payment = service.createPayment(50.0, "USD", "Paypal", "SALE", "http://localhost:9999/" + CANCEL_URL, "http://localhost:9999/" + SUCCESS_URL);
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                String formattedDate = sdf.format(lichlamviec.getDate());
+
+                Payment payment = service.createPayment(50.0, "USD", "Paypal", "SALE",
+                        "http://localhost:9999/" + CANCEL_URL,
+                        "http://localhost:9999/" + "patientid=" + currentPatient.getId() + "va" + "doctorid=" + lichlamviec.getDoctorId().getId()
+                        + "va" + "date=" + formattedDate
+                        + "va" + "starttime=" + appointment.getStarttime()
+                        + "va" + "endtime=" + appointment.getEndtime()
+                        + "va" + "symptom=" + symptom
+                        + "/" + SUCCESS_URL
+                );
                 for (Links link : payment.getLinks()) {
                     if (link.getRel().equals("approval_url")) {
-                        restTemplate.postForObject(apiUrl, appointment, Appointment.class);
+                        System.out.println(link.getHref());
                         return "redirect:" + link.getHref();
                     }
                 }
                 return "redirect:/book-appointment-time/{id}";
-//                session.setAttribute("msg", "Bạn đã đặt lịch thành công");
-//                return "redirect:/book-appointment-time/{id}";
             }
 
         } else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
@@ -373,12 +391,37 @@ public class ClientController {
         }
     }
 
-    @GetMapping(value = SUCCESS_URL)
-    public String successPay(@RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId) {
+    @RequestMapping(value = "patientid={patientid}vadoctorid={doctorid}vadate={dateString}vastarttime={starttime}vaendtime={endtime}vasymptom={symptom}/" + SUCCESS_URL, method = RequestMethod.GET)
+    public String successPay(@RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId, @ModelAttribute Appointment appointment,
+            @PathVariable("patientid") Integer patientid, @PathVariable("doctorid") Integer doctorid,
+            @PathVariable("dateString") String dateString,
+            @PathVariable("starttime") String starttime,
+            @PathVariable("endtime") String endtime,
+            @PathVariable("symptom") String symptom
+    ) throws ParseException {
+
+        Doctor newDoctor = new Doctor();
+        newDoctor.setId(doctorid);
+        appointment.setDoctorId(newDoctor);
+
+        Patient newPatient = new Patient();
+        newPatient.setId(patientid);
+        appointment.setPatientId(newPatient);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = sdf.parse(dateString);
+
+        appointment.setDate(date);
+
+        appointment.setStarttime(starttime);
+
+        appointment.setEndtime(endtime);
+
+        appointment.setSymptom(symptom);
         try {
             Payment payment = service.executePayment(paymentId, payerId);
-//            System.out.println(payment.toJSON());
             if (payment.getState().equals("approved")) {
+                restTemplate.postForObject(apiUrl, appointment, Appointment.class);
                 return "client/paypal/success";
             }
         } catch (PayPalRESTException e) {
@@ -388,7 +431,7 @@ public class ClientController {
     }
 
     @RequestMapping(value = "/book-appointment-already-create/{id}", method = RequestMethod.POST)
-    public String bookAppointmentCreateAlready(Model model, @PathVariable(value = "id") int id, @ModelAttribute Appointment appointment, HttpServletRequest request, HttpSession session, @RequestParam("select-hours") String selectHours, @RequestParam("symptom") String symptom) {
+    public String bookAppointmentCreateAlready(Model model, @PathVariable(value = "id") int id, @ModelAttribute Appointment appointment, HttpServletRequest request, HttpSession session, @RequestParam("select-hours") String selectHours, @RequestParam("symptom") String symptom) throws PayPalRESTException {
 
         Admin currentAdmin = authService.isAuthenticatedAdmin(request);
         Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
@@ -569,8 +612,24 @@ public class ClientController {
 
                 }
 
-                restTemplate.postForObject(apiUrl, appointment, Appointment.class);
-                session.setAttribute("msg", "Bạn đã đặt lịch thành công");
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                String formattedDate = sdf.format(lichlamviec.getDate());
+
+                Payment payment = service.createPayment(50.0, "USD", "Paypal", "SALE",
+                        "http://localhost:9999/" + CANCEL_URL,
+                        "http://localhost:9999/" + "patientid=" + currentPatient.getId() + "va" + "doctorid=" + lichlamviec.getDoctorId().getId()
+                        + "va" + "date=" + formattedDate
+                        + "va" + "starttime=" + appointment.getStarttime()
+                        + "va" + "endtime=" + appointment.getEndtime()
+                        + "va" + "symptom=" + symptom
+                        + "/" + SUCCESS_URL
+                );
+                for (Links link : payment.getLinks()) {
+                    if (link.getRel().equals("approval_url")) {
+                        System.out.println(link.getHref());
+                        return "redirect:" + link.getHref();
+                    }
+                }
                 return "redirect:/book-appointment-time/{id}";
             }
 
