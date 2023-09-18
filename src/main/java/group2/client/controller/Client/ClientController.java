@@ -44,6 +44,7 @@ public class ClientController {
     private String apiUrlDoctor = "http://localhost:8888/api/doctor/";
     private String apiUrlPatient = "http://localhost:8888/api/patient/";
     private String apiUrlTypeDoctor = "http://localhost:8888/api/typedoctor/";
+    private String apiUrlFilter = "http://localhost:8888/api/filter/";
     RestTemplate restTemplate = new RestTemplate();
 
     @Autowired
@@ -116,10 +117,50 @@ public class ClientController {
             List<TypeDoctor> listTypeDoctor = responseTD.getBody();
             model.addAttribute("listDoctor", listDoctor);
             model.addAttribute("listTypeDoctor", listTypeDoctor);
-            model.addAttribute("listDoctor", listDoctor);
         }
         return "/client/listDoctors";
 
+    }
+
+    @RequestMapping(value = "/listDoctors", method = RequestMethod.POST)
+    public String filterListDoctors(Model model, HttpServletRequest request, @RequestParam("filterLDT") String filterLDT) {
+
+        ResponseEntity<List<Doctor>> response = restTemplate.exchange(apiUrlDoctor, HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<Doctor>>() {
+        });
+        Patient currentPatient = authService.isAuthenticatedPatient(request);
+        ResponseEntity<List<TypeDoctor>> responseTD = restTemplate.exchange(apiUrlTypeDoctor, HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<TypeDoctor>>() {
+        });
+
+        if ("ALL".equals(filterLDT)) {
+            // Trường hợp khi lựa chọn là "ALL"
+            return "redirect:/listDoctors";
+        } else {
+            // Trường hợp khi lựa chọn không phải là "ALL"
+            ResponseEntity<List<Doctor>> responseFilter = restTemplate.exchange(apiUrlFilter + "/doctor/" + filterLDT, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<List<Doctor>>() {
+            });
+            if (response.getStatusCode().is2xxSuccessful() && responseFilter.getStatusCode().is2xxSuccessful() && responseTD.getStatusCode().is2xxSuccessful()
+                    && currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
+                List<Doctor> listDoctor = response.getBody();
+                List<Doctor> filterListDoctor = responseFilter.getBody();
+                List<TypeDoctor> listTypeDoctor = responseTD.getBody();
+                model.addAttribute("listDoctor", listDoctor);
+                model.addAttribute("filterListDoctor", filterListDoctor);
+                model.addAttribute("listTypeDoctor", listTypeDoctor);
+                model.addAttribute("patient", currentPatient);
+            } else if (response.getStatusCode().is2xxSuccessful() && responseFilter.getStatusCode().is2xxSuccessful() && responseTD.getStatusCode().is2xxSuccessful()
+                    && currentPatient == null) {
+                List<Doctor> listDoctor = response.getBody();
+                List<Doctor> filterListDoctor = responseFilter.getBody();
+                List<TypeDoctor> listTypeDoctor = responseTD.getBody();
+                model.addAttribute("listDoctor", listDoctor);
+                model.addAttribute("filterListDoctor", filterListDoctor);
+                model.addAttribute("listTypeDoctor", listTypeDoctor);
+            }
+        }
+        return "/client/filterListDoctors";
     }
 
     @RequestMapping("/book-appointment/{id}")
