@@ -61,7 +61,7 @@ public class ThuocController {
                 List<Thuoc> listThuoc = response.getBody();
 
                 // Xử lý dữ liệu theo nhu cầu của bạn
-                model.addAttribute("listthuoc", listThuoc);
+                model.addAttribute("listThuoc", listThuoc);
             }
             return "admin/thuoc/index";
         } else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
