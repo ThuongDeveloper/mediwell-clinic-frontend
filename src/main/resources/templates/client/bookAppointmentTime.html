@@ -259,104 +259,13 @@
                                                                                                                      <input type="text" class="date-input" readonly="true" th:value="${#dates.format(lichlamviec.date, 'dd-MM-yyyy')}"/>
                                                                                                                 </div>
                                                                                                                
-                                                                                                                
-                                                                                                                <div th:if="${lichlamviec.starttime == '07:00:00' && lichlamviec.endtime == '12:00:00'}" class="time-list-detail">
-                                                                                                                    
-                                                                                                                    <div th:if="${listAPPDOCTOR.get(0).starttime != '07:00:00'}">
-                                                                                                                        <input class="hours-input" type="radio" name="select-hours" checked="true" value="7:00 - 7:30"><span>7:00 - 7:30</span>
+                                                                                                                <div class="time-list-detail">
+                                                                                                                    <div th:each="llv : ${lichlamviecByDate}">
+                                                                                                                        <input class="hours-input" type="radio" required="true" name="select-hours" th:value="${llv}"><span th:text="${llv}"></span>
                                                                                                                     </div>
-                                                                                                                    <div>
-                                                                                                                         <input class="hours-input" type="radio" name="select-hours" value="7:30 - 8:00"><span>7:30 - 8:00</span>
-                                                                                                                    </div>
-                                                                                                                    <div>
-                                                                                                                        <input class="hours-input" type="radio" name="select-hours" value="8:00 - 8:30"><span>8:00 - 8:30</span>
-                                                                                                                    </div>
-                                                                                                                    <div>
-                                                                                                                        <input class="hours-input" type="radio" name="select-hours" value="8:30 - 9:00"><span>8:30 - 9:00</span>
-                                                                                                                    </div>
-                                                                                                                    <div>
-                                                                                                                        <input class="hours-input" type="radio" name="select-hours" value="9:00 - 9:30"><span>9:00 - 9:30</span>
-                                                                                                                    </div>
-                                                                                                                    <div>
-                                                                                                                        <input class="hours-input" type="radio" name="select-hours" value="9:30 - 10:00"><span>9:30 - 10:00</span>
-                                                                                                                    </div>
-                                                                                                                    <div>
-                                                                                                                        <input class="hours-input" type="radio" name="select-hours" value="10:00 - 10:30"><span>10:00 - 10:30</span>
-                                                                                                                    </div>
-                                                                                                                    <div>
-                                                                                                                        <input class="hours-input" type="radio" name="select-hours" value="10:30 - 11:00"><span>10:30 - 11:00</span>
-                                                                                                                    </div>
-                                                                                                                    <div>
-                                                                                                                        <input class="hours-input" type="radio" name="select-hours" value="11:00 - 11:30"><span>11:00 - 11:30</span>
-                                                                                                                    </div>
-                                                                                                                    <div>
-                                                                                                                        <input class="hours-input" type="radio" name="select-hours" value="11:30 - 12:00"><span>11:30 - 12:00</span>
-                                                                                                                    </div>
-                                                                                                                    
-                                                                                                                </div>
-                                                                                                                 <div th:if="${lichlamviec.starttime == '12:00:00' && lichlamviec.endtime == '17:00:00'}" class="time-list-detail">
-                                                                                                                     <div>
-                                                                                                                          <input class="hours-input" type="radio" name="select-hours" checked="true" value="12:00 - 12:30"><span>12:00 - 12:30</span>
-                                                                                                                     </div>
-                                                                                                                     <div>
-                                                                                                                         <input class="hours-input" type="radio" name="select-hours" value="12:30 - 13:00"><span>12:30 - 13:00</span>
-                                                                                                                     </div>
-                                                                                                                     <div>
-                                                                                                                         <input class="hours-input" type="radio" name="select-hours" value="13:00 - 13:30"><span>13:00 - 13:30</span>
-                                                                                                                     </div>
-                                                                                                                     <div>
-                                                                                                                         <input class="hours-input" type="radio" name="select-hours" value="13:30 - 14:00"><span>13:30 - 14:00</span>
-                                                                                                                     </div>
-                                                                                                                     <div>
-                                                                                                                         <input class="hours-input" type="radio" name="select-hours" value="14:00 - 14:30"><span>14:00 - 14:30</span>
-                                                                                                                     </div>
-                                                                                                                     <div>
-                                                                                                                         <input class="hours-input" type="radio" name="select-hours" value="14:30 - 15:00"><span>14:30 - 15:00</span>
-                                                                                                                     </div>
-                                                                                                                     <div>
-                                                                                                                         <input class="hours-input" type="radio" name="select-hours" value="15:00 - 15:30"><span>15:00 - 15:30</span>
-                                                                                                                     </div>
-                                                                                                                     <div>
-                                                                                                                         <input class="hours-input" type="radio" name="select-hours" value="15:30 - 16:00"><span>15:30 - 16:00</span>
-                                                                                                                     </div>
-                                                                                                                     <div>
-                                                                                                                         <input class="hours-input" type="radio" name="select-hours" value="16:00 - 16:30"><span>16:00 - 16:30</span>
-                                                                                                                     </div>
-                                                                                                                     <div>
-                                                                                                                         <input class="hours-input" type="radio" name="select-hours" value="16:30 - 17:00"><span>16:30 - 17:00</span>
-                                                                                                                     </div>
-                                                                                                                    
-                                                                                                                  
-                                                                                                                </div>
-                                                                                                                 <div th:if="${lichlamviec.starttime == '17:00:00' && lichlamviec.endtime == '21:00:00'}" class="time-list-detail">
-                                                                                                                     <div>
-                                                                                                                         <input class="hours-input" type="radio" name="select-hours" checked="true" value="17:00 - 17:30"><span>17:00 - 17:30</span>
-                                                                                                                     </div>
-                                                                                                                     <div>
-                                                                                                                         <input class="hours-input" type="radio" name="select-hours" value="17:30 -18:00"><span>17:30 - 18:00</span>
-                                                                                                                     </div>
-                                                                                                                     <div>
-                                                                                                                         <input class="hours-input" type="radio" name="select-hours" value="18:00 - 18:30"><span>18:00 - 18:30</span>
-                                                                                                                     </div>
-                                                                                                                     <div>
-                                                                                                                         <input class="hours-input" type="radio" name="select-hours" value="18:30 - 19:00"><span>18:30 - 19:00</span>
-                                                                                                                     </div>
-                                                                                                                     <div>
-                                                                                                                         <input class="hours-input" type="radio" name="select-hours" value="19:00 - 19:30"><span>19:00 - 19:30</span>
-                                                                                                                     </div>
-                                                                                                                     <div>
-                                                                                                                          <input class="hours-input" type="radio" name="select-hours" value="19:30 - 20:00"><span>19:30 - 20:00</span>
-                                                                                                                     </div>
-                                                                                                                     <div>
-                                                                                                                         <input class="hours-input" type="radio" name="select-hours" value="20:00 - 20:30"><span>20:00 - 20:30</span>
-                                                                                                                     </div>
-                                                                                                                     <div>
-                                                                                                                         <input class="hours-input" type="radio" name="select-hours" value="20:30 - 21:00"><span>20:30 - 21:00</span>
-                                                                                                                     </div>
-                                                                                                                    
                                                                                                                    
-                                                                                                                  
-                                                                                                                </div>
+                                                                                                                </div>                                                                                                       
+                                                                                                                
                                                                                                                                                                            
                                                                                                                 
                                                                                                             </div>
@@ -380,6 +289,8 @@
 
 
                                                                                                 <div th:replace="~{client/layout/layout :: body}"></div>
+                                                                                                
+                                                                                                
                                                                                                
                                                                                                 </body>
                                                                                                 </html>
