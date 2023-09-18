@@ -16,5 +16,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface LichlamviecRepository extends JpaRepository<Lichlamviec, Integer> {
     public List<Lichlamviec> findByDoctorId(Doctor doctor);
-  
+     public Lichlamviec findByDoctorIdAndDateAndStarttimeAndEndtime(Doctor doctor, Date date, String starttime, String endtime);
 }
