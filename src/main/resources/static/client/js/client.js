@@ -31,3 +31,28 @@ $(document).ready(function () {
         }
     });
 });
+
+// Lắng nghe sự kiện "change" trên thẻ select
+document.getElementById("typeDoctorFilter").addEventListener("change", function () {
+    var selectedTypeDoctor = this.value; // Lấy giá trị đã chọn
+    filterDoctors(selectedTypeDoctor);
+});
+
+// Hàm để lọc danh sách bác sĩ
+function filterDoctors(selectedTypeDoctor) {
+    var doctorElements = document.querySelectorAll(".getAllDoctors .widget-doctor");
+    
+    doctorElements.forEach(function (doctorElement) {
+        var typeDoctorElement = doctorElement.querySelector(".widget-title-doctor h4");
+        if (selectedTypeDoctor === "" || typeDoctorElement.textContent === selectedTypeDoctor) {
+            doctorElement.style.display = "block"; // Hiển thị bác sĩ
+            doctorElement.classList.add("filtered"); // Thêm lớp CSS cho phần tử sau khi lọc
+        } else {
+            doctorElement.style.display = "none"; // Ẩn bác sĩ
+            doctorElement.classList.remove("filtered"); // Xóa lớp CSS khỏi phần tử sau khi lọc
+        }
+    });
+}
+
+// Khởi tạo danh sách bác sĩ ban đầu
+filterDoctors("");

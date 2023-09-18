@@ -183,8 +183,8 @@ public class ClientController {
                 if(checkAlreadyBookTime(listAPPDOCTOR, "07:00 - 07:30")){
                      lichlamviecByDate.add("07:00 - 07:30");     
                 }
-                if(checkAlreadyBookTime(listAPPDOCTOR, "07:30 - 8:00")){
-                     lichlamviecByDate.add("7:30 - 8:00");
+                if(checkAlreadyBookTime(listAPPDOCTOR, "07:30 - 08:00")){
+                     lichlamviecByDate.add("07:30 - 08:00");
                 }       
                 if(checkAlreadyBookTime(listAPPDOCTOR, "08:00 - 08:30")){
                      lichlamviecByDate.add("08:00 - 08:30");
@@ -192,11 +192,11 @@ public class ClientController {
                 if(checkAlreadyBookTime(listAPPDOCTOR, "08:30 - 09:00")){
                      lichlamviecByDate.add("08:30 - 09:00");
                 } 
-                if(checkAlreadyBookTime(listAPPDOCTOR, "9:00 - 9:30")){
-                     lichlamviecByDate.add("9:00 - 9:30");
+                if(checkAlreadyBookTime(listAPPDOCTOR, "09:00 - 09:30")){
+                     lichlamviecByDate.add("09:00 - 09:30");
                 } 
-                if(checkAlreadyBookTime(listAPPDOCTOR, "9:30 - 10:00")){
-                     lichlamviecByDate.add("9:30 - 10:00");
+                if(checkAlreadyBookTime(listAPPDOCTOR, "09:30 - 10:00")){
+                     lichlamviecByDate.add("09:30 - 10:00");
                 } 
                 if(checkAlreadyBookTime(listAPPDOCTOR, "10:00 - 10:30")){
                      lichlamviecByDate.add("10:00 - 10:30");
@@ -304,7 +304,7 @@ public class ClientController {
                      lichlamviecByDate.add("07:00 - 07:30");     
                 }
                 if(checkAlreadyBookTime(listAPPDOCTOR, "07:30 - 08:00")){
-                     lichlamviecByDate.add("7:30 - 8:00");
+                     lichlamviecByDate.add("07:30 - 08:00");
                 }       
                 if(checkAlreadyBookTime(listAPPDOCTOR, "08:00 - 08:30")){
                      lichlamviecByDate.add("08:00 - 08:30");
@@ -436,33 +436,33 @@ public class ClientController {
 
                 appointment.setDate(lichlamviec.getDate());
 
-                if (selectHours.equals("7:00 - 7:30")) {
-                    appointment.setStarttime("7:00");
-                    appointment.setEndtime("7:30");
+                if (selectHours.equals("07:00 - 07:30")) {
+                    appointment.setStarttime("07:00");
+                    appointment.setEndtime("07:30");
 
                 }
-                if (selectHours.equals("7:30 - 8:00")) {
-                    appointment.setStarttime("7:30");
-                    appointment.setEndtime("8:00");
+                if (selectHours.equals("07:30 - 08:00")) {
+                    appointment.setStarttime("07:30");
+                    appointment.setEndtime("08:00");
 
                 }
-                if (selectHours.equals("8:00 - 8:30")) {
-                    appointment.setStarttime("8:00");
-                    appointment.setEndtime("8:30");
+                if (selectHours.equals("08:00 - 08:30")) {
+                    appointment.setStarttime("08:00");
+                    appointment.setEndtime("08:30");
 
                 }
-                if (selectHours.equals("8:30 - 9:00")) {
-                    appointment.setStarttime("8:30");
-                    appointment.setEndtime("9:00");
+                if (selectHours.equals("08:30 - 09:00")) {
+                    appointment.setStarttime("08:30");
+                    appointment.setEndtime("09:00");
 
                 }
-                if (selectHours.equals("9:00 - 9:30")) {
-                    appointment.setStarttime("9:00");
-                    appointment.setEndtime("9:30");
+                if (selectHours.equals("09:00 - 09:30")) {
+                    appointment.setStarttime("09:00");
+                    appointment.setEndtime("09:30");
 
                 }
-                if (selectHours.equals("9:30 - 10:00")) {
-                    appointment.setStarttime("9:30");
+                if (selectHours.equals("09:30 - 10:00")) {
+                    appointment.setStarttime("09:30");
                     appointment.setEndtime("10:00");
 
                 }
@@ -581,7 +581,7 @@ public class ClientController {
                 String formattedDate = sdf.format(lichlamviec.getDate());
 
                 Payment payment = service.createPayment(50.0, "USD", "Paypal", "SALE",
-                        "http://localhost:9999/" + CANCEL_URL,
+                        "http://localhost:9999/" + "id=" + lichlamviec.getId() + "/" + CANCEL_URL,
                         "http://localhost:9999/" + "patientid=" + currentPatient.getId() + "va" + "doctorid=" + lichlamviec.getDoctorId().getId()
                         + "va" + "date=" + formattedDate
                         + "va" + "starttime=" + appointment.getStarttime()
@@ -591,20 +591,11 @@ public class ClientController {
                 );
                 for (Links link : payment.getLinks()) {
                     if (link.getRel().equals("approval_url")) {
-                        System.out.println(link.getHref());
                         return "redirect:" + link.getHref();
                     }
                 }
 
-                Payment paymentCreate = service.createPayment(50.0, "USD", "PAYPAL", "SALE", "http://localhost:9999/" + CANCEL_URL, "http://localhost:9999/" + SUCCESS_URL);
-                for (Links link : paymentCreate.getLinks()) {
-                    if (link.getRel().equals("approval_url")) {
-
-                        restTemplate.postForObject(apiUrl, appointment, Appointment.class);
-                        return "redirect:" + link.getHref();
-
-                    }
-                }
+             
 
                 session.setAttribute("msg", "Bạn đã đặt lịch thành công");
                 return "redirect:/book-appointment-time/{id}";
@@ -622,10 +613,7 @@ public class ClientController {
 
     }
 
-    @GetMapping(value = CANCEL_URL)
-    public String cancelPay() {
-        return "redirect:/";
-    }
+
 
     @RequestMapping(value = "patientid={patientid}vadoctorid={doctorid}vadate={dateString}vastarttime={starttime}vaendtime={endtime}vasymptom={symptom}/" + SUCCESS_URL, method = RequestMethod.GET)
     public String successPay(@RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId, @ModelAttribute Appointment appointment,
@@ -666,7 +654,11 @@ public class ClientController {
         return "redirect:/";
     }
 
-   
+    @RequestMapping(value = "id={id}/" + CANCEL_URL, method = RequestMethod.GET)
+    public String cancelPay(@PathVariable(value = "id") int id, HttpSession session) {
+        session.setAttribute("cancel", "The transaction has been canceled by you.");
+        return "redirect:/book-appointment-time/{id}";
+    }
 
     @RequestMapping(value = "/book-appointment-already-create/{id}", method = RequestMethod.POST)
     public String bookAppointmentCreateAlready(Model model, @PathVariable(value = "id") int id, @ModelAttribute Appointment appointment, HttpServletRequest request, HttpSession session, @RequestParam("select-hours") String selectHours, @RequestParam("symptom") String symptom) throws PayPalRESTException {
@@ -677,15 +669,7 @@ public class ClientController {
         Casher currentCasher = authService.isAuthenticatedCasher(request);
 
         if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
-            String time = selectHours;
-            String[] parts = time.split("-");
-            
-            List<Appointment> appointmentByDate = appointmentRepository.findByDateAndPatientId(appointment.getDate(), appointment.getPatientId());
-            for(int i = 0; i < appointmentByDate.size();i++){
-                if (appointmentByDate.get(i).getStarttime().equals(parts[0]) && appointmentByDate.get(i).getEndtime().equals(parts[1])){
-                                                          
-                }
-            }
+          
 
             Lichlamviec lichlamviec = lichlamviecRepository.findById(id).get();
 
@@ -701,167 +685,170 @@ public class ClientController {
 
             appointment.setSymptom(symptom);
 
-            if (selectHours.equals("7:00 - 7:30")) {
-                appointment.setStarttime("7:00");
-                appointment.setEndtime("7:30");
+            if (selectHours.equals("07:00 - 07:30")) {
+                appointment.setStarttime("07:00");
+                appointment.setEndtime("07:30");
 
-            }
-            if (selectHours.equals("7:30 - 8:00")) {
-                appointment.setStarttime("7:30");
-                appointment.setEndtime("8:00");
 
-            }
-            if (selectHours.equals("8:00 - 8:30")) {
-                appointment.setStarttime("8:00");
-                appointment.setEndtime("8:30");
-
-            }
-            if (selectHours.equals("8:30 - 9:00")) {
-                appointment.setStarttime("8:30");
-                appointment.setEndtime("9:00");
-
-            }
-            if (selectHours.equals("9:00 - 9:30")) {
-                appointment.setStarttime("9:00");
-                appointment.setEndtime("9:30");
-
-            }
-            if (selectHours.equals("9:30 - 10:00")) {
-                appointment.setStarttime("9:30");
-                appointment.setEndtime("10:00");
-
-            }
-            if (selectHours.equals("10:00 - 10:30")) {
-                appointment.setStarttime("10:00");
-                appointment.setEndtime("10:30");
-
-            }
-            if (selectHours.equals("10:30 - 11:00")) {
-                appointment.setStarttime("10:30");
-                appointment.setEndtime("11:00");
-
-            }
-            if (selectHours.equals("11:00 - 11:30")) {
-                appointment.setStarttime("11:00");
-                appointment.setEndtime("11:30");
-
-            }
-            if (selectHours.equals("11:30 - 12:00")) {
-                appointment.setStarttime("11:30");
-                appointment.setEndtime("12:00");
-
-            }
-            if (selectHours.equals("12:00 - 12:30")) {
-                appointment.setStarttime("12:00");
-                appointment.setEndtime("12:30");
-
-            }
-            if (selectHours.equals("12:30 - 13:00")) {
-                appointment.setStarttime("12:30");
-                appointment.setEndtime("13:00");
-
-            }
-            if (selectHours.equals("13:00 - 13:30")) {
-                appointment.setStarttime("13:00");
-                appointment.setEndtime("13:30");
-
-            }
-            if (selectHours.equals("13:30 - 14:00")) {
-                appointment.setStarttime("13:30");
-                appointment.setEndtime("14:00");
-
-            }
-            if (selectHours.equals("14:00 - 14:30")) {
-                appointment.setStarttime("14:00");
-                appointment.setEndtime("14:30");
-
-            }
-            if (selectHours.equals("14:30 - 15:00")) {
-                appointment.setStarttime("14:30");
-                appointment.setEndtime("15:00");
-
-            }
-            if (selectHours.equals("15:00 - 15:30")) {
-                appointment.setStarttime("15:00");
-                appointment.setEndtime("15:30");
-
-            }
-            if (selectHours.equals("15:30 - 16:00")) {
-                appointment.setStarttime("15:30");
-                appointment.setEndtime("16:00");
-
-            }
-            if (selectHours.equals("16:00 - 16:30")) {
-                appointment.setStarttime("16:00");
-                appointment.setEndtime("16:30");
-
-            }
-            if (selectHours.equals("16:30 - 17:00")) {
-                appointment.setStarttime("16:30");
-                appointment.setEndtime("17:00");
-
-            }
-            if (selectHours.equals("17:00 - 17:30")) {
-                appointment.setStarttime("17:00");
-                appointment.setEndtime("17:30");
-
-            }
-            if (selectHours.equals("17:30 - 18:00")) {
-                appointment.setStarttime("17:30");
-                appointment.setEndtime("18:00");
-
-            }
-            if (selectHours.equals("18:00 - 18:30")) {
-                appointment.setStarttime("18:00");
-                appointment.setEndtime("18:30");
-
-            }
-            if (selectHours.equals("18:30 - 19:00")) {
-                appointment.setStarttime("18:30");
-                appointment.setEndtime("19:00");
-
-            }
-            if (selectHours.equals("19:00 - 19:30")) {
-                appointment.setStarttime("19:00");
-                appointment.setEndtime("19:30");
-
-            }
-            if (selectHours.equals("19:30 - 20:00")) {
-                appointment.setStarttime("19:30");
-                appointment.setEndtime("20:00");
-
-            }
-            if (selectHours.equals("20:00 - 20:30")) {
-                appointment.setStarttime("20:00");
-                appointment.setEndtime("20:30");
-
-            }
-            if (selectHours.equals("20:30 - 21:00")) {
-                appointment.setStarttime("20:30");
-                appointment.setEndtime("21:00");
-
-            }
-
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            String formattedDate = sdf.format(lichlamviec.getDate());
-
-            Payment payment = service.createPayment(50.0, "USD", "Paypal", "SALE",
-                    "http://localhost:9999/" + CANCEL_URL,
-                    "http://localhost:9999/" + "patientid=" + currentPatient.getId() + "va" + "doctorid=" + lichlamviec.getDoctorId().getId()
-                    + "va" + "date=" + formattedDate
-                    + "va" + "starttime=" + appointment.getStarttime()
-                    + "va" + "endtime=" + appointment.getEndtime()
-                    + "va" + "symptom=" + symptom
-                    + "/" + SUCCESS_URL
-            );
-            for (Links link : payment.getLinks()) {
-                if (link.getRel().equals("approval_url")) {
-                    System.out.println(link.getHref());
-                    return "redirect:" + link.getHref();
                 }
-            }
-            return "redirect:/book-appointment-time/{id}";
+                if (selectHours.equals("07:30 - 08:00")) {
+                    appointment.setStarttime("07:30");
+                    appointment.setEndtime("08:00");
 
+                }
+                if (selectHours.equals("08:00 - 08:30")) {
+                    appointment.setStarttime("08:00");
+                    appointment.setEndtime("08:30");
+
+                }
+                if (selectHours.equals("08:30 - 09:00")) {
+                    appointment.setStarttime("08:30");
+                    appointment.setEndtime("09:00");
+
+                }
+                if (selectHours.equals("09:00 - 09:30")) {
+                    appointment.setStarttime("09:00");
+                    appointment.setEndtime("09:30");
+
+                }
+                if (selectHours.equals("09:30 - 10:00")) {
+                    appointment.setStarttime("09:30");
+                    appointment.setEndtime("10:00");
+
+                }
+                if (selectHours.equals("10:00 - 10:30")) {
+                    appointment.setStarttime("10:00");
+                    appointment.setEndtime("10:30");
+
+                }
+                if (selectHours.equals("10:30 - 11:00")) {
+                    appointment.setStarttime("10:30");
+                    appointment.setEndtime("11:00");
+
+                }
+                if (selectHours.equals("11:00 - 11:30")) {
+                    appointment.setStarttime("11:00");
+                    appointment.setEndtime("11:30");
+
+                }
+                if (selectHours.equals("11:30 - 12:00")) {
+                    appointment.setStarttime("11:30");
+                    appointment.setEndtime("12:00");
+
+                }
+                if (selectHours.equals("12:00 - 12:30")) {
+                    appointment.setStarttime("12:00");
+                    appointment.setEndtime("12:30");
+
+                }
+                if (selectHours.equals("12:30 - 13:00")) {
+                    appointment.setStarttime("12:30");
+                    appointment.setEndtime("13:00");
+
+                }
+                if (selectHours.equals("13:00 - 13:30")) {
+                    appointment.setStarttime("13:00");
+                    appointment.setEndtime("13:30");
+
+                }
+                if (selectHours.equals("13:30 - 14:00")) {
+                    appointment.setStarttime("13:30");
+                    appointment.setEndtime("14:00");
+
+                }
+                if (selectHours.equals("14:00 - 14:30")) {
+                    appointment.setStarttime("14:00");
+                    appointment.setEndtime("14:30");
+
+                }
+                if (selectHours.equals("14:30 - 15:00")) {
+                    appointment.setStarttime("14:30");
+                    appointment.setEndtime("15:00");
+
+                }
+                if (selectHours.equals("15:00 - 15:30")) {
+                    appointment.setStarttime("15:00");
+                    appointment.setEndtime("15:30");
+
+                }
+                if (selectHours.equals("15:30 - 16:00")) {
+                    appointment.setStarttime("15:30");
+                    appointment.setEndtime("16:00");
+
+                }
+                if (selectHours.equals("16:00 - 16:30")) {
+                    appointment.setStarttime("16:00");
+                    appointment.setEndtime("16:30");
+
+                }
+                if (selectHours.equals("16:30 - 17:00")) {
+                    appointment.setStarttime("16:30");
+                    appointment.setEndtime("17:00");
+
+                }
+                if (selectHours.equals("17:00 - 17:30")) {
+                    appointment.setStarttime("17:00");
+                    appointment.setEndtime("17:30");
+
+                }
+                if (selectHours.equals("17:30 - 18:00")) {
+                    appointment.setStarttime("17:30");
+                    appointment.setEndtime("18:00");
+
+                }
+                if (selectHours.equals("18:00 - 18:30")) {
+                    appointment.setStarttime("18:00");
+                    appointment.setEndtime("18:30");
+
+                }
+                if (selectHours.equals("18:30 - 19:00")) {
+                    appointment.setStarttime("18:30");
+                    appointment.setEndtime("19:00");
+
+                }
+                if (selectHours.equals("19:00 - 19:30")) {
+                    appointment.setStarttime("19:00");
+                    appointment.setEndtime("19:30");
+
+                }
+                if (selectHours.equals("19:30 - 20:00")) {
+                    appointment.setStarttime("19:30");
+                    appointment.setEndtime("20:00");
+
+                }
+                if (selectHours.equals("20:00 - 20:30")) {
+                    appointment.setStarttime("20:00");
+                    appointment.setEndtime("20:30");
+
+                }
+                if (selectHours.equals("20:30 - 21:00")) {
+                    appointment.setStarttime("20:30");
+                    appointment.setEndtime("21:00");
+
+                }
+
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                String formattedDate = sdf.format(lichlamviec.getDate());
+
+                Payment payment = service.createPayment(50.0, "USD", "Paypal", "SALE",
+                        "http://localhost:9999/" + "id=" + lichlamviec.getId() + "/" + CANCEL_URL,
+                        "http://localhost:9999/" + "patientid=" + currentPatient.getId() + "va" + "doctorid=" + lichlamviec.getDoctorId().getId()
+                        + "va" + "date=" + formattedDate
+                        + "va" + "starttime=" + appointment.getStarttime()
+                        + "va" + "endtime=" + appointment.getEndtime()
+                        + "va" + "symptom=" + symptom
+                        + "/" + SUCCESS_URL
+                );
+                for (Links link : payment.getLinks()) {
+                    if (link.getRel().equals("approval_url")) {
+                        System.out.println(link.getHref());
+                        return "redirect:" + link.getHref();
+                    }
+                }
+                return "redirect:/book-appointment-time/{id}";
+            
+            
+            
         } else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
             return "redirect:/forbien";
         } else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
