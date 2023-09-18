@@ -284,8 +284,8 @@ public class LichlamviecController {
       
     }
 
-    @RequestMapping(value = "/admin/lichlamviec/edit", method = RequestMethod.POST)
-    public String update(Model model, @ModelAttribute Lichlamviec updatedLich, @RequestParam("DoctorID") String doctorID, @RequestParam("time_select") String timeSelect) {
+    @RequestMapping(value = "/admin/lichlamviec/edit/{id}", method = RequestMethod.POST)
+    public String update(Model model, @PathVariable("id") Integer id, @ModelAttribute Lichlamviec updatedLich, HttpSession session, @RequestParam("DoctorID") String doctorID, @RequestParam("time_select") String timeSelect) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
@@ -309,20 +309,31 @@ public class LichlamviecController {
             updatedLich.setEndtime("21:00");
         }
         
-        // Bổ sung id vào URL khi thực hiện PUT
-        String url = apiUrl + "/" + updatedLich.getId();
+        String[] parts = timeSelect.split("-");
+        
+        Lichlamviec checklichlamviecByDoctorAndDateAndTime = lichlamviecRepository.findByDoctorIdAndDateAndStarttimeAndEndtime(newD, updatedLich.getDate(), parts[0], parts[1]);
+        
+        if(checklichlamviecByDoctorAndDateAndTime != null){
+            session.setAttribute("checklichlamviec", "Không thể tạo lịch cho cùng một bác sĩ trong cùng ngày cùng giờ được. Vui lòng chọn bác sĩ, ngày và giờ khác");
+            return "redirect:/admin/lichlamviec/edit/{id}";
+        }else{
+             // Bổ sung id vào URL khi thực hiện PUT
+            String url = apiUrl + "/" + updatedLich.getId();
 
-        // Tạo một HttpEntity với thông tin Casher cập nhật để gửi yêu cầu PUT
-        HttpEntity<Lichlamviec> request = new HttpEntity<>(updatedLich, headers);
+            // Tạo một HttpEntity với thông tin Casher cập nhật để gửi yêu cầu PUT
+            HttpEntity<Lichlamviec> request = new HttpEntity<>(updatedLich, headers);
 
-        try {
-            restTemplate.exchange(url, HttpMethod.PUT, request, Lichlamviec.class);
-            return "redirect:/admin/lichlamviec";
+            try {
+                restTemplate.exchange(url, HttpMethod.PUT, request, Lichlamviec.class);
+                return "redirect:/admin/lichlamviec";
 
-        } catch (RestClientException e) {
-            model.addAttribute("lich", existingLich);
-            return "/admin/lichlamviec/edit";
+            } catch (RestClientException e) {
+                model.addAttribute("lich", existingLich);
+                return "/admin/lichlamviec/edit";
+            }
         }
+        
+       
     }
 
     @RequestMapping(value = "/admin/lichlamviec/delete/{id}", method = RequestMethod.GET)
