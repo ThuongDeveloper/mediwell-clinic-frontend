@@ -31,3 +31,35 @@ $(document).ready(function () {
         }
     });
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    var filterSelect = document.getElementById('filterLDT');
+
+    // Kiểm tra nếu đã lưu giá trị trong sessionStorage, thì khôi phục nó
+    var selectedOption = sessionStorage.getItem('selectedOption');
+    if (selectedOption) {
+        filterSelect.value = selectedOption;
+    }
+
+    // Lưu giá trị khi thay đổi
+    filterSelect.addEventListener('change', function () {
+        var selectedOption = filterSelect.value;
+        sessionStorage.setItem('selectedOption', selectedOption);
+    });
+});
+
+//var filterSelect = document.getElementById('filterLDT');
+//
+//// Lưu giá trị option khi thay đổi
+//filterSelect.addEventListener('change', function () {
+//    var selectedOption = this.value;
+//    localStorage.setItem('selectedOption', selectedOption);
+//});
+//
+//// Khôi phục giá trị option từ localStorage khi trang được tải lại
+//window.addEventListener('load', function () {
+//    var selectedOption = localStorage.getItem('selectedOption');
+//    if (selectedOption) {
+//        filterSelect.value = selectedOption;
+//    }
+//});

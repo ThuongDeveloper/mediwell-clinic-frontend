@@ -13,6 +13,9 @@
         .dinner_time{
             font-size: 18px;
         }
+        .llv-error{
+            text-align: center;
+        }
     </style>
     <body class="nav-md">
         <div class="container body">
@@ -47,8 +50,15 @@
                             <div class="col-md-12 col-sm-12">
                                 <div class="x_panel">
                                     <div class="x_content">
-                                        <form th:action="@{/admin/lichlamviec/edit}" th:object="${lich}" method="post">
+                                        <form th:action="@{/admin/lichlamviec/edit/{id}(id=${lich.id})}" th:object="${lich}" method="post">
                                             <span class="section">Personal Info</span>
+                                            <div th:if="${session.checklichlamviec}">                                                              
+                                                <div class="alert alert-danger alert-dismissible fade show llv-error">
+                                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                                    <span th:text="${session.checklichlamviec}"></span>
+                                                </div>
+                                                <th:block th:text="${#session.removeAttribute('checklichlamviec')}"></th:block>
+                                            </div>
                                             <div class="field item form-group">
                                                 <div class="col-md-6 col-sm-6">
                                                     <input class="form-control" th:field="*{id}" type="text" hidden="true">

@@ -94,7 +94,7 @@
                                                             </form>
                                                             <div class="getAllDoctors">
                                                                 <div class="auto-in4 row text-center">
-                                                                    <div th:each="e : ${listDoctor}" class="col-lg-4 col-md-3 col-sm-12 col-xs-12 wow fadeIn widget-doctor" data-wow-duration="1s" data-wow-delay="0.2s" style="visibility: visible; animation-duration: 1s; animation-delay: 0.2s; animation-name: fadeIn;">
+                                                                    <div th:each="e : ${filterListDoctor}" class="col-lg-4 col-md-3 col-sm-12 col-xs-12 wow fadeIn widget-doctor" data-wow-duration="1s" data-wow-delay="0.2s" style="visibility: visible; animation-duration: 1s; animation-delay: 0.2s; animation-name: fadeIn;">
                                                                         <div class="widget-doctor server clearfix" data-type-doctor="${e.getTypeDoctorId().getId()}">
                                                                             <a class="a-doctor" th:href="@{/book-appointment/{id}(id=${e.id})}">
                                                                                 <img th:if="${e.image != null}" th:src="@{${e.image}}" style="width:300px;height:250px;" class="img-fluid"></img>

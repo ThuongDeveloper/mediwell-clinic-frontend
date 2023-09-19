@@ -9,9 +9,11 @@ import group2.client.entities.Casher;
 import group2.client.entities.Doctor;
 import group2.client.entities.Lichlamviec;
 import group2.client.entities.Patient;
+import group2.client.repository.LichlamviecRepository;
 import group2.client.service.AuthService;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -43,6 +45,9 @@ public class LichlamviecController {
     
     @Autowired
     private AuthService authService;
+    
+    @Autowired
+    private LichlamviecRepository lichlamviecRepository;
 
     @RequestMapping("/admin/lichlamviec")
     public String page(Model model, HttpServletRequest request) {
@@ -114,6 +119,8 @@ public class LichlamviecController {
              ResponseEntity<List<Doctor>> DResponse = restTemplate.exchange(apiUrlDoctor, HttpMethod.GET, null,
                 new ParameterizedTypeReference<List<Doctor>>() {
             });
+             
+           
 
             if (DResponse.getStatusCode().is2xxSuccessful()) {
                 // Thực hiện thêm xử lý sau khi tạo Casher thành công (nếu cần)
@@ -163,7 +170,7 @@ public class LichlamviecController {
     }
 
     @RequestMapping(value = "/admin/lichlamviec/create", method = RequestMethod.POST)
-    public String create(Model model, @ModelAttribute Lichlamviec lich, @RequestParam("doctor") String doctorID, @RequestParam("time_select") String timeSelect) {
+    public String create(Model model, @ModelAttribute Lichlamviec lich, HttpSession session, @RequestParam("doctor") String doctorID, @RequestParam("time_select") String timeSelect) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         
@@ -184,22 +191,32 @@ public class LichlamviecController {
             lich.setStarttime("17:00");
             lich.setEndtime("21:00");
         }
+        
+        String[] parts = timeSelect.split("-");
+        
+        Lichlamviec checklichlamviecByDoctorAndDateAndTime = lichlamviecRepository.findByDoctorIdAndDateAndStarttimeAndEndtime(newDoctor, lich.getDate(), parts[0], parts[1]);
+        
+        if(checklichlamviecByDoctorAndDateAndTime != null){
+            session.setAttribute("checklichlamviec", "Không thể tạo lịch cho cùng một bác sĩ trong cùng ngày cùng giờ được. Vui lòng chọn bác sĩ, ngày và giờ khác");
+            return "redirect:/admin/lichlamviec/create";
+        }else{
+            // Tạo một HttpEntity với thông tin Casher để gửi yêu cầu POST
+            HttpEntity<Lichlamviec> request = new HttpEntity<>(lich, headers);
 
-        // Tạo một HttpEntity với thông tin Casher để gửi yêu cầu POST
-        HttpEntity<Lichlamviec> request = new HttpEntity<>(lich, headers);
+            ResponseEntity<Lichlamviec> response = restTemplate.exchange(apiUrl, HttpMethod.POST, request, Lichlamviec.class);
 
-        ResponseEntity<Lichlamviec> response = restTemplate.exchange(apiUrl, HttpMethod.POST, request, Lichlamviec.class);
-       
-        // Kiểm tra mã trạng thái của phản hồi
-        if (response.getStatusCode().is2xxSuccessful()) {
-            // Thực hiện thêm xử lý sau khi tạo Casher thành công (nếu cần)
-            // Chuyển hướng về trang danh sách Casher
-             model.addAttribute("lich", new Lichlamviec());
-            return "redirect:/admin/lichlamviec";
-        } else {
-            // Xử lý lỗi nếu cần thiết
-            return "/admin/lichlamviec/create";
+            // Kiểm tra mã trạng thái của phản hồi
+            if (response.getStatusCode().is2xxSuccessful()) {
+                // Thực hiện thêm xử lý sau khi tạo Casher thành công (nếu cần)
+                // Chuyển hướng về trang danh sách Casher
+                 model.addAttribute("lich", new Lichlamviec());
+                return "redirect:/admin/lichlamviec";
+            } else {
+                // Xử lý lỗi nếu cần thiết
+                return "/admin/lichlamviec/create";
+            }
         }
+        
     }
 
     @RequestMapping(value = "/admin/lichlamviec/edit/{id}", method = RequestMethod.GET)
@@ -267,8 +284,8 @@ public class LichlamviecController {
       
     }
 
-    @RequestMapping(value = "/admin/lichlamviec/edit", method = RequestMethod.POST)
-    public String update(Model model, @ModelAttribute Lichlamviec updatedLich, @RequestParam("DoctorID") String doctorID, @RequestParam("time_select") String timeSelect) {
+    @RequestMapping(value = "/admin/lichlamviec/edit/{id}", method = RequestMethod.POST)
+    public String update(Model model, @PathVariable("id") Integer id, @ModelAttribute Lichlamviec updatedLich, HttpSession session, @RequestParam("DoctorID") String doctorID, @RequestParam("time_select") String timeSelect) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
@@ -292,20 +309,31 @@ public class LichlamviecController {
             updatedLich.setEndtime("21:00");
         }
         
-        // Bổ sung id vào URL khi thực hiện PUT
-        String url = apiUrl + "/" + updatedLich.getId();
+        String[] parts = timeSelect.split("-");
+        
+        Lichlamviec checklichlamviecByDoctorAndDateAndTime = lichlamviecRepository.findByDoctorIdAndDateAndStarttimeAndEndtime(newD, updatedLich.getDate(), parts[0], parts[1]);
+        
+        if(checklichlamviecByDoctorAndDateAndTime != null){
+            session.setAttribute("checklichlamviec", "Không thể tạo lịch cho cùng một bác sĩ trong cùng ngày cùng giờ được. Vui lòng chọn bác sĩ, ngày và giờ khác");
+            return "redirect:/admin/lichlamviec/edit/{id}";
+        }else{
+             // Bổ sung id vào URL khi thực hiện PUT
+            String url = apiUrl + "/" + updatedLich.getId();
 
-        // Tạo một HttpEntity với thông tin Casher cập nhật để gửi yêu cầu PUT
-        HttpEntity<Lichlamviec> request = new HttpEntity<>(updatedLich, headers);
+            // Tạo một HttpEntity với thông tin Casher cập nhật để gửi yêu cầu PUT
+            HttpEntity<Lichlamviec> request = new HttpEntity<>(updatedLich, headers);
 
-        try {
-            restTemplate.exchange(url, HttpMethod.PUT, request, Lichlamviec.class);
-            return "redirect:/admin/lichlamviec";
+            try {
+                restTemplate.exchange(url, HttpMethod.PUT, request, Lichlamviec.class);
+                return "redirect:/admin/lichlamviec";
 
-        } catch (RestClientException e) {
-            model.addAttribute("lich", existingLich);
-            return "/admin/lichlamviec/edit";
+            } catch (RestClientException e) {
+                model.addAttribute("lich", existingLich);
+                return "/admin/lichlamviec/edit";
+            }
         }
+        
+       
     }
 
     @RequestMapping(value = "/admin/lichlamviec/delete/{id}", method = RequestMethod.GET)
