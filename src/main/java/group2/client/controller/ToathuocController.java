@@ -66,45 +66,51 @@ public class ToathuocController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String create(Model model, HttpServletRequest requestDoctor, int[] thuocID, int[] quantity, int[] sang, int[] trua, int[] chieu, int[] toi, String name, String phone, String address, String sympton, String description, Boolean state) {
+    public String create(Model model, HttpServletRequest request, int[] thuocID, int[] quantity, int[] sang, int[] trua, int[] chieu, int[] toi, String name, String phone, String address, String sympton, String description, Boolean state) {
         List<ToaThuocDAO> list = new ArrayList<ToaThuocDAO>();
-        for(int i = 0; i < thuocID.length;i++){
-            ToaThuocDAO obj = new ToaThuocDAO(thuocID[i],quantity[i],sang[i],trua[i],chieu[i],toi[i]);
+        for(int i = 0; i < thuocID.length; i++){
+            ToaThuocDAO obj = new ToaThuocDAO(thuocID[i], quantity[i], sang[i], trua[i], chieu[i], toi[i]);
             list.add(obj);
         }
+
         if (state == null) {
             state = false;
         }
-//        Doctor currentDoctor = authService.isAuthenticatedDoctor(requestDoctor);
-//        Integer doctorId = currentDoctor.getId();
+
+        // Authenticate the doctor and retrieve their information
+        Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
+        Integer doctorId = currentDoctor.getId();
+
         ListToaThuocDAO listTT = new ListToaThuocDAO();
         listTT.setListTT(list);
         listTT.setName(name);
         listTT.setPhone(phone);
         listTT.setAddress(address);
-        listTT.setDescription(description);
         listTT.setSymptom(sympton);
+        listTT.setDescription(description);
         listTT.setState(state);
-//        listTT.setDoctor_id(currentDoctor.getId());
+        listTT.setDoctorId(doctorId); // Set the doctorId
+
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        // Tạo một HttpEntity với thông tin Casher để gửi yêu cầu POST
-        HttpEntity<ListToaThuocDAO> request = new HttpEntity<>(listTT, headers);
+        // Tạo một HttpEntity với thông tin Toathuoc để gửi yêu cầu POST
+        HttpEntity<ListToaThuocDAO> requestEntity = new HttpEntity<>(listTT, headers);
 
-        ResponseEntity<ListToaThuocDAO> response = restTemplate.exchange(apiUrl_Toathuoc, HttpMethod.POST, request, ListToaThuocDAO.class);
+        ResponseEntity<ListToaThuocDAO> response = restTemplate.exchange(apiUrl_Toathuoc, HttpMethod.POST, requestEntity, ListToaThuocDAO.class);
 
         // Kiểm tra mã trạng thái của phản hồi
         if (response.getStatusCode().is2xxSuccessful()) {
-            // Thực hiện thêm xử lý sau khi tạo Casher thành công (nếu cần)
+            // Thực hiện thêm xử lý sau khi tạo Toathuoc thành công (nếu cần)
 
-            // Chuyển hướng về trang danh sách Casher
+            // Chuyển hướng về trang danh sách Toathuoc
             return "redirect:/admin/toathuoc";
         } else {
             // Xử lý lỗi nếu cần thiết
             return "redirect:/admin/toathuoc";
         }
     }
+
 
     @RequestMapping(value = "/export-pdf", method = RequestMethod.GET)
     public ResponseEntity<byte[]> exportToPDF(@RequestParam("toathuocId") int toathuocId) {
