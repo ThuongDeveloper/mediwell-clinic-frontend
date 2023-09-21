@@ -34,7 +34,7 @@ import org.springframework.web.client.RestTemplate;
  */
 @Controller
 public class NewsController {
-    
+
     String apiUrl = "http://localhost:8888/api/news";
     RestTemplate restTemplate = new RestTemplate();
 
@@ -60,6 +60,7 @@ public class NewsController {
                 List<News> listNews = response.getBody();
                 // Xử lý dữ liệu theo nhu cầu của bạn
                 model.addAttribute("listNews", listNews);
+                model.addAttribute("currentAdmin", currentAdmin);
             }
             return "/admin/news/index";
         } else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
@@ -71,6 +72,7 @@ public class NewsController {
                 List<News> listNews = response.getBody();
                 // Xử lý dữ liệu theo nhu cầu của bạn
                 model.addAttribute("listNews", listNews);
+                model.addAttribute("currentDoctor", currentDoctor);
             }
             return "/admin/news/index";
         } else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
@@ -82,6 +84,7 @@ public class NewsController {
                 List<News> listNews = response.getBody();
                 // Xử lý dữ liệu theo nhu cầu của bạn
                 model.addAttribute("listNews", listNews);
+                model.addAttribute("currentCasher", currentCasher);
             }
             return "/admin/news/index";
         } else {
@@ -103,14 +106,17 @@ public class NewsController {
         } else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
             // Tạo một đối tượng Casher trống để gửi thông tin tới form tạo mới
             model.addAttribute("news", new News());
+            model.addAttribute("currentAdmin", currentAdmin);
             return "/admin/news/create";
         } else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
             // Tạo một đối tượng Casher trống để gửi thông tin tới form tạo mới
             model.addAttribute("news", new News());
+            model.addAttribute("currentDoctor", currentDoctor);
             return "/admin/news/create";
         } else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
             // Tạo một đối tượng Casher trống để gửi thông tin tới form tạo mới
             model.addAttribute("news", new News());
+            model.addAttribute("currentCasher", currentCasher);
             return "/admin/news/create";
         } else {
             return "redirect:/login";
@@ -153,14 +159,17 @@ public class NewsController {
         } else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
             News news = restTemplate.getForObject(apiUrl + "/" + id, News.class);
             model.addAttribute("news", news);
+            model.addAttribute("currentAdmin", currentAdmin);
             return "/admin/news/edit";
         } else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
             News news = restTemplate.getForObject(apiUrl + "/" + id, News.class);
             model.addAttribute("news", news);
+            model.addAttribute("currentDoctor", currentDoctor);
             return "/admin/news/edit";
         } else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
             News news = restTemplate.getForObject(apiUrl + "/" + id, News.class);
             model.addAttribute("news", news);
+            model.addAttribute("currentCasher", currentCasher);
             return "/admin/news/edit";
         } else {
             return "redirect:/login";
@@ -225,5 +234,5 @@ public class NewsController {
         }
 
     }
-    
+
 }

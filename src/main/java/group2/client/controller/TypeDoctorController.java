@@ -62,6 +62,7 @@ public class TypeDoctorController {
 
                 // Xử lý dữ liệu theo nhu cầu của bạn
                 model.addAttribute("listTypeDoctor", listTypeDoctor);
+                model.addAttribute("currentAdmin", currentAdmin);
             }
 
             //Kiểm tra các thông báo 
@@ -80,6 +81,7 @@ public class TypeDoctorController {
 
                 // Xử lý dữ liệu theo nhu cầu của bạn
                 model.addAttribute("listTypeDoctor", listTypeDoctor);
+                model.addAttribute("currentDoctor", currentDoctor);
             }
 
             //Kiểm tra các thông báo 
@@ -98,6 +100,7 @@ public class TypeDoctorController {
 
                 // Xử lý dữ liệu theo nhu cầu của bạn
                 model.addAttribute("listTypeDoctor", listTypeDoctor);
+                model.addAttribute("currentCasher", currentCasher);
             }
 
             //Kiểm tra các thông báo 
@@ -123,14 +126,17 @@ public class TypeDoctorController {
             return "redirect:/forbien";
         } else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
             model.addAttribute("typeDoctor", new TypeDoctor());
+            model.addAttribute("currentAdmin", currentAdmin);
 
             return "admin/typedoctor/create";
         } else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
             model.addAttribute("typeDoctor", new TypeDoctor());
+            model.addAttribute("currentDoctor", currentDoctor);
 
             return "admin/typedoctor/create";
         } else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
             model.addAttribute("typeDoctor", new TypeDoctor());
+            model.addAttribute("currentCasher", currentCasher);
 
             return "admin/typedoctor/create";
         } else {
@@ -172,6 +178,7 @@ public class TypeDoctorController {
 
                 // Truyền thông tin TypeDoctor vào model để hiển thị trên trang edit.html
                 model.addAttribute("typeDoctor", typeDoctor);
+                model.addAttribute("currentAdmin", currentAdmin);
 
                 return "admin/typedoctor/edit";
             } else {
@@ -186,6 +193,7 @@ public class TypeDoctorController {
 
                 // Truyền thông tin TypeDoctor vào model để hiển thị trên trang edit.html
                 model.addAttribute("typeDoctor", typeDoctor);
+                model.addAttribute("currentDoctor", currentDoctor);
 
                 return "admin/typedoctor/edit";
             } else {
@@ -200,6 +208,7 @@ public class TypeDoctorController {
 
                 // Truyền thông tin TypeDoctor vào model để hiển thị trên trang edit.html
                 model.addAttribute("typeDoctor", typeDoctor);
+                model.addAttribute("currentCasher", currentCasher);
 
                 return "admin/typedoctor/edit";
             } else {

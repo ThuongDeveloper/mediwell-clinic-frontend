@@ -1,0 +1,181 @@
+<html  xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en-US" class="no-js">
+
+<div th:replace="~{client/layout/layout :: head}"></div>
+
+<link rel="stylesheet" href="../client/css/barwrap.css"/>
+<link rel="stylesheet" type="text/css" href="../admin/css/rating.css">
+<style>
+    .avatarProfile {
+        width: 150px; /* Điều chỉnh kích thước avatar theo ý muốn */
+        height: 50px;
+        border-radius: 50%; /* Làm tròn avatar */
+        margin-right: 10px; /* Tạo khoảng cách giữa avatar và tên đăng nhập */
+    }
+
+    .star {
+        font-size: 24px;
+        cursor: pointer;
+        transition: color 0.3s; /* Thêm hiệu ứng màu sắc trong 0.3 giây */
+    }
+
+    .selected {
+        color: gold; /* Màu vàng cho các ngôi sao được chọn */
+    }
+
+    /* Hiệu ứng màu sắc khi lướt chuột qua */
+    .star:hover {
+        color: gold;
+    }
+
+</style>
+
+<body class="home page-template-default page page-id-7684 theme-mediz gdlr-core-body woocommerce-no-js mediz-body mediz-body-front mediz-full  mediz-with-sticky-navigation  mediz-blockquote-style-1 gdlr-core-link-to-lightbox" data-home-url="https://demo.goodlayers.com/mediz/hospital/" >
+<div th:replace="~{client/layout/topbar :: div}"></div>
+<div class="mediz-mobile-header-wrap" >
+    <div class="mediz-mobile-header mediz-header-background mediz-style-slide mediz-sticky-mobile-navigation " id="mediz-mobile-header" >
+        <div class="mediz-mobile-header-container mediz-container clearfix" >
+            <div class="mediz-logo  mediz-item-pdlr">
+                <div class="mediz-logo-inner">
+                    <a class="" th:href="@{/}" >
+                        <img src="../client/image/logo-1.png" alt="" width="290" height="76" title="logo" />
+                    </a>
+                </div>
+            </div>
+            <div class="mediz-mobile-menu-right" >
+                <div class="mediz-main-menu-search" id="mediz-mobile-top-search" >
+                    <i class="fa fa-search" ></i>
+                </div>
+                <div class="mediz-top-search-wrap" >
+                    <div class="mediz-top-search-close" ></div>
+
+                    <div class="mediz-top-search-row" >
+                        <div class="mediz-top-search-cell" >
+                            <form role="search" method="get" class="search-form" action="https://demo.goodlayers.com/mediz/hospital/">
+                                <input type="text" class="search-field mediz-title-font" placeholder="Search..." value="" name="s">
+                                <div class="mediz-top-search-submit"><i class="fa fa-search" ></i></div>
+                                <input type="submit" class="search-submit" value="Search">
+                                <div class="mediz-top-search-close"><i class="icon_close" ></i></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="mediz-main-menu-cart" id="mediz-mobile-menu-cart" >
+                    <i class="fa fa-shopping-cart" data-mediz-lb="top-bar" ></i>
+                    <span class="mediz-top-cart-count" >0</span>
+                    <div class="mediz-lightbox-content-wrap mediz-top-cart-content-wrap" data-mediz-lb-id="top-bar" >
+                        <i class="icon_close mediz-lightbox-close" ></i>
+                        <div class="mediz-top-cart-title" >You have <span class="mediz-highlight" >0 items</span> in your cart</div>
+                        <div class="mediz-top-cart-item-wrap" >
+                            <div class="mediz-top-cart-item-divider" ></div>
+                            <div class="mediz-top-cart-button-wrap mediz-center-align" >
+                                <a class="mediz-top-cart-button-2 mediz-button" href="#" >Go To Shopping</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mediz-overlay-menu mediz-mobile-menu" id="mediz-mobile-menu" >
+                    <a class="mediz-overlay-menu-icon mediz-mobile-menu-button mediz-mobile-button-hamburger" href="#" >
+                        <span></span>
+                    </a>
+                    <div class="mediz-overlay-menu-content mediz-navigation-font" >
+                        <div class="mediz-overlay-menu-close" ></div>
+                        <div class="mediz-overlay-menu-row" >
+                            <div class="mediz-overlay-menu-cell" >
+                                <ul id="menu-main-navigation" class="menu">
+                                    <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-7684 current_page_item menu-item-7736">
+                                        <a th:href="@{/}" aria-current="page">Home</a></li>
+                                    <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-7552 mediz-normal-menu"><a href="#" class="sf-with-ul-pre">About Us</a>
+                                    </li>
+                                    <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-8049 mediz-normal-menu"><a th:href="@{/listDoctors}" class="sf-with-ul-pre">List of Doctor</a>
+                                    </li>
+                                    <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-7180 mediz-normal-menu"><a href="#" class="sf-with-ul-pre">News</a>
+                                    </li>
+                                    <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-7736 mediz-normal-menu"><a href="#" class="sf-with-ul-pre">Feedback</a>
+                                    </li>
+                                </ul></div></div></div></div></div></div></div></div><div class="mediz-body-outer-wrapper ">
+    <div class="mediz-body-wrapper clearfix  mediz-with-frame">
+
+        <div th:replace="~{client/layout/header :: header}"></div>
+
+        <div th:replace="~{client/layout/barwrap :: div}"></div>
+    </div><!-- mediz-navigation-bar-wrap -->
+    <div class="mediz-page-title-wrap  mediz-style-custom mediz-left-align"><div class="mediz-header-transparent-substitute"></div><div class="mediz-page-title-overlay"></div><div class="mediz-page-title-container mediz-container"><div class="mediz-page-title-content mediz-item-pdlr"><h1 class="mediz-page-title">My Account</h1></div></div></div>
+    <div class="mediz-page-wrapper" id="mediz-page-wrapper"><div class="mediz-content-container mediz-container"><div class="mediz-content-area mediz-item-pdlr mediz-sidebar-style-none clearfix"><div class="woocommerce"><div class="woocommerce-notices-wrapper"></div>
+        <h3>Rating </h3>
+        <!-- Trong file HTML -->
+
+
+        <form th:action="@{/rating/{patientID}(patientID=${patient.id})}" th:object="${rating}" method="post">
+            <div th:if="${successMessage}" class="alert alert-success">
+                <p th:text="${successMessage}"></p>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label label-align">Rating<span class="required">*</span></label>
+                <div class="col-md-6">
+                    <div id="rating">
+                        <input type="radio" id="star5" name="rating" value="5" />
+                        <label class="full" for="star5" title="Awesome - 5 stars"></label>
+
+                        <input type="radio" id="star4" name="rating" value="4" />
+                        <label class="full" for="star4" title="Pretty good - 4 stars"></label>
+
+                        <input type="radio" id="star3" name="rating" value="3" />
+                        <label class="full" for="star3" title="Meh - 3 stars"></label>
+
+                        <input type="radio" id="star2" name="rating" value="2" />
+                        <label class="full" for="star2" title="Kinda bad - 2 stars"></label>
+
+                        <input type="radio" id="star1" name="rating" value="1" />
+                        <label class="full" for="star1" title="Sucks big time - 1 star"></label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label label-align">Comment<span class="required">*</span></label>
+                <div class="col-md-6">
+                    <input class="form-control" th:field="*{comment}" type="text" name="comment" required="required">
+                    <span th:if="${#fields.hasErrors('comment')}" th:errors="*{comment}" class="error"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label label-align">Doctor<span class="required">*</span></label>
+                <div class="col-md-6">
+                    <select name="doctorId" class="form-control">
+                        <option th:each="d : ${listDoctor}" th:value="${d.id}" th:text="${d.name}"></option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-6 offset-md-3">
+                    <input type="submit" value="Post" class="btn btn-primary"/>
+                    <input type="reset" value="Reset" class="btn btn-success"/>
+                </div>
+            </div>
+
+            <span th:if="${error}" class="error">
+        <span th:text="${error}"></span>
+    </span>
+        </form>
+
+
+
+    </div>
+    </div></div><div class="gdlr-core-page-builder-body"></div></div>
+    <div th:replace="~{client/layout/footer :: footer}"></div>
+
+    <script >
+        function calcRate(r) {
+            const f = ~~r,
+                id = 'star' + f + (r % f ? 'half' : '');
+            id && (document.getElementById(id).checked = !0);
+        }
+    </script>
+    </script>
+    <script src="../client/js/client.js"></script>
+
+    <div th:replace="~{client/layout/layout :: body}"></div>
+</body>
+</html>

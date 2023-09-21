@@ -66,6 +66,7 @@ public class AppointmentController {
 
                 // Xử lý dữ liệu theo nhu cầu của bạn
                 model.addAttribute("listAppointment", listAppointment);
+                model.addAttribute("currentAdmin", currentAdmin);
             }
             return "/admin/appointment/index";
         }else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
@@ -79,6 +80,7 @@ public class AppointmentController {
 
                 // Xử lý dữ liệu theo nhu cầu của bạn
                 model.addAttribute("listAppointment", listAppointment);
+                model.addAttribute("currentDoctor", currentDoctor);
             }
             return "/admin/appointment/index";
         }else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
@@ -92,6 +94,7 @@ public class AppointmentController {
 
                 // Xử lý dữ liệu theo nhu cầu của bạn
                 model.addAttribute("listAppointment", listAppointment);
+                model.addAttribute("currentCasher", currentCasher);
             }
             return "/admin/appointment/index";
         }else {

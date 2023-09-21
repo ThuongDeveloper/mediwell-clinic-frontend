@@ -1,0 +1,424 @@
+<html  xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="~{admin/layout/layoutfixbug :: head}"></div>
+
+<style>
+    .error-message-quantity {
+        color: red; /* Đặt màu chữ là đỏ */
+        font-size: 14px; /* Đặt kích thước chữ */
+        margin-top: 4px; /* Đặt khoảng cách phía trên của thông báo */
+    }
+    .error-message-sang {
+        color: red; /* Đặt màu chữ là đỏ */
+        font-size: 14px; /* Đặt kích thước chữ */
+        margin-top: 4px; /* Đặt khoảng cách phía trên của thông báo */
+    }
+    .error-message-trua {
+        color: red; /* Đặt màu chữ là đỏ */
+        font-size: 14px; /* Đặt kích thước chữ */
+        margin-top: 4px; /* Đặt khoảng cách phía trên của thông báo */
+    }
+    .error-message-chieu {
+        color: red; /* Đặt màu chữ là đỏ */
+        font-size: 14px; /* Đặt kích thước chữ */
+        margin-top: 4px; /* Đặt khoảng cách phía trên của thông báo */
+    }
+    .error-message-toi {
+        color: red; /* Đặt màu chữ là đỏ */
+        font-size: 14px; /* Đặt kích thước chữ */
+        margin-top: 4px; /* Đặt khoảng cách phía trên của thông báo */
+    }
+</style>
+<body class="nav-md">
+<div class="container body">
+    <div class="main_container">
+        <div th:replace="~{admin/layout/slidebarfixbug :: slidebarAdmin}"></div>
+        <div class="top_nav">
+            <div th:replace="~{admin/layout/header :: div}"></div>
+        </div>
+        <!-- Content -->
+
+        <div class="right_col" role="main">
+          
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <div class="x_panel">
+                        <div class="x_content">
+                            <form th:action="@{/admin/toathuoc/create}" th:object="${toathuoc}" method="post">
+                                <h1 style="text-align: center">Create Toa thuốc</h1>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <label for="name">Name</label>
+                                            <input type="text" id="name" name="name" class="form-control" required>
+                                        </div>
+                                        <div class="col-6">
+                                            <label for="phone">Phone</label>
+                                            <input type="number" id="phone" name="phone" class="form-control" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <label for="address">Address</label>
+                                            <input type="text" id="address" name="address" class="form-control" required>
+                                        </div>
+                                        <div class="col-6">
+                                            <label for="sympton">Symptom</label>
+                                            <input type="text" id="sympton" name="sympton" class="form-control" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <label for="description">Description</label>
+                                            <input type="text" id="description" name="description" class="form-control" required>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-check">
+                                                <input type="checkbox" id="state" name="state" class="form-check-input">
+                                                <label for="state" class="form-check-label">State</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-secondary" type="button" id="addButton">Add</button>
+                                    <div id="boxes"></div>
+                                </div>
+                                <div class="form-group">
+                                    <div>
+                                        <input type="submit" value="Create" class="btn btn-primary">
+                                        <input type="reset" value="Reset" class="btn btn-success">
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ... -->
+    </div>
+
+    <!-- ... -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        const addButton = document.getElementById('addButton');
+        const boxesContainer = document.getElementById('boxes');
+
+        let boxCount = 0;
+
+        addButton.addEventListener('click', () => {
+            const box = createBox();
+            boxesContainer.appendChild(box);
+        });
+
+        function createBox() {
+            const box = document.createElement('div');
+            box.className = "row my-2";
+           
+       
+            
+            const colRow1 = document.createElement('div');
+            colRow1.className = "col-4";
+             const colRow2 = document.createElement('div');
+            colRow2.className = "col";
+             const colRow3 = document.createElement('div');
+            colRow3.className = "col";
+             const colRow4 = document.createElement('div');
+            colRow4.className = "col";
+            const colRow5 = document.createElement('div');
+            colRow5.className = "col";
+            const colRow6 = document.createElement('div');
+            colRow6.className = "col";
+            const colRow7 = document.createElement('div');
+            colRow7.className = "col";
+            const colRow8 = document.createElement('div');
+            colRow8.className = "col";
+            const colRowRemove = document.createElement('div');
+            colRowRemove.style="display:flex;align-items:end;";
+            colRowRemove.className = "col-1";
+           
+            
+            const selectLabel = document.createElement('label');
+            selectLabel.textContent = 'Select drug';
+            colRow1.appendChild(selectLabel);         
+            const select = createSelect();
+            select.className ='form-control';
+            colRow1.appendChild(select);
+            
+            box.appendChild(colRow1);
+            // //Row 1
+            //
+            // const priceLabel = document.createElement('label');
+            // priceLabel.textContent = 'Price';
+            // colRow2.appendChild(priceLabel);
+            // const input = createInput();
+            // input.className ='form-control';
+            // colRow2.appendChild(input);
+            // box.appendChild(colRow2);
+            //Row 2
+            
+            const quantityLabel = document.createElement('label');
+            quantityLabel.textContent = 'Quantity';
+            colRow3.appendChild(quantityLabel);
+            const quantityInput = createQuantityInput();
+            quantityInput.className ='form-control';
+            colRow3.appendChild(quantityInput);
+            const quantityErrorDiv = document.createElement('div');
+            quantityErrorDiv.className = 'error-message-quantity'; // Tạo một lớp CSS để dễ dàng tùy chỉnh thông báo
+            colRow3.appendChild(quantityErrorDiv);
+            box.appendChild(colRow3);
+
+            //Row 5
+
+            const sangLabel = document.createElement('label');
+            sangLabel.textContent = 'Sáng';
+            colRow5.appendChild(sangLabel);
+            const sangInput = createSangInput();
+            sangInput.className ='form-control';
+            colRow5.appendChild(sangInput);
+            const sangErrorDiv = document.createElement('div');
+            sangErrorDiv.className = 'error-message-sang'; // Tạo một lớp CSS để dễ dàng tùy chỉnh thông báo
+            colRow5.appendChild(sangErrorDiv);
+            box.appendChild(colRow5);
+
+            //Row 6
+            const truaLabel = document.createElement('label');
+            truaLabel.textContent = 'Trưa';
+            colRow6.appendChild(truaLabel);
+            const truaInput = createTruaInput();
+            truaInput.className ='form-control';
+            colRow6.appendChild(truaInput);
+            const truaErrorDiv = document.createElement('div');
+            truaErrorDiv.className = 'error-message-trua'; // Tạo một lớp CSS để dễ dàng tùy chỉnh thông báo
+            colRow6.appendChild(truaErrorDiv);
+            box.appendChild(colRow6);
+
+            //Row 7
+            const chieuLabel = document.createElement('label');
+            chieuLabel.textContent = 'Chiều';
+            colRow7.appendChild(chieuLabel);
+            const chieuInput = createChieuInput();
+            chieuInput.className ='form-control';
+            colRow7.appendChild(chieuInput);
+            const chieuErrorDiv = document.createElement('div');
+            chieuErrorDiv.className = 'error-message-chieu'; // Tạo một lớp CSS để dễ dàng tùy chỉnh thông báo
+            colRow7.appendChild(chieuErrorDiv);
+            box.appendChild(colRow7);
+
+            //Row 8
+
+            const toiLabel = document.createElement('label');
+            toiLabel.textContent = 'Tối';
+            colRow8.appendChild(toiLabel);
+            const toiInput = createToiInput();
+            toiInput.className ='form-control';
+            colRow8.appendChild(toiInput);
+            const toiErrorDiv = document.createElement('div');
+            toiErrorDiv.className = 'error-message-toi'; // Tạo một lớp CSS để dễ dàng tùy chỉnh thông báo
+            colRow8.appendChild(toiErrorDiv);
+            box.appendChild(colRow8);
+            //Row 3 
+              const removeButton = createRemoveButton();
+    removeButton.addEventListener('click', () => {
+        boxesContainer.removeChild(box);
+    });
+    colRowRemove.appendChild(removeButton);
+    box.appendChild(colRowRemove);
+    
+            const result = document.createElement('div');
+            result.classList.add('result');
+
+            // select.addEventListener('change', async () => {
+            //     const selectedOption = select.options[select.selectedIndex];
+            //     input.value = selectedOption.getAttribute('data-price');
+            // });
+
+            box.appendChild(result);
+
+            return box;
+        }
+
+        async function fetchThuocData() {
+            try {
+                const response = await axios.get('http://localhost:8888/api/thuoc');
+                return response.data;
+            } catch (error) {
+                console.error('Lỗi khi tải dữ liệu thuốc:', error);
+                return [];
+            }
+        }
+
+        async function populateDropdown(select) {
+            const thuocData = await fetchThuocData();
+
+            thuocData.forEach(thuoc => {
+                const option = createOption(thuoc.id, thuoc.name);
+                select.appendChild(option);
+            });
+        }
+
+        function createSelect() {
+            const select = document.createElement('select');
+            select.classList.add('dropdown');
+            select.name = 'thuocID';
+            populateDropdown(select);
+
+            return select;
+        }
+
+        function createOption(id, name) {
+            const option = document.createElement('option');
+            option.value = id;
+                
+            option.textContent = name;
+            return option;
+        }
+
+        function createInput() {
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.setAttribute('readonly', true);
+            input.classList.add('input');
+            return input;
+        }
+
+        function createQuantityInput() {
+            const quantityInput = document.createElement('input');
+            quantityInput.type = 'number';
+            quantityInput.name = 'quantity';
+            quantityInput.classList.add('input');
+            return quantityInput;
+        }
+
+        function createSangInput() {
+            const sangInput = document.createElement('input');
+            sangInput.type = 'number';
+            sangInput.name = 'sang';
+            sangInput.classList.add('input');
+            return sangInput;
+        }
+
+        function createTruaInput() {
+            const truaInput = document.createElement('input');
+            truaInput.type = 'number';
+            truaInput.name = 'trua';
+            truaInput.classList.add('input');
+            return truaInput;
+        }
+
+        function createChieuInput() {
+            const chieuInput = document.createElement('input');
+            chieuInput.type = 'number';
+            chieuInput.name = 'chieu';
+            chieuInput.classList.add('input');
+            return chieuInput;
+        }
+
+        function createToiInput() {
+            const toiInput = document.createElement('input');
+            toiInput.type = 'number';
+            toiInput.name = 'toi';
+            toiInput.classList.add('input');
+            return toiInput;
+        }
+        function createRemoveButton() {
+    const removeButton = document.createElement('button');
+    removeButton.textContent = '-';
+    removeButton.className = 'btn btn-danger';
+    removeButton.style ="margin-bottom:0";
+    return removeButton;
+}
+
+    </script>
+    <script>
+        document.querySelector('form').addEventListener('submit', (event) => {
+            // Lấy giá trị của quantity và các trường sáng, trưa, chiều, và tối
+            const quantityInput = document.querySelector('input[name="quantity"]');
+            const sangInput = document.querySelector('input[name="sang"]');
+            const truaInput = document.querySelector('input[name="trua"]');
+            const chieuInput = document.querySelector('input[name="chieu"]');
+            const toiInput = document.querySelector('input[name="toi"]');
+
+            // Chuyển đổi giá trị nhập vào thành số nguyên hoặc 0 nếu không có giá trị
+            const quantityValue = parseInt(quantityInput.value) || 0;
+            const sangValue = parseInt(sangInput.value) || 0;
+            const truaValue = parseInt(truaInput.value) || 0;
+            const chieuValue = parseInt(chieuInput.value) || 0;
+            const toiValue = parseInt(toiInput.value) || 0;
+
+            // Cập nhật giá trị của các trường để đảm bảo rằng chúng không bỏ trống
+            quantityInput.value = quantityValue;
+            sangInput.value = sangValue;
+            truaInput.value = truaValue;
+            chieuInput.value = chieuValue;
+            toiInput.value = toiValue;
+
+            // Xóa thông báo lỗi cũ trước khi kiểm tra lại
+            quantityInput.nextElementSibling.textContent = '';
+            sangInput.nextElementSibling.textContent = '';
+            truaInput.nextElementSibling.textContent = '';
+            chieuInput.nextElementSibling.textContent = '';
+            toiInput.nextElementSibling.textContent = '';
+
+            let isValid = true;
+
+            if (!quantityValue) {
+                // Hiển thị thông báo lỗi cho người dùng trong quantityErrorDiv
+                quantityInput.nextElementSibling.textContent = 'Vui lòng nhập giá trị cho quantity.';
+                isValid = false;
+            } else if (quantityValue <= 0) {
+                // Kiểm tra số âm hoặc bằng 0 cho quantity và hiển thị thông báo lỗi
+                quantityInput.nextElementSibling.textContent = 'Quantity phải lớn hơn 0.';
+                isValid = false;
+            } else if (sangValue + truaValue + chieuValue + toiValue === 0) {
+                // Kiểm tra nếu tất cả các trường đều bằng 0 khi quantity lớn hơn 0
+                quantityInput.nextElementSibling.textContent = 'Ít nhất một trong sáng, trưa, chiều, và tối phải khác 0.';
+                isValid = false;
+            } else if (sangValue + truaValue + chieuValue + toiValue > quantityValue) {
+                // Kiểm tra nếu tổng các trường lớn hơn quantity
+                quantityInput.nextElementSibling.textContent = 'Tổng của sáng, trưa, chiều, và tối không được lớn hơn quantity.';
+                isValid = false;
+            }
+
+            // Kiểm tra và hiển thị thông báo lỗi cho các trường sáng, trưa, chiều, và tối nếu số âm hoặc lớn hơn quantity
+            if (sangValue < 0 || sangValue > quantityValue) {
+                sangInput.nextElementSibling.textContent = 'Sáng không hợp lệ.';
+                isValid = false;
+            }
+
+            if (truaValue < 0 || truaValue > quantityValue) {
+                truaInput.nextElementSibling.textContent = 'Trưa không hợp lệ.';
+                isValid = false;
+            }
+
+            if (chieuValue < 0 || chieuValue > quantityValue) {
+                chieuInput.nextElementSibling.textContent = 'Chiều không hợp lệ.';
+                isValid = false;
+            }
+
+            if (toiValue < 0 || toiValue > quantityValue) {
+                toiInput.nextElementSibling.textContent = 'Tối không hợp lệ.';
+                isValid = false;
+            }
+
+            if (!isValid) {
+                event.preventDefault(); // Ngăn chặn gửi biểu mẫu nếu có lỗi
+            }
+        });
+
+
+    </script>
+    <!-- Content -->
+    <div th:replace="~{admin/layout/footer :: footer}"></div>
+</div>
+
+<div th:replace="~{admin/layout/layoutfixbug :: body}"></div>
+
+</body>
+</html>

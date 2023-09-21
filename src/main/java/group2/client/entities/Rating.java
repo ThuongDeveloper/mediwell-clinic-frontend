@@ -4,6 +4,9 @@
  */
 package group2.client.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -28,6 +31,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "rating")
+@JsonIgnoreProperties({"patientId"})
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Rating.findAll", query = "SELECT r FROM Rating r"),
@@ -52,6 +56,7 @@ public class Rating implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createAt;
     @JoinColumn(name = "doctor_id", referencedColumnName = "id")
+    @JsonBackReference
     @ManyToOne
     private Doctor doctorId;
     @JoinColumn(name = "patient_id", referencedColumnName = "id")

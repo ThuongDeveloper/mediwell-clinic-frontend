@@ -64,6 +64,7 @@ public class TaophieukhamController {
 
                 // Xử lý dữ liệu theo nhu cầu của bạn
                 model.addAttribute("listTaophieukham", listTaophieukham);
+                model.addAttribute("currentAdmin", currentAdmin);
             }
             return "admin/phieukham/index";
         } else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
@@ -77,6 +78,7 @@ public class TaophieukhamController {
 
                 // Xử lý dữ liệu theo nhu cầu của bạn
                 model.addAttribute("listTaophieukham", listTaophieukham);
+                model.addAttribute("currentDoctor", currentDoctor);
             }
             return "admin/phieukham/index";
         } else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
@@ -90,6 +92,7 @@ public class TaophieukhamController {
 
                 // Xử lý dữ liệu theo nhu cầu của bạn
                 model.addAttribute("listTaophieukham", listTaophieukham);
+                model.addAttribute("currentCasher", currentCasher);
             }
             return "admin/phieukham/index";
         } else {
@@ -126,6 +129,7 @@ public class TaophieukhamController {
                 model.addAttribute("listTypeDoctor", listTypeDoctor);
                 model.addAttribute("listCasher", listCasher);
                 model.addAttribute("listPatient", listPatient);
+                model.addAttribute("currentAdmin", currentAdmin);
             }
 
             model.addAttribute("taophieukham", new Taophieukham());
@@ -148,6 +152,7 @@ public class TaophieukhamController {
                 model.addAttribute("listTypeDoctor", listTypeDoctor);
                 model.addAttribute("listCasher", listCasher);
                 model.addAttribute("listPatient", listPatient);
+                model.addAttribute("currentDoctor", currentDoctor);
             }
 
             model.addAttribute("taophieukham", new Taophieukham());
@@ -170,6 +175,7 @@ public class TaophieukhamController {
                 model.addAttribute("listTypeDoctor", listTypeDoctor);
                 model.addAttribute("listCasher", listCasher);
                 model.addAttribute("listPatient", listPatient);
+                model.addAttribute("currentCasher", currentCasher);
             }
 
             model.addAttribute("taophieukham", new Taophieukham());
@@ -266,6 +272,7 @@ public class TaophieukhamController {
                 model.addAttribute("listTypeDoctor", listTypeDoctor);
                 model.addAttribute("listCasher", listCasher);
                 model.addAttribute("taophieukham", taophieukham);
+                model.addAttribute("currentAdmin", currentAdmin);
                 return "/admin/phieukham/edit";
             } else {
                 return "redirect:/admin/phieukham";
@@ -286,6 +293,7 @@ public class TaophieukhamController {
                 model.addAttribute("listTypeDoctor", listTypeDoctor);
                 model.addAttribute("listCasher", listCasher);
                 model.addAttribute("taophieukham", taophieukham);
+                model.addAttribute("currentDoctor", currentDoctor);
                 return "/admin/phieukham/edit";
             } else {
                 return "redirect:/admin/phieukham";
@@ -306,6 +314,7 @@ public class TaophieukhamController {
                 model.addAttribute("listTypeDoctor", listTypeDoctor);
                 model.addAttribute("listCasher", listCasher);
                 model.addAttribute("taophieukham", taophieukham);
+                model.addAttribute("currentCasher", currentCasher);
                 return "/admin/phieukham/edit";
             } else {
                 return "redirect:/admin/phieukham";
