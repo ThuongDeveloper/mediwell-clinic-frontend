@@ -12,13 +12,13 @@ public class PatientService {
     private PatientRepository patientRepository;
 
     // Kiểm tra xem email có tồn tại trong hệ thống hay không
-    public boolean emailExists(String email) {
-        return patientRepository.existsByEmail(email);
-    }
-    public boolean updatePasswordByEmail(String email, String newPassword) {
-        int updatedRows = patientRepository.updatePasswordByEmail(email, newPassword);
-        return updatedRows > 0;
-    }  
+//    public boolean emailExists(String email) {
+//        return patientRepository.existsByEmail(email);
+//    }
+//    public boolean updatePasswordByEmail(String email, String newPassword) {
+//        int updatedRows = patientRepository.updatePasswordByEmail(email, newPassword);
+//        return updatedRows > 0;
+//    }  
     public boolean isEmailAndPhoneMatch(String email, String phone) {
         return patientRepository.existsByEmailAndPhone(email, phone);
     }

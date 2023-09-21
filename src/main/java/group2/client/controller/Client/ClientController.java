@@ -40,11 +40,7 @@ public class ClientController {
     @Autowired
     private AuthService authService;
 
-<<<<<<< HEAD
-  
 
-=======
->>>>>>> e28a9a2f5b983358e6d0da9222df00b068e43397
     @Autowired
     private JwtService jwtService;
 
@@ -160,7 +156,7 @@ public class ClientController {
 
             List<Appointment> listAPPDOCTOR = appointmentRepository.findByDateAndDoctorId(lichlamviec.getDate(), lichlamviec.getDoctorId());
             model.addAttribute("lichlamviec", lichlamviec);   
-//                        model.addAttribute("lichlamviec", listAPPDOCTOR);       
+                       model.addAttribute("listAPPDOCTOR", listAPPDOCTOR);       
 
             model.addAttribute("appointment", new Appointment());
              return "/client/bookAppointmentTime";

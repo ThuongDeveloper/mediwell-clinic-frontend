@@ -2,9 +2,14 @@ package group2.client.controller.Client;
 
 import group2.client.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -23,29 +28,39 @@ public class ForgotPasswordController {
         return "client/forgotPassword/index";
     }
 
-     @PostMapping("/client/forgotPassword")
-    public String requestPasswordReset(@RequestParam("email") String email, 
-                                       @RequestParam("phone") String phone, 
-                                       Model model) {
-        // Kiểm tra xem email và số điện thoại khớp với dữ liệu trong cơ sở dữ liệu
-        boolean isMatched = patientService.isEmailAndPhoneMatch(email, phone);
+    @PostMapping("/client/forgotPassword")
+public String requestPasswordReset(@RequestParam("email") String email, 
+                                   @RequestParam("phone") String phone, 
+                                   Model model) {
+    // Kiểm tra xem email và số điện thoại khớp với dữ liệu trong cơ sở dữ liệu
+    boolean isMatched = patientService.isEmailAndPhoneMatch(email, phone);
 
-        if (isMatched) {
-            // Nếu email và số điện thoại khớp, thì gửi yêu cầu đặt lại mật khẩu và xử lý phản hồi từ API
-            ResponseEntity<String> response = restTemplate.postForEntity(passwordResetApiUrl, null, String.class);
-            
-            if (response.getStatusCode().is2xxSuccessful()) {
-                model.addAttribute("message", "Yêu cầu đặt lại mật khẩu đã được gửi đi.");
-                        return "client/forgotPassword/confirm";
+    if (isMatched) {
+        // Tạo một đối tượng để đại diện cho các tham số cần gửi đến API
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("email", email);
+        params.add("phone", phone);
 
-            } else {
-                model.addAttribute("message", "Đã xảy ra lỗi trong quá trình xử lý yêu cầu.");
-            }
+        // Tạo một đối tượng HttpHeaders để đặt tiêu đề yêu cầu nếu cần
+        HttpHeaders headers = new HttpHeaders();
+        // headers.add("header-name", "header-value"); // Thêm các tiêu đề nếu cần
+
+        // Tạo đối tượng HttpEntity để đại diện cho yêu cầu
+        HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(params, headers);
+
+        // Gửi yêu cầu POST với thông tin email và phone
+        ResponseEntity<String> response = restTemplate.exchange(passwordResetApiUrl, HttpMethod.POST, requestEntity, String.class);
+        
+        if (response.getStatusCode().is2xxSuccessful()) {
+            model.addAttribute("message", "Yêu cầu đặt lại mật khẩu đã được gửi đi.");
+            return "client/forgotPassword/confirm";
         } else {
-            // Nếu email hoặc số điện thoại không khớp với dữ liệu trong cơ sở dữ liệu, hiển thị thông báo cho người dùng
-            model.addAttribute("message", "Email hoặc số điện thoại không khớp với dữ liệu trong hệ thống.");
+            model.addAttribute("message", "Đã xảy ra lỗi trong quá trình xử lý yêu cầu.");
         }
-          return "client/forgotPassword/index";
-
+    } else {
+        // Nếu email hoặc số điện thoại không khớp với dữ liệu trong cơ sở dữ liệu, hiển thị thông báo cho người dùng
+        model.addAttribute("message", "Email hoặc số điện thoại không khớp với dữ liệu trong hệ thống.");
     }
+    return "client/forgotPassword/index";
+}
 }
