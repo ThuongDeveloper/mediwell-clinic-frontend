@@ -50,7 +50,10 @@
                                         <td th:text="${e.getCreateAt()}"></td>
                                         <!--                                        <td >Chưa thêm</td>-->
                                         <td>
-                                            <button class="btn btn-primary">Details</button>
+                                     <td>
+                                         <a th:href="@{'/admin/toathuoc/export-pdf?toathuocId=' + ${e.getId()}}"
+                                            class="btn btn-primary">Export PDF</a>
+                                     </td>
                                         </td>
 
 
