@@ -48,18 +48,11 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-//var filterSelect = document.getElementById('filterLDT');
-//
-//// Lưu giá trị option khi thay đổi
-//filterSelect.addEventListener('change', function () {
-//    var selectedOption = this.value;
-//    localStorage.setItem('selectedOption', selectedOption);
-//});
-//
-//// Khôi phục giá trị option từ localStorage khi trang được tải lại
-//window.addEventListener('load', function () {
-//    var selectedOption = localStorage.getItem('selectedOption');
-//    if (selectedOption) {
-//        filterSelect.value = selectedOption;
-//    }
-//});
+function checkFileSize(input) {
+    var maxFileSize = 1024 * 1024; // 1MB
+    if (input.files[0] && input.files[0].size > maxFileSize) {
+        alert("File size is too large. Only accepts files up to 1MB.");
+        // Đặt giá trị trống cho input file để ngăn việc tải lên
+        input.value = "";
+    }
+}

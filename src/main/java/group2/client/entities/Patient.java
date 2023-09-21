@@ -64,7 +64,7 @@ public class Patient implements Serializable {
     @Size(max = 50)
     @Column(name = "role")
     private String role;
-     @Size(max = 250)
+    @Size(max = 250)
     @Column(name = "image")
     private String image;
      private static final long serialVersionUID = 1L;
