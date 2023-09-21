@@ -62,6 +62,7 @@ public class FeedbackController {
                 List<Feedback> listFeedback = response.getBody();
                 // Xử lý dữ liệu theo nhu cầu của bạn
                 model.addAttribute("listFeedback", listFeedback);
+                model.addAttribute("currentAdmin", currentAdmin);
             }
             return "/admin/feedback/index";
         } else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
@@ -73,6 +74,7 @@ public class FeedbackController {
                 List<Feedback> listFeedback = response.getBody();
                 // Xử lý dữ liệu theo nhu cầu của bạn
                 model.addAttribute("listFeedback", listFeedback);
+                model.addAttribute("currentDoctor", currentDoctor);
             }
             return "/admin/feedback/index";
         } else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
@@ -84,6 +86,7 @@ public class FeedbackController {
                 List<Feedback> listFeedback = response.getBody();
                 // Xử lý dữ liệu theo nhu cầu của bạn
                 model.addAttribute("listFeedback", listFeedback);
+                model.addAttribute("currentCasher", currentCasher);
             }
             return "/admin/feedback/index";
         } else {
@@ -112,6 +115,7 @@ public class FeedbackController {
             // Thực hiện thêm xử lý sau khi tạo Casher thành công (nếu cần)
              List<Patient> listPatient = patientResponse.getBody();
             model.addAttribute("listPatient", listPatient);
+                model.addAttribute("currentAdmin", currentAdmin);
             // Chuyển hướng về trang danh sách Casher
             
         } 
@@ -127,6 +131,7 @@ public class FeedbackController {
             // Thực hiện thêm xử lý sau khi tạo Casher thành công (nếu cần)
              List<Patient> listPatient = patientResponse.getBody();
             model.addAttribute("listPatient", listPatient);
+                model.addAttribute("currentDoctor", currentDoctor);
             // Chuyển hướng về trang danh sách Casher
             
         } 
@@ -142,6 +147,7 @@ public class FeedbackController {
             // Thực hiện thêm xử lý sau khi tạo Casher thành công (nếu cần)
              List<Patient> listPatient = patientResponse.getBody();
             model.addAttribute("listPatient", listPatient);
+                model.addAttribute("currentCasher", currentCasher);
             // Chuyển hướng về trang danh sách Casher
             
         } 
@@ -199,6 +205,7 @@ public class FeedbackController {
             List<Patient> listPatient = DResponse.getBody();
             model.addAttribute("listPatient", listPatient);
             model.addAttribute("feedback", feedback);
+                model.addAttribute("currentAdmin", currentAdmin);
             return "/admin/feedback/edit";
         } else {
             return "redirect:/admin/feedback";
@@ -217,6 +224,7 @@ public class FeedbackController {
             List<Patient> listPatient = DResponse.getBody();
             model.addAttribute("listPatient", listPatient);
             model.addAttribute("feedback", feedback);
+                model.addAttribute("currentDoctor", currentDoctor);
             return "/admin/feedback/edit";
         } else {
             return "redirect:/admin/feedback";
@@ -236,6 +244,7 @@ public class FeedbackController {
             List<Patient> listPatient = DResponse.getBody();
             model.addAttribute("listPatient", listPatient);
             model.addAttribute("feedback", feedback);
+                model.addAttribute("currentCasher", currentCasher);
             return "/admin/feedback/edit";
         } else {
             return "redirect:/admin/feedback";

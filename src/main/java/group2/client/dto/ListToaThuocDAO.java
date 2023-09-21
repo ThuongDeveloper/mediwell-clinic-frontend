@@ -10,11 +10,13 @@ public class ListToaThuocDAO {
     private String symptom;
     private String description;
     private boolean state;
+    private int doctorId;
     private List<ToaThuocDAO> listTT;
 
     public ListToaThuocDAO() {
         // Hàm tạo mặc định, không cần truyền tham số
     }
+
 
     public String getName() {
         return name;
@@ -62,6 +64,14 @@ public class ListToaThuocDAO {
 
     public void setState(boolean state) {
         this.state = state;
+    }
+
+    public int getDoctorId() {
+        return doctorId;
+    }
+
+    public void setDoctorId(int doctorId) {
+        this.doctorId = doctorId;
     }
 
     public List<ToaThuocDAO> getListTT() {

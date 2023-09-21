@@ -13,11 +13,11 @@
                 <!-- Content -->
 
                 <div class="right_col" role="main">
-                    <h1>Lich lam viec Page</h1>
+                    <h1>Work Schedule Page</h1>
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 card_head">
 
-<a th:href="@{/admin/lichlamviec/create}" class="btn btn-primary">Create</a>                        </div>
+                            <a th:href="@{/admin/lichlamviec/create}" class="btn btn-primary">Create</a>                        </div>
                         <div class="card-body">
                             <div class="table-responsive">
 
@@ -34,22 +34,22 @@
                                             <th>Action</th>
                                         </tr>
                                     </thead>
-                                <tbody>
-                                 <tr th:each="e : ${listLich}">
-                                         <td th:text="${e.getDoctorId().getName()}"></td>
-                                        <td th:text="${e.getThu()}"></td>
-                                        <td th:text="${e.getDate()}"></td>
-                                        <td th:text="${e.getStarttime()}"></td>
-                                        <td th:text="${e.getEndtime()}"></td>
-                                   
-                                             <td>
-                                               <a class="btn btn-info" th:href="@{/admin/lichlamviec/edit/{id}(id=${e.getId()})}">Update</a> | 
-                                <a class="btn btn-warning" th:href="@{/admin/lichlamviec/delete/{id}(id=${e.getId()})}">Delete</a>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                                   
-                                   
+                                    <tbody>
+                                        <tr th:each="e : ${listLich}">
+                                            <td th:text="${e.getDoctorId().getName()}"></td>
+                                            <td th:text="${e.getThu()}"></td>
+                                            <td th:text="${e.getDate()}"></td>
+                                            <td th:text="${e.getStarttime()}"></td>
+                                            <td th:text="${e.getEndtime()}"></td>
+
+                                            <td>
+                                                <a class="btn btn-info" th:href="@{/admin/lichlamviec/edit/{id}(id=${e.getId()})}">Update</a> | 
+                                                <a class="btn btn-warning" th:href="@{/admin/lichlamviec/delete/{id}(id=${e.getId()})}">Delete</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+
+
 
                                 </table>
                             </div>
@@ -63,6 +63,6 @@
             </div>
 
             <div th:replace="~{admin/layout/layoutfixbug :: body}"></div>
-            
+
     </body>
 </html>
