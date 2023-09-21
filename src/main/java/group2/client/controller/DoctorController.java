@@ -76,6 +76,7 @@ public class DoctorController {
 
                 // Xử lý dữ liệu theo nhu cầu của bạn
                 model.addAttribute("listDoctor", listDoctor);
+                model.addAttribute("currentAdmin", currentAdmin);
             }
             return "admin/doctor/index";
         } else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
@@ -89,6 +90,7 @@ public class DoctorController {
 
                 // Xử lý dữ liệu theo nhu cầu của bạn
                 model.addAttribute("listDoctor", listDoctor);
+                model.addAttribute("currentDoctor", currentDoctor);
             }
             return "admin/doctor/index";
         } else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
@@ -102,6 +104,7 @@ public class DoctorController {
 
                 // Xử lý dữ liệu theo nhu cầu của bạn
                 model.addAttribute("listDoctor", listDoctor);
+                model.addAttribute("currentCasher", currentCasher);
             }
             return "admin/doctor/index";
         } else {
@@ -127,6 +130,7 @@ public class DoctorController {
             });
             List<TypeDoctor> listTypeDoctor = response.getBody();
             model.addAttribute("listTypeDoctor", listTypeDoctor);
+            model.addAttribute("currentAdmin", currentAdmin);
 
             model.addAttribute("Doctor", new Doctor());
             return "admin/doctor/create";
@@ -137,6 +141,7 @@ public class DoctorController {
             });
             List<TypeDoctor> listTypeDoctor = response.getBody();
             model.addAttribute("listTypeDoctor", listTypeDoctor);
+            model.addAttribute("currentDoctor", currentDoctor);
 
             model.addAttribute("Doctor", new Doctor());
             return "admin/doctor/create";
@@ -147,6 +152,7 @@ public class DoctorController {
             });
             List<TypeDoctor> listTypeDoctor = response.getBody();
             model.addAttribute("listTypeDoctor", listTypeDoctor);
+            model.addAttribute("currentCasher", currentCasher);
 
             model.addAttribute("Doctor", new Doctor());
             return "admin/doctor/create";
@@ -167,7 +173,6 @@ public class DoctorController {
         Doctor.setCreateAt(new Date());
         Doctor.setTypeDoctorId(newTD);
 
-
         ByteArrayResource fileResource = new ByteArrayResource(file.getBytes()) {
             @Override
             public String getFilename() {
@@ -184,7 +189,6 @@ public class DoctorController {
 
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
 
-       
         var response = restTemplate.postForObject(apiUrl_Doctor + "/create", requestEntity, Boolean.class);
 
         if (response) {
@@ -215,6 +219,7 @@ public class DoctorController {
             });
             List<TypeDoctor> listTypeDoctor = responseTypeDoctor.getBody();
             model.addAttribute("listTypeDoctor", listTypeDoctor);
+            model.addAttribute("currentAdmin", currentAdmin);
 //            if (response.getStatusCode().is2xxSuccessful()) {
 //                Doctor objDoctor = response.getBody();
 
@@ -241,6 +246,7 @@ public class DoctorController {
             });
             List<TypeDoctor> listTypeDoctor = responseTypeDoctor.getBody();
             model.addAttribute("listTypeDoctor", listTypeDoctor);
+            model.addAttribute("currentDoctor", currentDoctor);
 
             //Lấy One Doctor theo ID
             ResponseEntity<Doctor> response = restTemplate.getForEntity(apiUrl_Doctor + "/edit/{id}", Doctor.class, id);
@@ -263,6 +269,7 @@ public class DoctorController {
             });
             List<TypeDoctor> listTypeDoctor = responseTypeDoctor.getBody();
             model.addAttribute("listTypeDoctor", listTypeDoctor);
+            model.addAttribute("currentCasher", currentCasher);
 
             //Lấy One Doctor theo ID
             ResponseEntity<Doctor> response = restTemplate.getForEntity(apiUrl_Doctor + "/edit/{id}", Doctor.class, id);
@@ -283,7 +290,6 @@ public class DoctorController {
 
         }
     }
-
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     public String update(Model model, Doctor objDoctor, @RequestParam String typeDoctorID, RedirectAttributes redirectAttributes) {
@@ -353,6 +359,5 @@ public class DoctorController {
             return "redirect:/login";
         }
     }
-
 
 }

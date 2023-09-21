@@ -4,10 +4,19 @@
  */
 package group2.client.controller;
 
+import group2.client.entities.Admin;
+import group2.client.entities.Casher;
 import group2.client.entities.Rating;
 import group2.client.entities.Patient;
 import group2.client.entities.Doctor;
+import group2.client.repository.AdminRepository;
+import group2.client.repository.CasherRepository;
+import group2.client.repository.DoctorRepository;
+import group2.client.repository.PatientRepository;
+import group2.client.service.AuthService;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
@@ -27,41 +36,142 @@ public class RatingController {
     private String apiUrlDoctor = "http://localhost:8888/api/doctor/";
     private String apiUrlPatient = "http://localhost:8888/api/patient/";
     RestTemplate restTemplate = new RestTemplate();
+    @Autowired
+    private AuthService authService;
+
+    @Autowired
+    private AdminRepository adminRepository;
+
+    @Autowired
+    private CasherRepository casherRepository;
+
+    @Autowired
+    private DoctorRepository doctorRepository;
+
+    @Autowired
+    private PatientRepository patientRepository;
 
     @RequestMapping("")
-    public String page(Model model) {
-        ResponseEntity<List<Rating>> response = restTemplate.exchange(apiUrl, HttpMethod.GET, null,
-                new ParameterizedTypeReference<List<Rating>>() {
-        });
+    public String page(Model model, HttpServletRequest request) {
 
-        // Kiểm tra mã trạng thái của phản hồi
-        if (response.getStatusCode().is2xxSuccessful()) {
-            List<Rating> listRating = response.getBody();
+        Admin currentAdmin = authService.isAuthenticatedAdmin(request);
+        Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
+        Patient currentPatient = authService.isAuthenticatedPatient(request);
+        Casher currentCasher = authService.isAuthenticatedCasher(request);
 
-            // Xử lý dữ liệu theo nhu cầu của bạn
-            model.addAttribute("listRating", listRating);
+        if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
+            return "redirect:/forbien";
+        } else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
+            ResponseEntity<List<Rating>> response = restTemplate.exchange(apiUrl, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<List<Rating>>() {
+            });
+            // Kiểm tra mã trạng thái của phản hồi
+            if (response.getStatusCode().is2xxSuccessful()) {
+                List<Rating> listRating = response.getBody();
+
+                // Xử lý dữ liệu theo nhu cầu của bạn
+                model.addAttribute("listRating", listRating);
+                model.addAttribute("currentAdmin", currentAdmin);
+            }
+            return "admin/rating/index";
+        } else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
+            ResponseEntity<List<Rating>> response = restTemplate.exchange(apiUrl, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<List<Rating>>() {
+            });
+            // Kiểm tra mã trạng thái của phản hồi
+            if (response.getStatusCode().is2xxSuccessful()) {
+                List<Rating> listRating = response.getBody();
+
+                // Xử lý dữ liệu theo nhu cầu của bạn
+                model.addAttribute("listRating", listRating);
+                model.addAttribute("currentDoctor", currentDoctor);
+            }
+            return "admin/rating/index";
+        } else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
+            ResponseEntity<List<Rating>> response = restTemplate.exchange(apiUrl, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<List<Rating>>() {
+            });
+            // Kiểm tra mã trạng thái của phản hồi
+            if (response.getStatusCode().is2xxSuccessful()) {
+                List<Rating> listRating = response.getBody();
+
+                // Xử lý dữ liệu theo nhu cầu của bạn
+                model.addAttribute("listRating", listRating);
+                model.addAttribute("currentCasher", currentCasher);
+            }
+            return "admin/rating/index";
+        } else {
+            return "redirect:/login";
         }
-        return "admin/rating/index";
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
-    public String create(Model model) {
-        ResponseEntity<List<Doctor>> doctorResponse = restTemplate.exchange(apiUrlDoctor, HttpMethod.GET, null,
-                new ParameterizedTypeReference<List<Doctor>>() {
-        });
-        ResponseEntity<List<Patient>> patientResponse = restTemplate.exchange(apiUrlPatient, HttpMethod.GET, null,
-                new ParameterizedTypeReference<List<Patient>>() {
-        });
+    public String create(Model model, HttpServletRequest request) {
 
-        if (doctorResponse.getStatusCode().is2xxSuccessful() && patientResponse.getStatusCode().is2xxSuccessful()) {
-            List<Doctor> listDoctor = doctorResponse.getBody();
-            List<Patient> listPatient = patientResponse.getBody();
-            model.addAttribute("listDoctor", listDoctor);
-            model.addAttribute("listPatient", listPatient);
+        Admin currentAdmin = authService.isAuthenticatedAdmin(request);
+        Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
+        Patient currentPatient = authService.isAuthenticatedPatient(request);
+        Casher currentCasher = authService.isAuthenticatedCasher(request);
+
+        if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
+            return "redirect:/forbien";
+        } else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
+            ResponseEntity<List<Doctor>> doctorResponse = restTemplate.exchange(apiUrlDoctor, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<List<Doctor>>() {
+            });
+            ResponseEntity<List<Patient>> patientResponse = restTemplate.exchange(apiUrlPatient, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<List<Patient>>() {
+            });
+
+            if (doctorResponse.getStatusCode().is2xxSuccessful() && patientResponse.getStatusCode().is2xxSuccessful()) {
+                List<Doctor> listDoctor = doctorResponse.getBody();
+                List<Patient> listPatient = patientResponse.getBody();
+                model.addAttribute("listDoctor", listDoctor);
+                model.addAttribute("listPatient", listPatient);
+                model.addAttribute("currentAdmin", currentAdmin);
+            }
+
+            model.addAttribute("rating", new Rating());
+            return "admin/rating/create";
+        } else if (currentAdmin != null && currentAdmin.getRole().equals("DOCTOR")) {
+            ResponseEntity<List<Doctor>> doctorResponse = restTemplate.exchange(apiUrlDoctor, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<List<Doctor>>() {
+            });
+            ResponseEntity<List<Patient>> patientResponse = restTemplate.exchange(apiUrlPatient, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<List<Patient>>() {
+            });
+
+            if (doctorResponse.getStatusCode().is2xxSuccessful() && patientResponse.getStatusCode().is2xxSuccessful()) {
+                List<Doctor> listDoctor = doctorResponse.getBody();
+                List<Patient> listPatient = patientResponse.getBody();
+                model.addAttribute("listDoctor", listDoctor);
+                model.addAttribute("listPatient", listPatient);
+                model.addAttribute("currentDoctor", currentDoctor);
+            }
+
+            model.addAttribute("rating", new Rating());
+            return "admin/rating/create";
+        } else if (currentAdmin != null && currentAdmin.getRole().equals("CASHER")) {
+            ResponseEntity<List<Doctor>> doctorResponse = restTemplate.exchange(apiUrlDoctor, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<List<Doctor>>() {
+            });
+            ResponseEntity<List<Patient>> patientResponse = restTemplate.exchange(apiUrlPatient, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<List<Patient>>() {
+            });
+
+            if (doctorResponse.getStatusCode().is2xxSuccessful() && patientResponse.getStatusCode().is2xxSuccessful()) {
+                List<Doctor> listDoctor = doctorResponse.getBody();
+                List<Patient> listPatient = patientResponse.getBody();
+                model.addAttribute("listDoctor", listDoctor);
+                model.addAttribute("listPatient", listPatient);
+                model.addAttribute("currentCasher", currentCasher);
+            }
+
+            model.addAttribute("rating", new Rating());
+            return "admin/rating/create";
+        } else {
+            return "redirect:/login";
         }
-
-        model.addAttribute("rating", new Rating());
-        return "admin/rating/create";
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
@@ -108,27 +218,75 @@ public class RatingController {
     }
 
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
-    public String edit(Model model, @PathVariable("id") int id) {
-        Rating rating = restTemplate.getForObject(apiUrl + "/" + id, Rating.class);
+    public String edit(Model model, @PathVariable("id") int id, HttpServletRequest request) {
 
-        ResponseEntity<List<Patient>> patientResponse = restTemplate.exchange(apiUrlPatient, HttpMethod.GET, null,
-                new ParameterizedTypeReference<List<Patient>>() {
-        });
-        ResponseEntity<List<Doctor>> doctorResponse = restTemplate.exchange(apiUrlDoctor, HttpMethod.GET, null,
-                new ParameterizedTypeReference<List<Doctor>>() {
-        });
+        Admin currentAdmin = authService.isAuthenticatedAdmin(request);
+        Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
+        Patient currentPatient = authService.isAuthenticatedPatient(request);
+        Casher currentCasher = authService.isAuthenticatedCasher(request);
 
-        if (patientResponse.getStatusCode().is2xxSuccessful() && doctorResponse.getStatusCode().is2xxSuccessful()) {
-            List<Patient> listPatient = patientResponse.getBody();
-            List<Doctor> listDoctor = doctorResponse.getBody();
-            model.addAttribute("listDoctor", listDoctor);
-            model.addAttribute("listPatient", listPatient);
-            model.addAttribute("rating", rating);
-            return "/admin/rating/edit";
+        if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
+            return "redirect:/forbien";
+        } else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
+            Rating rating = restTemplate.getForObject(apiUrl + "/" + id, Rating.class);
+            ResponseEntity<List<Patient>> patientResponse = restTemplate.exchange(apiUrlPatient, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<List<Patient>>() {
+            });
+            ResponseEntity<List<Doctor>> doctorResponse = restTemplate.exchange(apiUrlDoctor, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<List<Doctor>>() {
+            });
+            if (patientResponse.getStatusCode().is2xxSuccessful() && doctorResponse.getStatusCode().is2xxSuccessful()) {
+                List<Patient> listPatient = patientResponse.getBody();
+                List<Doctor> listDoctor = doctorResponse.getBody();
+                model.addAttribute("listDoctor", listDoctor);
+                model.addAttribute("listPatient", listPatient);
+                model.addAttribute("rating", rating);
+                model.addAttribute("currentAdmin", currentAdmin);
+                return "/admin/rating/edit";
+            } else {
+                return "redirect:/admin/rating";
+            }
+        } else if (currentAdmin != null && currentAdmin.getRole().equals("DOCTOR")) {
+            Rating rating = restTemplate.getForObject(apiUrl + "/" + id, Rating.class);
+            ResponseEntity<List<Patient>> patientResponse = restTemplate.exchange(apiUrlPatient, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<List<Patient>>() {
+            });
+            ResponseEntity<List<Doctor>> doctorResponse = restTemplate.exchange(apiUrlDoctor, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<List<Doctor>>() {
+            });
+            if (patientResponse.getStatusCode().is2xxSuccessful() && doctorResponse.getStatusCode().is2xxSuccessful()) {
+                List<Patient> listPatient = patientResponse.getBody();
+                List<Doctor> listDoctor = doctorResponse.getBody();
+                model.addAttribute("listDoctor", listDoctor);
+                model.addAttribute("listPatient", listPatient);
+                model.addAttribute("rating", rating);
+                model.addAttribute("currentDoctor", currentDoctor);
+                return "/admin/rating/edit";
+            } else {
+                return "redirect:/admin/rating";
+            }
+        } else if (currentAdmin != null && currentAdmin.getRole().equals("CASHER")) {
+            Rating rating = restTemplate.getForObject(apiUrl + "/" + id, Rating.class);
+            ResponseEntity<List<Patient>> patientResponse = restTemplate.exchange(apiUrlPatient, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<List<Patient>>() {
+            });
+            ResponseEntity<List<Doctor>> doctorResponse = restTemplate.exchange(apiUrlDoctor, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<List<Doctor>>() {
+            });
+            if (patientResponse.getStatusCode().is2xxSuccessful() && doctorResponse.getStatusCode().is2xxSuccessful()) {
+                List<Patient> listPatient = patientResponse.getBody();
+                List<Doctor> listDoctor = doctorResponse.getBody();
+                model.addAttribute("listDoctor", listDoctor);
+                model.addAttribute("listPatient", listPatient);
+                model.addAttribute("rating", rating);
+                model.addAttribute("currentCasher", currentCasher);
+                return "/admin/rating/edit";
+            } else {
+                return "redirect:/admin/rating";
+            }
         } else {
-            return "redirect:/admin/rating";
+            return "redirect:/login";
         }
-
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)

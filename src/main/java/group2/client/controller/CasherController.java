@@ -80,6 +80,7 @@ public class CasherController {
                 List<Casher> listCasher = response.getBody();
                 // Xử lý dữ liệu theo nhu cầu của bạn
                 model.addAttribute("listCasher", listCasher);
+                model.addAttribute("currentAdmin", currentAdmin);
             }
             return "/admin/casher/index";
         } else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
@@ -91,6 +92,7 @@ public class CasherController {
                 List<Casher> listCasher = response.getBody();
                 // Xử lý dữ liệu theo nhu cầu của bạn
                 model.addAttribute("listCasher", listCasher);
+                model.addAttribute("currentDoctor", currentDoctor);
             }
             return "/admin/casher/index";
         } else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
@@ -102,6 +104,7 @@ public class CasherController {
                 List<Casher> listCasher = response.getBody();
                 // Xử lý dữ liệu theo nhu cầu của bạn
                 model.addAttribute("listCasher", listCasher);
+                model.addAttribute("currentCasher", currentCasher);
             }
             return "/admin/casher/index";
         } else {
@@ -123,14 +126,17 @@ public class CasherController {
         } else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
             // Tạo một đối tượng Casher trống để gửi thông tin tới form tạo mới
             model.addAttribute("casher", new Casher());
+            model.addAttribute("currentAdmin", currentAdmin);
             return "/admin/casher/create";
         } else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
             // Tạo một đối tượng Casher trống để gửi thông tin tới form tạo mới
             model.addAttribute("casher", new Casher());
+            model.addAttribute("currentDoctor", currentDoctor);
             return "/admin/casher/create";
         } else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
             // Tạo một đối tượng Casher trống để gửi thông tin tới form tạo mới
             model.addAttribute("casher", new Casher());
+            model.addAttribute("currentCasher", currentCasher);
             return "/admin/casher/create";
         } else {
             return "redirect:/login";
@@ -154,11 +160,9 @@ public class CasherController {
 //            model.addAttribute("casher", casher);
 //            return "/admin/casher/create";
 //        }
-
 //        if (emailExistsInAnyRole(casher.getEmail(), admin.getEmail(), doctor.getEmail(), patient.getEmail())) {
 //            throw new EmailAlreadyExistsException("Email already exists.");
 //        }
-
         // Tạo một HttpEntity với thông tin Casher để gửi yêu cầu POST
         HttpEntity<Casher> request = new HttpEntity<>(casher, headers);
 
@@ -188,14 +192,17 @@ public class CasherController {
         } else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
             Casher casher = restTemplate.getForObject(apiUrl + "/" + id, Casher.class);
             model.addAttribute("casher", casher);
+            model.addAttribute("currentAdmin", currentAdmin);
             return "/admin/casher/edit";
         } else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
             Casher casher = restTemplate.getForObject(apiUrl + "/" + id, Casher.class);
             model.addAttribute("casher", casher);
+            model.addAttribute("currentDoctor", currentDoctor);
             return "/admin/casher/edit";
         } else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
             Casher casher = restTemplate.getForObject(apiUrl + "/" + id, Casher.class);
             model.addAttribute("casher", casher);
+            model.addAttribute("currentCasher", currentCasher);
             return "/admin/casher/edit";
         } else {
             return "redirect:/login";

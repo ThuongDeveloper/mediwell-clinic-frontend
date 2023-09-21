@@ -17,7 +17,7 @@
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 card_head">
 
-<a th:href="@{/admin/toathuoc/create}" class="btn btn-primary">Create</a>                        </div>
+                            <a th:href="@{/admin/toathuoc/create}" class="btn btn-primary">Create</a>                        </div>
                         <div class="card-body">
                             <div class="table-responsive">
 
@@ -32,23 +32,23 @@
                                             <th>Sympton</th>
                                             <th>Description</th>
                                             <th>State</th>
-<!--                                            <th>Doctor</th>-->
+                                            <!--                                            <th>Doctor</th>-->
                                             <th>Date</th>
                                             <th>Action</th>
 
                                         </tr>
                                     </thead>
-                                </tbody>
-                                 <tr th:each="e : ${listToathuoc}">
-                                         <td th:text="${e.getId()}"></td>
-                                         <td th:text="${e.getName()}"></td>
-                                         <td th:text="${e.getPhone()}"></td>
-                                     <td th:text="${e.getSymptom()}"></td>
-                                     <td th:text="${e.getDescription()}"></td>
-                                     <td th:text="${e.getState()}"></td>
-<!--                                     <td th:text="${e.getDoctorId().getName()}"></td>-->
+                                    </tbody>
+                                    <tr th:each="e : ${listToathuoc}">
+                                        <td th:text="${e.getId()}"></td>
+                                        <td th:text="${e.getName()}"></td>
+                                        <td th:text="${e.getPhone()}"></td>
+                                        <td th:text="${e.getSymptom()}"></td>
+                                        <td th:text="${e.getDescription()}"></td>
+                                        <td th:text="${e.getState()}"></td>
+                                        <!--                                     <td th:text="${e.getDoctorId().getName()}"></td>-->
                                         <td th:text="${e.getCreateAt()}"></td>
-<!--                                        <td >Chưa thêm</td>-->
+                                        <!--                                        <td >Chưa thêm</td>-->
                                         <td>
                                      <td>
                                          <a th:href="@{'/admin/toathuoc/export-pdf?toathuocId=' + ${e.getId()}}"
@@ -58,9 +58,9 @@
 
 
                                     </tr>
-                                </tbody>
-                                   
-                                   
+                                    </tbody>
+
+
 
                                 </table>
                             </div>
@@ -74,6 +74,6 @@
             </div>
 
             <div th:replace="~{admin/layout/layoutfixbug :: body}"></div>
-            
+
     </body>
 </html>
