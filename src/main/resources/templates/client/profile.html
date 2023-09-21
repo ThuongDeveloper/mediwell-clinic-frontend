@@ -82,50 +82,48 @@
                                                         <div th:replace="~{client/layout/header :: header}"></div>
 
                                                         <div th:replace="~{client/layout/barwrap :: div}"></div>
-                                                                                                </div><!-- mediz-navigation-bar-wrap -->
-                                                                                                <div class="mediz-page-title-wrap  mediz-style-custom mediz-left-align"><div class="mediz-header-transparent-substitute"></div><div class="mediz-page-title-overlay"></div><div class="mediz-page-title-container mediz-container"><div class="mediz-page-title-content mediz-item-pdlr"><h1 class="mediz-page-title">My Account</h1></div></div></div>
-                                                                                                <div class="mediz-page-wrapper" id="mediz-page-wrapper"><div class="mediz-content-container mediz-container"><div class="mediz-content-area mediz-item-pdlr mediz-sidebar-style-none clearfix"><div class="woocommerce"><div class="woocommerce-notices-wrapper"></div>
-                                                                                                <h3>Profile</h3>
-                                                                                                <form class="woocommerce-form" th:action="@{/profile/{id}(id=${patientProfile.id})}" th:object="${patientProfile}" method="post">
-                                                                                                        <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
-                                                                                                            <input type="text" hidden="true" th:field="*{id}" class="woocommerce-Input woocommerce-Input--text input-text">
-                                                                                                        </p>
-                                                                                                        <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
-                                                                                                                <label for="avt">Avatar</label>
-                                                                                                                <img th:if="${patientProfile.image != null}" th:src="@{${patientProfile.image}}" alt="Avatar" class="avatarProfile">
-                                                                                                                <img th:unless="${patientProfile.image != null}" src="../client/image/avatar-default.jpg" alt="Default Avatar" class="avatarProfile">
-                                                                                                                <input th:field="*{image}" class="woocommerce-Input" type="file" name="avt" id="avt">
-                                                                                                        </p>
-                                                                                                        <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
-                                                                                                                <label for="name">Name</label>
-                                                                                                                <input type="text" th:field="*{name}" class="woocommerce-Input woocommerce-Input--text input-text" name="name" id="name" value="" required>
-                                                                                                                    <div style="color: red" id="nameError"></div>
-                                                                                                        </p>
-                                                                                                        <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
-                                                                                                                <label for="email">Email</label>
-                                                                                                                <input th:field="*{email}" readonly="true" class="woocommerce-Input woocommerce-Input--text input-text" type="text" name="email" id="email">
-                                                                                                        </p>
-                                                                                                        <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
-                                                                                                                <label for="address">Address</label>
-                                                                                                                <input th:field="*{address}" class="woocommerce-Input woocommerce-Input--text input-text" type="text" name="address" id="address">
-                                                                                                                    <div style="color: red" id="addressError"></div>
-                                                                                                        </p>
-                                                                                                        <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
-                                                                                                                <label for="phone">Phone</label>
-                                                                                                                <input th:field="*{phone}" class="woocommerce-Input woocommerce-Input--text input-text" type="text" name="phone" id="phone">
-                                                                                                                    <div style="color: red" id="phoneError"></div>
-                                                                                                        </p>
-                                                                                                        <p class="form-row">
-                                                                                                        <button type="submit" class="woocommerce-button button" name="save">Save</button>
-                                                                                                </form>
+                                                                </div><!-- mediz-navigation-bar-wrap -->
+                                                                <div class="mediz-page-title-wrap  mediz-style-custom mediz-left-align"><div class="mediz-header-transparent-substitute"></div><div class="mediz-page-title-overlay"></div><div class="mediz-page-title-container mediz-container"><div class="mediz-page-title-content mediz-item-pdlr"><h1 class="mediz-page-title">My Account</h1></div></div></div>
+                                                                <div class="mediz-page-wrapper" id="mediz-page-wrapper"><div class="mediz-content-container mediz-container"><div class="mediz-content-area mediz-item-pdlr mediz-sidebar-style-none clearfix"><div class="woocommerce"><div class="woocommerce-notices-wrapper"></div>
+                                                                <h3>Profile</h3>
+                                                                <form class="woocommerce-form" th:action="@{/profile/{id}(id=${patientProfile.id})}" th:object="${patientProfile}" method="post" enctype="multipart/form-data">
+                                                                        <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+                                                                            <input type="text" hidden="true" th:field="*{id}" class="woocommerce-Input woocommerce-Input--text input-text">
+                                                                        </p>
+                                                                        <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+                                                                                <label name="file" for="file">Avatar</label>
+                                                                                <img name="file" th:if="${patientProfile.image != null}" th:src="@{${patientProfile.image}}" alt="Avatar" class="avatarProfile">
+                                                                                <img name="file" th:unless="${patientProfile.image != null}" src="../client/image/avatar-default.jpg" alt="Default Avatar" class="avatarProfile">
+                                                                                <input class="woocommerce-Input" type="file" name="file">
+                                                                        </p>
+                                                                        <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+                                                                                <label for="name">Name</label>
+                                                                                <input type="text" th:field="*{name}" class="woocommerce-Input woocommerce-Input--text input-text" name="name" id="name" value="" required>
+                                                                                    <div style="color: red" id="nameError"></div>
+                                                                        </p>
+                                                                        <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+                                                                                <label for="email">Email</label>
+                                                                                <input th:field="*{email}" readonly="true" class="woocommerce-Input woocommerce-Input--text input-text" type="text" name="email" id="email">
+                                                                        </p>
+                                                                        <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+                                                                                <label for="address">Address</label>
+                                                                                <input th:field="*{address}" class="woocommerce-Input woocommerce-Input--text input-text" type="text" name="address" id="address">
+                                                                                    <div style="color: red" id="addressError"></div>
+                                                                        </p>
+                                                                        <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+                                                                                <label for="phone">Phone</label>
+                                                                                <input th:field="*{phone}" class="woocommerce-Input woocommerce-Input--text input-text" type="text" name="phone" id="phone">
+                                                                                    <div style="color: red" id="phoneError"></div>
+                                                                        </p>
+                                                                        <p class="form-row">
+                                                                        <button type="submit" class="woocommerce-button button" name="save">Save</button>
+                                                                </form>
+                                                            </div>
+                                                            </div></div><div class="gdlr-core-page-builder-body"></div></div>
+                                                                            <div th:replace="~{client/layout/footer :: footer}"></div>
 
+                                                                            <script src="../client/js/client.js"></script>
 
-                                                                                </div>
-                                                                                </div></div><div class="gdlr-core-page-builder-body"></div></div>
-                                                                                                <div th:replace="~{client/layout/footer :: footer}"></div>
-
-                                                                                                <script src="../client/js/client.js"></script>
-
-                                                                                                <div th:replace="~{client/layout/layout :: body}"></div>	
-                                                                                                </body>
-                                                                                                </html>
+                                                                            <div th:replace="~{client/layout/layout :: body}"></div>	
+                                                                            </body>
+                                                                            </html>

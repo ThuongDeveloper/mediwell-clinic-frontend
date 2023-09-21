@@ -21,9 +21,17 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                 <div class="profile_pic">
                     <img src="/admin/images/img.jpg" alt="..." class="img-circle profile_img">
                 </div>
-                <div class="profile_info">
+                <div th:if="${currentAdmin != null}" class="profile_info">
                     <span>Welcome,</span>
-                    <h2>John Doe</h2>
+                    <h2>[[${currentAdmin.username}]]</h2>
+                </div>
+                <div th:if="${currentDoctor != null}" class="profile_info">
+                    <span>Welcome,</span>
+                    <h2>[[${currentDoctor.username}]]</h2>
+                </div>
+                <div th:if="${currentCasher != null}" class="profile_info">
+                    <span>Welcome,</span>
+                    <h2>[[${currentCasher.username}]]</h2>
                 </div>
             </div>
             <!-- /menu profile quick info -->
@@ -51,6 +59,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                                 <li><a th:href="@{/admin/email}">Email Management</a></li>
                                 <li><a th:href="@{/admin/feedback}">Feedback</a></li>
                                 <li><a th:href="@{/admin/news}">Newsletter</a></li>
+                                <li><a th:href="@{/admin/toathuoc}">Prescription</a></li>
 
                             </ul>
                         </li>

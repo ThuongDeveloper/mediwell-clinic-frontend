@@ -70,6 +70,7 @@ public class LichlamviecController {
 
                 // Xử lý dữ liệu theo nhu cầu của bạn
                 model.addAttribute("listLich", listLich);
+                model.addAttribute("currentAdmin", currentAdmin);
             }
             return "/admin/lichlamviec/index";
         }else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
@@ -83,6 +84,7 @@ public class LichlamviecController {
 
                 // Xử lý dữ liệu theo nhu cầu của bạn
                 model.addAttribute("listLich", listLich);
+                model.addAttribute("currentDoctor", currentDoctor);
             }
             return "/admin/lichlamviec/index";
         }else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
@@ -96,6 +98,7 @@ public class LichlamviecController {
 
                 // Xử lý dữ liệu theo nhu cầu của bạn
                 model.addAttribute("listLich", listLich);
+                model.addAttribute("currentCasher", currentCasher);
             }
             return "/admin/lichlamviec/index";
         }else {
@@ -126,6 +129,7 @@ public class LichlamviecController {
                 // Thực hiện thêm xử lý sau khi tạo Casher thành công (nếu cần)
                 List<Doctor> listDoctor = DResponse.getBody();
                 model.addAttribute("listDoctor", listDoctor);
+                model.addAttribute("currentAdmin", currentAdmin);
                 // Chuyển hướng về trang danh sách Casher
 
             } 
@@ -141,6 +145,7 @@ public class LichlamviecController {
                 // Thực hiện thêm xử lý sau khi tạo Casher thành công (nếu cần)
                 List<Doctor> listDoctor = DResponse.getBody();
                 model.addAttribute("listDoctor", listDoctor);
+                model.addAttribute("currentDoctor", currentDoctor);
                 // Chuyển hướng về trang danh sách Casher
 
             } 
@@ -156,6 +161,7 @@ public class LichlamviecController {
                 // Thực hiện thêm xử lý sau khi tạo Casher thành công (nếu cần)
                 List<Doctor> listDoctor = DResponse.getBody();
                 model.addAttribute("listDoctor", listDoctor);
+                model.addAttribute("currentCasher", currentCasher);
                 // Chuyển hướng về trang danh sách Casher
 
             } 
@@ -241,6 +247,7 @@ public class LichlamviecController {
                 List<Doctor> listDoctor = DResponse.getBody();
                 model.addAttribute("listDoctor", listDoctor);
                 model.addAttribute("lich", lich);
+                model.addAttribute("currentAdmin", currentAdmin);
                 return "/admin/lichlamviec/edit";
             } else {
                 return "redirect:/admin/lichlamviec";
@@ -257,6 +264,7 @@ public class LichlamviecController {
                 List<Doctor> listDoctor = DResponse.getBody();
                 model.addAttribute("listDoctor", listDoctor);
                 model.addAttribute("lich", lich);
+                model.addAttribute("currentDoctor", currentDoctor);
                 return "/admin/lichlamviec/edit";
             } else {
                 return "redirect:/admin/lichlamviec";
@@ -273,6 +281,7 @@ public class LichlamviecController {
                 List<Doctor> listDoctor = DResponse.getBody();
                 model.addAttribute("listDoctor", listDoctor);
                 model.addAttribute("lich", lich);
+                model.addAttribute("currentCasher", currentCasher);
                 return "/admin/lichlamviec/edit";
             } else {
                 return "redirect:/admin/lichlamviec";

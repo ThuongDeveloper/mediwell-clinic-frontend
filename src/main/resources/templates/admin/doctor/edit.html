@@ -8,7 +8,7 @@
             <div class="main_container">
                 <div th:replace="~{admin/layout/slidebarfixbug :: slidebarAdmin}"></div>
                 <div class="top_nav">
-                    <div th:replace="~{admin/layout/header :: div}"></div>
+                    <div th:replace="~{admin/layout/headerfixbug :: div}"></div>
                 </div>
                 <!-- Content -->
 
@@ -71,15 +71,15 @@
                                         <div class="field item form-group">
                                             <label class="col-form-label col-md-3 col-sm-3 label-align">Type Doctor<span class="required">*</span></label>
                                             <div class="col-md-6 col-sm-6">
-                                                      <input  readonly th:value="${objDoctor.getTypeDoctorId().getName()}"/>
+                                                <!--<input  readonly th:value="${objDoctor.getTypeDoctorId().getName()}"/>-->
                                                 <select name="typeDoctorID">
-                                                    
+
                                                     <option th:each="typeDoctor : ${listTypeDoctor}"
                                                             th:value="${typeDoctor.id}"
                                                             th:text="${typeDoctor.name}">
                                                     </option>
                                                 </select>
-                                              
+
 
                                             </div>
                                         </div>
