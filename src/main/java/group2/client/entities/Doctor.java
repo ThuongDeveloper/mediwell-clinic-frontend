@@ -4,6 +4,9 @@
  */
 package group2.client.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
@@ -29,6 +32,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "doctor")
+@JsonIgnoreProperties({"ratingCollection"})
 @NamedQueries({
     @NamedQuery(name = "Doctor.findAll", query = "SELECT d FROM Doctor d"),
     @NamedQuery(name = "Doctor.findById", query = "SELECT d FROM Doctor d WHERE d.id = :id"),
@@ -78,6 +82,7 @@ public class Doctor implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createAt;
     @OneToMany(mappedBy = "doctorId")
+    @JsonManagedReference
     private Collection<Rating> ratingCollection;
     @OneToMany(mappedBy = "doctorId")
     private Collection<Appointment> appointmentCollection;

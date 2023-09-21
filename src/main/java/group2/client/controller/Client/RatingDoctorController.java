@@ -1,0 +1,124 @@
+package group2.client.controller.Client;
+
+import group2.client.dto.ListToaThuocDAO;
+import group2.client.dto.RatingDAO;
+import group2.client.entities.Doctor;
+import group2.client.entities.Patient;
+import group2.client.entities.Rating;
+import group2.client.repository.DoctorRepository;
+import group2.client.repository.PatientRepository;
+import group2.client.service.AuthService;
+import group2.client.service.JwtService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.*;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+
+@Controller
+public class RatingDoctorController {
+    private String apiUrl = "http://localhost:8888/api/rating/";
+    private String apiUrlDoctor = "http://localhost:8888/api/doctor/";
+    private String apiUrlPatient = "http://localhost:8888/api/patient";
+    RestTemplate restTemplate = new RestTemplate();
+
+    @Autowired
+    private AuthService authService;
+
+    @Autowired
+    private JwtService jwtService;
+
+    @Autowired
+    private PatientRepository patientRepository;
+
+    @Autowired
+    private DoctorRepository doctorRepository;
+
+
+    @GetMapping("/rating/{patientID}")
+    public String editProfile(Model model, @PathVariable("patientID") Integer patientID, HttpServletRequest request) {
+
+        Patient currentPatient = authService.isAuthenticatedPatient(request);
+
+        ResponseEntity<Patient> response = restTemplate.exchange(apiUrlPatient + "/" + patientID, HttpMethod.GET, null,
+                new ParameterizedTypeReference<Patient>() {
+                });
+        if (response.getStatusCode().is2xxSuccessful() && currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
+            Patient patient = response.getBody();
+            model.addAttribute("patientProfile", patient);
+            model.addAttribute("patient", currentPatient);
+        }
+
+        ResponseEntity<List<Doctor>> doctorResponse = restTemplate.exchange(apiUrlDoctor, HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<Doctor>>() {
+                });
+
+        if (doctorResponse.getStatusCode().is2xxSuccessful()) {
+            List<Doctor> listDoctor = doctorResponse.getBody();
+            model.addAttribute("listDoctor", listDoctor);
+        }
+
+        model.addAttribute("rating", new Rating());
+
+        return "client/rating/index";
+    }
+    private boolean containsProfanity(String comment) {
+        // Thực hiện kiểm tra ở đây, ví dụ:
+        String[] profanityWords = {"profanity1", "profanity2", "profanity3"};
+        for (String word : profanityWords) {
+            if (comment.toLowerCase().contains(word)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    @PostMapping("/rating/{patientId}")
+    public String create(Model model, Double rating, String comment, int doctorId,
+                         @PathVariable("patientId") Integer patientId, HttpServletRequest requestPatient) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        Patient currentPatient = authService.isAuthenticatedPatient(requestPatient);
+
+        if (currentPatient == null) {
+            // Xử lý lỗi nếu không có bệnh nhân đăng nhập
+            model.addAttribute("error", "No authenticated patient.");
+            return "client/rating/index";
+        }
+
+        RatingDAO ratingDAO = new RatingDAO();
+        ratingDAO.setRating(rating);
+        ratingDAO.setComment(comment);
+        ratingDAO.setDoctor_id(doctorId);
+        ratingDAO.setPatient_id(currentPatient.getId());
+
+        HttpEntity<RatingDAO> requestEntity = new HttpEntity<>(ratingDAO, headers);
+
+        try {
+            ResponseEntity<RatingDAO> responseEntity = restTemplate.exchange(apiUrl + "createRating", HttpMethod.POST, requestEntity, RatingDAO.class);
+
+            if (responseEntity.getStatusCode().is2xxSuccessful()) {
+                // Chuyển hướng về trang danh sách đánh giá cho bác sĩ
+                model.addAttribute("rating", new Rating());
+                model.addAttribute("successMessage", "Rating created successfully."); // Thêm thông báo thành công
+                return "redirect:/rating/" + patientId;
+            } else {
+                // Xử lý lỗi nếu cần thiết
+                model.addAttribute("error", "Error creating rating.");
+                return "client/rating/index";
+            }
+        } catch (Exception ex) {
+            // Xử lý lỗi nếu có lỗi trong quá trình gửi yêu cầu
+            model.addAttribute("error", "Error creating rating: " + ex.getMessage());
+            return "client/rating/index";
+        }
+    }
+
+}
+
+
+
