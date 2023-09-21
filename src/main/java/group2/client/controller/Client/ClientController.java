@@ -4,6 +4,8 @@
  */
 package group2.client.controller.Client;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paypal.api.payments.Links;
 import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.PayPalRESTException;
@@ -11,6 +13,7 @@ import group2.client.entities.*;
 import group2.client.repository.AppointmentRepository;
 import group2.client.repository.DoctorRepository;
 import group2.client.repository.LichlamviecRepository;
+import group2.client.repository.NewsRepository;
 import group2.client.repository.PatientRepository;
 import group2.client.service.*;
 import java.io.IOException;
@@ -19,6 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.servlet.http.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -37,8 +41,10 @@ public class ClientController {
 
     String apiUrl = "http://localhost:8888/api/appointment/";
     private String apiUrlDoctor = "http://localhost:8888/api/doctor/";
+    private String apiUrlDoctorWithRating = "http://localhost:8888/api/doctor/withrating";
     private String apiUrlPatient = "http://localhost:8888/api/patient/";
     private String apiUrlTypeDoctor = "http://localhost:8888/api/typedoctor/";
+    private String apiUrlFeedback = "http://localhost:8888/api/feedback";
     RestTemplate restTemplate = new RestTemplate();
 
     @Autowired
@@ -61,6 +67,9 @@ public class ClientController {
 
     @Autowired
     private AppointmentRepository appointmentRepository;
+    
+     @Autowired
+    private NewsRepository newsRepository;
 
     public static final String SUCCESS_URL = "pay/success";
     public static final String CANCEL_URL = "pay/cancel";
@@ -88,25 +97,69 @@ public class ClientController {
 
     }
 
-    @RequestMapping("/listDoctors")
-    public String listDoctors(Model model, HttpServletRequest request) {
+//    @RequestMapping("/listDoctors")
+//    public String listDoctors(Model model, HttpServletRequest request) {
+//
+//        Patient currentPatient = authService.isAuthenticatedPatient(request);
+//
+//        ResponseEntity<List<Doctor>> response = restTemplate.exchange(apiUrlDoctor, HttpMethod.GET, null,
+//                new ParameterizedTypeReference<List<Doctor>>() {
+//        });
+//        ResponseEntity<List<TypeDoctor>> responseTD = restTemplate.exchange(apiUrlTypeDoctor, HttpMethod.GET, null,
+//                new ParameterizedTypeReference<List<TypeDoctor>>() {
+//        });
+//        if (response.getStatusCode().is2xxSuccessful() && responseTD.getStatusCode().is2xxSuccessful() && currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
+//            List<Doctor> listDoctor = response.getBody();
+//            List<TypeDoctor> listTypeDoctor = responseTD.getBody();
+//            model.addAttribute("listDoctor", listDoctor);
+//            model.addAttribute("listTypeDoctor", listTypeDoctor);
+//            model.addAttribute("patient", currentPatient);
+//        } else if (response.getStatusCode().is2xxSuccessful() && responseTD.getStatusCode().is2xxSuccessful() && currentPatient == null) {
+//            List<Doctor> listDoctor = response.getBody();
+//            List<TypeDoctor> listTypeDoctor = responseTD.getBody();
+//            model.addAttribute("listDoctor", listDoctor);
+//            model.addAttribute("listTypeDoctor", listTypeDoctor);
+//            model.addAttribute("listDoctor", listDoctor);
+//        }
+//        return "/client/listDoctors";
+//
+//    }
+    
+     @RequestMapping("/listDoctors")
+    public String listDoctorsWithRating(Model model, HttpServletRequest request) throws JsonProcessingException {
 
         Patient currentPatient = authService.isAuthenticatedPatient(request);
-
-        ResponseEntity<List<Doctor>> response = restTemplate.exchange(apiUrlDoctor, HttpMethod.GET, null,
-                new ParameterizedTypeReference<List<Doctor>>() {
+    
+        ResponseEntity<List<Object>> response = restTemplate.exchange(apiUrlDoctorWithRating, HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<Object>>() {
         });
+        
+        List new_list = (List) response;
+
+//        // Tạo đối tượng ObjectMapper
+//        ObjectMapper objectMapper = new ObjectMapper();
+//
+//        // Giải mã dữ liệu JSON thành một mảng các đối tượng
+//        Object[] objects = objectMapper.readValue(response.getBody().toString(), Object[].class);
+//
+//        // Lấy ra đối tượng đầu tiên trong mảng
+//        Object object = objects[0];
+//
+//        // Lấy ra thuộc tính "name" của đối tượng
+//        String name = objectMapper.readValue(object.toString(), Doctor.class).getName();
+
+        
         ResponseEntity<List<TypeDoctor>> responseTD = restTemplate.exchange(apiUrlTypeDoctor, HttpMethod.GET, null,
                 new ParameterizedTypeReference<List<TypeDoctor>>() {
         });
         if (response.getStatusCode().is2xxSuccessful() && responseTD.getStatusCode().is2xxSuccessful() && currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
-            List<Doctor> listDoctor = response.getBody();
+            List<Object> listDoctor = response.getBody();
             List<TypeDoctor> listTypeDoctor = responseTD.getBody();
             model.addAttribute("listDoctor", listDoctor);
             model.addAttribute("listTypeDoctor", listTypeDoctor);
             model.addAttribute("patient", currentPatient);
         } else if (response.getStatusCode().is2xxSuccessful() && responseTD.getStatusCode().is2xxSuccessful() && currentPatient == null) {
-            List<Doctor> listDoctor = response.getBody();
+            List<Object> listDoctor = response.getBody();
             List<TypeDoctor> listTypeDoctor = responseTD.getBody();
             model.addAttribute("listDoctor", listDoctor);
             model.addAttribute("listTypeDoctor", listTypeDoctor);
@@ -1046,6 +1099,67 @@ public class ClientController {
     @RequestMapping("/forbien")
     public String forbien(Model model) {
         return "/auth/forbien";
+    }
+    
+    @RequestMapping("/feedback")
+    public String feedback(Model model) {
+        model.addAttribute("feedback", new Feedback());
+        return "/client/feedback";
+    }
+    
+    @RequestMapping("/news")
+    public String news(Model model) {
+        List<News> listnews = newsRepository.findAll();
+        model.addAttribute("listnews", listnews);
+        return "/client/news";
+    }
+    
+    @RequestMapping("/newsdetail/{id}")
+    public String newsdetail(Model model, @PathVariable("id") int id) {
+        News news = newsRepository.findById(id).get();
+        model.addAttribute("news", news);
+        return "/client/newsdetail";
+    }
+    
+    @RequestMapping(value = "/create-feedback", method = RequestMethod.POST)
+    public String createFeedback(Model model, @ModelAttribute Feedback feedback, HttpServletRequest request) {
+         Admin currentAdmin = authService.isAuthenticatedAdmin(request);
+        Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
+        Patient currentPatient = authService.isAuthenticatedPatient(request);
+        Casher currentCasher = authService.isAuthenticatedCasher(request);
+
+        if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            
+            feedback.setPatientId(currentPatient);
+            
+            feedback.setStatus(false);
+
+             // Tạo một HttpEntity với thông tin Casher để gửi yêu cầu POST
+            HttpEntity<Feedback> requestFeed = new HttpEntity<>(feedback, headers);
+
+            ResponseEntity<Feedback> response = restTemplate.exchange(apiUrlFeedback, HttpMethod.POST, requestFeed, Feedback.class);
+
+            // Kiểm tra mã trạng thái của phản hồi
+            if (response.getStatusCode().is2xxSuccessful()) {
+                // Thực hiện thêm xử lý sau khi tạo Casher thành công (nếu cần)
+                // Chuyển hướng về trang danh sách Casher
+                 model.addAttribute("feedback", new Feedback());
+                return "redirect:/";
+            } else {
+                // Xử lý lỗi nếu cần thiết
+                return "/client/home";
+            }
+        } else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
+            return "redirect:/admin";
+        } else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
+            return "redirect:/admin";
+        } else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
+            return "redirect:/admin";
+        } else {
+            return "redirect:/login";
+        }
     }
 
 }
