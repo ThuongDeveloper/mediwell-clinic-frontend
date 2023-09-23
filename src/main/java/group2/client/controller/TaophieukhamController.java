@@ -14,6 +14,7 @@ import group2.client.service.AuthService;
 import java.util.List;
 import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -75,6 +76,11 @@ public class TaophieukhamController {
             // Kiểm tra mã trạng thái của phản hồi
             if (response.getStatusCode().is2xxSuccessful()) {
                 List<Taophieukham> listTaophieukham = response.getBody();
+
+                Casher a;
+                for (int i = 0; i < listTaophieukham.size(); i++) {
+                    a = listTaophieukham.get(i).getCasherId();
+                }
 
                 // Xử lý dữ liệu theo nhu cầu của bạn
                 model.addAttribute("listTaophieukham", listTaophieukham);
@@ -187,9 +193,18 @@ public class TaophieukhamController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String create(Model model, @Valid @ModelAttribute Taophieukham taophieukham, BindingResult bindingResult, @RequestParam("casherID") String casherID, @RequestParam("typeDoctorID") String typeDoctorID, @RequestParam("patientID") String patientID) {
+    public String create(Model model, @Valid @ModelAttribute Taophieukham taophieukham, BindingResult bindingResult, HttpSession session, @RequestParam("casherID") String casherID, @RequestParam("typeDoctorID") String typeDoctorID, @RequestParam("patientID") String patientID) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+        ResponseEntity<List<Casher>> casherResponse = restTemplate.exchange(apiUrlCasher, HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<Casher>>() {
+        });
+        ResponseEntity<List<TypeDoctor>> TDResponse = restTemplate.exchange(apiUrlTypeDoctor, HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<TypeDoctor>>() {
+        });
+        ResponseEntity<List<Patient>> patientResponse = restTemplate.exchange(apiUrlPatient, HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<Patient>>() {
+        });
 
         // Lấy danh sách phiếu khám hiện có từ API server
         ResponseEntity<List<Taophieukham>> responseList = restTemplate.exchange(apiUrl, HttpMethod.GET, null, new ParameterizedTypeReference<List<Taophieukham>>() {
@@ -206,14 +221,28 @@ public class TaophieukhamController {
         TypeDoctor newTD = new TypeDoctor();
 
         if (casherID == "") {
-            newCasher.setId(null);
+            List<Casher> listCasher = casherResponse.getBody();
+            List<TypeDoctor> listTypeDoctor = TDResponse.getBody();
+            List<Patient> listPatient = patientResponse.getBody();
+            model.addAttribute("listTypeDoctor", listTypeDoctor);
+            model.addAttribute("listCasher", listCasher);
+            model.addAttribute("listPatient", listPatient);
+            session.setAttribute("error", "Cannot be left blank!");
+            return "/admin/phieukham/create";
         } else {
             newCasher.setId(Integer.parseInt(casherID));
             taophieukham.setCasherId(newCasher);
         }
 
         if (typeDoctorID == "") {
-            newTD.setId(null);
+            List<Casher> listCasher = casherResponse.getBody();
+            List<TypeDoctor> listTypeDoctor = TDResponse.getBody();
+            List<Patient> listPatient = patientResponse.getBody();
+            model.addAttribute("listTypeDoctor", listTypeDoctor);
+            model.addAttribute("listCasher", listCasher);
+            model.addAttribute("listPatient", listPatient);
+            session.setAttribute("error", "Cannot be left blank!");
+            return "/admin/phieukham/create";
         } else {
             newTD.setId(Integer.parseInt(typeDoctorID));
             taophieukham.setTypeDoctorId(newTD);
@@ -226,7 +255,12 @@ public class TaophieukhamController {
         }
 
         if (bindingResult.hasErrors()) {
-            model.addAttribute("taophieukham", taophieukham);
+            List<Casher> listCasher = casherResponse.getBody();
+            List<TypeDoctor> listTypeDoctor = TDResponse.getBody();
+            List<Patient> listPatient = patientResponse.getBody();
+            model.addAttribute("listTypeDoctor", listTypeDoctor);
+            model.addAttribute("listCasher", listCasher);
+            model.addAttribute("listPatient", listPatient);
             return "/admin/phieukham/create";
         }
 

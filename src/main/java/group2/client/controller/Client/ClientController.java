@@ -1026,16 +1026,21 @@ public class ClientController {
     }
 
     @RequestMapping(value = "/profile/{id}", method = RequestMethod.POST)
-    public String update(Model model, Patient updatedPatient, @PathVariable("id") Integer id, @RequestParam(name = "file", required = false) MultipartFile file) throws IOException {
+    public String update(Model model, Patient updatedPatient, @PathVariable("id") Integer id,
+            @RequestParam(name = "file", required = false) MultipartFile file, HttpSession session ) throws IOException {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+        id = updatedPatient.getId();
 
         if (file != null && !file.isEmpty()) {
-            // Xử lý tệp tin ảnh nếu cần
             String fileName = file.getOriginalFilename();
-            // Thực hiện xử lý tệp tin ảnh ở đây nếu cần
+
+            // Kiểm tra xem đuôi mở rộng của tệp có hợp lệ không
+            if (!isImageFileExtensionValid(fileName)) {
+                session.setAttribute("error1", "Invalid extension. Only .png, .jpg or .jpeg are accepted.");
+                return "redirect:/profile/" + id;
+            }
         }
-        id = updatedPatient.getId();
 
         ByteArrayResource fileResource = new ByteArrayResource(file.getBytes()) {
             @Override
@@ -1068,6 +1073,17 @@ public class ClientController {
             model.addAttribute("patientProfile", patient);
             return "/client/profile";
         }
+    }
+
+// Hàm kiểm tra đuôi mở rộng hợp lệ
+    private boolean isImageFileExtensionValid(String fileName) {
+        String[] validExtensions = {".png", ".jpg", ".jpeg"};
+        for (String extension : validExtensions) {
+            if (fileName.toLowerCase().endsWith(extension)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @RequestMapping("/appointment/create")

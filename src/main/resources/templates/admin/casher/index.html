@@ -2,7 +2,6 @@
 
     <div th:replace="~{admin/layout/layout :: head}"></div>
 
-
     <body class="nav-md">
         <div class="container body">
             <div class="main_container">
@@ -39,6 +38,13 @@
 
                                             <a th:href="@{/admin/casher/create}" class="btn btn-primary">Create </a>
                                         </div>
+                                    </div>
+                                    <div th:if="${session.error}">                         
+                                        <div class="alert alert-danger alert-dismissible fade show notify-error">
+                                            <button type="button" class="btn-close" data-dismiss="alert"></button>
+                                            <span th:text="${session.error}"></span>
+                                        </div>
+                                        <th:block th:text="${#session.removeAttribute('error')}"></th:block>
                                     </div>
                                     <div class="x_content">
                                         <div class="row">

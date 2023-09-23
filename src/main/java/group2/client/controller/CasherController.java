@@ -11,8 +11,10 @@ import group2.client.repository.CasherRepository;
 import group2.client.repository.DoctorRepository;
 import group2.client.repository.PatientRepository;
 import group2.client.service.AuthService;
+import group2.client.service.CasherService;
 import java.util.*;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -31,6 +33,7 @@ import org.springframework.web.client.*;
 public class CasherController {
 
     String apiUrl = "http://localhost:8888/api/casher";
+    private String apiUrlTPK = "http://localhost:8888/api/taophieukham/";
     RestTemplate restTemplate = new RestTemplate();
 
     @Autowired
@@ -47,6 +50,9 @@ public class CasherController {
 
     @Autowired
     private AuthService authService;
+    
+    @Autowired
+    CasherService casherService;
 
     private boolean emailExistsInAnyRole(String... emails) {
         for (String email : emails) {
@@ -155,14 +161,12 @@ public class CasherController {
         }
 
         // Kiểm tra xem email đã tồn tại trong cơ sở dữ liệu chưa
-//        if (casherRepository.existsByEmail(casher.getEmail())) {
-//            bindingResult.rejectValue("email", "error.email", "Email already exists.");
-//            model.addAttribute("casher", casher);
-//            return "/admin/casher/create";
-//        }
-//        if (emailExistsInAnyRole(casher.getEmail(), admin.getEmail(), doctor.getEmail(), patient.getEmail())) {
-//            throw new EmailAlreadyExistsException("Email already exists.");
-//        }
+        if (casherRepository.existsByEmail(casher.getEmail())) {
+            bindingResult.rejectValue("email", "error.email", "Email already exists.");
+            model.addAttribute("casher", casher);
+            return "/admin/casher/create";
+        }
+
         // Tạo một HttpEntity với thông tin Casher để gửi yêu cầu POST
         HttpEntity<Casher> request = new HttpEntity<>(casher, headers);
 
@@ -226,16 +230,6 @@ public class CasherController {
         // Bổ sung id vào URL khi thực hiện PUT
         String url = apiUrl + "/" + updatedCasher.getId();
 
-        // Kiểm tra xem email trong biểu mẫu có thay đổi không
-        if (!updatedCasher.getEmail().equals(existingCasher.getEmail())) {
-            // Nếu email đã thay đổi, kiểm tra trùng email
-            if (casherRepository.existsByEmail(updatedCasher.getEmail())) {
-                bindingResult.rejectValue("email", "error.email", "Email đã tồn tại.");
-                model.addAttribute("casher", existingCasher);
-                return "/admin/casher/edit";
-            }
-        }
-
         // Tạo một HttpEntity với thông tin Casher cập nhật để gửi yêu cầu PUT
         HttpEntity<Casher> request = new HttpEntity<>(updatedCasher, headers);
 
@@ -245,12 +239,14 @@ public class CasherController {
 
         } catch (RestClientException e) {
             model.addAttribute("casher", existingCasher);
-            return "/admin/casher/edit";
+            return "/admin/casher/edit/" + updatedCasher.getId();
         }
     }
 
     @RequestMapping(value = "/admin/casher/delete/{id}", method = RequestMethod.GET)
-    public String delete(@PathVariable("id") Integer id, HttpServletRequest request) {
+    public String delete(@PathVariable("id") Integer id, HttpServletRequest request, HttpSession session) {
+
+        Casher casher = casherService.getCasherById(id);
 
         Admin currentAdmin = authService.isAuthenticatedAdmin(request);
         Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
@@ -272,14 +268,19 @@ public class CasherController {
             // Chuyển hướng về trang danh sách Casher
             return "redirect:/admin/casher";
         } else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
-            restTemplate.delete(apiUrl + "/" + id);
-            // Thực hiện thêm xử lý sau khi xóa Casher thành công (nếu cần)
+            if (casher.getTaophieukhamCollection().isEmpty()) {
+                restTemplate.delete(apiUrl + "/" + id);
+                // Thực hiện thêm xử lý sau khi xóa Casher thành công (nếu cần)
 
-            // Chuyển hướng về trang danh sách Casher
-            return "redirect:/admin/casher";
+                // Chuyển hướng về trang danh sách Casher
+                return "redirect:/admin/casher";
+            } else {
+                session.setAttribute("error", "This Casher cannot be deleted because this Casher has created a medical examination form.");
+                return "redirect:/admin/casher";
+            }
         } else {
             return "redirect:/login";
         }
-
     }
+
 }
