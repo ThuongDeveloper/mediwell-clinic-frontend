@@ -53,7 +53,6 @@ public class Casher implements Serializable {
     @NotNull(message = "Email cannot be left blank!!!")
     @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")
     @Length(min = 11, message = "Email must have at least 11 characters")
-    @UniqueEmail(message = "Email must be unique")
     private String email;
     @Column(name = "address")
     @NotNull(message = "Address cannot be left blank!!!")

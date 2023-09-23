@@ -2,7 +2,6 @@
 
     <div th:replace="~{admin/layout/layoutfixbug :: head}"></div>
 
-
     <body class="nav-md">
         <div class="container body">
             <div class="main_container">
@@ -40,7 +39,7 @@
                                             <span class="section">Personal Info</span>
                                             <div th:if="${session.error}">                         
                                                 <div class="alert alert-danger alert-dismissible fade show notify-error">
-                                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                                    <button type="button" class="btn-close" data-dismiss="alert"></button>
                                                     <span th:text="${session.error}"></span>
                                                   </div>
                                                 <th:block th:text="${#session.removeAttribute('error')}"></th:block>
