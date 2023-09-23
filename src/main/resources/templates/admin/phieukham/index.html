@@ -66,8 +66,9 @@
                             <td th:text="${e.getName()}"></td>
                             <td th:text="${e.getPhone()}"></td>
                             <td th:text="${e.getTotalMoney()}"></td>
-                            <td th:text="${e.getCasherId().name}"></td>
-                            <td th:text="${e.getPatientId()}"></td>
+                            <td th:text="${e.getCasherId().getName()}"></td>
+                            <td th:if="${e.getPatientId() == null}" th:text="NONE"></td>
+                            <td th:unless="${e.getPatientId() == null}" th:text="${e.getPatientId()}"></td>
                             <td th:text="${e.getTypeDoctorId().getName()}"></td>
                             <td th:text="${e.getCreateAt()}"></td>
                             <td>

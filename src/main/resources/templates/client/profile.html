@@ -90,15 +90,29 @@
                                                                         <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
                                                                             <input type="text" hidden="true" th:field="*{id}" class="woocommerce-Input woocommerce-Input--text input-text">
                                                                         </p>
+                                                                        <div th:if="${session.error1}">                         
+                                                                            <div class="alert alert-danger alert-dismissible fade show notify-error">
+                                                                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                                                                <span th:text="${session.error1}"></span>
+                                                                              </div>
+                                                                            <th:block th:text="${#session.removeAttribute('error1')}"></th:block>
+                                                                        </div>
+                                                                        <div th:if="${session.error2}">                         
+                                                                            <div class="alert alert-danger alert-dismissible fade show notify-error">
+                                                                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                                                                <span th:text="${session.error2}"></span>
+                                                                              </div>
+                                                                            <th:block th:text="${#session.removeAttribute('error2')}"></th:block>
+                                                                        </div>
                                                                         <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
                                                                                 <label name="file" for="file">Avatar</label>
                                                                                 <img name="file" th:if="${patientProfile.image != null}" th:src="@{${patientProfile.image}}" alt="Avatar" class="avatarProfile">
                                                                                 <img name="file" th:unless="${patientProfile.image != null}" src="../client/image/avatar-default.jpg" alt="Default Avatar" class="avatarProfile">
-                                                                                <input class="woocommerce-Input" type="file" name="file">
+                                                                                <input class="woocommerce-Input" type="file" name="file" onchange="checkFileSize(this);">
                                                                         </p>
                                                                         <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
                                                                                 <label for="name">Name</label>
-                                                                                <input type="text" th:field="*{name}" class="woocommerce-Input woocommerce-Input--text input-text" name="name" id="name" value="" required>
+                                                                                <input style="background-color: white; color: black" type="text" th:field="*{name}" class="woocommerce-Input woocommerce-Input--text input-text" name="name" id="name" value="" required>
                                                                                     <div style="color: red" id="nameError"></div>
                                                                         </p>
                                                                         <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
@@ -107,12 +121,12 @@
                                                                         </p>
                                                                         <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
                                                                                 <label for="address">Address</label>
-                                                                                <input th:field="*{address}" class="woocommerce-Input woocommerce-Input--text input-text" type="text" name="address" id="address">
+                                                                                <input style="background-color: white; color: black" th:field="*{address}" class="woocommerce-Input woocommerce-Input--text input-text" type="text" name="address" id="address">
                                                                                     <div style="color: red" id="addressError"></div>
                                                                         </p>
                                                                         <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
                                                                                 <label for="phone">Phone</label>
-                                                                                <input th:field="*{phone}" class="woocommerce-Input woocommerce-Input--text input-text" type="text" name="phone" id="phone">
+                                                                                <input style="background-color: white; color: black" th:field="*{phone}" class="woocommerce-Input woocommerce-Input--text input-text" type="text" name="phone" id="phone">
                                                                                     <div style="color: red" id="phoneError"></div>
                                                                         </p>
                                                                         <p class="form-row">
