@@ -264,13 +264,16 @@
                                                                                                                 <h4>Doctor Schedule:</h4>
                                                                                                                 <div th:if="${lichlamviec != null}" class="doctor-list-schedule">
                                                                                                                     
-                                                                                                                    <div th:each="schedule: ${lichlamviec}" class="doctor-date">
-<!--                                                                                                                        <p th:text="${schedule.date}"></p>-->
+                                                                                                                    <div th:each="schedule: ${lichlamviecByFutureDate}" class="doctor-date">
+                                                                                                                       
                                                                                                                         <a th:href="@{/book-appointment-time/{id}(id=${schedule.id})}">
-                                                                                                                            <p th:text="${#dates.format(schedule.date, 'dd-MM-yyyy')}"></p>
+                                                                                                                           <p th:text="${#dates.format(schedule.date, 'dd-MM-yyyy')}"></p>
                                                                                                                         </a>
-                                                                                                                    </div>
-                                                                                                                </div>
+                                                                                                                    </div>                                                                                                             
+                                                                                                                                                                                                                                                
+                                                                                               
+                                                                                                                        
+                                                                                                                </div>                                                                                                 
                                                                                                                                                                            
                                                                                                                 <div th:if="${#lists.isEmpty(lichlamviec)}">
                                                                                                                     <div class="not-found-schedule">No Schedule Found</div>

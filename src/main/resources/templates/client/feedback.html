@@ -13,6 +13,9 @@
         .send-feed{
             cursor: pointer;
         }
+        .feedback-title{
+            text-align: center;
+        }
     </style>
     <body class="home page-template-default page page-id-7684 theme-mediz gdlr-core-body woocommerce-no-js mediz-body mediz-body-front mediz-full  mediz-with-sticky-navigation  mediz-blockquote-style-1 gdlr-core-link-to-lightbox" data-home-url="https://demo.goodlayers.com/mediz/hospital/" >
         <div th:replace="~{client/layout/topbar :: div}"></div>
@@ -249,8 +252,25 @@
                                                         <div th:replace="~{client/layout/barwrap :: div}"></div>
                                                     </div><!-- mediz-navigation-bar-wrap -->
                                                     <!--   start-->
+                                                     <div class="mediz-page-title-wrap  mediz-style-custom mediz-left-align" >
+                                                        <div class="mediz-header-transparent-substitute" ></div>
+                                                        <div class="mediz-page-title-overlay"  ></div>
+                                                        <div class="mediz-page-title-container mediz-container" >
+                                                            <div class="mediz-page-title-content mediz-item-pdlr"  >
+                                                                <h1 class="mediz-page-title feedback-title"  >Feed Back</h1>
+                                                                </div></div>
+                                                        
+                                                    </div>
+                                                     
                                                     <div class="mediz-page-wrapper" id="mediz-page-wrapper"><div class="mediz-content-container mediz-container"><div class="mediz-content-area mediz-item-pdlr mediz-sidebar-style-none clearfix"><div class="woocommerce"><div class="woocommerce-notices-wrapper"></div>
-
+                                                                    <div th:if="${session.msg}">
+                                                                                                                  
+                                                                        <div class="alert alert-success alert-dismissible fade show notify-error">
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                                                            <span th:text="${session.msg}"></span>
+                                                                        </div>
+                                                                        <th:block th:text="${#session.removeAttribute('msg')}"></th:block>
+                                                                     </div>
                                                                     <h2 class="f">Your Feedback</h2>
 
                                                                     <form class="woocommerce-form woocommerce-form-login login" th:action="@{/create-feedback}"
@@ -261,28 +281,14 @@
                                                                                 
                                                                         </p>
 
-<!--                                                                        <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
-                                                                            <label>Email&nbsp;<span class="required">*</span></label>
-                                                                            <input name="email"  class="woocommerce-Input woocommerce-Input--text input-text" th:field="*{title}" type="text"  id="email">
-                                                                                <div id="email-error" class="error-message"></div>
-
-                                                                        </p>-->
-
-<!--                                                                        <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
-                                                                            <label>Phone&nbsp;<span class="required">*</span></label>
-                                                                            <input class="woocommerce-Input woocommerce-Input--text input-text" th:field="*{date}" type="number" name="phone"  id="phone">
-                                                                                <div id="phone-error" class="error-message"></div>
-                                                                        </p>-->
 
                                                                         <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
                                                                             <label>Message&nbsp;<span class="required">*</span></label>
                                                                             <input required="true" class="woocommerce-Input woocommerce-Input--text input-text" th:field="*{content}" type="text" name="message"  id="message" placeholder="Your Feedback...">
-                                                                                <div id="message-error" class="error-message"></div>
+                                                                               
                                                                         </p>
 
-                                                                        <p class="form-row">
-<!--                                                                            <input type="hidden" id="woocommerce-login-nonce" name="woocommerce-login-nonce" value="b19d0143e9">
-                                                                                <input type="hidden" name="_wp_http_referer" value="/mediz/hospital/my-account/">-->
+                                                                        <p class="form-row">                                                                          
                                                                                     <button type="submit" class="woocommerce-button button woocommerce-form-login__submit send-feed" name="feedback" value="">Send Feedback</button>
                                                                                     </p>
                                                                                     </form>

@@ -16,6 +16,9 @@
         .new-read-more{
             text-decoration: none;
         }
+        .news-title{
+            text-align: center;
+        }
     </style>
     <body class="home page-template-default page page-id-7684 theme-mediz gdlr-core-body woocommerce-no-js mediz-body mediz-body-front mediz-full  mediz-with-sticky-navigation  mediz-blockquote-style-1 gdlr-core-link-to-lightbox" data-home-url="https://demo.goodlayers.com/mediz/hospital/" >
         <div th:replace="~{client/layout/topbar :: div}"></div>
@@ -258,8 +261,8 @@
                                                         <div class="mediz-page-title-overlay"  ></div>
                                                         <div class="mediz-page-title-container mediz-container" >
                                                             <div class="mediz-page-title-content mediz-item-pdlr"  >
-                                                                <h1 class="mediz-page-title"  >Blog Full Right Sidebar</h1>
-                                                                <div class="mediz-page-caption"  >Caption Aligned Here</div></div></div>
+                                                                <h1 class="mediz-page-title news-title"  >News</h1>
+                                                               </div></div>
                                                         
                                                     </div>	
                                                     <div th:each="n: ${listnews}" class="n">

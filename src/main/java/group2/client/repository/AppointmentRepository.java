@@ -17,7 +17,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface AppointmentRepository extends JpaRepository<Appointment, Integer> {
     public List<Appointment> findByDate(Date date) ;
-            public List<Appointment> findByDateAndDoctorId(Date date,Doctor id);
-    public List<Appointment> findByDateAndPatientId(Date date,Patient id);
+    public List<Appointment> findByDateAndDoctorId(Date date,Doctor id);
+    public List<Appointment> findByDateAndDoctorIdAndPatientId(Date date, Doctor doctor, Patient id);
     public Appointment findByStarttimeAndEndtime(String starttime, String endtime);
 }

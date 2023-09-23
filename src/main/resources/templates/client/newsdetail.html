@@ -10,6 +10,16 @@
         .error-message {
             color: red;
         }
+        .news-detail-title{
+            text-align: center;
+        }
+        .news-detail-box{
+            margin: 100px;
+            text-align: center;
+        }
+        .news-detail-box h1{
+            color: #17449e;
+        }
     </style>
     <body class="home page-template-default page page-id-7684 theme-mediz gdlr-core-body woocommerce-no-js mediz-body mediz-body-front mediz-full  mediz-with-sticky-navigation  mediz-blockquote-style-1 gdlr-core-link-to-lightbox" data-home-url="https://demo.goodlayers.com/mediz/hospital/" >
         <div th:replace="~{client/layout/topbar :: div}"></div>
@@ -252,10 +262,10 @@
                                                         <div class="mediz-page-title-overlay"  ></div>
                                                         <div class="mediz-page-title-container mediz-container" >
                                                             <div class="mediz-page-title-content mediz-item-pdlr"  >
-                                                                <h1 class="mediz-page-title"  >Stem cell discovery could improve treatments for leukemia, other diseases</h1>
+                                                                <h1 class="mediz-page-title news-detail-title"  >News Detail</h1>
                                                             </div></div></div>
 
-                                                    <div class="n">
+                                                    <div class="news-detail-box">
                                                         <h1 th:text="${news.title}"></h1>
                                                         <p th:text="${news.content}"></p>
                                                     </div>

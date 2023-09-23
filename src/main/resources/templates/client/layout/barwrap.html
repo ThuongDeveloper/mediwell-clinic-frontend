@@ -57,6 +57,7 @@
                                                             <ul th:if="${patient != null}" class="dropdown-menu">
                                                                 <li><a class="dropdown-item" th:href="@{/rating/{patientID}(patientID=${patient.id})}">Rating</a></li>
                                                                 <li><a class="dropdown-item" th:href="@{/profile/{id}(id=${patient.id})}">Profile</a></li>
+                                                                <li><a class="dropdown-item" th:href="@{/prescription-history}">Prescription history</a></li>
                                                                 <li><a class="dropdown-item" th:href="@{/logout}">Logout</a></li>
                                                             </ul>
                                                             </div>

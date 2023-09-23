@@ -35,6 +35,7 @@
 }
 .doctor-list-schedule{
     display: flex;
+    flex-wrap: wrap;
 }
 .doctor-date{
     margin-right: 20px;

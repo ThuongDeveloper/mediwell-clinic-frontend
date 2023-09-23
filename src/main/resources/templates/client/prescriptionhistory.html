@@ -1,0 +1,111 @@
+<html  xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en-US" class="no-js">
+
+    <div th:replace="~{client/layout/layout :: head}"></div>
+
+    <link rel="stylesheet" href="../client/css/barwrap.css"/>
+    
+    <style>
+        .toathuoc{
+            margin: 30px 150px;
+           
+        }
+        .toathuoc a{
+             color: #17449e !important;
+            text-decoration: none;
+        }
+        .prescription-title{
+            text-align: center;
+        }
+    </style>
+
+    <body class="home page-template-default page page-id-7684 theme-mediz gdlr-core-body woocommerce-no-js mediz-body mediz-body-front mediz-full  mediz-with-sticky-navigation  mediz-blockquote-style-1 gdlr-core-link-to-lightbox" data-home-url="https://demo.goodlayers.com/mediz/hospital/" >
+        <div th:replace="~{client/layout/topbar :: div}"></div>
+        <div class="mediz-mobile-header-wrap" >
+            <div class="mediz-mobile-header mediz-header-background mediz-style-slide mediz-sticky-mobile-navigation " id="mediz-mobile-header" >
+                <div class="mediz-mobile-header-container mediz-container clearfix" >
+                    <div class="mediz-logo  mediz-item-pdlr">
+                        <div class="mediz-logo-inner">
+                            <a class="" th:href="@{/}" >
+                                <img src="../client/image/logo-1.png" alt="" width="290" height="76" title="logo" />
+                            </a>
+                        </div>
+                    </div>
+                    <div class="mediz-mobile-menu-right" >
+                        <div class="mediz-main-menu-search" id="mediz-mobile-top-search" >
+                            <i class="fa fa-search" ></i>
+                        </div>
+                        <div class="mediz-top-search-wrap" >
+                            <div class="mediz-top-search-close" ></div>
+
+                            <div class="mediz-top-search-row" >
+                                <div class="mediz-top-search-cell" >
+                                    <form role="search" method="get" class="search-form" action="https://demo.goodlayers.com/mediz/hospital/">
+                                        <input type="text" class="search-field mediz-title-font" placeholder="Search..." value="" name="s">
+                                            <div class="mediz-top-search-submit"><i class="fa fa-search" ></i></div>
+                                            <input type="submit" class="search-submit" value="Search">
+                                                <div class="mediz-top-search-close"><i class="icon_close" ></i></div>
+                                                </form>
+                                                </div>
+                                                </div>
+                                                </div>
+                                                <div class="mediz-main-menu-cart" id="mediz-mobile-menu-cart" >
+                                                    <i class="fa fa-shopping-cart" data-mediz-lb="top-bar" ></i>
+                                                    <span class="mediz-top-cart-count" >0</span>
+                                                    <div class="mediz-lightbox-content-wrap mediz-top-cart-content-wrap" data-mediz-lb-id="top-bar" >
+                                                        <i class="icon_close mediz-lightbox-close" ></i>
+                                                        <div class="mediz-top-cart-title" >You have <span class="mediz-highlight" >0 items</span> in your cart</div>
+                                                        <div class="mediz-top-cart-item-wrap" >
+                                                            <div class="mediz-top-cart-item-divider" ></div>
+                                                            <div class="mediz-top-cart-button-wrap mediz-center-align" >
+                                                                <a class="mediz-top-cart-button-2 mediz-button" href="#" >Go To Shopping</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="mediz-overlay-menu mediz-mobile-menu" id="mediz-mobile-menu" >
+                                                    <a class="mediz-overlay-menu-icon mediz-mobile-menu-button mediz-mobile-button-hamburger" href="#" >
+                                                        <span></span>
+                                                    </a>
+                                                    <div class="mediz-overlay-menu-content mediz-navigation-font" >
+                                                        <div class="mediz-overlay-menu-close" ></div>
+                                                        <div class="mediz-overlay-menu-row" >
+                                                            <div class="mediz-overlay-menu-cell" >
+                                                                <ul id="menu-main-navigation" class="menu">
+                                                                    <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-7684 current_page_item menu-item-7736">
+                                                                        <a th:href="@{/}" aria-current="page">Home</a></li>
+                                                                    <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-7552 mediz-normal-menu"><a href="#" class="sf-with-ul-pre">About Us</a>
+                                                                    </li>
+                                                                    <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-8049 mediz-normal-menu"><a th:href="@{/listDoctors}" class="sf-with-ul-pre">List of Doctor</a>
+                                                                    </li>
+                                                                    <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-7180 mediz-normal-menu"><a href="#" class="sf-with-ul-pre">News</a>
+                                                                    </li>
+                                                                    <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-7736 mediz-normal-menu"><a href="#" class="sf-with-ul-pre">Feedback</a>
+                                                                    </li>
+                                                                </ul></div></div></div></div></div></div></div></div><div class="mediz-body-outer-wrapper ">
+                                                    <div class="mediz-body-wrapper clearfix  mediz-with-frame">
+
+                                                        <div th:replace="~{client/layout/header :: header}"></div>
+
+                                                        <div th:replace="~{client/layout/barwrap :: div}"></div>
+                                                    </div><!-- mediz-navigation-bar-wrap -->
+                                                    <div class="mediz-page-title-wrap  mediz-style-custom mediz-left-align" >
+                                                        <div class="mediz-header-transparent-substitute" ></div>
+                                                        <div class="mediz-page-title-overlay"  ></div>
+                                                        <div class="mediz-page-title-container mediz-container" >
+                                                            <div class="mediz-page-title-content mediz-item-pdlr"  >
+                                                                <h1 class="mediz-page-title prescription-title"  >Prescription History</h1>
+                                                               </div></div>
+                                                    </div>	
+                                                    <div th:each="t: ${toathuoc}" class="toathuoc">
+                                                        <a th:href="@{/detailprescription/{id}(id=${t.id})}"><h1>Triệu chứng: [[${t.symptom}]]</h1></a>
+                                                        <h1>Tên Bác Sĩ: [[${t.doctorId.name}]]</h1>
+                                                    </div>
+
+                                                </div></div><div class="gdlr-core-page-builder-body"></div></div>
+                                                <div th:replace="~{client/layout/footer :: footer}"></div>
+
+                                                <script src="../client/js/client.js"></script>
+
+                                                <div th:replace="~{client/layout/layout :: body}"></div>	
+                                                </body>
+                                                </html>
