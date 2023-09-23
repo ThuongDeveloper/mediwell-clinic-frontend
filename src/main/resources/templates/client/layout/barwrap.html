@@ -13,9 +13,9 @@
                         </li>
                         <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-8049 mediz-normal-menu"><a th:href="@{/listDoctors}" class="sf-with-ul-pre">List of Doctors</a>
                         </li>
-                        <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-7180 mediz-normal-menu"><a href="#" class="sf-with-ul-pre">News</a>
+                        <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-7180 mediz-normal-menu"><a th:href="@{/news}" class="sf-with-ul-pre">News</a>
                         </li>
-                        <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-7736 mediz-normal-menu"><a href="#" class="sf-with-ul-pre">Feedback</a>
+                        <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-7736 mediz-normal-menu"><a th:href="@{/feedback}" class="sf-with-ul-pre">Feedback</a>
                         </li>
                     </ul><div class="mediz-navigation-slide-bar  mediz-navigation-slide-bar-style-2"  data-size-offset="0"  id="mediz-navigation-slide-bar" ></div></div><div class="mediz-main-menu-right-wrap clearfix " ><div class="mediz-main-menu-search" id="mediz-top-search" ><i class="icon-magnifier" ></i></div><div class="mediz-top-search-wrap" >
                         <div class="mediz-top-search-close" ></div>
@@ -57,6 +57,7 @@
                                                             <ul th:if="${patient != null}" class="dropdown-menu">
                                                                 <li><a class="dropdown-item" th:href="@{/rating/{patientID}(patientID=${patient.id})}">Rating</a></li>
                                                                 <li><a class="dropdown-item" th:href="@{/profile/{id}(id=${patient.id})}">Profile</a></li>
+                                                                <li><a class="dropdown-item" th:href="@{/prescription-history}">Prescription history</a></li>
                                                                 <li><a class="dropdown-item" th:href="@{/logout}">Logout</a></li>
                                                             </ul>
                                                             </div>

@@ -268,7 +268,7 @@
                                                                                                                 </div>
                                                                                                                
                                                                                                                 <div class="time-list-detail">
-                                                                                                                    <div th:each="llv : ${lichlamviecByDate}">
+                                                                                                                    <div th:each="llv : ${lichlamviecByDate}" class="time-single-detail">
                                                                                                                         <input class="hours-input" type="radio" required="true" name="select-hours" th:value="${llv}"><span th:text="${llv}"></span>
                                                                                                                     </div>
                                                                                                                    

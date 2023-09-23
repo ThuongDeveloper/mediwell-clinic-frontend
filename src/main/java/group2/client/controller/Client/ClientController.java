@@ -4,6 +4,8 @@
  */
 package group2.client.controller.Client;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paypal.api.payments.Links;
 import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.PayPalRESTException;
@@ -11,9 +13,13 @@ import group2.client.entities.*;
 import group2.client.repository.AppointmentRepository;
 import group2.client.repository.DoctorRepository;
 import group2.client.repository.LichlamviecRepository;
+import group2.client.repository.NewsRepository;
 import group2.client.repository.PatientRepository;
+import group2.client.repository.ToathuocDetailsRepository;
+import group2.client.repository.ToathuocRepository;
 import group2.client.service.*;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -41,8 +47,10 @@ public class ClientController {
 
     String apiUrl = "http://localhost:8888/api/appointment/";
     private String apiUrlDoctor = "http://localhost:8888/api/doctor/";
+    private String apiUrlDoctorWithRating = "http://localhost:8888/api/doctor/withrating";
     private String apiUrlPatient = "http://localhost:8888/api/patient/";
     private String apiUrlTypeDoctor = "http://localhost:8888/api/typedoctor/";
+    private String apiUrlFeedback = "http://localhost:8888/api/feedback";
     private String apiUrlFilter = "http://localhost:8888/api/filter/";
     RestTemplate restTemplate = new RestTemplate();
 
@@ -66,6 +74,15 @@ public class ClientController {
 
     @Autowired
     private AppointmentRepository appointmentRepository;
+
+    @Autowired
+    private NewsRepository newsRepository;
+
+    @Autowired
+    private ToathuocRepository toathuocRepository;
+
+    @Autowired
+    private ToathuocDetailsRepository toathuocDetailsRepository;
 
     public static final String SUCCESS_URL = "pay/success";
     public static final String CANCEL_URL = "pay/cancel";
@@ -115,11 +132,54 @@ public class ClientController {
             List<TypeDoctor> listTypeDoctor = responseTD.getBody();
             model.addAttribute("listDoctor", listDoctor);
             model.addAttribute("listTypeDoctor", listTypeDoctor);
+            model.addAttribute("listDoctor", listDoctor);
         }
         return "/client/listDoctors";
 
     }
 
+//     @RequestMapping("/listDoctors")
+//    public String listDoctorsWithRating(Model model, HttpServletRequest request) throws JsonProcessingException {
+//
+//        Patient currentPatient = authService.isAuthenticatedPatient(request);
+//    
+//        ResponseEntity<List<Object>> response = restTemplate.exchange(apiUrlDoctorWithRating, HttpMethod.GET, null,
+//                new ParameterizedTypeReference<List<Object>>() {
+//        });
+//        
+//        List new_list = (List) response;
+//
+////        // Tạo đối tượng ObjectMapper
+////        ObjectMapper objectMapper = new ObjectMapper();
+////
+////        // Giải mã dữ liệu JSON thành một mảng các đối tượng
+////        Object[] objects = objectMapper.readValue(response.getBody().toString(), Object[].class);
+////
+////        // Lấy ra đối tượng đầu tiên trong mảng
+////        Object object = objects[0];
+////
+////        // Lấy ra thuộc tính "name" của đối tượng
+////        String name = objectMapper.readValue(object.toString(), Doctor.class).getName();
+//
+//        
+//        ResponseEntity<List<TypeDoctor>> responseTD = restTemplate.exchange(apiUrlTypeDoctor, HttpMethod.GET, null,
+//                new ParameterizedTypeReference<List<TypeDoctor>>() {
+//        });
+//        if (response.getStatusCode().is2xxSuccessful() && responseTD.getStatusCode().is2xxSuccessful() && currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
+//            List<Object> listDoctor = response.getBody();
+//            List<TypeDoctor> listTypeDoctor = responseTD.getBody();
+//            model.addAttribute("listDoctor", listDoctor);
+//            model.addAttribute("listTypeDoctor", listTypeDoctor);
+//            model.addAttribute("patient", currentPatient);
+//        } else if (response.getStatusCode().is2xxSuccessful() && responseTD.getStatusCode().is2xxSuccessful() && currentPatient == null) {
+//            List<Object> listDoctor = response.getBody();
+//            List<TypeDoctor> listTypeDoctor = responseTD.getBody();
+//            model.addAttribute("listDoctor", listDoctor);
+//            model.addAttribute("listTypeDoctor", listTypeDoctor);
+//        }
+//        return "/client/listDoctors";
+//
+//    }
     @RequestMapping(value = "/listDoctors", method = RequestMethod.POST)
     public String filterListDoctors(Model model, HttpServletRequest request, @RequestParam("filterLDT") String filterLDT) {
 
@@ -173,6 +233,19 @@ public class ClientController {
             model.addAttribute("patient", currentPatient);
             Doctor doctor = doctorRepository.findById(id).get();
             List<Lichlamviec> lichlamviec = lichlamviecRepository.findByDoctorId(doctor);
+            Date currentDate = new Date();
+
+            List<Lichlamviec> lichlamviecByFutureDate = new ArrayList<>();
+
+            for (Lichlamviec lichlamviecfuture : lichlamviec) {
+                if (lichlamviecfuture.getDate().after(currentDate)) {
+                    lichlamviecByFutureDate.add(lichlamviecfuture);
+
+                }
+
+            }
+
+            model.addAttribute("lichlamviecByFutureDate", lichlamviecByFutureDate);
             model.addAttribute("lichlamviec", lichlamviec);
             model.addAttribute("doctor", doctor);
             return "/client/bookAppointment";
@@ -185,6 +258,20 @@ public class ClientController {
         } else {
             Doctor doctor = doctorRepository.findById(id).get();
             List<Lichlamviec> lichlamviec = lichlamviecRepository.findByDoctorId(doctor);
+
+            Date currentDate = new Date();
+
+            List<Lichlamviec> lichlamviecByFutureDate = new ArrayList<>();
+
+            for (Lichlamviec lichlamviecfuture : lichlamviec) {
+                if (lichlamviecfuture.getDate().after(currentDate)) {
+                    lichlamviecByFutureDate.add(lichlamviecfuture);
+
+                }
+
+            }
+
+            model.addAttribute("lichlamviecByFutureDate", lichlamviecByFutureDate);
             model.addAttribute("lichlamviec", lichlamviec);
             model.addAttribute("doctor", doctor);
             return "/client/bookAppointment";
@@ -442,7 +529,7 @@ public class ClientController {
     @RequestMapping(value = "/book-appointment-create/{id}", method = RequestMethod.POST)
     public String bookAppointmentCreate(Model model, @PathVariable(value = "id") int id,
             @ModelAttribute Appointment appointment, HttpServletRequest request, HttpSession session,
-            @RequestParam("select-hours") String selectHours, @RequestParam("symptom") String symptom) throws PayPalRESTException {
+            @RequestParam("select-hours") String selectHours, @RequestParam("symptom") String symptom) throws PayPalRESTException, UnsupportedEncodingException {
 
         Admin currentAdmin = authService.isAuthenticatedAdmin(request);
         Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
@@ -453,10 +540,14 @@ public class ClientController {
 
             Lichlamviec lichlamviec = lichlamviecRepository.findById(id).get();
 
-            List<Appointment> appointmentByDate = appointmentRepository.findByDateAndPatientId(lichlamviec.getDate(), currentPatient);
+            List<Appointment> appointmentByDate = appointmentRepository.findByDateAndDoctorIdAndPatientId(lichlamviec.getDate(), lichlamviec.getDoctorId(), currentPatient);
 
             if (appointmentByDate.size() > 0) {
-                return "redirect:/book-appointment-already/{id}va" + selectHours + "va" + symptom;
+
+                String withoutAccents = symptom.replaceAll("[^a-zA-Z0-9]", "-");
+                String withoutAccentsAndSpaces = withoutAccents.replaceAll("\\s+", "");
+                return "redirect:/book-appointment-already/{id}va" + selectHours + "va" + withoutAccentsAndSpaces;
+
             } else {
 
                 Doctor newDoctor = new Doctor();
@@ -613,13 +704,16 @@ public class ClientController {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 String formattedDate = sdf.format(lichlamviec.getDate());
 
+//                String symptom_trim = symptom.trim();
+                String withoutSpaces = symptom.replaceAll("\\s+", "");
+
                 Payment payment = service.createPayment(50.0, "USD", "Paypal", "SALE",
                         "http://localhost:9999/" + "id=" + lichlamviec.getId() + "/" + CANCEL_URL,
                         "http://localhost:9999/" + "patientid=" + currentPatient.getId() + "va" + "doctorid=" + lichlamviec.getDoctorId().getId()
                         + "va" + "date=" + formattedDate
                         + "va" + "starttime=" + appointment.getStarttime()
                         + "va" + "endtime=" + appointment.getEndtime()
-                        + "va" + "symptom=" + symptom
+                        + "va" + "symptom=" + withoutSpaces
                         + "/" + SUCCESS_URL
                 );
                 for (Links link : payment.getLinks()) {
@@ -892,8 +986,8 @@ public class ClientController {
         Patient currentPatient = authService.isAuthenticatedPatient(request);
         Casher currentCasher = authService.isAuthenticatedCasher(request);
 
-        var hours = gio;
-        var symptoms = symptom;
+        String hours = gio;
+        String symptoms = symptom;
 
         if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
 
@@ -1102,6 +1196,159 @@ public class ClientController {
     @RequestMapping("/forbien")
     public String forbien(Model model) {
         return "/auth/forbien";
+    }
+
+    @RequestMapping("/feedback")
+    public String feedback(Model model, HttpServletRequest request) {
+         Admin currentAdmin = authService.isAuthenticatedAdmin(request);
+        Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
+        Patient currentPatient = authService.isAuthenticatedPatient(request);
+        Casher currentCasher = authService.isAuthenticatedCasher(request);
+        
+        if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
+            model.addAttribute("feedback", new Feedback());
+            model.addAttribute("patient", currentPatient);
+            return "/client/feedback";
+        }else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
+            return "redirect:/admin";
+        } else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
+            return "redirect:/admin";
+        } else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
+            return "redirect:/admin";
+        } else {
+            model.addAttribute("feedback", new Feedback());
+            return "/client/feedback";
+        }
+        
+        
+    }
+
+    @RequestMapping("/news")
+    public String news(Model model, HttpServletRequest request) {
+         Admin currentAdmin = authService.isAuthenticatedAdmin(request);
+        Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
+        Patient currentPatient = authService.isAuthenticatedPatient(request);
+        Casher currentCasher = authService.isAuthenticatedCasher(request);
+        
+        if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
+             List<News> listnews = newsRepository.findAll();
+            model.addAttribute("listnews", listnews);
+            model.addAttribute("patient", currentPatient);
+            return "/client/news";
+        }else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
+            return "redirect:/admin";
+        } else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
+            return "redirect:/admin";
+        } else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
+            return "redirect:/admin";
+        } else {
+             List<News> listnews = newsRepository.findAll();
+            model.addAttribute("listnews", listnews);
+            return "/client/news";
+        }
+        
+       
+    }
+
+    @RequestMapping("/newsdetail/{id}")
+    public String newsdetail(Model model, @PathVariable("id") int id, HttpServletRequest request) {
+         Admin currentAdmin = authService.isAuthenticatedAdmin(request);
+        Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
+        Patient currentPatient = authService.isAuthenticatedPatient(request);
+        Casher currentCasher = authService.isAuthenticatedCasher(request);
+        
+        if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
+            News news = newsRepository.findById(id).get();
+            model.addAttribute("news", news);
+            model.addAttribute("patient", currentPatient);
+            return "/client/newsdetail";
+        }else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
+            return "redirect:/admin";
+        } else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
+            return "redirect:/admin";
+        } else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
+            return "redirect:/admin";
+        } else {
+             News news = newsRepository.findById(id).get();
+            model.addAttribute("news", news);
+            return "/client/newsdetail";
+        }
+    }
+
+    @RequestMapping(value = "/create-feedback", method = RequestMethod.POST)
+    public String createFeedback(Model model, @ModelAttribute Feedback feedback, HttpSession session) {
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        feedback.setStatus(false);
+
+        // Tạo một HttpEntity với thông tin Casher để gửi yêu cầu POST
+        HttpEntity<Feedback> requestFeed = new HttpEntity<>(feedback, headers);
+
+        ResponseEntity<Feedback> response = restTemplate.exchange(apiUrlFeedback, HttpMethod.POST, requestFeed, Feedback.class);
+
+        // Kiểm tra mã trạng thái của phản hồi
+        if (response.getStatusCode().is2xxSuccessful()) {
+            // Thực hiện thêm xử lý sau khi tạo Casher thành công (nếu cần)
+            // Chuyển hướng về trang danh sách Casher
+            model.addAttribute("feedback", new Feedback());
+            session.setAttribute("msg", "Send feedback successfully");
+            return "redirect:/feedback";
+        } else {
+            // Xử lý lỗi nếu cần thiết
+            return "/client/home";
+        }
+
+    }
+
+    @RequestMapping("/prescription-history")
+    public String prescriptionhistory(Model model, HttpServletRequest request) {
+         Admin currentAdmin = authService.isAuthenticatedAdmin(request);
+        Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
+        Patient currentPatient = authService.isAuthenticatedPatient(request);
+        Casher currentCasher = authService.isAuthenticatedCasher(request);
+        
+        if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
+        
+            List<Toathuoc> toathuoc = toathuocRepository.findAll();
+            model.addAttribute("toathuoc", toathuoc);
+            model.addAttribute("patient", currentPatient);
+            return "/client/prescriptionhistory";
+        }else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
+            return "redirect:/admin";
+        } else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
+            return "redirect:/admin";
+        } else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
+            return "redirect:/admin";
+        } else {
+            return "redirect:/login";
+        }
+    }
+
+    @RequestMapping("/detailprescription/{id}")
+    public String detailprescription(Model model, @PathVariable("id") int id, HttpServletRequest request) {
+         Admin currentAdmin = authService.isAuthenticatedAdmin(request);
+        Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
+        Patient currentPatient = authService.isAuthenticatedPatient(request);
+        Casher currentCasher = authService.isAuthenticatedCasher(request);
+        
+        if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
+            Toathuoc toathuoc = toathuocRepository.findById(id).get();
+            List<ToathuocDetails> toathuocdetails = toathuocDetailsRepository.findByToathuocId(toathuoc);
+            model.addAttribute("patient", currentPatient);
+            model.addAttribute("toathuoc", toathuoc);
+            model.addAttribute("toathuocdetails", toathuocdetails);
+            return "/client/detailprescription";
+        }else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
+            return "redirect:/admin";
+        } else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
+            return "redirect:/admin";
+        } else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
+            return "redirect:/admin";
+        } else {
+            return "redirect:/login";
+        }
     }
 
 }

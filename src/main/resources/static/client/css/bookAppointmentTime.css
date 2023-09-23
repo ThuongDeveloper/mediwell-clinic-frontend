@@ -7,12 +7,16 @@
 }
 .time-list-detail{
     display: flex;
+    flex-wrap: wrap;
     margin-left: -20px;
 }
 .time-list-detail span{
     color: #17449e;
     font-size: 15px;
     font-weight: bold;
+}
+.time-single-detail{
+    margin-top: 15px;
 }
 .hours-input{
     margin-left: 20px;
