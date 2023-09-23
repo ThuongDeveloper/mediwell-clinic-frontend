@@ -13,14 +13,14 @@
                 <!-- Content -->
 
                 <div class="right_col" role="main">
-                    <h1>Doctor Page</h1>
+               
                     <div class="card shadow mb-4">
-                        <div class="card-header py-3 card_head">
-
-<a th:href="@{/admin/doctor/create}" class="btn btn-primary">Create</a>                        </div>
+                       
                         <div class="card-body">
                             <div class="table-responsive">
-
+      <h1 class="text-center">Manage Doctor</h1>
+       <span class="section"></span>
+<a th:href="@{/admin/doctor/create}" class="btn btn-primary my-2">Create</a>     
                                 <table th:object="${listDoctor}" class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
 
                                     <thead>
