@@ -22,11 +22,11 @@ public interface PatientRepository extends JpaRepository<Patient, Integer> {
     public Patient findByName(String name);
     public Patient findByUsername(String username);
 
-//    boolean existsByEmail(String email);
-//    @Modifying
-//    @Transactional
-//    @Query("UPDATE Patient p SET p.password = :newPassword WHERE p.email = :email")
-//    int updatePasswordByEmail(@Param("email") String email, @Param("newPassword") String newPassword);
+    boolean existsByEmail(String email);
+    @Modifying
+    @Transactional
+    @Query("UPDATE Patient p SET p.password = :newPassword WHERE p.email = :email")
+    int updatePasswordByEmail(@Param("email") String email, @Param("newPassword") String newPassword);
 
     public List<Patient> findByRole(String role);
 

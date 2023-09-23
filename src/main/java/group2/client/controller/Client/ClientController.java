@@ -52,7 +52,6 @@ public class ClientController {
     @Autowired
     private AuthService authService;
 
-
     @Autowired
     private JwtService jwtService;
 
@@ -210,34 +209,6 @@ public class ClientController {
     @RequestMapping("/book-appointment-time/{id}")
     public String bookAppointmentTime(Model model, @PathVariable(value = "id") int id, HttpServletRequest request) {
 
-<<<<<<< HEAD
-            List<Appointment> listAPPDOCTOR = appointmentRepository.findByDateAndDoctorId(lichlamviec.getDate(), lichlamviec.getDoctorId());
-            model.addAttribute("lichlamviec", lichlamviec);   
-                       model.addAttribute("listAPPDOCTOR", listAPPDOCTOR);       
-
-            model.addAttribute("appointment", new Appointment());
-             return "/client/bookAppointmentTime";
-        } else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
-            return "redirect:/forbien";
-        } else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
-            return "redirect:/forbien";
-        } else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
-            return "redirect:/forbien";
-        } else {
-            
-             Lichlamviec lichlamviec = lichlamviecRepository.findById(id).get();
-             model.addAttribute("lichlamviec", lichlamviec);
-               
-             model.addAttribute("appointment", new Appointment());
-             return "/client/bookAppointmentTime";
-        }
-    }
-    
-    @RequestMapping(value = "/book-appointment-create/{id}", method = RequestMethod.POST)
-    public String bookAppointmentCreate(Model model, @PathVariable(value = "id") int id, @ModelAttribute Appointment appointment, HttpServletRequest request, HttpSession session, @RequestParam("select-hours") String selectHours, @RequestParam("symptom") String symptom) {
-        
-=======
->>>>>>> 3beed1d1c07862a0bfe900dc8786a7bde265db74
         Admin currentAdmin = authService.isAuthenticatedAdmin(request);
         Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
         Patient currentPatient = authService.isAuthenticatedPatient(request);
@@ -961,16 +932,21 @@ public class ClientController {
     }
 
     @RequestMapping(value = "/profile/{id}", method = RequestMethod.POST)
-    public String update(Model model, Patient updatedPatient, @PathVariable("id") Integer id, @RequestParam(name = "file", required = false) MultipartFile file) throws IOException {
+    public String update(Model model, Patient updatedPatient, @PathVariable("id") Integer id,
+            @RequestParam(name = "file", required = false) MultipartFile file, HttpSession session ) throws IOException {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+        id = updatedPatient.getId();
 
         if (file != null && !file.isEmpty()) {
-            // Xử lý tệp tin ảnh nếu cần
             String fileName = file.getOriginalFilename();
-            // Thực hiện xử lý tệp tin ảnh ở đây nếu cần
+
+            // Kiểm tra xem đuôi mở rộng của tệp có hợp lệ không
+            if (!isImageFileExtensionValid(fileName)) {
+                session.setAttribute("error1", "Invalid extension. Only .png, .jpg or .jpeg are accepted.");
+                return "redirect:/profile/" + id;
+            }
         }
-        id = updatedPatient.getId();
 
         ByteArrayResource fileResource = new ByteArrayResource(file.getBytes()) {
             @Override
@@ -1003,6 +979,17 @@ public class ClientController {
             model.addAttribute("patientProfile", patient);
             return "/client/profile";
         }
+    }
+
+// Hàm kiểm tra đuôi mở rộng hợp lệ
+    private boolean isImageFileExtensionValid(String fileName) {
+        String[] validExtensions = {".png", ".jpg", ".jpeg"};
+        for (String extension : validExtensions) {
+            if (fileName.toLowerCase().endsWith(extension)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @RequestMapping("/appointment/create")
