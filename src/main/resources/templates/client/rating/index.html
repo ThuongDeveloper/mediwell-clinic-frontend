@@ -5,26 +5,105 @@
 <link rel="stylesheet" href="../client/css/barwrap.css"/>
 <link rel="stylesheet" type="text/css" href="../admin/css/rating.css">
 <style>
-    .avatarProfile {
-        width: 150px; /* Điều chỉnh kích thước avatar theo ý muốn */
-        height: 50px;
-        border-radius: 50%; /* Làm tròn avatar */
-        margin-right: 10px; /* Tạo khoảng cách giữa avatar và tên đăng nhập */
+    /* Màu mặc định cho nút "Post" và "Reset" */
+    .btn-primary.form-buttons {
+        width: 100px; /* Điều chỉnh chiều rộng nút */
+        margin-right: 10px; /* Tạo khoảng cách giữa nút "Post" và "Reset" */
+        color: #fff; /* Màu chữ */
+        background-color: #17449e; /* Màu nền xanh đậm cho nút "Post" */
+        border-color: #17449e;
+        transition: background-color 0.3s, border-color 0.3s, color 0.3s; /* Thêm hiệu ứng màu sắc trong 0.3 giây */
     }
 
-    .star {
-        font-size: 24px;
+    .btn-success.form-buttons {
+        width: 100px; /* Điều chỉnh chiều rộng nút */
+        margin-right: 10px; /* Tạo khoảng cách giữa nút "Post" và "Reset" */
+        color: #fff; /* Màu chữ */
+        background-color: #28a745; /* Màu nền xanh nhạt cho nút "Reset" */
+        border-color: #28a745;
+        transition: background-color 0.3s, border-color 0.3s, color 0.3s; /* Thêm hiệu ứng màu sắc trong 0.3 giây */
+    }
+
+    /* Màu khi hover */
+    .btn-primary.form-buttons:hover {
+        background-color: #17449e; /* Màu nền xanh nhạt khi hover cho nút "Post" */
+        border-color: #17449e;
+    }
+
+    .btn-success.form-buttons:hover {
+        background-color: #17449e; /* Màu nền xanh đậm khi hover cho nút "Reset" */
+        border-color: #17449e;
+    }
+
+    /* Định dạng cho form */
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .col-md-3 {
+        text-align: right;
+        margin-top: 5px;
+    }
+
+    .col-md-6 {
+        margin-top: 5px;
+    }
+
+    /* Định dạng cho ngôi sao đánh giá */
+    .rating {
+        text-align: center;
+    }
+
+    .rating input {
+        display: none;
+    }
+
+    .rating label {
         cursor: pointer;
-        transition: color 0.3s; /* Thêm hiệu ứng màu sắc trong 0.3 giây */
+        color: #ccc;
+        margin-right: 5px; /* Tạo khoảng cách giữa các ngôi sao */
     }
 
-    .selected {
-        color: gold; /* Màu vàng cho các ngôi sao được chọn */
-    }
-
-    /* Hiệu ứng màu sắc khi lướt chuột qua */
-    .star:hover {
+    .rating label:hover,
+    .rating label:hover ~ label,
+    .rating input:checked ~ label {
         color: gold;
+    }
+
+    /* Định dạng cho input text và select box */
+    .form-control {
+        background-color: #f5f5f5;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+    .form-control:hover,
+    .form-control:focus {
+        border-color: #17449e; /* Màu đường viền khi hover */
+        background-color: #f5f5f5; /* Màu nền khi hover */
+        color: #000; /* Màu chữ khi hover */
+    }
+    /* Định dạng cho thông báo thành công và lỗi */
+    .alert {
+        margin-top: 20px;
+        padding: 10px;
+        border-radius: 4px;
+        text-align: center;
+    }
+
+    .alert-info {
+        background-color: #d9edf7;
+        color: #31708f;
+    }
+
+    .alert-success {
+        background-color: #dff0d8;
+        color: #3c763d;
+    }
+
+    .alert-danger {
+        background-color: #f2dede;
+        color: #a94442;
     }
 
 </style>
@@ -92,7 +171,7 @@
                                     </li>
                                     <li  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-7736 mediz-normal-menu"><a href="#" class="sf-with-ul-pre">Feedback</a>
                                     </li>
-                                </ul></div></div></div></div></div></div></div></div><div class="mediz-body-outer-wrapper ">
+                                </ul></div></div></div></div></div></div></div></div>
     <div class="mediz-body-wrapper clearfix  mediz-with-frame">
 
         <div th:replace="~{client/layout/header :: header}"></div>
@@ -101,64 +180,74 @@
     </div><!-- mediz-navigation-bar-wrap -->
     <div class="mediz-page-title-wrap  mediz-style-custom mediz-left-align"><div class="mediz-header-transparent-substitute"></div><div class="mediz-page-title-overlay"></div><div class="mediz-page-title-container mediz-container"><div class="mediz-page-title-content mediz-item-pdlr"><h1 class="mediz-page-title">My Account</h1></div></div></div>
     <div class="mediz-page-wrapper" id="mediz-page-wrapper"><div class="mediz-content-container mediz-container"><div class="mediz-content-area mediz-item-pdlr mediz-sidebar-style-none clearfix"><div class="woocommerce"><div class="woocommerce-notices-wrapper"></div>
-        <h3>Rating </h3>
-        <!-- Trong file HTML -->
+        <h3>Rating</h3>
 
+        <!-- Hiển thị thông báo nếu không có cuộc hẹn -->
+        <div th:if="${noAppointmentsMessage}" class="alert alert-info">
+            <p th:text="${noAppointmentsMessage}"></p>
+        </div>
 
-        <form th:action="@{/rating/{patientID}(patientID=${patient.id})}" th:object="${rating}" method="post">
-            <div th:if="${successMessage}" class="alert alert-success">
-                <p th:text="${successMessage}"></p>
-            </div>
-            <div class="form-group row">
-                <label class="col-md-3 col-form-label label-align">Rating<span class="required">*</span></label>
-                <div class="col-md-6">
-                    <div id="rating">
-                        <input type="radio" id="star5" name="rating" value="5" />
-                        <label class="full" for="star5" title="Awesome - 5 stars"></label>
+        <!-- Hiển thị form đánh giá nếu có cuộc hẹn -->
+        <div th:if="${listDoctor != null and not listDoctor.isEmpty()}">
+            <form th:action="@{/rating/{patientID}(patientID=${patient.id})}" th:object="${rating}" method="post">
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label label-align">Rating<span class="required">*</span></label>
+                    <div class="col-md-6">
+                        <div id="rating" class="rating">
+                            <input type="radio" id="star5" name="rating" value="5" />
+                            <label class="full" for="star5" title="Awesome - 5 stars"></label>
 
-                        <input type="radio" id="star4" name="rating" value="4" />
-                        <label class="full" for="star4" title="Pretty good - 4 stars"></label>
+                            <input type="radio" id="star4" name="rating" value="4" />
+                            <label class="full" for="star4" title="Pretty good - 4 stars"></label>
 
-                        <input type="radio" id="star3" name="rating" value="3" />
-                        <label class="full" for="star3" title="Meh - 3 stars"></label>
+                            <input type="radio" id="star3" name="rating" value="3" />
+                            <label class="full" for="star3" title="Meh - 3 stars"></label>
 
-                        <input type="radio" id="star2" name="rating" value="2" />
-                        <label class="full" for="star2" title="Kinda bad - 2 stars"></label>
+                            <input type="radio" id="star2" name="rating" value="2" />
+                            <label class="full" for="star2" title="Kinda bad - 2 stars"></label>
 
-                        <input type="radio" id="star1" name="rating" value="1" />
-                        <label class="full" for="star1" title="Sucks big time - 1 star"></label>
+                            <input type="radio" id="star1" name="rating" value="1" />
+                            <label class="full" for="star1" title="Sucks big time - 1 star"></label>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="form-group row">
-                <label class="col-md-3 col-form-label label-align">Comment<span class="required">*</span></label>
-                <div class="col-md-6">
-                    <input class="form-control" th:field="*{comment}" type="text" name="comment" required="required">
-                    <span th:if="${#fields.hasErrors('comment')}" th:errors="*{comment}" class="error"></span>
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label label-align">Comment<span class="required">*</span></label>
+                    <div class="col-md-6">
+                        <input class="form-control" th:field="*{comment}" type="text" name="comment" required="required">
+                        <span th:if="${#fields.hasErrors('comment')}" th:errors="*{comment}" class="error"></span>
+                    </div>
                 </div>
-            </div>
 
-            <div class="form-group row">
-                <label class="col-md-3 col-form-label label-align">Doctor<span class="required">*</span></label>
-                <div class="col-md-6">
-                    <select name="doctorId" class="form-control">
-                        <option th:each="d : ${listDoctor}" th:value="${d.id}" th:text="${d.name}"></option>
-                    </select>
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label label-align">Doctor<span class="required">*</span></label>
+                    <div class="col-md-6">
+                        <select name="doctorId" class="form-control">
+                            <option th:each="doctor : ${listDoctor}" th:value="${doctor.id}" th:text="${doctor.name}"></option>
+                        </select>
+                    </div>
                 </div>
-            </div>
 
-            <div class="form-group row">
-                <div class="col-md-6 offset-md-3">
-                    <input type="submit" value="Post" class="btn btn-primary"/>
-                    <input type="reset" value="Reset" class="btn btn-success"/>
+                <div class="form-group row">
+                    <div class="col-md-6 offset-md-3">
+                        <input type="submit" value="Post" class="btn btn-primary form-buttons" />
+                        <input type="reset" value="Reset" class="btn btn-success form-buttons" />
+
+                    </div>
                 </div>
-            </div>
+            </form>
+        </div>
 
-            <span th:if="${error}" class="error">
-        <span th:text="${error}"></span>
-    </span>
-        </form>
+        <!-- Hiển thị thông báo thành công nếu có -->
+        <div th:if="${successMessage}" class="alert alert-success">
+            <p th:text="${successMessage}"></p>
+        </div>
+
+        <!-- Hiển thị thông báo lỗi nếu có -->
+        <div th:if="${error}" class="alert alert-danger">
+            <p th:text="${error}"></p>
+        </div>
 
 
 
