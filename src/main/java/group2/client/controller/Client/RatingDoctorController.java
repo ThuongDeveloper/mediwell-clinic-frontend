@@ -96,7 +96,7 @@ public class RatingDoctorController {
 
     @PostMapping("/rating/{patientId}")
     public String create(Model model, Double rating, String comment, int doctorId,
-                         @PathVariable("patientId") Integer patientId, HttpServletRequest requestPatient) {
+                         @PathVariable("patientId") int patientId, HttpServletRequest requestPatient) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         Patient currentPatient = authService.isAuthenticatedPatient(requestPatient);
@@ -111,7 +111,6 @@ public class RatingDoctorController {
         if (rating == null) {
             rating = 0.0;
         }
-
         RatingDAO ratingDAO = new RatingDAO();
         ratingDAO.setRating(rating);
         ratingDAO.setComment(comment);

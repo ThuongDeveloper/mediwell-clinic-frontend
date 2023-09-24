@@ -4,7 +4,8 @@
  */
 package group2.client.repository;
 
-import group2.client.entities.Casher;
+import group2.client.entities.Doctor;
+import group2.client.entities.Rating;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -12,8 +13,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  *
  * @author hokim
  */
-public interface CasherRepository extends JpaRepository<Casher, Integer> {
-    public Casher findByEmail(String email);
-    public List<Casher> findByRole(String role);
-    boolean existsByEmail(String email);
+public interface RatingByDoctorRepository extends JpaRepository<Rating, Integer> {
+     List<Rating> findByDoctorId(Doctor doctor);
 }

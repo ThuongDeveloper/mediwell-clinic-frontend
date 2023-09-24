@@ -68,7 +68,7 @@ public class RatingController {
             // Kiểm tra mã trạng thái của phản hồi
             if (response.getStatusCode().is2xxSuccessful()) {
                 List<Rating> listRating = response.getBody();
-
+                
                 // Xử lý dữ liệu theo nhu cầu của bạn
                 model.addAttribute("listRating", listRating);
                 model.addAttribute("currentAdmin", currentAdmin);
