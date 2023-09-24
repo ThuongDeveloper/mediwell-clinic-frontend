@@ -34,7 +34,7 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler{
             String user_roles = roles.toString().substring(1, roles.toString().length() - 1);
             String token = jwtService.generateToken(authentication.getName(), user_roles);
             Cookie cookie = new Cookie("jwt", token);
-            cookie.setMaxAge(3600); // Thời gian sống của cookie (tính bằng giây)
+            cookie.setMaxAge(21600); // Thời gian sống của cookie (tính bằng giây)
             cookie.setPath("/"); // Đường dẫn áp dụng cookie (có thể là "/" để áp dụng cho tất cả các đường dẫn)
             response.addCookie(cookie);
             response.sendRedirect("/admin");
@@ -42,7 +42,7 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler{
             String user_roles = roles.toString().substring(1, roles.toString().length() - 1);
             String token = jwtService.generateToken(authentication.getName(), user_roles);
             Cookie cookie = new Cookie("jwt", token);
-            cookie.setMaxAge(3600); // Thời gian sống của cookie (tính bằng giây)
+            cookie.setMaxAge(21600); // Thời gian sống của cookie (tính bằng giây)
             cookie.setPath("/"); // Đường dẫn áp dụng cookie (có thể là "/" để áp dụng cho tất cả các đường dẫn)
             response.addCookie(cookie);
             response.sendRedirect("/");
