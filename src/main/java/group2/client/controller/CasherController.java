@@ -50,7 +50,7 @@ public class CasherController {
 
     @Autowired
     private AuthService authService;
-    
+
     @Autowired
     CasherService casherService;
 
@@ -242,6 +242,60 @@ public class CasherController {
             return "/admin/casher/edit/" + updatedCasher.getId();
         }
     }
+    
+    @RequestMapping(value = "/admin/casher/changepassword/{id}", method = RequestMethod.GET)
+    public String changePass(Model model, @PathVariable("id") Integer id, HttpServletRequest request) {
+
+        Admin currentAdmin = authService.isAuthenticatedAdmin(request);
+        Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
+        Patient currentPatient = authService.isAuthenticatedPatient(request);
+        Casher currentCasher = authService.isAuthenticatedCasher(request);
+
+        if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
+            return "redirect:/forbien";
+        } else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
+            Casher casher = restTemplate.getForObject(apiUrl + "/" + id, Casher.class);
+            model.addAttribute("casher", casher);
+            model.addAttribute("currentAdmin", currentAdmin);
+            return "/admin/casher/changepassword";
+        } else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
+            return "redirect:/forbien";
+        } else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
+            return "redirect:/forbien";
+        } else {
+            return "redirect:/login";
+        }
+
+    }
+
+    @RequestMapping(value = "/admin/casher/changepassword", method = RequestMethod.POST)
+    public String changePass(Model model, @Valid @ModelAttribute Casher changePassword, BindingResult bindingResult, @RequestParam("newPass") String newPass) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+//        if (bindingResult.hasErrors()) {
+//            return "/admin/casher/changepassword";
+//        }
+        
+        Casher casher = casherService.getCasherById(changePassword.getId());
+
+        casher.setPassword(newPass);
+
+        // Bổ sung id vào URL khi thực hiện PUT
+        String url = apiUrl + "/changePassword/" + changePassword.getId();
+
+        // Tạo một HttpEntity với thông tin Casher cập nhật để gửi yêu cầu PUT
+        HttpEntity<Casher> request = new HttpEntity<>(casher, headers);
+
+        try {
+            restTemplate.exchange(url, HttpMethod.PUT, request, Casher.class);
+            return "redirect:/admin/casher";
+
+        } catch (RestClientException e) {
+            return "/admin/casher/changepassword/" + changePassword.getId();
+        }
+    }
+
 
     @RequestMapping(value = "/admin/casher/delete/{id}", method = RequestMethod.GET)
     public String delete(@PathVariable("id") Integer id, HttpServletRequest request, HttpSession session) {
@@ -256,17 +310,27 @@ public class CasherController {
         if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
             return "redirect:/forbien";
         } else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
-            restTemplate.delete(apiUrl + "/" + id);
-            // Thực hiện thêm xử lý sau khi xóa Casher thành công (nếu cần)
+            if (casher.getTaophieukhamCollection().isEmpty()) {
+                restTemplate.delete(apiUrl + "/" + id);
+                // Thực hiện thêm xử lý sau khi xóa Casher thành công (nếu cần)
 
-            // Chuyển hướng về trang danh sách Casher
-            return "redirect:/admin/casher";
+                // Chuyển hướng về trang danh sách Casher
+                return "redirect:/admin/casher";
+            } else {
+                session.setAttribute("error", "This Casher cannot be deleted because this Casher has created a medical examination form.");
+                return "redirect:/admin/casher";
+            }
         } else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
-            restTemplate.delete(apiUrl + "/" + id);
-            // Thực hiện thêm xử lý sau khi xóa Casher thành công (nếu cần)
+            if (casher.getTaophieukhamCollection().isEmpty()) {
+                restTemplate.delete(apiUrl + "/" + id);
+                // Thực hiện thêm xử lý sau khi xóa Casher thành công (nếu cần)
 
-            // Chuyển hướng về trang danh sách Casher
-            return "redirect:/admin/casher";
+                // Chuyển hướng về trang danh sách Casher
+                return "redirect:/admin/casher";
+            } else {
+                session.setAttribute("error", "This Casher cannot be deleted because this Casher has created a medical examination form.");
+                return "redirect:/admin/casher";
+            }
         } else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
             if (casher.getTaophieukhamCollection().isEmpty()) {
                 restTemplate.delete(apiUrl + "/" + id);
