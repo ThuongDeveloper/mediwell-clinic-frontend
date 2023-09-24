@@ -238,8 +238,7 @@ public class ClientController {
 
             }
             
-            
-           
+                     
             List<Rating> ratings = ratingByDoctorRepository.findByDoctorId(doctor);
             model.addAttribute("ratings", ratings);
             model.addAttribute("lichlamviecByFutureDate", lichlamviecByFutureDate);
