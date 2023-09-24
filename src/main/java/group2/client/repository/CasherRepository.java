@@ -16,5 +16,4 @@ public interface CasherRepository extends JpaRepository<Casher, Integer> {
     public Casher findByEmail(String email);
     public List<Casher> findByRole(String role);
     boolean existsByEmail(String email);
-
 }

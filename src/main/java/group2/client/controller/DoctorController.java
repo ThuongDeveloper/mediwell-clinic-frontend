@@ -17,6 +17,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import org.eclipse.persistence.jpa.jpql.parser.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -26,6 +27,7 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -116,6 +118,9 @@ public class DoctorController {
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public String create(Model model, Doctor Doctor, HttpServletRequest request) {
 
+        
+        
+        
         Admin currentAdmin = authService.isAuthenticatedAdmin(request);
         Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
         Patient currentPatient = authService.isAuthenticatedPatient(request);
@@ -163,8 +168,10 @@ public class DoctorController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String create(Model model, Doctor Doctor, @RequestParam("typeDoctorID") String typeDoctorID, @RequestParam("file") MultipartFile file) throws IOException {
+    public String create(Model model, Doctor Doctor, @RequestParam("typeDoctorID") String typeDoctorID, @RequestParam("file") MultipartFile file,HttpSession session) throws IOException {
 
+        
+        
         String fileName = file.getOriginalFilename();
         //Set các giá trị còn thiếu
         TypeDoctor newTD = new TypeDoctor();
@@ -189,11 +196,19 @@ public class DoctorController {
 
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
 
-        var response = restTemplate.postForObject(apiUrl_Doctor + "/create", requestEntity, Boolean.class);
+        var response = restTemplate.exchange(apiUrl_Doctor + "/create",HttpMethod.POST, requestEntity, String.class );
 
-        if (response) {
-            System.out.println("Kết quả là True");
-        } else {
+        if (response.getStatusCode() == HttpStatus.OK) {
+            if(response.getBody().equals("EmailTonTai")){
+                        session.setAttribute("notifyDoctor", "Email already exists !!"); 
+
+           return "redirect:/admin/doctor/create";
+           
+            }else{
+                  session.setAttribute("notifyDoctor", "Create new account successful !!");
+            }
+          
+        } else if(response.getStatusCode() == HttpStatus.NOT_FOUND){
             System.out.println("Kết quả là False");
         }
 
@@ -292,17 +307,41 @@ public class DoctorController {
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public String update(Model model, Doctor objDoctor, @RequestParam String typeDoctorID, RedirectAttributes redirectAttributes) {
+    public String update(Model model,@RequestParam("file") MultipartFile file, Doctor objDoctor, @RequestParam String typeDoctorID, RedirectAttributes redirectAttributes) throws IOException {
 
+        String fileName = file.getOriginalFilename();
         TypeDoctor newTD = new TypeDoctor();
         newTD.setId(Integer.parseInt(typeDoctorID));
         objDoctor.setTypeDoctorId(newTD);
+//aaaaa
+    ByteArrayResource fileResource = new ByteArrayResource(file.getBytes()) {
+            @Override
+            public String getFilename() {
+                return file.getOriginalFilename();
+            }
+        };
 
-        restTemplate.put(apiUrl_Doctor + "/edit", objDoctor);
+        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+        body.add("Doctor", objDoctor);
+        body.add("file", fileResource);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
+
+        var response = restTemplate.exchange(apiUrl_Doctor + "/edit",HttpMethod.PUT, requestEntity, String.class );
+
+//aaaaa
+        
+        
+        
+        
+      
         // Chú ý rằng, phương thức put trả về void (không có phản hồi từ server)
 
         // Điều hướng về trang danh sách TypeDoctor với thông báo thành công
-        redirectAttributes.addFlashAttribute("MessageCreate", "Cập nhật thành công");
+        redirectAttributes.addFlashAttribute("MessageCreate", "Update Success !");
         return "redirect:/admin/doctor";
     }
 

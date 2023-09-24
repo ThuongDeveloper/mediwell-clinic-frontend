@@ -19,81 +19,103 @@
                             <div class="x_panel">
                                 <div class="x_content">
                                     <form th:action="@{/admin/doctor/create}" th:object="${Doctor}" method="post" enctype="multipart/form-data">
-                                                           <h1 class="text-center">Create Doctor</h1>
+                                        <h1 class="text-center">Create Doctor</h1>
                                         <span class="section"></span>
+                                        <div th:if="${session.notifyDoctor}">                         
+                                            <div class="alert alert-danger alert-dismissible fade show notify-error">
+                                                <button type="button" class="btn-close" data-dismiss="alert"></button>
+                                                <span th:text="${session.notifyDoctor}"></span>
+                                            </div>
+                                            <th:block th:text="${#session.removeAttribute('notifyDoctor')}"></th:block>
+                                        </div>
                                         <div class="field item form-group">
-                                            <label class="col-form-label col-md-3 col-sm-3 label-align">Name<span class="required">*</span></label>
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align">Name</label>
                                             <div class="col-md-6 col-sm-6">
-                                                <input type="text" th:field="*{name}" class="form-control" required="required"
-                                                       pattern=".{6,}" title="Minimum 6 characters" data-error="Name is required (minimum 6 characters)">
+                                                <input type="text" th:field="*{name}" class="form-control">
+                                                    <span style="display:none;color:red" id="name_notblank">Name not blank !! </span>
+                                                    <div class="help-block with-errors"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="field item form-group">
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align">Password</label>
+                                            <div class="col-md-6 col-sm-6">
+                                                <input type="password" th:field="*{password}" class="form-control" >
+                                                    <span style="display:none;color:red" id="password_notblank">Password not blank !! </span>
+                                                    <span style="display:none;color:red" id="password_regex">Password must be 8 to 12 characters and include at least one uppercase letter, one digit, and one special character !!</span>
+
+                                                    <div class="help-block with-errors"></div>
+                                            </div>
+                                        </div>
+                                         <div class="field item form-group">
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align">Confirm Password</label>
+                                            <div class="col-md-6 col-sm-6">
+                                                <input type="password" id="confirm_password" class="form-control" >
+                                              
+                                                    <span style="display:none;color:red" id="confirm_password_dontmacth">Confirm password and password don't macth !</span>
+
                                                     <div class="help-block with-errors"></div>
                                             </div>
                                         </div>
                                         <div class="field item form-group">
-                                            <label class="col-form-label col-md-3 col-sm-3 label-align">UserName<span class="required">*</span></label>
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align">Email</label>
                                             <div class="col-md-6 col-sm-6">
-                                                <input type="text" th:field="*{username}" class="form-control" required="required"
-                                                       pattern=".{6,}" title="Minimum 6 characters" data-error="Name is required (minimum 6 characters)">
+                                                <input type="text" th:field="*{email}" class="form-control" >
+                                                    <span style="display:none;color:red" id="email_notblank">Email not blank !!</span>
+                                                    <span style="display:none;color:red" id="email_regex">Email is not in the correct format !! </span>
+
                                                     <div class="help-block with-errors"></div>
                                             </div>
                                         </div>
                                         <div class="field item form-group">
-                                            <label class="col-form-label col-md-3 col-sm-3 label-align">Password<span class="required">*</span></label>
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align">Address</label>
                                             <div class="col-md-6 col-sm-6">
-                                                <input type="text" th:field="*{password}" class="form-control" required="required"
-                                                       pattern=".{6,}" title="Minimum 6 characters" data-error="Name is required (minimum 6 characters)">
+                                                <input type="text" th:field="*{address}" class="form-control" >
+                                                    <span style="display:none;color:red" id="address_notblank">Address not blank !! </span>
+
                                                     <div class="help-block with-errors"></div>
                                             </div>
                                         </div>
                                         <div class="field item form-group">
-                                            <label class="col-form-label col-md-3 col-sm-3 label-align">Email<span class="required">*</span></label>
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align">Image</label>
                                             <div class="col-md-6 col-sm-6">
-                                                <input type="text" th:field="*{email}" class="form-control" required="required"
-                                                       pattern=".{6,}" title="Minimum 6 characters" data-error="Name is required (minimum 6 characters)">
+                                                <input type="file" name="file" >
                                                     <div class="help-block with-errors"></div>
+                                                    <span style="display:none;color:red" id="fileError">Invalid file! Please choose a valid file.</span>
                                             </div>
+
+
                                         </div>
                                         <div class="field item form-group">
-                                            <label class="col-form-label col-md-3 col-sm-3 label-align">Address<span class="required">*</span></label>
-                                            <div class="col-md-6 col-sm-6">
-                                                <input type="text" th:field="*{address}" class="form-control" required="required"
-                                                       pattern=".{6,}" title="Minimum 6 characters" data-error="Name is required (minimum 6 characters)">
-                                                    <div class="help-block with-errors"></div>
-                                            </div>
-                                        </div>
-                                            <div class="field item form-group">
-                                            <label class="col-form-label col-md-3 col-sm-3 label-align">Image<span class="required">*</span></label>
-                                            <div class="col-md-6 col-sm-6">
-                                                <input type="file" name="file" class="form-control" required="required"
-                                                       pattern=".{6,}" title="Minimum 6 characters" data-error="Name is required (minimum 6 characters)">
-                                                    <div class="help-block with-errors"></div>
-                                            </div>
-                                        </div>
-                                        <div class="field item form-group">
-                                            <label class="col-form-label col-md-3 col-sm-3 label-align">Gender<span class="required">*</span></label>
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align">Gender</label>
                                             <div class="col-md-6 col-sm-6">
 
-                                                <input type="radio" th:field="*{gender}" value="true" />Male
+                                                <input type="radio"  th:field="*{gender}"  value="true" checked="checked"/>Male
                                                 <input type="radio" th:field="*{gender}" value="false"/>Female
+                                                <span style="display:none;color:red" id="gender_notblank">Gender not selected !! </span>
+
                                             </div>
+
                                         </div>
                                         <div class="field item form-group">
-                                            <label class="col-form-label col-md-3 col-sm-3 label-align">Gender<span class="required">*</span></label>
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align">Type Doctor</label>
                                             <div class="col-md-6 col-sm-6">
 
-                                                <select name="typeDoctorID">
-                                                    <option value="">-- Chọn loại bác sĩ --</option>
+                                                <select  class="custom-select" name="typeDoctorID">
+                                                    <option value="">-- Choosee Type Doctor--</option>
 
                                                     <option th:each="typeDoctor : ${listTypeDoctor}"
                                                             th:value="${typeDoctor.id}"
                                                             th:text="${typeDoctor.name}">
                                                     </option>
                                                 </select>
+                                                <span style="display:none;color:red" id="typeDoctorID_notblank">You must choose Type Doctor !! </span>
+
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <div class="col-md-6 offset-md-3">
-                                                <input type="submit" value="Create" class="btn btn-primary"/>
+                                                <input type="submit" id="dangKy" value="Create" class="btn btn-primary"/>
                                                 <input type="reset" value="Reset" class="btn btn-success"/>
                                             </div>
                                         </div>
@@ -114,3 +136,167 @@
 
     </body>
 </html>
+<script>
+
+    var checkValidation = function () {
+
+        var flag = true;
+        flag &= kiemtrarong("#name", "#name_notblank");
+        console.log("Aaaa", flag);
+
+        flag &= kiemtrarong("#email", "#email_notblank");
+        console.log(flag);
+
+        flag &= kiemtrarong("#password", "#password_notblank");
+        console.log(flag);
+        flag &= kiemtrarong("#address", "#address_notblank");
+        console.log(flag);
+
+        flag &= checkChooseTypeDoctor();
+        console.log(flag);
+        flag &= checkGender();
+        console.log(flag);
+        flag &= checkImage();
+        console.log(flag);
+
+        flag &= kiemTraEmail("#email", "#email_regex");
+        console.log(flag);
+
+        flag &= kiemTraPassword("#password", "#password_regex");
+        console.log(flag);
+        flag &= kiemTraXacNhanPass("#password", "#confirm_password","#confirm_password_dontmacth");
+        console.log(flag);
+        if (!flag) {
+            return false;
+        }
+
+    }
+
+    function  checkChooseTypeDoctor() {
+        var typeDoctorID = document.querySelector("select[name='typeDoctorID']").value;
+        if (typeDoctorID === "") {
+            document.querySelector("#typeDoctorID_notblank").style.display = "block";
+            return  false;
+        } else {
+            document.querySelector("#typeDoctorID_notblank").style.display = "none";
+            return true;
+        }
+    }
+
+
+    function kiemtraso(value, error) {
+        var bientam = document.querySelector(value).value;
+        if (bientam < 3 || bientam > 500) {
+
+            document.querySelector(error).style.display = "block";
+            document.querySelector(value).style.border = "1px solid red";
+            return false;
+        } else {
+
+            document.querySelector(error).style.display = "none";
+            document.querySelector(value).style.border = "";
+
+            return true;
+        }
+    }
+    function kiemtrarong(value, error) {
+        var bientam = document.querySelector(value).value;
+        if (bientam.length < 1 || bientam.length == 0) {
+
+            document.querySelector(error).style.display = "block";
+            document.querySelector(value).style.border = "1px solid red";
+            return false;
+        } else {
+
+            document.querySelector(error).style.display = "none";
+            document.querySelector(value).style.border = "";
+
+            return true;
+        }
+    }
+    function checkGender() {
+        var genderSelected = false;
+        var genders = document.querySelectorAll("input[name='gender']");
+        for (var i = 0; i < genders.length; i++) {
+            if (genders[i].checked) {
+                genderSelected = true;
+                break;
+            }
+        }
+        if (!genderSelected) {
+            document.querySelector("#gender_notblank").style.display = "block";
+            return false;
+        } else {
+            document.querySelector("#gender_notblank").style.display = "none";
+            return true;
+        }
+    }
+
+    function checkImage() {
+        var fileInput = document.querySelector("input[name='file']");
+        var fileError = document.querySelector("#fileError");
+
+        // Kiểm tra xem người dùng đã chọn một hình ảnh hay chưa
+        if (fileInput.files.length === 0) {
+            fileError.style.display = "block";
+            console.log("Chưa chọn ảnh");
+            return false;
+        }
+        console.log("@@@@@@@@@@@@@@@@@");
+        // Lấy tệp đã chọn
+        var selectedFile = fileInput.files[0];
+
+        // Kiểm tra kiểu tệp (phải là hình ảnh)
+        if (!selectedFile.type.startsWith("image/")) {
+            fileError.style.display = "block";
+            fileError.innerText = "Invalid file! Please choose an image file.";
+            return false;
+        }
+
+        // Kiểm tra kích thước tệp (không lớn hơn 1MB)
+        if (selectedFile.size > 1024 * 1024) { // 1MB = 1024 * 1024 bytes
+            fileError.style.display = "block";
+            fileError.innerText = "Invalid file! Please choose an image file smaller than 1MB.";
+            return false;
+        }
+
+        // Nếu tất cả điều kiện đều đúng, ẩn thông báo lỗi và trả về true
+        fileError.style.display = "none";
+        return true;
+    }
+    function kiemTraPassword(selectorValue, selectorError) {
+        var inputText = document.querySelector(selectorValue);
+        var regex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,12}$/;
+
+        if (regex.test(inputText.value)) {
+            document.querySelector(selectorError).style.display = "none";
+            return true;
+        } else {
+            document.querySelector(selectorError).style.display = "block";
+            return false;
+        }
+    }
+    function kiemTraEmail(selectorValue, selectorError) {
+        var inputText = document.querySelector(selectorValue);
+        var regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        if (regex.test(inputText.value)) {
+            document.querySelector(selectorError).style.display = "none";
+            return true;
+        } else {
+            document.querySelector(selectorError).style.display = "block";
+            return false;
+        }
+    }
+    function kiemTraXacNhanPass(selectorValue1, selectorValue2, selectorError) {
+        var inputText1 = document.querySelector(selectorValue1);
+        var inputText2 = document.querySelector(selectorValue2);
+        if (inputText1.value === inputText2.value) {
+            document.querySelector(selectorError).style.display = "none";
+            return true;
+        } else {
+            document.querySelector(selectorError).style.display = "block";
+            return false;
+        }
+    }
+    document.querySelector('#dangKy').onclick = checkValidation;
+</script>

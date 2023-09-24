@@ -31,7 +31,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "rating")
-@JsonIgnoreProperties({"patientId"})
+//@JsonIgnoreProperties({"patientId"})
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Rating.findAll", query = "SELECT r FROM Rating r"),

@@ -193,7 +193,7 @@ public class TaophieukhamController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String create(Model model, @Valid @ModelAttribute Taophieukham taophieukham, BindingResult bindingResult, HttpSession session, @RequestParam("casherID") String casherID, @RequestParam("typeDoctorID") String typeDoctorID, @RequestParam("patientID") String patientID) {
+    public String create(Model model, @Valid @ModelAttribute Taophieukham taophieukham, BindingResult bindingResult, HttpSession session, @RequestParam("casherID") String casherID, @RequestParam("typeDoctorID") String typeDoctorID) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         ResponseEntity<List<Casher>> casherResponse = restTemplate.exchange(apiUrlCasher, HttpMethod.GET, null,
@@ -201,9 +201,6 @@ public class TaophieukhamController {
         });
         ResponseEntity<List<TypeDoctor>> TDResponse = restTemplate.exchange(apiUrlTypeDoctor, HttpMethod.GET, null,
                 new ParameterizedTypeReference<List<TypeDoctor>>() {
-        });
-        ResponseEntity<List<Patient>> patientResponse = restTemplate.exchange(apiUrlPatient, HttpMethod.GET, null,
-                new ParameterizedTypeReference<List<Patient>>() {
         });
 
         // Lấy danh sách phiếu khám hiện có từ API server
@@ -223,10 +220,8 @@ public class TaophieukhamController {
         if (casherID == "") {
             List<Casher> listCasher = casherResponse.getBody();
             List<TypeDoctor> listTypeDoctor = TDResponse.getBody();
-            List<Patient> listPatient = patientResponse.getBody();
             model.addAttribute("listTypeDoctor", listTypeDoctor);
             model.addAttribute("listCasher", listCasher);
-            model.addAttribute("listPatient", listPatient);
             session.setAttribute("error", "Cannot be left blank!");
             return "/admin/phieukham/create";
         } else {
@@ -237,10 +232,8 @@ public class TaophieukhamController {
         if (typeDoctorID == "") {
             List<Casher> listCasher = casherResponse.getBody();
             List<TypeDoctor> listTypeDoctor = TDResponse.getBody();
-            List<Patient> listPatient = patientResponse.getBody();
             model.addAttribute("listTypeDoctor", listTypeDoctor);
             model.addAttribute("listCasher", listCasher);
-            model.addAttribute("listPatient", listPatient);
             session.setAttribute("error", "Cannot be left blank!");
             return "/admin/phieukham/create";
         } else {
@@ -248,19 +241,11 @@ public class TaophieukhamController {
             taophieukham.setTypeDoctorId(newTD);
         }
 
-        if (patientID == "") {
-            taophieukham.setPatientId(null);
-        } else {
-            taophieukham.setPatientId(Integer.parseInt(patientID));
-        }
-
         if (bindingResult.hasErrors()) {
             List<Casher> listCasher = casherResponse.getBody();
             List<TypeDoctor> listTypeDoctor = TDResponse.getBody();
-            List<Patient> listPatient = patientResponse.getBody();
             model.addAttribute("listTypeDoctor", listTypeDoctor);
             model.addAttribute("listCasher", listCasher);
-            model.addAttribute("listPatient", listPatient);
             return "/admin/phieukham/create";
         }
 
