@@ -63,19 +63,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                                 <li><a th:href="@{/admin/patient}">Patient</a></li>                   
                             </ul>
                         </li>
-                        <li><a><i class="fa fa-home"></i>Cashier Feature<span class="fa fa-chevron-down"></span></a>
-                            <ul class="nav child_menu">  
-                                <li><a th:href="@{/admin/donthuoc}">Invoice Medication</a></li>
-                                <li><a th:href="@{/admin/phieukham}">Waiting Ticket</a></li>  
-                            </ul>
-                        </li>
-                        <li><a><i class="fa fa-home"></i>Doctor Feature<span class="fa fa-chevron-down"></span></a>
-                            <ul class="nav child_menu">  
-                                <li><a th:href="@{/admin/toathuoc}">Prescription</a></li>
-                                <li><a th:href="@{/admin/appointment}">Appointments</a></li>
-
-                            </ul>
-                        </li>
+                    
                     </ul>
                 </div>
                 <div th:if="${currentDoctor != null}" class="menu_section">

@@ -3,9 +3,11 @@ package group2.client.controller;
 
 import group2.client.dto.HoaDonThuocDAO;
 import group2.client.dto.ListHoaDonThuocDAO;
+import group2.client.entities.Casher;
 import group2.client.entities.Donthuoc;
 import group2.client.entities.Thuoc;
 import group2.client.entities.Typethuoc;
+import group2.client.service.AuthService;
 import java.util.ArrayList;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -17,6 +19,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -24,12 +29,16 @@ import org.springframework.http.MediaType;
 @Controller
 @RequestMapping("/admin/donthuoc")
 public class DonthuocController {
-
+ private String apiUrl_Thuoc = "http://localhost:8888/api/thuoc/";
     private String apiUrl_Donthuoc = "http://localhost:8888/api/donthuoc/";
     RestTemplate restTemplate = new RestTemplate();
 
+    
+        @Autowired
+    private AuthService authService;
     @RequestMapping("")
-    public String page(Model model) {
+    public String page(Model model, HttpServletRequest request) {
+            Casher currentCasher = authService.isAuthenticatedCasher(request);
         ResponseEntity<List<Donthuoc>> response = restTemplate.exchange(apiUrl_Donthuoc, HttpMethod.GET, null,
                 new ParameterizedTypeReference<List<Donthuoc>>() {
                 });
@@ -39,13 +48,15 @@ public class DonthuocController {
             List<Donthuoc> listDonthuoc = response.getBody();
 
             // Xử lý dữ liệu theo nhu cầu của bạn
+              model.addAttribute("currentCasher", currentCasher);
             model.addAttribute("listDonthuoc", listDonthuoc);
         }
         return "admin/donthuoc/index";
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
-    public String create(Model model, Thuoc thuoc) {
+    public String create(Model model, Thuoc thuoc, HttpServletRequest request) {
+            Casher currentCasher = authService.isAuthenticatedCasher(request);
 
         //Lấy List Type Donthuoc
         ResponseEntity<List<Donthuoc>> response = restTemplate.exchange(apiUrl_Donthuoc, HttpMethod.GET, null,
@@ -53,13 +64,42 @@ public class DonthuocController {
                 });
         List<Donthuoc> listDonthuoc = response.getBody();
         model.addAttribute("listDonthuoc", listDonthuoc);
-
+  model.addAttribute("currentCasher", currentCasher);
         model.addAttribute("donthuoc", new Donthuoc());
         return "admin/donthuoc/create";
     }
     
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String create(Model model,int[] thuocID,int[] price,int[] quantity,String name,String phone) {
+    public String create(Model model,int[] thuocID,int[] price,int[] quantity,HttpSession session,String name,String phone) {
+           
+                String hienloiQuantity = "";  
+        
+        ResponseEntity<List<Thuoc>> response1 = restTemplate.exchange(apiUrl_Thuoc, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<List<Thuoc>>() {
+            });
+                  var flagQuantity = true;
+          
+                List<Thuoc> listThuoc = response1.getBody();
+             
+                for(int i = 0; i < thuocID.length;i++){
+                    for(var item :listThuoc ){
+                       if( item.getId() == thuocID[i]){
+                           if(item.getQuantity() < quantity[i]){
+                               flagQuantity = false;
+                               hienloiQuantity +="Insufficient quantity of medicine: " +item.getName() +" ";
+                               break;
+                           }
+                       }
+                    }
+    
+                }
+                if(flagQuantity == false){
+                   session.setAttribute("error",hienloiQuantity );
+                   return "admin/donthuoc/create";
+                }
+        
+        
+        
             List<HoaDonThuocDAO> list = new ArrayList<HoaDonThuocDAO>();
             for(int i = 0; i < thuocID.length;i++){
                 HoaDonThuocDAO obj = new HoaDonThuocDAO(thuocID[i],price[i],quantity[i]);
