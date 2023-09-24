@@ -13,42 +13,53 @@
                 <!-- Content -->
 
                 <div class="right_col" role="main">
-               
+                        
                     <div class="card shadow mb-4">
                        
                         <div class="card-body">
                             <div class="table-responsive">
       <h1 class="text-center">Manage Doctor</h1>
        <span class="section"></span>
+       <div class="bg-success" th:if="${session.notifyDoctor}">                         
+                                        <div class="alert alert-danger alert-dismissible fade show notify-error">
+                                            <button type="button" class="btn-close" data-dismiss="alert"></button>
+                                            <span th:text="${session.notifyDoctor}"></span>
+                                        </div>
+                                        <th:block th:text="${#session.removeAttribute('notifyDoctor')}"></th:block>
+                                    </div>
 <a th:href="@{/admin/doctor/create}" class="btn btn-primary my-2">Create</a>     
                                 <table th:object="${listDoctor}" class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
 
                                     <thead>
                                         <tr>
 
-                                            <th>Type Doctor</th>
-                                            <th>Name</th>
-                                            <th>Username</th>
-                                            <th>Password</th>
+                                            <th style="width:120px">Type Doctor</th>
+                                            <th >Name</th>
+                                      
+                                     
                                             <th>Email</th>
                                             <th>Image</th>
                                             <th>Address</th>
                                             <th>Gender</th>
-                                            <th>Action</th>
+                                            <th style="width:50px">Action</th>
                                         </tr>
                                     </thead>
                                 </tbody>
                                  <tr th:each="e : ${listDoctor}">
                                          <td th:text="${e.getTypeDoctorId().getName()}"></td>
                                         <td th:text="${e.getName()}"></td>
-                                        <td th:text="${e.getUsername()}"></td>
-                                        <td th:text="${e.getPassword()}"></td>
+                                   
+                                     
                                         <td th:text="${e.getEmail()}"></td>
-                                        <td><img th:src="${e.getImage()}" width="200px" height="150px"></img></td>
+                                        <td><img style="width:100px;height:100px;" th:src="${e.getImage()}" width="200px" height="150px"></img></td>
                                         <td th:text="${e.getAddress()}"></td>
-                                        <td th:text="${e.getGender()}"></td>
+                                       <td>
+    <div th:if="${e.getGender() == true}">Male</div>
+    <div th:if="${e.getGender() == false}">Female</div>
+</td>
+                                        
                                              <td>
-                                               <a class="btn btn-info" th:href="@{/admin/doctor/edit/{id}(id=${e.getId()})}">Update</a> | 
+                                               <a class="btn btn-info" th:href="@{/admin/doctor/edit/{id}(id=${e.getId()})}">Update</a>
                                 <a class="btn btn-warning" th:href="@{/admin/doctor/delete/{id}(id=${e.getId()})}">Delete</a>
                                         </td>
                                     </tr>
