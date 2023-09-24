@@ -13,7 +13,7 @@
                 <!-- Content -->
 
                 <div class="right_col" role="main">
-                 
+
                     <div class="row">
                         <div class="col-md-12 col-sm-12">
                             <div class="x_panel">
@@ -24,42 +24,41 @@
                                         <div class="field item form-group">
                                             <label class="col-form-label col-md-3 col-sm-3 label-align">Name<span class="required">*</span></label>
                                             <div class="col-md-6 col-sm-6">
-                                                <input type="text" th:field="*{name}" class="form-control" required="required"
-                                                       pattern=".{6,}" title="Minimum 6 characters" data-error="Name is required (minimum 6 characters)">
+                                                <input type="text" th:field="*{name}" class="form-control">
                                                     <div class="help-block with-errors"></div>
                                             </div>
                                         </div>
-                                        <div class="field item form-group">
-                                            <label class="col-form-label col-md-3 col-sm-3 label-align">UserName<span class="required">*</span></label>
-                                            <div class="col-md-6 col-sm-6">
-                                                <input type="text" th:field="*{username}" class="form-control" required="required"
-                                                       pattern=".{6,}" title="Minimum 6 characters" data-error="Name is required (minimum 6 characters)">
-                                                    <div class="help-block with-errors"></div>
-                                            </div>
-                                        </div>
-                                        <div class="field item form-group">
-                                            <label class="col-form-label col-md-3 col-sm-3 label-align">Password<span class="required">*</span></label>
-                                            <div class="col-md-6 col-sm-6">
-                                                <input type="text" th:field="*{password}" class="form-control" required="required"
-                                                       pattern=".{6,}" title="Minimum 6 characters" data-error="Name is required (minimum 6 characters)">
-                                                    <div class="help-block with-errors"></div>
-                                            </div>
-                                        </div>
+                                        <!--                                        <div class="field item form-group">
+                                                                                    <label class="col-form-label col-md-3 col-sm-3 label-align">UserName<span class="required">*</span></label>
+                                                                                    <div class="col-md-6 col-sm-6">
+                                                                                        <input type="text" th:field="*{username}" class="form-control" >
+                                                                                            <div class="help-block with-errors"></div>
+                                                                                    </div>
+                                                                                </div>-->
+
                                         <div class="field item form-group">
                                             <label class="col-form-label col-md-3 col-sm-3 label-align">Email<span class="required">*</span></label>
                                             <div class="col-md-6 col-sm-6">
-                                                <input type="text" th:field="*{email}" class="form-control" required="required"
-                                                       pattern=".{6,}" title="Minimum 6 characters" data-error="Name is required (minimum 6 characters)">
+                                                <input readonly type="text" th:field="*{email}" class="form-control" >
                                                     <div class="help-block with-errors"></div>
                                             </div>
                                         </div>
                                         <div class="field item form-group">
                                             <label class="col-form-label col-md-3 col-sm-3 label-align">Address<span class="required">*</span></label>
                                             <div class="col-md-6 col-sm-6">
-                                                <input type="text" th:field="*{address}" class="form-control" required="required"
-                                                       pattern=".{6,}" title="Minimum 6 characters" data-error="Name is required (minimum 6 characters)">
+                                                <input type="text" th:field="*{address}" class="form-control">
                                                     <div class="help-block with-errors"></div>
                                             </div>
+                                        </div>
+                                        <div class="field item form-group">
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align">Image</label>
+                                            <div class="col-md-6 col-sm-6">
+                                                <input type="file" name="file" >
+                                                    <div class="help-block with-errors"></div>
+                                                    <span style="display:none;color:red" id="fileError">Invalid file! Please choose a valid file.</span>
+                                            </div>
+
+
                                         </div>
                                         <div class="field item form-group">
                                             <label class="col-form-label col-md-3 col-sm-3 label-align">Gender<span class="required">*</span></label>
@@ -73,11 +72,11 @@
                                             <label class="col-form-label col-md-3 col-sm-3 label-align">Type Doctor<span class="required">*</span></label>
                                             <div class="col-md-6 col-sm-6">
                                                 <!--<input  readonly th:value="${objDoctor.getTypeDoctorId().getName()}"/>-->
-                                                <select name="typeDoctorID">
+                                                <select class="custom-select" name="typeDoctorID">
 
-                                                    <option th:each="typeDoctor : ${listTypeDoctor}"
-                                                            th:value="${typeDoctor.id}"
-                                                            th:text="${typeDoctor.name}">
+                                                    <option  th:each="typeDoctor : ${listTypeDoctor}"
+                                                             th:value="${typeDoctor.id}"
+                                                             th:text="${typeDoctor.name}">
                                                     </option>
                                                 </select>
 
@@ -107,3 +106,136 @@
 
     </body>
 </html>
+<script>
+
+    var checkValidation = function () {
+
+        var flag = true;
+        flag &= kiemtrarong("#name", "#name_notblank");
+        console.log("Aaaa", flag);
+
+        flag &= kiemtrarong("#email", "#email_notblank");
+        console.log(flag);
+
+
+
+        flag &= kiemtrarong("#address", "#address_notblank");
+        console.log(flag);
+
+        flag &= checkChooseTypeDoctor();
+        console.log(flag);
+        flag &= checkGender();
+        console.log(flag);
+        flag &= checkImage();
+        console.log(flag);
+
+
+
+
+        if (!flag) {
+            return false;
+        }
+
+    }
+
+    function  checkChooseTypeDoctor() {
+        var typeDoctorID = document.querySelector("select[name='typeDoctorID']").value;
+        if (typeDoctorID === "") {
+            document.querySelector("#typeDoctorID_notblank").style.display = "block";
+            return  false;
+        } else {
+            document.querySelector("#typeDoctorID_notblank").style.display = "none";
+            return true;
+        }
+    }
+
+
+    function kiemtraso(value, error) {
+        var bientam = document.querySelector(value).value;
+        if (bientam < 3 || bientam > 500) {
+
+            document.querySelector(error).style.display = "block";
+            document.querySelector(value).style.border = "1px solid red";
+            return false;
+        } else {
+
+            document.querySelector(error).style.display = "none";
+            document.querySelector(value).style.border = "";
+
+            return true;
+        }
+    }
+    function kiemtrarong(value, error) {
+        var bientam = document.querySelector(value).value;
+        if (bientam.length < 1 || bientam.length == 0) {
+
+            document.querySelector(error).style.display = "block";
+            document.querySelector(value).style.border = "1px solid red";
+            return false;
+        } else {
+
+            document.querySelector(error).style.display = "none";
+            document.querySelector(value).style.border = "";
+
+            return true;
+        }
+    }
+    function checkGender() {
+        var genderSelected = false;
+        var genders = document.querySelectorAll("input[name='gender']");
+        for (var i = 0; i < genders.length; i++) {
+            if (genders[i].checked) {
+                genderSelected = true;
+                break;
+            }
+        }
+        if (!genderSelected) {
+            document.querySelector("#gender_notblank").style.display = "block";
+            return false;
+        } else {
+            document.querySelector("#gender_notblank").style.display = "none";
+            return true;
+        }
+    }
+
+    function checkImage() {
+        var fileInput = document.querySelector("input[name='file']");
+        var fileError = document.querySelector("#fileError");
+
+
+        // Lấy tệp đã chọn
+        var selectedFile = fileInput.files[0];
+
+        // Kiểm tra kiểu tệp (phải là hình ảnh)
+        if (!selectedFile.type.startsWith("image/")) {
+            fileError.style.display = "block";
+            fileError.innerText = "Invalid file! Please choose an image file.";
+            return false;
+        }
+
+        // Kiểm tra kích thước tệp (không lớn hơn 1MB)
+        if (selectedFile.size > 1024 * 1024) { // 1MB = 1024 * 1024 bytes
+            fileError.style.display = "block";
+            fileError.innerText = "Invalid file! Please choose an image file smaller than 1MB.";
+            return false;
+        }
+
+        // Nếu tất cả điều kiện đều đúng, ẩn thông báo lỗi và trả về true
+        fileError.style.display = "none";
+        return true;
+    }
+    function kiemTraPassword(selectorValue, selectorError) {
+        var inputText = document.querySelector(selectorValue);
+        var regex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,12}$/;
+
+        if (regex.test(inputText.value)) {
+            document.querySelector(selectorError).style.display = "none";
+            return true;
+        } else {
+            document.querySelector(selectorError).style.display = "block";
+            return false;
+        }
+    }
+
+    document.querySelector('#dangKy').onclick = checkValidation;
+</script>

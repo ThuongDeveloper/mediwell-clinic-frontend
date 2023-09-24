@@ -307,17 +307,41 @@ public class DoctorController {
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public String update(Model model, Doctor objDoctor, @RequestParam String typeDoctorID, RedirectAttributes redirectAttributes) {
+    public String update(Model model,@RequestParam("file") MultipartFile file, Doctor objDoctor, @RequestParam String typeDoctorID, RedirectAttributes redirectAttributes) throws IOException {
 
+        String fileName = file.getOriginalFilename();
         TypeDoctor newTD = new TypeDoctor();
         newTD.setId(Integer.parseInt(typeDoctorID));
         objDoctor.setTypeDoctorId(newTD);
+//aaaaa
+    ByteArrayResource fileResource = new ByteArrayResource(file.getBytes()) {
+            @Override
+            public String getFilename() {
+                return file.getOriginalFilename();
+            }
+        };
 
-        restTemplate.put(apiUrl_Doctor + "/edit", objDoctor);
+        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+        body.add("Doctor", objDoctor);
+        body.add("file", fileResource);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
+
+        var response = restTemplate.exchange(apiUrl_Doctor + "/edit",HttpMethod.PUT, requestEntity, String.class );
+
+//aaaaa
+        
+        
+        
+        
+      
         // Chú ý rằng, phương thức put trả về void (không có phản hồi từ server)
 
         // Điều hướng về trang danh sách TypeDoctor với thông báo thành công
-        redirectAttributes.addFlashAttribute("MessageCreate", "Cập nhật thành công");
+        redirectAttributes.addFlashAttribute("MessageCreate", "Update Success !");
         return "redirect:/admin/doctor";
     }
 

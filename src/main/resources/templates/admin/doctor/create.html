@@ -6,9 +6,9 @@
     <body class="nav-md">
         <div class="container body">
             <div class="main_container">
-                <div th:replace="~{admin/layout/slidebar :: slidebarAdmin}"></div>
+                <div th:replace="~{admin/layout/slidebarfixbug :: slidebarAdmin}"></div>
                 <div class="top_nav">
-                    <div th:replace="~{admin/layout/header :: div}"></div>
+                    <div th:replace="~{admin/layout/headerfixbug :: div}"></div>
                 </div>
                 <!-- Content -->
 
@@ -21,13 +21,13 @@
                                     <form th:action="@{/admin/doctor/create}" th:object="${Doctor}" method="post" enctype="multipart/form-data">
                                         <h1 class="text-center">Create Doctor</h1>
                                         <span class="section"></span>
-                                       <div th:if="${session.notifyDoctor}">                         
-                                        <div class="alert alert-danger alert-dismissible fade show notify-error">
-                                            <button type="button" class="btn-close" data-dismiss="alert"></button>
-                                            <span th:text="${session.notifyDoctor}"></span>
+                                        <div th:if="${session.notifyDoctor}">                         
+                                            <div class="alert alert-danger alert-dismissible fade show notify-error">
+                                                <button type="button" class="btn-close" data-dismiss="alert"></button>
+                                                <span th:text="${session.notifyDoctor}"></span>
+                                            </div>
+                                            <th:block th:text="${#session.removeAttribute('notifyDoctor')}"></th:block>
                                         </div>
-                                        <th:block th:text="${#session.removeAttribute('notifyDoctor')}"></th:block>
-                                    </div>
                                         <div class="field item form-group">
                                             <label class="col-form-label col-md-3 col-sm-3 label-align">Name</label>
                                             <div class="col-md-6 col-sm-6">
@@ -43,6 +43,16 @@
                                                 <input type="password" th:field="*{password}" class="form-control" >
                                                     <span style="display:none;color:red" id="password_notblank">Password not blank !! </span>
                                                     <span style="display:none;color:red" id="password_regex">Password must be 8 to 12 characters and include at least one uppercase letter, one digit, and one special character !!</span>
+
+                                                    <div class="help-block with-errors"></div>
+                                            </div>
+                                        </div>
+                                         <div class="field item form-group">
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align">Confirm Password</label>
+                                            <div class="col-md-6 col-sm-6">
+                                                <input type="password" id="confirm_password" class="form-control" >
+                                              
+                                                    <span style="display:none;color:red" id="confirm_password_dontmacth">Confirm password and password don't macth !</span>
 
                                                     <div class="help-block with-errors"></div>
                                             </div>
@@ -80,7 +90,7 @@
                                             <label class="col-form-label col-md-3 col-sm-3 label-align">Gender</label>
                                             <div class="col-md-6 col-sm-6">
 
-                                                <input type="radio" th:field="*{gender}"  value="true" checked="checked"/>Male
+                                                <input type="radio"  th:field="*{gender}"  value="true" checked="checked"/>Male
                                                 <input type="radio" th:field="*{gender}" value="false"/>Female
                                                 <span style="display:none;color:red" id="gender_notblank">Gender not selected !! </span>
 
@@ -154,10 +164,11 @@
 
         flag &= kiemTraPassword("#password", "#password_regex");
         console.log(flag);
-
-       if(!flag){
-           return false;
-       }
+        flag &= kiemTraXacNhanPass("#password", "#confirm_password","#confirm_password_dontmacth");
+        console.log(flag);
+        if (!flag) {
+            return false;
+        }
 
     }
 
@@ -269,6 +280,17 @@
         var inputText = document.querySelector(selectorValue);
         var regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         if (regex.test(inputText.value)) {
+            document.querySelector(selectorError).style.display = "none";
+            return true;
+        } else {
+            document.querySelector(selectorError).style.display = "block";
+            return false;
+        }
+    }
+    function kiemTraXacNhanPass(selectorValue1, selectorValue2, selectorError) {
+        var inputText1 = document.querySelector(selectorValue1);
+        var inputText2 = document.querySelector(selectorValue2);
+        if (inputText1.value === inputText2.value) {
             document.querySelector(selectorError).style.display = "none";
             return true;
         } else {
