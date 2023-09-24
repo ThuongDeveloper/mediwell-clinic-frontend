@@ -3,7 +3,10 @@ package group2.client.controller;
 import group2.client.dto.HoaDonThuocDAO;
 import group2.client.dto.ListToaThuocDAO;
 import group2.client.dto.ToaThuocDAO;
+import group2.client.entities.Admin;
+import group2.client.entities.Casher;
 import group2.client.entities.Doctor;
+import group2.client.entities.Patient;
 import group2.client.entities.Thuoc;
 import group2.client.entities.Toathuoc;
 import group2.client.service.AuthService;
@@ -36,33 +39,106 @@ public class ToathuocController {
     @Autowired
     private AuthService authService;
     @RequestMapping("")
-    public String page(Model model) {
-        ResponseEntity<List<Toathuoc>> response = restTemplate.exchange(apiUrl_Toathuoc, HttpMethod.GET, null,
+    public String page(Model model, HttpServletRequest request) {
+        
+        Admin currentAdmin = authService.isAuthenticatedAdmin(request);
+        Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
+        Patient currentPatient = authService.isAuthenticatedPatient(request);
+        Casher currentCasher = authService.isAuthenticatedCasher(request);
+        
+        if(currentPatient != null && currentPatient.getRole().equals("PATIENT")){
+            return "redirect:/forbien";
+        }else if(currentAdmin != null && currentAdmin.getRole().equals("ADMIN")){
+             ResponseEntity<List<Toathuoc>> response = restTemplate.exchange(apiUrl_Toathuoc, HttpMethod.GET, null,
                 new ParameterizedTypeReference<List<Toathuoc>>() {
                 });
 
-        // Kiểm tra mã trạng thái của phản hồi
-        if (response.getStatusCode().is2xxSuccessful()) {
-            List<Toathuoc> listToathuoc = response.getBody();
+            // Kiểm tra mã trạng thái của phản hồi
+            if (response.getStatusCode().is2xxSuccessful()) {
+                List<Toathuoc> listToathuoc = response.getBody();
 
-            // Xử lý dữ liệu theo nhu cầu của bạn
-            model.addAttribute("listToathuoc", listToathuoc);
+                // Xử lý dữ liệu theo nhu cầu của bạn
+                model.addAttribute("listToathuoc", listToathuoc);
+            }
+            return "admin/toathuoc/index";
+        }else if(currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")){
+            ResponseEntity<List<Toathuoc>> response = restTemplate.exchange(apiUrl_Toathuoc, HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<Toathuoc>>() {
+                });
+
+            // Kiểm tra mã trạng thái của phản hồi
+            if (response.getStatusCode().is2xxSuccessful()) {
+                List<Toathuoc> listToathuoc = response.getBody();
+
+                // Xử lý dữ liệu theo nhu cầu của bạn
+                model.addAttribute("listToathuoc", listToathuoc);
+            }
+            return "admin/toathuoc/index";
+        }else if(currentCasher != null && currentCasher.getRole().equals("CASHER")){
+             ResponseEntity<List<Toathuoc>> response = restTemplate.exchange(apiUrl_Toathuoc, HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<Toathuoc>>() {
+                });
+
+            // Kiểm tra mã trạng thái của phản hồi
+            if (response.getStatusCode().is2xxSuccessful()) {
+                List<Toathuoc> listToathuoc = response.getBody();
+
+                // Xử lý dữ liệu theo nhu cầu của bạn
+                model.addAttribute("listToathuoc", listToathuoc);
+            }
+            return "admin/toathuoc/index";
+        }else {
+            return "redirect:/login";
         }
-        return "admin/toathuoc/index";
+        
+       
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
-    public String create(Model model, Thuoc thuoc) {
+    public String create(Model model, Thuoc thuoc, HttpServletRequest request) {
+        
+        Admin currentAdmin = authService.isAuthenticatedAdmin(request);
+        Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
+        Patient currentPatient = authService.isAuthenticatedPatient(request);
+        Casher currentCasher = authService.isAuthenticatedCasher(request);
+        
+         if(currentPatient != null && currentPatient.getRole().equals("PATIENT")){
+            return "redirect:/forbien";
+        }else if(currentAdmin != null && currentAdmin.getRole().equals("ADMIN")){
+            //Lấy List Type Donthuoc
+            ResponseEntity<List<Toathuoc>> response = restTemplate.exchange(apiUrl_Toathuoc, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<List<Toathuoc>>() {
+                    });
+            List<Toathuoc> listToathuoc = response.getBody();
+            model.addAttribute("listToathuoc", listToathuoc);
 
-        //Lấy List Type Donthuoc
-        ResponseEntity<List<Toathuoc>> response = restTemplate.exchange(apiUrl_Toathuoc, HttpMethod.GET, null,
-                new ParameterizedTypeReference<List<Toathuoc>>() {
-                });
-        List<Toathuoc> listToathuoc = response.getBody();
-        model.addAttribute("listToathuoc", listToathuoc);
+            model.addAttribute("toathuoc", new Toathuoc());
+            return "admin/toathuoc/create";
+        }else if(currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")){
+            //Lấy List Type Donthuoc
+            ResponseEntity<List<Toathuoc>> response = restTemplate.exchange(apiUrl_Toathuoc, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<List<Toathuoc>>() {
+                    });
+            List<Toathuoc> listToathuoc = response.getBody();
+            model.addAttribute("listToathuoc", listToathuoc);
 
-        model.addAttribute("toathuoc", new Toathuoc());
-        return "admin/toathuoc/create";
+            model.addAttribute("toathuoc", new Toathuoc());
+            return "admin/toathuoc/create";
+        }else if(currentCasher != null && currentCasher.getRole().equals("CASHER")){
+             //Lấy List Type Donthuoc
+            ResponseEntity<List<Toathuoc>> response = restTemplate.exchange(apiUrl_Toathuoc, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<List<Toathuoc>>() {
+                    });
+            List<Toathuoc> listToathuoc = response.getBody();
+            model.addAttribute("listToathuoc", listToathuoc);
+
+            model.addAttribute("toathuoc", new Toathuoc());
+            return "admin/toathuoc/create";
+        }else {
+            return "redirect:/login";
+        }
+
+        
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
@@ -114,6 +190,7 @@ public class ToathuocController {
 
     @RequestMapping(value = "/export-pdf", method = RequestMethod.GET)
     public ResponseEntity<byte[]> exportToPDF(@RequestParam("toathuocId") int toathuocId) {
+        
         if (toathuocId <= 0) {
             // Xử lý lỗi nếu tham số không hợp lệ
             return ResponseEntity.badRequest().body("Invalid toathuocId".getBytes());
