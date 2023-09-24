@@ -15,6 +15,7 @@ import group2.client.repository.DoctorRepository;
 import group2.client.repository.LichlamviecRepository;
 import group2.client.repository.NewsRepository;
 import group2.client.repository.PatientRepository;
+import group2.client.repository.RatingByDoctorRepository;
 import group2.client.repository.ToathuocDetailsRepository;
 import group2.client.repository.ToathuocRepository;
 import group2.client.service.*;
@@ -51,6 +52,7 @@ public class ClientController {
     private String apiUrlPatient = "http://localhost:8888/api/patient/";
     private String apiUrlTypeDoctor = "http://localhost:8888/api/typedoctor/";
     private String apiUrlFeedback = "http://localhost:8888/api/feedback";
+    private String apiUrlRating = "http://localhost:8888/api/rating/";
     private String apiUrlFilter = "http://localhost:8888/api/filter/";
     RestTemplate restTemplate = new RestTemplate();
 
@@ -83,6 +85,9 @@ public class ClientController {
 
     @Autowired
     private ToathuocDetailsRepository toathuocDetailsRepository;
+    
+    @Autowired
+    private RatingByDoctorRepository ratingByDoctorRepository;
 
     public static final String SUCCESS_URL = "pay/success";
     public static final String CANCEL_URL = "pay/cancel";
@@ -138,48 +143,7 @@ public class ClientController {
 
     }
 
-//     @RequestMapping("/listDoctors")
-//    public String listDoctorsWithRating(Model model, HttpServletRequest request) throws JsonProcessingException {
-//
-//        Patient currentPatient = authService.isAuthenticatedPatient(request);
-//    
-//        ResponseEntity<List<Object>> response = restTemplate.exchange(apiUrlDoctorWithRating, HttpMethod.GET, null,
-//                new ParameterizedTypeReference<List<Object>>() {
-//        });
-//        
-//        List new_list = (List) response;
-//
-////        // Tạo đối tượng ObjectMapper
-////        ObjectMapper objectMapper = new ObjectMapper();
-////
-////        // Giải mã dữ liệu JSON thành một mảng các đối tượng
-////        Object[] objects = objectMapper.readValue(response.getBody().toString(), Object[].class);
-////
-////        // Lấy ra đối tượng đầu tiên trong mảng
-////        Object object = objects[0];
-////
-////        // Lấy ra thuộc tính "name" của đối tượng
-////        String name = objectMapper.readValue(object.toString(), Doctor.class).getName();
-//
-//        
-//        ResponseEntity<List<TypeDoctor>> responseTD = restTemplate.exchange(apiUrlTypeDoctor, HttpMethod.GET, null,
-//                new ParameterizedTypeReference<List<TypeDoctor>>() {
-//        });
-//        if (response.getStatusCode().is2xxSuccessful() && responseTD.getStatusCode().is2xxSuccessful() && currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
-//            List<Object> listDoctor = response.getBody();
-//            List<TypeDoctor> listTypeDoctor = responseTD.getBody();
-//            model.addAttribute("listDoctor", listDoctor);
-//            model.addAttribute("listTypeDoctor", listTypeDoctor);
-//            model.addAttribute("patient", currentPatient);
-//        } else if (response.getStatusCode().is2xxSuccessful() && responseTD.getStatusCode().is2xxSuccessful() && currentPatient == null) {
-//            List<Object> listDoctor = response.getBody();
-//            List<TypeDoctor> listTypeDoctor = responseTD.getBody();
-//            model.addAttribute("listDoctor", listDoctor);
-//            model.addAttribute("listTypeDoctor", listTypeDoctor);
-//        }
-//        return "/client/listDoctors";
-//
-//    }
+
     @RequestMapping(value = "/listDoctors", method = RequestMethod.POST)
     public String filterListDoctors(Model model, HttpServletRequest request, @RequestParam("filterLDT") String filterLDT) {
 
@@ -244,7 +208,10 @@ public class ClientController {
                 }
 
             }
+            
 
+            List<Rating> ratings = ratingByDoctorRepository.findByDoctorId(doctor);
+            model.addAttribute("ratings", ratings);
             model.addAttribute("lichlamviecByFutureDate", lichlamviecByFutureDate);
             model.addAttribute("lichlamviec", lichlamviec);
             model.addAttribute("doctor", doctor);
@@ -270,7 +237,11 @@ public class ClientController {
                 }
 
             }
-
+            
+            
+           
+            List<Rating> ratings = ratingByDoctorRepository.findByDoctorId(doctor);
+            model.addAttribute("ratings", ratings);
             model.addAttribute("lichlamviecByFutureDate", lichlamviecByFutureDate);
             model.addAttribute("lichlamviec", lichlamviec);
             model.addAttribute("doctor", doctor);
@@ -1350,5 +1321,9 @@ public class ClientController {
             return "redirect:/login";
         }
     }
+    
+    
+    
+    
 
 }

@@ -5,6 +5,45 @@
     <link rel="stylesheet" href="../client/css/barwrap.css"/>
     
     <link rel="stylesheet" href="../client/css/bookAppointment.css"/>
+     <script src="https://kit.fontawesome.com/e6af8d83d3.js" crossorigin="anonymous"></script>
+    <style>
+        .doctor-rating{
+            width: 450px;
+            padding: 15px 30px;
+            background: #fff;
+            box-shadow: 0 0 30px rgba(0,0,0,.1);
+            margin-left: 40px;
+            margin-top: 50px;
+            margin-bottom: -25px;
+        }
+        .rating-content h3{
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+        .doctor-rating i{
+            color: #FFD700;
+            margin-left: 3px;
+        }
+        .rating-content p{
+            margin-bottom: 7px;
+        }
+        .rating-title{
+            margin-left: 40px;
+        }
+        .rating-img img{
+            width: 90px;
+            border-radius: 50%;
+            height: 90px;
+        }
+        .rating-display{
+            display: flex;
+            
+        }
+        .rating-content{
+            margin-left: 20px;
+            flex: 1;
+        }
+    </style>
 
     <body class="home page-template-default page page-id-7684 theme-mediz gdlr-core-body woocommerce-no-js mediz-body mediz-body-front mediz-full  mediz-with-sticky-navigation  mediz-blockquote-style-1 gdlr-core-link-to-lightbox" data-home-url="https://demo.goodlayers.com/mediz/hospital/" >
         <div th:replace="~{client/layout/topbar :: div}"></div>
@@ -270,15 +309,39 @@
                                                                                                                            <p th:text="${#dates.format(schedule.date, 'dd-MM-yyyy')}"></p>
                                                                                                                         </a>
                                                                                                                     </div>                                                                                                             
-                                                                                                                                                                                                                                                
+                                                                                                                                                                                                                                          
                                                                                                
-                                                                                                                        
-                                                                                                                </div>                                                                                                 
+                                                                                                                      
+                                                                                                                </div>     
+                                                                                                                
+                                                                                                                 
                                                                                                                                                                            
                                                                                                                 <div th:if="${#lists.isEmpty(lichlamviec)}">
                                                                                                                     <div class="not-found-schedule">No Schedule Found</div>
                                                                                                                 </div>
                                                                                                             </div>
+                                                                                                            <h4 class="rating-title">Rating:</h4>
+                                                                                                             <div th:each="rate: ${ratings}" class="doctor-rating">
+                                                                                                                 <div class="rating-display">
+                                                                                                                     <div class="rating-img">
+                                                                                                                        <img th:if="${rate.patientId.image != null}" th:src="@{${rate.patientId.image}}" alt="Avatar" class="rating-avatar">
+                                                                                                                        <img th:unless="${rate.patientId.image != null}" src="../client/image/avatar-default.jpg" alt="Default Avatar" class="rating-avatar">  
+                                                                                                                     </div>
+                                                                                                               
+                                                                                                                    <div class="rating-content">
+                                                                                                                         <h3 th:text="${rate.patientId.name}"></h3>
+                                                                                                                        <span th:text="${rate.rating}"></span><i class="fas fa-star"></i>
+
+                                                                                                                        
+                                                                                                                        <p th:text="${rate.comment}"></p>
+                                                                                                                    </div>
+                                                                                                                 </div>
+                                                                                                                 
+                                                                                                               
+                                                                                                                
+                                                                                                               
+                                                                                                                       
+                                                                                                            </div>      
                                                                                                         </div>
                                                                                                     </div>
                                                                                                 </div>
