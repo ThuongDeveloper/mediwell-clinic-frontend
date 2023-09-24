@@ -30,4 +30,6 @@ public interface PatientRepository extends JpaRepository<Patient, Integer> {
 
     public List<Patient> findByRole(String role);
 
+  boolean existsByEmailAndPhone(String email, String phone);
+
 }

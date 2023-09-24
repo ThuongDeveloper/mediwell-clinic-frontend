@@ -41,41 +41,71 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
             <!-- sidebar menu -->
             <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
                 <div class="menu_section">
+                    <h3>General</h3>
                     <ul class="nav side-menu">
-                        <li><a><i class="fa fa-home"></i>HRM<span class="fa fa-chevron-down"></span></a>
-                            <ul class="nav child_menu">
-                                <li><a th:href="@{/admin/doctor}">Physician Management</a></li>
-                                <li><a th:href="@{/admin/casher}">Cashier Staff Management</a></li>
-                                <li><a th:href="@{/admin/typedoctor}">Physician Categorization</a></li>
-                            </ul>
-                        </li>
-                        <hr style="border-color: white">
-                        <li><a><i class="fa fa-edit"></i>Drug Management<span class="fa fa-chevron-down"></span></a>
+<!--                        <li><a><i class="fa fa-home"></i>Data Management<span class="fa fa-chevron-down"></span></a>
                             <ul class="nav child_menu">
                                 <li><a th:href="@{/admin/thuoc}">Medication Management</a></li>
                                 <li><a th:href="@{/admin/typethuoc}">Medication Types</a></li>
-                                <li><a th:href="@{/admin/donthuoc}">Prescription Management</a></li>
-                                <li><a th:href="@{/admin/toathuoc}">Prescription</a></li>
-                            </ul>
-                        </li>
-                        <hr style="border-color: white">
-                        <li><a><i class="fa fa-bar-chart-o"></i>Service Management<span class="fa fa-chevron-down"></span></a>
-                            <ul class="nav child_menu">
-                                <li><a th:href="@{/admin/phieukham}">Medical Examination Form Management</a></li>
+                                <li><a th:href="@{/admin/doctor}">Doctor</a></li>
+                                <li><a th:href="@{/admin/casher}">Cashier Staff Management</a></li>
+                          
+                                <li><a th:href="@{/admin/typedoctor}">Type Doctor</a></li>
                                 <li><a th:href="@{/admin/patient}">Patient</a></li>
+                          
+                               
                                 <li><a th:href="@{/admin/lichlamviec}">Work Schedule</a></li>
                                 <li><a th:href="@{/admin/appointment}">Appointments</a></li>
-                            </ul>
-                        </li>
-                        <hr style="border-color: white">
-                        <li><a><i class="fa fa-clone"></i>Other Management<span class="fa fa-chevron-down"></span></a>
-                            <ul class="nav child_menu">
                                 <li><a th:href="@{/admin/rating}">Review and Comment Management</a></li>
                                 <li><a th:href="@{/admin/email}">Email Management</a></li>
                                 <li><a th:href="@{/admin/feedback}">Feedback</a></li>
                                 <li><a th:href="@{/admin/news}">Newsletter</a></li>
+                                
+                            </ul>
+                        </li>-->
+                        <li><a><i class="fa fa-home"></i>Data Management<span class="fa fa-chevron-down"></span></a>
+                            <ul class="nav child_menu">
+                                <li><a th:href="@{/admin/thuoc}">Medication Management</a></li>
+                                <li><a th:href="@{/admin/typethuoc}">Medication Types</a></li>        
+                                <li><a th:href="@{/admin/typedoctor}">Type Doctor</a></li>                        
+                                <li><a th:href="@{/admin/lichlamviec}">Work Schedule</a></li>                          
+                                <li><a th:href="@{/admin/rating}">Review and Comment Management</a></li>
+                                <li><a th:href="@{/admin/email}">Email Management</a></li>
+                                <li><a th:href="@{/admin/feedback}">Feedback</a></li>
+                                <li><a th:href="@{/admin/news}">Newsletter</a></li>
+                                
                             </ul>
                         </li>
+                        <li><a><i class="fa fa-address-book"></i>Member and Staff<span class="fa fa-chevron-down"></span></a>
+                            <ul class="nav child_menu">                     
+                                <li><a th:href="@{/admin/doctor}">Physician Management</a></li>
+                                <li><a th:href="@{/admin/casher}">Cashier Staff Management</a></li>                         
+                                <li><a th:href="@{/admin/patient}">Patient</a></li>                   
+                            </ul>
+                        </li>
+                         <li><a><i class="fa fa-home"></i>Cashier Feature<span class="fa fa-chevron-down"></span></a>
+                            <ul class="nav child_menu">  
+                                 <li><a th:href="@{/admin/donthuoc}">Invoice Medication</a></li>
+                                                   <li><a th:href="@{/admin/phieukham}">Waiting Ticket</a></li>  
+                            </ul>
+                        </li>
+                          <li><a><i class="fa fa-home"></i>Doctor Feature<span class="fa fa-chevron-down"></span></a>
+                            <ul class="nav child_menu">  
+                                      <li><a th:href="@{/admin/toathuoc}">Prescription</a></li>
+                                         <li><a th:href="@{/admin/appointment}">Appointments</a></li>
+                                                 
+                            </ul>
+                        </li>
+                        <!--                  <li><a><i class="fa fa-edit"></i> Forms <span class="fa fa-chevron-down"></span></a>
+                                            <ul class="nav child_menu">
+                                              <li><a href="form.html">General Form</a></li>
+                                              <li><a href="form_advanced.html">Advanced Components</a></li>
+                                              <li><a href="form_validation.html">Form Validation</a></li>
+                                              <li><a href="form_wizards.html">Form Wizard</a></li>
+                                              <li><a href="form_upload.html">Form Upload</a></li>
+                                              <li><a href="form_buttons.html">Form Buttons</a></li>
+                                            </ul>
+                                          </li>-->
                     </ul>
                 </div>
 
