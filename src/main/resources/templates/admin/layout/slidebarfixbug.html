@@ -10,7 +10,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
         <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
                 <a th:href="@{/admin}" class="site_title">
-                    <img src="/admin/images/logo-1.png" alt="" width="210" height="50" title="logo" />
+                    <img src="/admin/images/logo-1.png" alt="" width="50" height="50" title="logo" />
                 </a>
             </div>
 
@@ -27,11 +27,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                 </div>
                 <div th:if="${currentDoctor != null}" class="profile_info">
                     <span>Welcome,</span>
-                    <h2>[[${currentDoctor.username}]]</h2>
+                    <h2>[[${currentDoctor.name}]]</h2>
                 </div>
                 <div th:if="${currentCasher != null}" class="profile_info">
                     <span>Welcome,</span>
-                    <h2>[[${currentCasher.username}]]</h2>
+                    <h2>[[${currentCasher.name}]]</h2>
                 </div>
             </div>
             <!-- /menu profile quick info -->
@@ -40,9 +40,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
 
             <!-- sidebar menu -->
             <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
-                <div th:if="${currentAdmin != null}" class="menu_section">
-                    <h3>General</h3>
-                    <ul class="nav side-menu">
+                <div class="menu_section">
+                    <ul th:if="${currentAdmin != null}" class="nav side-menu">
                         <li><a><i class="fa fa-home"></i>Data Management<span class="fa fa-chevron-down"></span></a>
                             <ul class="nav child_menu">
                                 <li><a th:href="@{/admin/thuoc}">Medication Management</a></li>
@@ -63,25 +62,18 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                                 <li><a th:href="@{/admin/patient}">Patient</a></li>                   
                             </ul>
                         </li>
-                      
+
                     </ul>
-                </div>
-                <div th:if="${currentDoctor != null}" class="menu_section">
-                    <h3>General</h3>
-                    <ul class="nav side-menu">
+                    <ul th:if="${currentDoctor != null || currentAdmin != null}" class="nav side-menu">
                         <li><a><i class="fa fa-home"></i>Doctor Feature<span class="fa fa-chevron-down"></span></a>
-                            <ul class="nav child_menu"> 
-                             
+                            <ul class="nav child_menu">  
                                 <li><a th:href="@{/admin/toathuoc}">Prescription</a></li>
                                 <li><a th:href="@{/admin/appointment}">Appointments</a></li>
 
                             </ul>
                         </li>
                     </ul>
-                </div>
-                <div th:if="${currentCasher != null}" class="menu_section">
-                    <h3>General</h3>
-                    <ul class="nav side-menu">
+                    <ul th:if="${currentCasher != null || currentAdmin != null}" class="nav side-menu">
                         <li><a><i class="fa fa-home"></i>Cashier Feature<span class="fa fa-chevron-down"></span></a>
                             <ul class="nav child_menu">  
                                 <li><a th:href="@{/admin/donthuoc}">Invoice Medication</a></li>
@@ -90,9 +82,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                         </li>
                     </ul>
                 </div>
-
             </div>
-            <!-- /sidebar menu -->
         </div>
     </div>
 
