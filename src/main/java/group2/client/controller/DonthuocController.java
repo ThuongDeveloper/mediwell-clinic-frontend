@@ -6,6 +6,7 @@ import group2.client.entities.Casher;
 import group2.client.entities.Donthuoc;
 import group2.client.entities.Thuoc;
 import group2.client.entities.Typethuoc;
+import group2.client.repository.ThuocRepository;
 import group2.client.service.AuthService;
 import java.util.ArrayList;
 import org.springframework.core.ParameterizedTypeReference;
@@ -24,15 +25,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 @Controller
 @RequestMapping("/admin/donthuoc")
 public class DonthuocController {
+<<<<<<< HEAD
+
+=======
+>>>>>>> d5b3292c83e2f96c47b987a1b5689bad71cba5b9
     private String apiUrl_Thuoc = "http://localhost:8888/api/thuoc/";
     private String apiUrl_Donthuoc = "http://localhost:8888/api/donthuoc/";
     RestTemplate restTemplate = new RestTemplate();
 
     @Autowired
+<<<<<<< HEAD
+    private ThuocRepository thuocRepository;
+
+    @Autowired
+=======
+>>>>>>> d5b3292c83e2f96c47b987a1b5689bad71cba5b9
     private AuthService authService;
 
     @RequestMapping("")
@@ -40,7 +52,7 @@ public class DonthuocController {
         Casher currentCasher = authService.isAuthenticatedCasher(request);
         ResponseEntity<List<Donthuoc>> response = restTemplate.exchange(apiUrl_Donthuoc, HttpMethod.GET, null,
                 new ParameterizedTypeReference<List<Donthuoc>>() {
-                });
+        });
 
         // Kiểm tra mã trạng thái của phản hồi
         if (response.getStatusCode().is2xxSuccessful()) {
@@ -60,7 +72,7 @@ public class DonthuocController {
         // Lấy List Type Donthuoc
         ResponseEntity<List<Donthuoc>> response = restTemplate.exchange(apiUrl_Donthuoc, HttpMethod.GET, null,
                 new ParameterizedTypeReference<List<Donthuoc>>() {
-                });
+        });
         List<Donthuoc> listDonthuoc = response.getBody();
         model.addAttribute("listDonthuoc", listDonthuoc);
         model.addAttribute("currentCasher", currentCasher);
@@ -69,6 +81,17 @@ public class DonthuocController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
+<<<<<<< HEAD
+    public String create( Model model, int[] thuocID, int[] price, int[] quantity, HttpSession session, String name, String phone, HttpServletRequest requestCurent) {
+
+        String hienloiQuantity = "";
+
+        Casher currentCasher = authService.isAuthenticatedCasher(requestCurent);
+
+        ResponseEntity<List<Thuoc>> response1 = restTemplate.exchange(apiUrl_Thuoc, HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<Thuoc>>() {
+        });
+=======
     public String create(Model model, int[] thuocID, int[] price, int[] quantity, HttpSession session, String name,
             String phone) {
 
@@ -77,6 +100,7 @@ public class DonthuocController {
         ResponseEntity<List<Thuoc>> response1 = restTemplate.exchange(apiUrl_Thuoc, HttpMethod.GET, null,
                 new ParameterizedTypeReference<List<Thuoc>>() {
                 });
+>>>>>>> d5b3292c83e2f96c47b987a1b5689bad71cba5b9
         var flagQuantity = true;
 
         List<Thuoc> listThuoc = response1.getBody();
@@ -91,8 +115,13 @@ public class DonthuocController {
                     }
                 }
             }
+<<<<<<< HEAD
+        }
+
+=======
 
         }
+>>>>>>> d5b3292c83e2f96c47b987a1b5689bad71cba5b9
         if (flagQuantity == false) {
             session.setAttribute("error", hienloiQuantity);
             return "admin/donthuoc/create";
@@ -107,6 +136,14 @@ public class DonthuocController {
         listHDTD.setListHDT(list);
         listHDTD.setName(name);
         listHDTD.setPhone(phone);
+<<<<<<< HEAD
+        listHDTD.setCasherId(currentCasher);
+
+//        if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
+//            donthuoc.setCasherId(currentCasher);
+//        }
+=======
+>>>>>>> d5b3292c83e2f96c47b987a1b5689bad71cba5b9
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -119,14 +156,31 @@ public class DonthuocController {
 
         // Kiểm tra mã trạng thái của phản hồi
         if (response.getStatusCode().is2xxSuccessful()) {
-            // Thực hiện thêm xử lý sau khi tạo Casher thành công (nếu cần)
+            // Sau khi lưu đơn thuốc
+// Lặp qua danh sách các thuốc trong đơn thuốc
+            for (int i = 0; i < thuocID.length; i++) {
+                for (var item : listThuoc) {
+                    if (item.getId() == thuocID[i]) {
+                        if (item.getQuantity() >= quantity[i]) {
+                            // Trừ số lượng thuốc từ số lượng hiện có
+                            int newQuantity = item.getQuantity() - quantity[i];
+                            item.setQuantity(newQuantity);
+                            // Cập nhật lại thông tin thuốc trong cơ sở dữ liệu
+                            thuocRepository.save(item);
+                        }
+                    }
+                }
+            }
 
-            // Chuyển hướng về trang danh sách Casher
             return "redirect:/admin/donthuoc";
         } else {
             // Xử lý lỗi nếu cần thiết
             return "redirect:/admin/donthuoc";
         }
+<<<<<<< HEAD
+
+=======
+>>>>>>> d5b3292c83e2f96c47b987a1b5689bad71cba5b9
     }
 
 }
