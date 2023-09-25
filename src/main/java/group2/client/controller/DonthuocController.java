@@ -30,21 +30,15 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 @Controller
 @RequestMapping("/admin/donthuoc")
 public class DonthuocController {
-<<<<<<< HEAD
 
-=======
->>>>>>> d5b3292c83e2f96c47b987a1b5689bad71cba5b9
     private String apiUrl_Thuoc = "http://localhost:8888/api/thuoc/";
     private String apiUrl_Donthuoc = "http://localhost:8888/api/donthuoc/";
     RestTemplate restTemplate = new RestTemplate();
 
     @Autowired
-<<<<<<< HEAD
     private ThuocRepository thuocRepository;
 
     @Autowired
-=======
->>>>>>> d5b3292c83e2f96c47b987a1b5689bad71cba5b9
     private AuthService authService;
 
     @RequestMapping("")
@@ -81,7 +75,6 @@ public class DonthuocController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-<<<<<<< HEAD
     public String create( Model model, int[] thuocID, int[] price, int[] quantity, HttpSession session, String name, String phone, HttpServletRequest requestCurent) {
 
         String hienloiQuantity = "";
@@ -91,16 +84,15 @@ public class DonthuocController {
         ResponseEntity<List<Thuoc>> response1 = restTemplate.exchange(apiUrl_Thuoc, HttpMethod.GET, null,
                 new ParameterizedTypeReference<List<Thuoc>>() {
         });
-=======
-    public String create(Model model, int[] thuocID, int[] price, int[] quantity, HttpSession session, String name,
-            String phone) {
-
-        String hienloiQuantity = "";
-
-        ResponseEntity<List<Thuoc>> response1 = restTemplate.exchange(apiUrl_Thuoc, HttpMethod.GET, null,
-                new ParameterizedTypeReference<List<Thuoc>>() {
-                });
->>>>>>> d5b3292c83e2f96c47b987a1b5689bad71cba5b9
+    
+//    public String create(Model model, int[] thuocID, int[] price, int[] quantity, HttpSession session, String name,
+//            String phone) {
+//
+//        String hienloiQuantity = "";
+//
+//        ResponseEntity<List<Thuoc>> response1 = restTemplate.exchange(apiUrl_Thuoc, HttpMethod.GET, null,
+//                new ParameterizedTypeReference<List<Thuoc>>() {
+//                });
         var flagQuantity = true;
 
         List<Thuoc> listThuoc = response1.getBody();
@@ -115,13 +107,12 @@ public class DonthuocController {
                     }
                 }
             }
-<<<<<<< HEAD
-        }
-
-=======
 
         }
->>>>>>> d5b3292c83e2f96c47b987a1b5689bad71cba5b9
+
+
+        
+
         if (flagQuantity == false) {
             session.setAttribute("error", hienloiQuantity);
             return "admin/donthuoc/create";
@@ -136,14 +127,13 @@ public class DonthuocController {
         listHDTD.setListHDT(list);
         listHDTD.setName(name);
         listHDTD.setPhone(phone);
-<<<<<<< HEAD
+
         listHDTD.setCasherId(currentCasher);
 
 //        if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
 //            donthuoc.setCasherId(currentCasher);
 //        }
-=======
->>>>>>> d5b3292c83e2f96c47b987a1b5689bad71cba5b9
+
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -177,10 +167,7 @@ public class DonthuocController {
             // Xử lý lỗi nếu cần thiết
             return "redirect:/admin/donthuoc";
         }
-<<<<<<< HEAD
 
-=======
->>>>>>> d5b3292c83e2f96c47b987a1b5689bad71cba5b9
     }
 
 }
