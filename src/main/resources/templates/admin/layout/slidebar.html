@@ -5,7 +5,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
 -->
 <html  xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
-   
+
     <div th:fragment="slidebarAdmin" class="col-md-3 left_col">
         <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
@@ -42,54 +42,55 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
             <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
                 <div th:if="${currentAdmin != null}" class="menu_section">
                     <h3>General</h3>
+                    <ul class="nav side-menu">
+                        <li><a><i class="fa fa-home"></i>Data Management<span class="fa fa-chevron-down"></span></a>
+                            <ul class="nav child_menu">
+                                <li><a th:href="@{/admin/thuoc}">Medication Management</a></li>
+                                <li><a th:href="@{/admin/typethuoc}">Medication Types</a></li>        
+                                <li><a th:href="@{/admin/typedoctor}">Type Doctor</a></li>                        
+                                <li><a th:href="@{/admin/lichlamviec}">Work Schedule</a></li>                          
+                                <li><a th:href="@{/admin/rating}">Review and Comment Management</a></li>
+                                <li><a th:href="@{/admin/email}">Email Management</a></li>
+                                <li><a th:href="@{/admin/feedback}">Feedback</a></li>
+                                <li><a th:href="@{/admin/news}">Newsletter</a></li>
 
-                  
-                    <div th:if="${currentAdmin != null}">
-                        <ul class="nav side-menu">
-                            <li style="width: 100%;"><a><i class="fa fa-home"></i>Data Management<span class="fa fa-chevron-down"></span></a>
-                                <ul class="nav child_menu">
-                                    <li><a th:href="@{/admin/thuoc}">Medication Management</a></li>
-                                    <li><a th:href="@{/admin/typethuoc}">Medication Types</a></li>        
-                                    <li><a th:href="@{/admin/typedoctor}">Type Doctor</a></li>                        
-                                    <li><a th:href="@{/admin/lichlamviec}">Work Schedule</a></li>                          
-                                    <li><a th:href="@{/admin/rating}">Review and Comment Management</a></li>
-                                    <li><a th:href="@{/admin/email}">Email Management</a></li>
-                                    <li><a th:href="@{/admin/feedback}">Feedback</a></li>
-                                    <li><a th:href="@{/admin/news}">Newsletter</a></li>
+                            </ul>
+                        </li>
+                        <li><a><i class="fa fa-home"></i>Member and Staff<span class="fa fa-chevron-down"></span></a>
+                            <ul class="nav child_menu">                     
+                                <li><a th:href="@{/admin/doctor}">Physician Management</a></li>
+                                <li><a th:href="@{/admin/casher}">Cashier Staff Management</a></li>                         
+                                <li><a th:href="@{/admin/patient}">Patient</a></li>                   
+                            </ul>
+                        </li>
+                    
+                    </ul>
+                </div>
+                <div th:if="${currentDoctor != null}" class="menu_section">
+                    <h3>General</h3>
+                    <ul class="nav side-menu">
+                        <li><a><i class="fa fa-home"></i>Doctor Feature<span class="fa fa-chevron-down"></span></a>
+                            <ul class="nav child_menu">  
+                                <li><a th:href="@{/admin/toathuoc}">Prescription</a></li>
+                                <li><a th:href="@{/admin/appointment}">Appointments</a></li>
 
-                                </ul>
-                            </li>
-                            <li style="width: 100%;"><a><i class="fa fa-address-book"></i>Member and Staff<span class="fa fa-chevron-down"></span></a>
-                                <ul class="nav child_menu">                     
-                                    <li><a th:href="@{/admin/doctor}">Physician Management</a></li>
-                                    <li><a th:href="@{/admin/casher}">Cashier Staff Management</a></li>                         
-                                    <li><a th:href="@{/admin/patient}">Patient</a></li>                   
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                    <div th:if="${currentCasher != null}">
-                        <ul class="nav side-menu">
-                            <li style="width: 100%;"><a><i class="fa fa-home"></i>Cashier Feature<span class="fa fa-chevron-down"></span></a>
-                               <ul class="nav child_menu">  
-                                    <li><a th:href="@{/admin/donthuoc}">Invoice Medication</a></li>
-                                                      <li><a th:href="@{/admin/phieukham}">Waiting Ticket</a></li>  
-                               </ul>
-                           </li>
-                        </ul>
-                    </div>
-                     <div th:if="${currentDoctor != null}">
-                         <ul class="nav side-menu">
-                            <li style="width: 100%;"><a><i class="fa fa-home"></i>Doctor Feature<span class="fa fa-chevron-down"></span></a>
-                              <ul class="nav child_menu">  
-                                        <li><a th:href="@{/admin/toathuoc}">Prescription</a></li>
-                                           <li><a th:href="@{/admin/appointment}">Appointments</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div th:if="${currentCasher != null}" class="menu_section">
+                    <h3>General</h3>
+                    <ul class="nav side-menu">
+                        <li><a><i class="fa fa-home"></i>Cashier Feature<span class="fa fa-chevron-down"></span></a>
+                            <ul class="nav child_menu">  
+                                <li><a th:href="@{/admin/donthuoc}">Invoice Medication</a></li>
+                                <li><a th:href="@{/admin/phieukham}">Waiting Ticket</a></li>  
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
 
-                              </ul>
-                            </li>
-                         </ul>
-                     </div>
-
+            </div>
             <!-- /sidebar menu -->
         </div>
     </div>
