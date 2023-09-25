@@ -152,7 +152,7 @@
                 if (tdate < 10) {
                    tdate = "0" + tdate.toString();
                 }
-                var maxDate = year + "-" + month + "-" + tdate;
+                var maxDate = year + "-" + month + "-" + (tdate + 1);
                 document.getElementById("date").setAttribute("min", maxDate);
                 console.log(maxDate);
 
