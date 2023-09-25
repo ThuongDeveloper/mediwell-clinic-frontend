@@ -59,9 +59,10 @@
 </td>
                                         
                                              <td>
-                                               <a class="btn btn-info" th:href="@{/admin/doctor/edit/{id}(id=${e.getId()})}">Update</a>
-                                <a class="btn btn-warning" th:href="@{/admin/doctor/delete/{id}(id=${e.getId()})}">Delete</a>
-                                        </td>
+                                               <a class="btn btn-warning" th:href="@{/admin/doctor/edit/{id}(id=${e.getId()})}">Update</a>
+                                 <a class="btn btn-info" th:href="@{/admin/doctor/changepass/{id}(id=${e.getId()})}">Change Pass</a>
+                                    
+                                             </td>
                                     </tr>
                                 </tbody>
                                    
