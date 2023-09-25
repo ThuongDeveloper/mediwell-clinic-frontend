@@ -203,17 +203,6 @@ public class TaophieukhamController {
                 new ParameterizedTypeReference<List<TypeDoctor>>() {
         });
 
-        // Lấy danh sách phiếu khám hiện có từ API server
-        ResponseEntity<List<Taophieukham>> responseList = restTemplate.exchange(apiUrl, HttpMethod.GET, null, new ParameterizedTypeReference<List<Taophieukham>>() {
-        });
-        List<Taophieukham> existingTaophieukhams = responseList.getBody();
-
-        // Tìm số thứ tự lớn nhất trong danh sách phiếu khám
-        int maxSoThuTu = existingTaophieukhams.stream().mapToInt(Taophieukham::getSothutu).max().orElse(0);
-
-        // Tăng số thứ tự lên một để tạo phiếu khám mới
-        taophieukham.setSothutu(maxSoThuTu + 1);
-
         Casher newCasher = new Casher();
         TypeDoctor newTD = new TypeDoctor();
 
@@ -222,7 +211,7 @@ public class TaophieukhamController {
             List<TypeDoctor> listTypeDoctor = TDResponse.getBody();
             model.addAttribute("listTypeDoctor", listTypeDoctor);
             model.addAttribute("listCasher", listCasher);
-            session.setAttribute("error", "Cannot be left blank!");
+//            session.setAttribute("error", "Cannot be left blank!");
             return "/admin/phieukham/create";
         } else {
             newCasher.setId(Integer.parseInt(casherID));
@@ -234,7 +223,7 @@ public class TaophieukhamController {
             List<TypeDoctor> listTypeDoctor = TDResponse.getBody();
             model.addAttribute("listTypeDoctor", listTypeDoctor);
             model.addAttribute("listCasher", listCasher);
-            session.setAttribute("error", "Cannot be left blank!");
+//            session.setAttribute("error", "Cannot be left blank!");
             return "/admin/phieukham/create";
         } else {
             newTD.setId(Integer.parseInt(typeDoctorID));

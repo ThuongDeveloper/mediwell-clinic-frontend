@@ -52,7 +52,7 @@
                                                 <a th:if="${patient != null}" class="mediz-main-menu-right-button mediz-button-1 mediz-style-round dropdown-toggle menu-user" href="#" data-bs-toggle="dropdown" target="_self">
                                                     <img th:if="${patient.image != null}" th:src="@{${patient.image}}" alt="Avatar" class="avatar">
                                                         <img th:unless="${patient.image != null}" src="../client/image/avatar-default.jpg" alt="Default Avatar" class="avatar">
-                                                            [[${patient.username}]]
+                                                            [[${patient.name}]]
                                                             </a>
                                                             <ul th:if="${patient != null}" class="dropdown-menu">
                                                                 <li><a class="dropdown-item" th:href="@{/rating/{patientID}(patientID=${patient.id})}">Rating</a></li>
