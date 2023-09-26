@@ -37,6 +37,7 @@ import org.springframework.format.annotation.DateTimeFormat;
     @NamedQuery(name = "Appointment.findBySymptom", query = "SELECT a FROM Appointment a WHERE a.symptom = :symptom"),
     @NamedQuery(name = "Appointment.findByTypePayment", query = "SELECT a FROM Appointment a WHERE a.typePayment = :typePayment"),
     @NamedQuery(name = "Appointment.findByPrice", query = "SELECT a FROM Appointment a WHERE a.price = :price"),
+    @NamedQuery(name = "Appointment.findByStatus", query = "SELECT a FROM Appointment a WHERE a.status = :status"),
     @NamedQuery(name = "Appointment.findByDate", query = "SELECT a FROM Appointment a WHERE a.date = :date")})
 public class Appointment implements Serializable {
 
@@ -72,6 +73,8 @@ public class Appointment implements Serializable {
     @JoinColumn(name = "patient_id", referencedColumnName = "id")
     @ManyToOne
     private Patient patientId;
+    @Column(name = "status")
+    private Boolean status;
 
     public Appointment() {
     }
@@ -151,6 +154,16 @@ public class Appointment implements Serializable {
     public void setPatientId(Patient patientId) {
         this.patientId = patientId;
     }
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+    
+    
 
     @Override
     public int hashCode() {

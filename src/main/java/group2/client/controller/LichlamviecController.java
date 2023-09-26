@@ -11,6 +11,8 @@ import group2.client.entities.Lichlamviec;
 import group2.client.entities.Patient;
 import group2.client.repository.LichlamviecRepository;
 import group2.client.service.AuthService;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -67,7 +69,8 @@ public class LichlamviecController {
             // Kiểm tra mã trạng thái của phản hồi
             if (response.getStatusCode().is2xxSuccessful()) {
                 List<Lichlamviec> listLich = response.getBody();
-
+                
+               
                 // Xử lý dữ liệu theo nhu cầu của bạn
                 model.addAttribute("listLich", listLich);
                 model.addAttribute("currentAdmin", currentAdmin);

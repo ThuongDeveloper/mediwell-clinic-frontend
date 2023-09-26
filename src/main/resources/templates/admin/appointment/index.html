@@ -1,7 +1,30 @@
 <html  xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
     <div th:replace="~{admin/layout/layoutfixbug :: head}"></div>
-
+    
+    <style>
+        .current-date-input{
+            width: 165px;
+            margin-right: 5px;
+        }
+        .select-date-group{
+            display: flex;
+        }
+        .app-form{
+            display: flex;
+        }
+        .reset-search-btn{
+            text-align: center;
+            color: #fff;
+            border-radius: 3px;
+            padding: 10px 12px;
+            height: 38px;
+            background: #26B99A;
+        }
+        .reset-search-btn:hover{
+            color: #fff;
+        }
+    </style>
 
     <body class="nav-md">
         <div class="container body">
@@ -15,10 +38,24 @@
                 <div class="right_col" role="main">
                     <h1>Appointment Page</h1>
                     <div class="card shadow mb-4">
-<!--                        <div class="card-header py-3 card_head">
+                        <div class="card-header py-3 card_head select-date-group">
+                            <div th:if="${currentAdmin != null}">
+                                <form th:action="@{/admin/appointment/search}" class="app-form">
+                                    <input type="text" th:value="${#dates.format(currentDate, 'yyyy-MM-dd')}" class="form-control current-date-input" name="current-date" readonly="true"/>
 
-<a th:href="@{/admin/appointment/create}" class="btn btn-primary">Create</a>                       
-                        </div>-->
+                                    <button type="submit" class="btn btn-success">Search</button>    
+                                </form>
+                                <a th:href="@{/admin/appointment}" class="reset-search-btn">Reset</a>  
+                            </div>
+                            <div th:if="${currentDoctor != null}">
+                                <form th:action="@{/admin/appointment/search-each-day}" class="app-form">
+                                    <input class="form-control" name="date" required="true" id="date" type="date" />
+                                    <button type="submit" class="btn btn-success">Search</button> 
+                                </form>
+                                <a th:href="@{/admin/appointment}" class="reset-search-btn">Reset</a>
+                            </div>
+                                      
+                        </div>
                         <div class="card-body">
                             <div class="table-responsive">
 
@@ -35,7 +72,7 @@
                                             <th>Date</th>
                                             <th>Start time</th>
                                             <th>End time</th>
-
+                                            <th>Status</th>
                                         </tr>
                                     </thead>
                                 </tbody>
@@ -48,7 +85,23 @@
                                         <td th:text="${e.getDate()}"></td>
                                         <td th:text="${e.getStarttime()}"></td>
                                         <td th:text="${e.getEndtime()}"></td>
-
+                                        <td th:if="${e.getStatus() == false}">
+                                            <div th:if="${currentDoctor != null}">
+                                                <form th:action="@{/change-status/{id}(id=${e.getId()})}" method="post">
+                                                    <button type="submit" class="btn btn-danger">Haven't examined yet</button>
+                                                </form>
+                                            </div>
+                                             <div th:if="${currentAdmin != null}">
+                                                
+                                                <button type="submit" class="btn btn-danger">Haven't examined yet</button>
+                                                
+                                            </div>
+                                        </td>
+                                        <td th:if="${e.getStatus() == true}">
+                                            
+                                            <button type="submit" class="btn btn-success">Examined</button>
+                                           
+                                        </td>
                                     </tr>
                                 </tbody>
                                    
@@ -66,6 +119,25 @@
             </div>
 
             <div th:replace="~{admin/layout/layoutfixbug :: body}"></div>
-            
+            <script>
+               
+                var todayDate = new Date();
+                var month = todayDate.getMonth() + 1;
+                var year = todayDate.getFullYear();
+                var tdate = todayDate.getDate();
+                if (month < 10) {
+                   month = "0" + month.toString();
+                }
+                if (tdate < 10) {
+                   tdate = "0" + tdate.toString();
+                }
+                var maxDate = year + "-" + month + "-" + tdate;
+                
+              
+                
+                document.getElementById("date").setAttribute("min", maxDate);
+                console.log(maxDate);
+
+            </script>
     </body>
 </html>

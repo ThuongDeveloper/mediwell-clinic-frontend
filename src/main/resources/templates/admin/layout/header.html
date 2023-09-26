@@ -12,13 +12,13 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 <ul class=" navbar-right">
                   <li class="nav-item dropdown open" style="padding-left: 15px;">
                     <a th:if="${currentAdmin != null}" href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
-                      <img src="../admin/images/img.jpg" alt="">[[${currentAdmin.username}]]
+                      <img src="/admin/images/img.jpg" alt="">[[${currentAdmin.username}]]
                     </a>
                     <a th:if="${currentDoctor != null}" href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
-                      <img src="../admin/images/img.jpg" alt="">[[${currentDoctor.name}]]
+                      <img src="/admin/images/img.jpg" alt="">[[${currentDoctor.name}]]
                     </a>
                     <a th:if="${currentCasher != null}" href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
-                      <img src="../admin/images/img.jpg" alt="">[[${currentCasher.name}]]
+                      <img src="/admin/images/img.jpg" alt="">[[${currentCasher.name}]]
                     </a>
                     <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
                       <a class="dropdown-item"  th:href="@{/logout}"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
