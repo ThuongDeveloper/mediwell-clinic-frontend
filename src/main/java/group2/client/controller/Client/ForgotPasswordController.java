@@ -52,14 +52,14 @@ public String requestPasswordReset(@RequestParam("email") String email,
         ResponseEntity<String> response = restTemplate.exchange(passwordResetApiUrl, HttpMethod.POST, requestEntity, String.class);
         
         if (response.getStatusCode().is2xxSuccessful()) {
-            model.addAttribute("message", "Yêu cầu đặt lại mật khẩu đã được gửi đi.");
+            model.addAttribute("message", "The password reset request has been sent.");
             return "client/forgotPassword/confirm";
         } else {
-            model.addAttribute("message", "Đã xảy ra lỗi trong quá trình xử lý yêu cầu.");
+            model.addAttribute("message", "An error occurred while processing the request.");
         }
     } else {
         // Nếu email hoặc số điện thoại không khớp với dữ liệu trong cơ sở dữ liệu, hiển thị thông báo cho người dùng
-        model.addAttribute("message", "Email hoặc số điện thoại không khớp với dữ liệu trong hệ thống.");
+        model.addAttribute("message", "Email or phone number does not match the data in the system.");
     }
     return "client/forgotPassword/index";
 }

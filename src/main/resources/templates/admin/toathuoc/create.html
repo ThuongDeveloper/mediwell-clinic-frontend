@@ -45,7 +45,7 @@
                     <div class="x_panel">
                         <div class="x_content">
                             <form th:action="@{/admin/toathuoc/create}" th:object="${toathuoc}" method="post">
-                                <h1 style="text-align: center">Create Toa thuốc</h1>
+                                <h1 style="text-align: center">PRESCRIPTION</h1>
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-6">
@@ -177,7 +177,7 @@
             //Row 5
 
             const sangLabel = document.createElement('label');
-            sangLabel.textContent = 'Sáng';
+            sangLabel.textContent = 'Morning';
             colRow5.appendChild(sangLabel);
             const sangInput = createSangInput();
             sangInput.className ='form-control';
@@ -189,7 +189,7 @@
 
             //Row 6
             const truaLabel = document.createElement('label');
-            truaLabel.textContent = 'Trưa';
+            truaLabel.textContent = 'Noon';
             colRow6.appendChild(truaLabel);
             const truaInput = createTruaInput();
             truaInput.className ='form-control';
@@ -201,7 +201,7 @@
 
             //Row 7
             const chieuLabel = document.createElement('label');
-            chieuLabel.textContent = 'Chiều';
+            chieuLabel.textContent = 'Afternoon';
             colRow7.appendChild(chieuLabel);
             const chieuInput = createChieuInput();
             chieuInput.className ='form-control';
@@ -214,7 +214,7 @@
             //Row 8
 
             const toiLabel = document.createElement('label');
-            toiLabel.textContent = 'Tối';
+            toiLabel.textContent = 'Evening';
             colRow8.appendChild(toiLabel);
             const toiInput = createToiInput();
             toiInput.className ='form-control';
@@ -369,43 +369,45 @@
             let isValid = true;
 
             if (!quantityValue) {
-                // Hiển thị thông báo lỗi cho người dùng trong quantityErrorDiv
-                quantityInput.nextElementSibling.textContent = 'Vui lòng nhập giá trị cho quantity.';
+                // Display error message to the user in the quantityErrorDiv
+                quantityInput.nextElementSibling.textContent = 'Please enter a value for quantity.';
                 isValid = false;
             } else if (quantityValue <= 0) {
-                // Kiểm tra số âm hoặc bằng 0 cho quantity và hiển thị thông báo lỗi
-                quantityInput.nextElementSibling.textContent = 'Quantity phải lớn hơn 0.';
+                // Check for negative or zero quantity and display error message
+                quantityInput.nextElementSibling.textContent = 'Quantity must be greater than 0.';
                 isValid = false;
             } else if (sangValue + truaValue + chieuValue + toiValue === 0) {
-                // Kiểm tra nếu tất cả các trường đều bằng 0 khi quantity lớn hơn 0
-                quantityInput.nextElementSibling.textContent = 'Ít nhất một trong sáng, trưa, chiều, và tối phải khác 0.';
+                // Check if all fields are zero when quantity is greater than 0
+                quantityInput.nextElementSibling.textContent = 'At least one of morning, noon, afternoon, and evening must be greater than 0.';
                 isValid = false;
             } else if (sangValue + truaValue + chieuValue + toiValue > quantityValue) {
-                // Kiểm tra nếu tổng các trường lớn hơn quantity
-                quantityInput.nextElementSibling.textContent = 'Tổng của sáng, trưa, chiều, và tối không được lớn hơn quantity.';
+                // Check if the sum of fields is greater than quantity
+                quantityInput.nextElementSibling.textContent = 'The sum of morning, noon, afternoon, and evening cannot exceed quantity.';
                 isValid = false;
             }
 
-            // Kiểm tra và hiển thị thông báo lỗi cho các trường sáng, trưa, chiều, và tối nếu số âm hoặc lớn hơn quantity
+// Check and display error messages for morning, noon, afternoon, and evening fields if they are negative or greater than quantity
             if (sangValue < 0 || sangValue > quantityValue) {
-                sangInput.nextElementSibling.textContent = 'Sáng không hợp lệ.';
+                sangInput.nextElementSibling.textContent = 'Morning is invalid.';
                 isValid = false;
             }
 
             if (truaValue < 0 || truaValue > quantityValue) {
-                truaInput.nextElementSibling.textContent = 'Trưa không hợp lệ.';
+                truaInput.nextElementSibling.textContent = 'Noon is invalid.';
                 isValid = false;
             }
 
             if (chieuValue < 0 || chieuValue > quantityValue) {
-                chieuInput.nextElementSibling.textContent = 'Chiều không hợp lệ.';
+                chieuInput.nextElementSibling.textContent = 'Afternoon is invalid.';
                 isValid = false;
             }
 
             if (toiValue < 0 || toiValue > quantityValue) {
-                toiInput.nextElementSibling.textContent = 'Tối không hợp lệ.';
+                toiInput.nextElementSibling.textContent = 'Evening is invalid.';
                 isValid = false;
             }
+
+
 
             if (!isValid) {
                 event.preventDefault(); // Ngăn chặn gửi biểu mẫu nếu có lỗi
