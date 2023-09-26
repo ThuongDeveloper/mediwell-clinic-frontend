@@ -69,6 +69,7 @@ public class Casher implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createAt;
     @OneToMany(mappedBy = "casherId")
+    @JsonIgnore
     private Collection<Donthuoc> donthuocCollection;
     @OneToMany(mappedBy = "casherId")
     @JsonIgnore

@@ -22,7 +22,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                 </div>
                 <th:block th:text="${#session.removeAttribute('msg')}"></th:block>
             </div>
-            <h1 class="book-already-title">Bạn đã có lịch hẹn vào ngày này, bạn có muốn tiếp tục đặt không?</h1>
+            <h1 class="book-already-title">You already have an appointment scheduled for this date, do you want to continue booking?</h1>
             <div class="book-already-answer">
                 <form th:action="@{/book-appointment-already-create/{id}(id=${lichlamviec.id})}" method="post">
                     <input type="hidden" name="symptom" th:value="${symptom}"/>

@@ -193,47 +193,33 @@ public class TaophieukhamController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String create(Model model, @Valid @ModelAttribute Taophieukham taophieukham, BindingResult bindingResult, HttpSession session, @RequestParam("casherID") String casherID, @RequestParam("typeDoctorID") String typeDoctorID) {
+    public String create(Model model, HttpServletRequest requestCurent, @Valid @ModelAttribute Taophieukham taophieukham,
+            BindingResult bindingResult, HttpSession session, @RequestParam("typeDoctorID") String typeDoctorID) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+
+        Casher currentCasher = authService.isAuthenticatedCasher(requestCurent);
+
         ResponseEntity<List<Casher>> casherResponse = restTemplate.exchange(apiUrlCasher, HttpMethod.GET, null,
                 new ParameterizedTypeReference<List<Casher>>() {
         });
         ResponseEntity<List<TypeDoctor>> TDResponse = restTemplate.exchange(apiUrlTypeDoctor, HttpMethod.GET, null,
                 new ParameterizedTypeReference<List<TypeDoctor>>() {
         });
-
-        // Lấy danh sách phiếu khám hiện có từ API server
-        ResponseEntity<List<Taophieukham>> responseList = restTemplate.exchange(apiUrl, HttpMethod.GET, null, new ParameterizedTypeReference<List<Taophieukham>>() {
-        });
-        List<Taophieukham> existingTaophieukhams = responseList.getBody();
-
-        // Tìm số thứ tự lớn nhất trong danh sách phiếu khám
-        int maxSoThuTu = existingTaophieukhams.stream().mapToInt(Taophieukham::getSothutu).max().orElse(0);
-
-        // Tăng số thứ tự lên một để tạo phiếu khám mới
-        taophieukham.setSothutu(maxSoThuTu + 1);
-
-        Casher newCasher = new Casher();
+        
         TypeDoctor newTD = new TypeDoctor();
 
-        if (casherID == "") {
-            List<Casher> listCasher = casherResponse.getBody();
-            List<TypeDoctor> listTypeDoctor = TDResponse.getBody();
-            model.addAttribute("listTypeDoctor", listTypeDoctor);
-            model.addAttribute("listCasher", listCasher);
-            session.setAttribute("error", "Cannot be left blank!");
-            return "/admin/phieukham/create";
-        } else {
-            newCasher.setId(Integer.parseInt(casherID));
-            taophieukham.setCasherId(newCasher);
+        if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
+            taophieukham.setCasherId(currentCasher);
         }
 
         if (typeDoctorID == "") {
+            taophieukham.setCasherId(currentCasher);
             List<Casher> listCasher = casherResponse.getBody();
             List<TypeDoctor> listTypeDoctor = TDResponse.getBody();
             model.addAttribute("listTypeDoctor", listTypeDoctor);
             model.addAttribute("listCasher", listCasher);
+            model.addAttribute("currentCasher", currentCasher);
             session.setAttribute("error", "Cannot be left blank!");
             return "/admin/phieukham/create";
         } else {
@@ -242,9 +228,11 @@ public class TaophieukhamController {
         }
 
         if (bindingResult.hasErrors()) {
+            taophieukham.setCasherId(currentCasher);
             List<Casher> listCasher = casherResponse.getBody();
             List<TypeDoctor> listTypeDoctor = TDResponse.getBody();
             model.addAttribute("listTypeDoctor", listTypeDoctor);
+            model.addAttribute("currentCasher", currentCasher);
             model.addAttribute("listCasher", listCasher);
             return "/admin/phieukham/create";
         }
@@ -260,6 +248,7 @@ public class TaophieukhamController {
             return "redirect:/admin/phieukham";
         } else {
             // Xử lý lỗi nếu cần thiết
+            model.addAttribute("currentCasher", currentCasher);
             model.addAttribute("taophieukham", taophieukham);
             return "/admin/phieukham/create";
         }

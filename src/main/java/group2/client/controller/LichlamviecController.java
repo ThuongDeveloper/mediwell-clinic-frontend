@@ -203,7 +203,7 @@ public class LichlamviecController {
         Lichlamviec checklichlamviecByDoctorAndDateAndTime = lichlamviecRepository.findByDoctorIdAndDateAndStarttimeAndEndtime(newDoctor, lich.getDate(), parts[0], parts[1]);
         
         if(checklichlamviecByDoctorAndDateAndTime != null){
-            session.setAttribute("checklichlamviec", "Không thể tạo lịch cho cùng một bác sĩ trong cùng ngày cùng giờ được. Vui lòng chọn bác sĩ, ngày và giờ khác");
+            session.setAttribute("checklichlamviec", "It is not possible to schedule the same doctor for the same day and time. Please choose another doctor, date and time");
             return "redirect:/admin/lichlamviec/create";
         }else{
             // Tạo một HttpEntity với thông tin Casher để gửi yêu cầu POST
@@ -216,6 +216,7 @@ public class LichlamviecController {
                 // Thực hiện thêm xử lý sau khi tạo Casher thành công (nếu cần)
                 // Chuyển hướng về trang danh sách Casher
                  model.addAttribute("lich", new Lichlamviec());
+                 session.setAttribute("msg", "Create work schedule successful!");
                 return "redirect:/admin/lichlamviec";
             } else {
                 // Xử lý lỗi nếu cần thiết
@@ -334,6 +335,7 @@ public class LichlamviecController {
 
             try {
                 restTemplate.exchange(url, HttpMethod.PUT, request, Lichlamviec.class);
+                session.setAttribute("msg", "Update work schedule successful!");
                 return "redirect:/admin/lichlamviec";
 
             } catch (RestClientException e) {
@@ -346,7 +348,7 @@ public class LichlamviecController {
     }
 
     @RequestMapping(value = "/admin/lichlamviec/delete/{id}", method = RequestMethod.GET)
-    public String delete(@PathVariable("id") Integer id, HttpServletRequest request) {
+    public String delete(@PathVariable("id") Integer id, HttpServletRequest request, HttpSession session) {
         
          Admin currentAdmin = authService.isAuthenticatedAdmin(request);
         Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
@@ -358,19 +360,19 @@ public class LichlamviecController {
         } else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
             restTemplate.delete(apiUrl + "/" + id);
             // Thực hiện thêm xử lý sau khi xóa Casher thành công (nếu cần)
-
+            session.setAttribute("msg", "Delete work schedule successful!");
             // Chuyển hướng về trang danh sách Casher
             return "redirect:/admin/lichlamviec";
         }else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
              restTemplate.delete(apiUrl + "/" + id);
             // Thực hiện thêm xử lý sau khi xóa Casher thành công (nếu cần)
-
+            session.setAttribute("msg", "Delete work schedule successful!");
             // Chuyển hướng về trang danh sách Casher
             return "redirect:/admin/lichlamviec";
         }else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
              restTemplate.delete(apiUrl + "/" + id);
             // Thực hiện thêm xử lý sau khi xóa Casher thành công (nếu cần)
-
+            session.setAttribute("msg", "Delete work schedule successful!");
             // Chuyển hướng về trang danh sách Casher
             return "redirect:/admin/lichlamviec";
         }else {

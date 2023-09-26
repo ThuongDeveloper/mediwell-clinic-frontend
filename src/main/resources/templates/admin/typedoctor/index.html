@@ -14,7 +14,7 @@
              
                 <div class="right_col" role="main">
                        <h1 th:text="${messageCreate}"></h1>
-                    <h1>Doctor Page</h1>
+                    <h1>Type Doctor</h1>
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 card_head">
 <a th:href="@{/admin/typedoctor/create}" class="btn btn-primary">Create</a>
@@ -58,7 +58,7 @@
                 <div th:replace="~{admin/layout/footer :: footer}"></div>
             </div>
 
-            <div th:replace="~{admin/layout/layout :: body}"></div>
+            <div th:replace="~{admin/layout/layoutfixbug :: body}"></div>
 
     </body>
 </html>
