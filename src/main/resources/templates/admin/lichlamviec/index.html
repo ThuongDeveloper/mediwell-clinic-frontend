@@ -20,7 +20,14 @@
                             <a th:href="@{/admin/lichlamviec/create}" class="btn btn-primary">Create</a>                        </div>
                         <div class="card-body">
                             <div class="table-responsive">
+                                <div th:if="${session.msg}">
 
+                                    <div class="alert alert-success alert-dismissible fade show">
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                        <span th:text="${session.msg}"></span>
+                                    </div>
+                                    <th:block th:text="${#session.removeAttribute('msg')}"></th:block>
+                                </div>
                                 <table th:object="${listLich}" class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
 
                                     <thead>

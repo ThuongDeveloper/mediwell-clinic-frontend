@@ -75,7 +75,11 @@ public class DonthuocController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
+<<<<<<< HEAD
     public String create(Model model, int[] thuocID, int[] price, int[] quantity, HttpSession session, String name, String phone, HttpServletRequest requestCurent) {
+=======
+    public String create( Model model, int[] thuocID, int[] price, int[] quantity, HttpSession session, String name, String phone, HttpServletRequest requestCurent) {
+>>>>>>> b07e42e6f6ea862391a0a0f7e0aa14d7405208e4
 
         String hienloiQuantity = "";
 
@@ -84,6 +88,18 @@ public class DonthuocController {
         ResponseEntity<List<Thuoc>> response1 = restTemplate.exchange(apiUrl_Thuoc, HttpMethod.GET, null,
                 new ParameterizedTypeReference<List<Thuoc>>() {
         });
+<<<<<<< HEAD
+=======
+    
+//    public String create(Model model, int[] thuocID, int[] price, int[] quantity, HttpSession session, String name,
+//            String phone) {
+//
+//        String hienloiQuantity = "";
+//
+//        ResponseEntity<List<Thuoc>> response1 = restTemplate.exchange(apiUrl_Thuoc, HttpMethod.GET, null,
+//                new ParameterizedTypeReference<List<Thuoc>>() {
+//                });
+>>>>>>> b07e42e6f6ea862391a0a0f7e0aa14d7405208e4
         var flagQuantity = true;
 
         List<Thuoc> listThuoc = response1.getBody();
@@ -98,8 +114,17 @@ public class DonthuocController {
                     }
                 }
             }
+<<<<<<< HEAD
         }
 
+=======
+
+        }
+
+
+        
+
+>>>>>>> b07e42e6f6ea862391a0a0f7e0aa14d7405208e4
         if (flagQuantity == false) {
             session.setAttribute("error", hienloiQuantity);
             return "admin/donthuoc/create";
@@ -114,8 +139,19 @@ public class DonthuocController {
         listHDTD.setListHDT(list);
         listHDTD.setName(name);
         listHDTD.setPhone(phone);
+<<<<<<< HEAD
         listHDTD.setCasherId(currentCasher);
 
+=======
+
+        listHDTD.setCasherId(currentCasher);
+
+//        if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
+//            donthuoc.setCasherId(currentCasher);
+//        }
+
+
+>>>>>>> b07e42e6f6ea862391a0a0f7e0aa14d7405208e4
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
@@ -148,6 +184,10 @@ public class DonthuocController {
             // Xử lý lỗi nếu cần thiết
             return "redirect:/admin/donthuoc";
         }
+<<<<<<< HEAD
+=======
+
+>>>>>>> b07e42e6f6ea862391a0a0f7e0aa14d7405208e4
     }
 
 }
