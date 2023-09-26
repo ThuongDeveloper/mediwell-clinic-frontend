@@ -2,6 +2,85 @@
 
     <div th:replace="~{admin/layout/layoutfixbug :: head}"></div>
 
+    <style>
+        /* Style for the form container */
+        .form-container {
+            width: 60%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        /* Style for form labels */
+        label {
+            font-weight: bold;
+        }
+
+        /* Style for form input fields */
+        .form-control {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        /* Style for error messages */
+        .help-block.with-errors {
+            color: red;
+            font-size: 12px;
+        }
+
+        /* Style for the submit button */
+        .btn-primary {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        /* Style for the reset button */
+        .btn-success {
+            background-color: #28a745;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        /* Add more custom styles as needed */
+
+        /* Center align the form on the page */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        /* CSS tùy chỉnh cho trường select */
+        .custom-select {
+            display: block;
+            width: 100%;
+            padding: 0.375rem 2.25rem 0.375rem 0.75rem;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #495057;
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 1px solid #ced4da;
+            border-radius: 0.25rem;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+
+    </style>
 
     <body class="nav-md">
         <div class="container body">
@@ -13,66 +92,99 @@
                 <!-- Content -->
 
                 <div class="right_col" role="main">
-                    <h1>Doctor Page</h1>
+                    <h1>Medication Page</h1>
                     <div class="row">
                         <div class="col-md-12 col-sm-12">
                             <div class="x_panel">
                                 <div class="x_content">
-                                    <form th:action="@{/admin/thuoc/edit}" th:object="${objThuoc}" method="post">
+                                    <form th:action="@{/admin/thuoc/edit/{id}(id=${objThuoc.id})}" th:object="${objThuoc}" method="post">
                                         <span class="section">Edit</span>
                                         <div class="field item form-group">
                                             <label class="col-form-label col-md-3 col-sm-3 label-align">Name<span class="required">*</span></label>
                                             <div class="col-md-6 col-sm-6">
-                                                <input type="text" th:field="*{name}" class="form-control" required="required"
-                                                       >
-                                                    <div class="help-block with-errors"></div>
+                                                <input type="text" th:field="*{name}" class="form-control">
+                                                <div class="help-block with-errors" id="name-error"></div>
                                             </div>
                                         </div>
                                         <div class="field item form-group">
                                             <label class="col-form-label col-md-3 col-sm-3 label-align">Company name<span class="required">*</span></label>
                                             <div class="col-md-6 col-sm-6">
-                                                <input type="text" th:field="*{companyName}" class="form-control" required="required"
-                                                       pattern=".{6,}" title="Minimum 6 characters" data-error=" Company Name is required (minimum 6 characters)">
-                                                    <div class="help-block with-errors"></div>
+                                                <input type="text" th:field="*{companyName}" class="form-control" >
+                                                <div class="help-block with-errors" id="companyName-error"></div>
                                             </div>
                                         </div>
                                         <div class="field item form-group">
                                             <label class="col-form-label col-md-3 col-sm-3 label-align">Composition<span class="required">*</span></label>
                                             <div class="col-md-6 col-sm-6">
-                                                <input type="text" th:field="*{composition}" class="form-control" required="required"
-                                                       >
-                                                    <div class="help-block with-errors"></div>
+                                                <input type="text" th:field="*{composition}" class="form-control">
+                                                <div class="help-block with-errors" id="composition-error"></div>
                                             </div>
                                         </div>
                                         <div class="field item form-group">
                                             <label class="col-form-label col-md-3 col-sm-3 label-align">Quantity<span class="required">*</span></label>
                                             <div class="col-md-6 col-sm-6">
-                                                <input type="number" th:field="*{quantity}" class="form-control" required="required"
-                                                       >
-                                                    <div class="help-block with-errors"></div>
+                                                <input type="number" th:field="*{quantity}" class="form-control">
+                                                <div class="help-block with-errors" id="quantity-error"></div>
+
+                                            </div>
+                                        </div>
+                                        <div class="field item form-group">
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align">Unit<span class="required">*</span></label>
+                                            <div class="col-md-6 col-sm-6">
+
+                                                <select name="donviID" class="custom-select">
+                                                    <option value="">-- Choose unit --</option>
+                                                    <option th:each="donvi : ${listDonvi}"
+                                                            th:value="${donvi.id}"
+                                                            th:text="${donvi.name}"
+                                                            th:selected="${donvi.id == objThuoc.donviId.id}">>
+                                                    </option>
+                                                </select>
+                                                <div id="donviID-message" style="color: red;"></div>
+
                                             </div>
                                         </div>
                                         <div class="field item form-group">
                                             <label class="col-form-label col-md-3 col-sm-3 label-align">Price<span class="required">*</span></label>
                                             <div class="col-md-6 col-sm-6">
-                                                <input type="number" th:field="*{price}" class="form-control" required="required"
-                                                       >
-                                                    <div class="help-block with-errors"></div>
+                                                <input type="number" th:field="*{price}" class="form-control">
+                                                <div class="help-block with-errors" id="price-error"></div>
+
+                                            </div>
+                                        </div>
+                                        <div class="field item form-group">
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align">Manufacturing Date<span class="required">*</span></label>
+                                            <div class="col-md-6 col-sm-6">
+                                                <input type="date" th:field="*{manufacturingDate}" id="manufacturingDate" class="form-control"
+                                                >
+                                                <div class="help-block with-errors" id="manufacturingDate-error"></div>
+
+                                            </div>
+                                        </div>
+                                        <div class="field item form-group">
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align">Expiry Date<span class="required">*</span></label>
+                                            <div class="col-md-6 col-sm-6">
+                                                <input type="date" th:field="*{expiryDate}" id="expiryDate" class="form-control"
+                                                >
+                                                <div class="help-block with-errors" id="expiryDate-error"></div>
+
+                                                <div id="error-message" style="color: red;"></div>
                                             </div>
                                         </div>
                                        
                                         <div class="field item form-group">
-                                            <label class="col-form-label col-md-3 col-sm-3 label-align">Type Doctor<span class="required">*</span></label>
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align">Medication Types<span class="required">*</span></label>
                                             <div class="col-md-6 col-sm-6">
-                                                      <input  readonly th:value="${objThuoc.getTypethuocId().getName()}"/>
-                                                <select name="typeThuocID">
-                                                    
+<!--                                                      <input  readonly th:value="${objThuoc.getTypethuocId().getName()}"/>-->
+                                                <select name="typeThuocID" class="custom-select">
                                                     <option th:each="typeThuoc : ${listTypeThuoc}"
                                                             th:value="${typeThuoc.id}"
-                                                            th:text="${typeThuoc.name}">
+                                                            th:text="${typeThuoc.name}"
+                                                            th:selected="${typeThuoc.id == objThuoc.typethuocId.id}">
                                                     </option>
                                                 </select>
-                                              
+
+
 
                                             </div>
                                         </div>
@@ -88,7 +200,104 @@
                             </div>
                         </div>
                     </div>
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                            const form = document.querySelector('form');
+                            form.addEventListener('submit', function (event) {
+                                let isValid = true;
 
+                                // Clear any previous error messages
+                                const errorMessages = document.querySelectorAll('.help-block.with-errors');
+                                errorMessages.forEach(function (errorMessage) {
+                                    errorMessage.textContent = '';
+                                });
+
+                                // Validate the 'Name' field
+                                const nameField = form.querySelector('input[name="name"]');
+                                if (nameField.value.trim() === '') {
+                                    const errorMessage = form.querySelector('#name-error');
+                                    errorMessage.textContent = 'Name is required.';
+                                    isValid = false;
+                                }
+
+                                // Validate the 'Company Name' field
+                                const companyNameField = form.querySelector('input[name="companyName"]');
+                                if (companyNameField.value.trim() === '') {
+                                    const errorMessage = form.querySelector('#companyName-error');
+                                    errorMessage.textContent = 'Company name is required.';
+                                    isValid = false;
+                                }
+
+                                // Validate the 'Composition' field
+                                const compositionField = form.querySelector('input[name="composition"]');
+                                if (compositionField.value.trim() === '') {
+                                    const errorMessage = form.querySelector('#composition-error');
+                                    errorMessage.textContent = 'Composition is required.';
+                                    isValid = false;
+                                }
+
+                                // Validate the 'Quantity' field
+                                const quantityField = form.querySelector('input[name="quantity"]');
+                                const quantityValue = parseFloat(quantityField.value);
+                                if (isNaN(quantityValue) || quantityValue <= 0) {
+                                    const errorMessage = form.querySelector('#quantity-error');
+                                    errorMessage.textContent = 'Please enter a valid quantity.';
+                                    isValid = false;
+                                }
+
+                                // Validate the 'Price' field
+                                const priceField = form.querySelector('input[name="price"]');
+                                const priceValue = parseFloat(priceField.value);
+                                if (isNaN(priceValue) || priceValue <= 0) {
+                                    const errorMessage = form.querySelector('#price-error');
+                                    errorMessage.textContent = 'Please enter a valid price.';
+                                    isValid = false;
+                                }
+
+                                // Validate the 'Manufacturing Date' and 'Expiry Date' fields
+                                const manufacturingDateField = form.querySelector('input[name="manufacturingDate"]');
+                                const expiryDateField = form.querySelector('input[name="expiryDate"]');
+                                const manufacturingDateValue = new Date(manufacturingDateField.value);
+                                const expiryDateValue = new Date(expiryDateField.value);
+
+                                if (manufacturingDateValue > expiryDateValue) {
+                                    const errorMessage = form.querySelector('#expiryDate-error');
+                                    errorMessage.textContent = 'Expiry date cannot be earlier than manufacturing date.';
+                                    isValid = false;
+                                }
+                                if (!isValidDate(manufacturingDateField.value)) {
+                                    const errorMessage = form.querySelector('#manufacturingDate-error');
+                                    errorMessage.textContent = 'Please enter a valid manufacturing date.';
+                                    isValid = false;
+                                }
+                                // Validate the 'Expiry Date' field
+                                if (!isValidDate(expiryDateField.value)) {
+                                    const errorMessage = form.querySelector('#expiryDate-error');
+                                    errorMessage.textContent = 'Please enter a valid expiry date.';
+                                    isValid = false;
+                                }
+
+                                // Validate the 'Gender' field (TypeThuocID dropdown)
+                                const typeThuocIDField = form.querySelector('select[name="typeThuocID"]');
+                                if (typeThuocIDField.value === '') {
+                                    const errorMessage = form.querySelector('#typeThuocID-message');
+                                    errorMessage.textContent = 'Please select a type of medicine.';
+                                    isValid = false;
+                                }
+
+                                // If any field is invalid, prevent form submission
+                                if (!isValid) {
+                                    event.preventDefault();
+                                }
+                            });
+
+                            // Function to validate date format (YYYY-MM-DD)
+                            function isValidDate(dateString) {
+                                const pattern = /^\d{4}-\d{2}-\d{2}$/;
+                                return pattern.test(dateString);
+                            }
+                        });
+                    </script>
                 </div>
 
                 <!-- Content -->
