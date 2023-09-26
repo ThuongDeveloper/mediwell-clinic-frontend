@@ -54,9 +54,6 @@ public class Taophieukham implements Serializable {
     @Length(min = 10, max = 150, message = "Address must be from 10 to 150 characters")
     private String address;
     @Column(name = "total_money")
-    @NotNull(message = "Total money cannot be left blank!!!")
-    @Min(value = 1, message = "Total money cannot be less than 1$!")
-    @Max(value = 1000000000, message = "Total money cannot be more than 1000000000$!")
     private Integer totalMoney;
     @Column(name = "create_at")
     @Temporal(TemporalType.TIMESTAMP)

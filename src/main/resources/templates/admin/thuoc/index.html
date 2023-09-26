@@ -2,7 +2,76 @@
 
     <div th:replace="~{admin/layout/layout :: head}"></div>
 
+<style>
+    /* Style for expired items */
+    .expired {
+        display: inline-block;
+        padding: 5px 10px;
+        background-color: red;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: default;
+    }
 
+    /* Style for active items */
+    .active1 {
+        display: inline-block;
+        padding: 5px 10px;
+        background-color: green;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: default;
+    }
+
+    .notification {
+        /* CSS cho thông báo */
+        display: none;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        transform: translateY(50%);
+        padding: 20px;
+        background-color: #4CAF50;
+        color: #FFFFFF;
+        border-radius: 5px;
+        z-index: 1000;
+        text-align: center;
+        font-size: 18px;
+        animation: slide-in 0.5s, fade-out 2s 1.5s;
+    }
+
+    .notification.active {
+        display: block;
+    }
+
+    .notification-close {
+        position: absolute;
+        top: 5px;
+        right: 10px;
+        cursor: pointer;
+    }
+
+    @keyframes slide-in {
+        from {
+            transform: translateY(100%);
+        }
+        to {
+            transform: translateY(50%);
+        }
+    }
+
+    @keyframes fade-out {
+        0% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;
+        }
+    }
+
+</style>
     <body class="nav-md">
         <div class="container body">
             <div class="main_container">
@@ -12,7 +81,7 @@
                 </div>
                 <!-- Content -->
                 <div class="right_col" role="main">
-                    <h1>Drug Page</h1>
+                    <h1>Medication Page</h1>
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 card_head">
 
@@ -20,6 +89,11 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
+                                <div th:if="${MessageCreate != null}" class="notification">
+                                    <span class="notification-close" onclick="closeNotification()">&times;</span>
+                                    <p id="notificationMessage" th:text="${MessageCreate}"></p>
+                                </div>
+
 
                                 <table  class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
@@ -29,9 +103,12 @@
                                             <th>Company Name</th>
                                             <th>Composition</th>
                                             <th>Quantity</th>
+                                            <th>Unit</th>
                                             <th>Price</th>
                                             <th>Drug Type</th>
-                                            <th>Create at</th>
+                                            <th>Manufacturing Date</th>
+                                            <th>Expiry Date</th>
+                                            <th>Expired</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -42,9 +119,16 @@
                                         <th th:text="${e.getCompanyName()}"></th>
                                         <th th:text="${e.getComposition()}"></th>
                                         <th th:text="${e.getQuantity()}"></th>
+                                        <th th:text="${e.getDonviId().getName()}"></th>
                                         <th th:text="${e.getPrice()}"></th>
                                         <th th:text="${e.getTypethuocId().getName()}"></th>
-                                        <th th:text="${#dates.format(e.getCreateAt(), 'dd/MM/yyyy')}"></th>
+                                        <th th:text="${#dates.format(e.getManufacturingDate(), 'dd/MM/yyyy')}"></th>
+                                        <th th:text="${#dates.format(e.getExpiryDate(), 'dd/MM/yyyy')}"></th>
+                                        <td>
+                                            <span th:if="${e.getExpiryDate().before(e.getManufacturingDate())}" class="expired">Expired</span>
+                                            <span th:unless="${e.getExpiryDate().before(e.getManufacturingDate())}" class="active1">Active</span>
+                                        </td>
+
                                         <td>
                                             <a class="btn btn-info" th:href="@{/admin/thuoc/edit/{id}(id=${e.getId()})}">Update</a> | 
                                             <a class="btn btn-warning" th:href="@{/admin/thuoc/delete/{id}(id=${e.getId()})}">Delete</a>
@@ -58,7 +142,26 @@
                     </div>
 
                 </div>
+<script>
+    // Hiển thị thông báo
+    function showNotification(message) {
+        var notification = document.querySelector(".notification");
+        var notificationMessage = document.getElementById("notificationMessage");
+        notificationMessage.innerText = message;
+        notification.classList.add("active");
+    }
 
+    // Ẩn thông báo
+    function closeNotification() {
+        var notification = document.querySelector(".notification");
+        notification.classList.remove("active");
+    }
+
+    // Ví dụ sử dụng
+    showNotification("Cập nhật thành công.");
+    // Sau một khoảng thời gian, bạn có thể ẩn thông báo bằng cách gọi closeNotification()
+
+</script>
 
                 <!-- Content -->
                 <div th:replace="~{admin/layout/footer :: footer}"></div>

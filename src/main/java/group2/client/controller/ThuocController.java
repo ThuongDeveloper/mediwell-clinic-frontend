@@ -4,12 +4,7 @@
  */
 package group2.client.controller;
 
-import group2.client.entities.Admin;
-import group2.client.entities.Casher;
-import group2.client.entities.Doctor;
-import group2.client.entities.Patient;
-import group2.client.entities.Thuoc;
-import group2.client.entities.Typethuoc;
+import group2.client.entities.*;
 import group2.client.service.AuthService;
 
 import java.text.ParseException;
@@ -22,8 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -40,6 +34,8 @@ public class ThuocController {
 
     private String apiUrl_Thuoc = "http://localhost:8888/api/thuoc/";
     private String apiUrl_TypeThuoc = "http://localhost:8888/api/typethuoc/";
+
+    private String apiUrl_Donvi = "http://localhost:8888/api/donvi/";
     RestTemplate restTemplate = new RestTemplate();
 
     @Autowired
@@ -117,7 +113,13 @@ public class ThuocController {
             ResponseEntity<List<Typethuoc>> response = restTemplate.exchange(apiUrl_TypeThuoc, HttpMethod.GET, null,
                     new ParameterizedTypeReference<List<Typethuoc>>() {
             });
+            //Lấy List Donvi
+            ResponseEntity<List<Donvi>> response1 = restTemplate.exchange(apiUrl_Donvi, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<List<Donvi>>() {
+                    });
+            List<Donvi> listDonvi = response1.getBody();
             List<Typethuoc> listTypeThuoc = response.getBody();
+            model.addAttribute("listDonvi", listDonvi);
             model.addAttribute("listTypeThuoc", listTypeThuoc);
             model.addAttribute("currentAdmin", currentAdmin);
             model.addAttribute("thuoc", new Thuoc());
@@ -137,7 +139,13 @@ public class ThuocController {
             ResponseEntity<List<Typethuoc>> response = restTemplate.exchange(apiUrl_TypeThuoc, HttpMethod.GET, null,
                     new ParameterizedTypeReference<List<Typethuoc>>() {
             });
+            //Lấy List Donvi
+            ResponseEntity<List<Donvi>> response1 = restTemplate.exchange(apiUrl_Donvi, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<List<Donvi>>() {
+                    });
+            List<Donvi> listDonvi = response1.getBody();
             List<Typethuoc> listTypeThuoc = response.getBody();
+            model.addAttribute("listDonvi", listDonvi);
             model.addAttribute("listTypeThuoc", listTypeThuoc);
             model.addAttribute("currentCasher", currentCasher);
             model.addAttribute("thuoc", new Thuoc());
@@ -152,15 +160,17 @@ public class ThuocController {
     public String create(
             Model model,
             Thuoc thuoc,
-            @RequestParam("typeThuocID") String typethuocID
+            @RequestParam("typeThuocID") String typethuocID,
+            @RequestParam("donviID") String donviID
     ) {
         // Set các giá trị còn thiếu
         Typethuoc newTT = new Typethuoc();
         newTT.setId(Integer.parseInt(typethuocID));
-
+        Donvi newDv = new Donvi();
+        newDv.setId(Integer.parseInt(donviID));
         thuoc.setCreateAt(new Date());
         thuoc.setTypethuocId(newTT);
-
+        thuoc.setDonviId(newDv);
 
         var a = thuoc.getTypethuocId().getId();
         var response = restTemplate.postForObject(apiUrl_Thuoc + "/create", thuoc, Boolean.class);
@@ -195,7 +205,12 @@ public class ThuocController {
             });
             List<Typethuoc> listTypeThuoc = responseTypeDoctor.getBody();
             model.addAttribute("listTypeThuoc", listTypeThuoc);
-
+            //Lấy List Donvi
+            ResponseEntity<List<Donvi>> response1 = restTemplate.exchange(apiUrl_Donvi, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<List<Donvi>>() {
+                    });
+            List<Donvi> listDonvi = response1.getBody();
+            model.addAttribute("listDonvi", listDonvi);
             //Lấy One Doctor theo ID
             ResponseEntity<Thuoc> response = restTemplate.getForEntity(apiUrl_Thuoc + "/edit/{id}", Thuoc.class, id);
 
@@ -217,7 +232,12 @@ public class ThuocController {
             });
             List<Typethuoc> listTypeThuoc = responseTypeDoctor.getBody();
             model.addAttribute("listTypeThuoc", listTypeThuoc);
-
+            //Lấy List Donvi
+            ResponseEntity<List<Donvi>> response1 = restTemplate.exchange(apiUrl_Donvi, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<List<Donvi>>() {
+                    });
+            List<Donvi> listDonvi = response1.getBody();
+            model.addAttribute("listDonvi", listDonvi);
             //Lấy One Doctor theo ID
             ResponseEntity<Thuoc> response = restTemplate.getForEntity(apiUrl_Thuoc + "/edit/{id}", Thuoc.class, id);
 
@@ -239,7 +259,12 @@ public class ThuocController {
             });
             List<Typethuoc> listTypeThuoc = responseTypeDoctor.getBody();
             model.addAttribute("listTypeThuoc", listTypeThuoc);
-
+            //Lấy List Donvi
+            ResponseEntity<List<Donvi>> response1 = restTemplate.exchange(apiUrl_Donvi, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<List<Donvi>>() {
+                    });
+            List<Donvi> listDonvi = response1.getBody();
+            model.addAttribute("listDonvi", listDonvi);
             //Lấy One Doctor theo ID
             ResponseEntity<Thuoc> response = restTemplate.getForEntity(apiUrl_Thuoc + "/edit/{id}", Thuoc.class, id);
 
@@ -260,20 +285,47 @@ public class ThuocController {
 
     }
 
-    @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public String update(Model model, Thuoc objThuoc, @RequestParam String typeThuocID, RedirectAttributes redirectAttributes) {
-
+    @RequestMapping(value = "/edit/{id}", method = RequestMethod.POST)
+    public String update(
+            Model model,
+            @PathVariable("id") Integer id,
+            Thuoc objThuoc,
+            @RequestParam String typeThuocID,
+            @RequestParam String donviID,
+            RedirectAttributes redirectAttributes
+    ) {
+        // Tạo một đối tượng Typethuoc mới dựa trên typeThuocID được truyền từ form
         Typethuoc newTD = new Typethuoc();
         newTD.setId(Integer.parseInt(typeThuocID));
         objThuoc.setTypethuocId(newTD);
+        Donvi newDv = new Donvi();
+        newDv.setId(Integer.parseInt(donviID));
+        objThuoc.setDonviId(newDv);
+        // Sử dụng RestTemplate để gửi yêu cầu PUT đến API
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Thuoc> requestEntity = new HttpEntity<>(objThuoc, headers);
 
-        restTemplate.put(apiUrl_Thuoc + "/edit", objThuoc);
-        // Chú ý rằng, phương thức put trả về void (không có phản hồi từ server)
+        ResponseEntity<Thuoc> response = restTemplate.exchange(
+                apiUrl_Thuoc + "/edit/",  // Địa chỉ URL cần thêm id
+                HttpMethod.PUT,
+                requestEntity,
+                Thuoc.class
+        );
 
-        // Điều hướng về trang danh sách TypeDoctor với thông báo thành công
-        redirectAttributes.addFlashAttribute("MessageCreate", "Cập nhật thành công");
+        if (response.getStatusCode().is2xxSuccessful()) {
+            // Nếu cập nhật thành công, thêm thông báo thành công vào flash attribute
+            redirectAttributes.addFlashAttribute("MessageCreate", "Update successful");
+        } else {
+            // Nếu không thành công, thêm thông báo lỗi vào flash attribute
+            redirectAttributes.addFlashAttribute("MessageCreate", "Update failed");
+        }
+
+        // Điều hướng về trang danh sách thuốc
         return "redirect:/admin/thuoc";
     }
+
+
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
     public String delete(Model model, @PathVariable("id") Integer id, HttpServletRequest request, RedirectAttributes redirectAttributes) {
