@@ -2,7 +2,24 @@
 
     <div th:replace="~{admin/layout/layoutfixbug :: head}"></div>
 
+<style>
+    /* Style the success container */
+    .success-container {
+        border: 1px solid #28a745; /* Green border color for success container */
+        background-color: #d4edda; /* Background color for success container */
+        padding: 10px; /* Padding inside the success container */
+        border-radius: 3px; /* Rounded corners for success container */
+        margin-top: 10px; /* Margin space at the top of the success container */
+    }
 
+    /* Style the success message text */
+    .success-message {
+        color: #28a745; /* Green color for success text */
+        font-weight: bold; /* Bold text for success message */
+    }
+
+
+</style>
     <body class="nav-md">
         <div class="container body">
             <div class="main_container">
@@ -12,7 +29,12 @@
                 </div>
                 <!-- Content -->
                 <div class="right_col" role="main">
-                    <h1>Doctor Page</h1>
+                    <h1>Medication Types</h1>
+                    <!-- Display success message in the success container -->
+                    <!-- Display success message only if it's not null -->
+                    <div th:if="${MessageCreate != null}" class="success-container">
+                        <span class="success-message" th:text="${MessageCreate}"></span>
+                    </div>
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 card_head">
 
@@ -43,7 +65,7 @@
                                         <td th:text="${e.getId()}"></td>
                                         <td th:text="${e.getName()}"></td>
                                         <td>
-                                            <a class="btn btn-info" th:href="@{/admin/typethuoc/edit/{id}(id=${e.getId()})}">Update</a> | 
+                                            <a class="btn btn-info" th:href="@{/admin/typethuoc/edit/{id}(id=${e.getId()})}">Update</a> |
                                             <a class="btn btn-warning" th:href="@{/admin/typethuoc/delete/{id}(id=${e.getId()})}">Delete</a>
                                         </td>
 

@@ -242,7 +242,7 @@ public class CasherController {
             return "/admin/casher/edit/" + updatedCasher.getId();
         }
     }
-    
+
     @RequestMapping(value = "/admin/casher/changepassword/{id}", method = RequestMethod.GET)
     public String changePass(Model model, @PathVariable("id") Integer id, HttpServletRequest request) {
 
@@ -269,7 +269,7 @@ public class CasherController {
     }
 
     @RequestMapping(value = "/admin/casher/changepassword", method = RequestMethod.POST)
-    public String changePass(Model model, @Valid @ModelAttribute Casher changePassword, BindingResult bindingResult, @RequestParam("newPass") String newPass) {
+    public String changePass(Model model, @Valid @ModelAttribute Casher changePassword, BindingResult bindingResult, @RequestParam("newPass") String newPass, HttpSession session) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
@@ -279,7 +279,12 @@ public class CasherController {
         
         Casher casher = casherService.getCasherById(changePassword.getId());
 
-        casher.setPassword(newPass);
+        if (newPass == "") {
+            session.setAttribute("error", "The new password cannot be blank!!!");
+            return "/admin/casher/changepassword";
+        } else {
+            casher.setPassword(newPass);
+        }
 
         // Bổ sung id vào URL khi thực hiện PUT
         String url = apiUrl + "/changePassword/" + changePassword.getId();
@@ -295,7 +300,6 @@ public class CasherController {
             return "/admin/casher/changepassword/" + changePassword.getId();
         }
     }
-
 
     @RequestMapping(value = "/admin/casher/delete/{id}", method = RequestMethod.GET)
     public String delete(@PathVariable("id") Integer id, HttpServletRequest request, HttpSession session) {

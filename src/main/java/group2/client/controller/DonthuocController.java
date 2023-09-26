@@ -75,7 +75,7 @@ public class DonthuocController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String create( Model model, int[] thuocID, int[] price, int[] quantity, HttpSession session, String name, String phone, HttpServletRequest requestCurent) {
+    public String create(Model model, int[] thuocID, int[] price, int[] quantity, HttpSession session, String name, String phone, HttpServletRequest requestCurent) {
 
         String hienloiQuantity = "";
 
@@ -84,15 +84,6 @@ public class DonthuocController {
         ResponseEntity<List<Thuoc>> response1 = restTemplate.exchange(apiUrl_Thuoc, HttpMethod.GET, null,
                 new ParameterizedTypeReference<List<Thuoc>>() {
         });
-    
-//    public String create(Model model, int[] thuocID, int[] price, int[] quantity, HttpSession session, String name,
-//            String phone) {
-//
-//        String hienloiQuantity = "";
-//
-//        ResponseEntity<List<Thuoc>> response1 = restTemplate.exchange(apiUrl_Thuoc, HttpMethod.GET, null,
-//                new ParameterizedTypeReference<List<Thuoc>>() {
-//                });
         var flagQuantity = true;
 
         List<Thuoc> listThuoc = response1.getBody();
@@ -107,12 +98,7 @@ public class DonthuocController {
                     }
                 }
             }
-
         }
-
-
-        
-
         if (flagQuantity == false) {
             session.setAttribute("error", hienloiQuantity);
             return "admin/donthuoc/create";
@@ -127,14 +113,8 @@ public class DonthuocController {
         listHDTD.setListHDT(list);
         listHDTD.setName(name);
         listHDTD.setPhone(phone);
-
         listHDTD.setCasherId(currentCasher);
-
-//        if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
-//            donthuoc.setCasherId(currentCasher);
-//        }
-
-
+        
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
@@ -167,7 +147,6 @@ public class DonthuocController {
             // Xử lý lỗi nếu cần thiết
             return "redirect:/admin/donthuoc";
         }
-
     }
 
 }
