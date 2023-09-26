@@ -9,13 +9,19 @@ import group2.client.entities.Casher;
 import group2.client.entities.Doctor;
 import group2.client.entities.Patient;
 import group2.client.entities.Taophieukham;
+import group2.client.entities.Toathuoc;
 import group2.client.entities.TypeDoctor;
 import group2.client.service.AuthService;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
@@ -206,7 +212,7 @@ public class TaophieukhamController {
         ResponseEntity<List<TypeDoctor>> TDResponse = restTemplate.exchange(apiUrlTypeDoctor, HttpMethod.GET, null,
                 new ParameterizedTypeReference<List<TypeDoctor>>() {
         });
-        
+
         TypeDoctor newTD = new TypeDoctor();
 
         if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
@@ -236,6 +242,8 @@ public class TaophieukhamController {
             model.addAttribute("listCasher", listCasher);
             return "/admin/phieukham/create";
         }
+
+        taophieukham.setTotalMoney(30);
 
         // Tạo một HttpEntity với thông tin Casher để gửi yêu cầu POST
         HttpEntity<Taophieukham> request = new HttpEntity<>(taophieukham, headers);
@@ -406,5 +414,58 @@ public class TaophieukhamController {
             return "redirect:/login";
         }
 
+    }
+
+    @RequestMapping(value = "/export-pdf", method = RequestMethod.GET)
+    public ResponseEntity<byte[]> exportToPDF(@RequestParam("casherId") int casherId, @RequestParam("typeDoctorId") int typeDoctorId, @RequestParam("id") int id) {
+
+        if (casherId <= 0 || typeDoctorId <= 0 || id <= 0) {
+            return ResponseEntity.badRequest().body("Invalid Casher ID or Type Doctor ID or ID".getBytes());
+        }
+
+        // Gọi API từ máy chủ backend để lấy tài liệu PDF
+        ResponseEntity<byte[]> response = restTemplate.exchange(apiUrl + "/export-pdf?casherId=" + casherId
+                + "&typeDoctorId=" + typeDoctorId + "&id=" + id, HttpMethod.GET, null, byte[].class);
+
+        // Kiểm tra mã trạng thái của phản hồi
+        if (response.getStatusCode().is2xxSuccessful()) {
+            byte[] pdfBytes = response.getBody();
+
+            // Thiết lập header và trả về file PDF
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_PDF);
+            headers.setContentDispositionFormData("attachment", "examinationform.pdf");
+
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .contentLength(pdfBytes.length)
+                    .body(pdfBytes);
+        } else {
+            // Xử lý lỗi nếu không thể lấy tài liệu PDF từ API
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    private byte[] createPhieukhamPDF(Taophieukham taophieukham) throws IOException {
+        // Tạo một tài liệu PDF mới
+        PDDocument document = new PDDocument();
+
+        // Tạo một trang mới cho tài liệu
+        PDPage page = new PDPage();
+        document.addPage(page);
+
+        // Tạo một luồng nội dung cho trang
+        PDPageContentStream contentStream = new PDPageContentStream(document, page);
+
+        // Thực hiện viết nội dung PDF ở đây (ví dụ: ghi thông tin từ `toathuoc` vào tài liệu)
+        // Đóng luồng nội dung
+        contentStream.close();
+
+        // Lưu trang và đóng tài liệu
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        document.save(byteArrayOutputStream);
+        document.close();
+
+        return byteArrayOutputStream.toByteArray();
     }
 }

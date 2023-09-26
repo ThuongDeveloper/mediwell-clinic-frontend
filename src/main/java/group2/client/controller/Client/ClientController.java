@@ -19,6 +19,7 @@ import group2.client.repository.RatingByDoctorRepository;
 import group2.client.repository.ToathuocDetailsRepository;
 import group2.client.repository.ToathuocRepository;
 import group2.client.service.*;
+import group2.client.util.MarkdownProcessor;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
@@ -1219,6 +1220,12 @@ public class ClientController {
         
        
     }
+    
+    private final MarkdownProcessor myMarkdownProcessor;
+    @Autowired
+    public ClientController(MarkdownProcessor myMarkdownProcessor) {
+        this.myMarkdownProcessor = myMarkdownProcessor;
+    }
 
     @RequestMapping("/newsdetail/{id}")
     public String newsdetail(Model model, @PathVariable("id") int id, HttpServletRequest request) {
@@ -1239,8 +1246,14 @@ public class ClientController {
         } else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
             return "redirect:/admin";
         } else {
-             News news = newsRepository.findById(id).get();
+            News news = newsRepository.findById(id).get();
             model.addAttribute("news", news);
+            String markContent = news.getContent();
+            String htmlContent = myMarkdownProcessor.convertToHtml(markContent);
+            System.out.println(htmlContent);
+            model.addAttribute("htmlContent", htmlContent);
+            List<News> listnews = newsRepository.findAll();
+            model.addAttribute("listnews", listnews);
             return "/client/newsdetail";
         }
     }
