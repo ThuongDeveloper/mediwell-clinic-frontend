@@ -11,19 +11,22 @@ import group2.client.entities.Patient;
 import group2.client.entities.Thuoc;
 import group2.client.entities.Typethuoc;
 import group2.client.service.AuthService;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -146,14 +149,18 @@ public class ThuocController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String create(Model model, Thuoc thuoc, @RequestParam("typeThuocID") String typethuocID) {
-
-        //Set các giá trị còn thiếu
+    public String create(
+            Model model,
+            Thuoc thuoc,
+            @RequestParam("typeThuocID") String typethuocID
+    ) {
+        // Set các giá trị còn thiếu
         Typethuoc newTT = new Typethuoc();
         newTT.setId(Integer.parseInt(typethuocID));
 
         thuoc.setCreateAt(new Date());
         thuoc.setTypethuocId(newTT);
+
 
         var a = thuoc.getTypethuocId().getId();
         var response = restTemplate.postForObject(apiUrl_Thuoc + "/create", thuoc, Boolean.class);
@@ -164,10 +171,12 @@ public class ThuocController {
             System.out.println("Kết quả là False");
         }
 
-        //Lấy List Type Doctor
+        // Lấy List Type Doctor
         model.addAttribute("thuoc", new Thuoc());
         return "redirect:/admin/thuoc";
     }
+
+
 
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
     public String edit(Model model, @PathVariable("id") Integer id, HttpServletRequest request) {

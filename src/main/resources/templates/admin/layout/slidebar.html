@@ -22,15 +22,15 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                     <img src="../admin/images/img.jpg" alt="..." class="img-circle profile_img">
                 </div>
                 <div th:if="${currentAdmin != null}" class="profile_info">
-                    <span>Welcome,</span>
+                    <span>Welcome, Admin</span>
                     <h2>[[${currentAdmin.username}]]</h2>
                 </div>
                 <div th:if="${currentDoctor != null}" class="profile_info">
-                    <span>Welcome,</span>
+                    <span>Welcome, Doctor</span>
                     <h2>[[${currentDoctor.name}]]</h2>
                 </div>
                 <div th:if="${currentCasher != null}" class="profile_info">
-                    <span>Welcome,</span>
+                    <span>Welcome, Casher</span>
                     <h2>[[${currentCasher.name}]]</h2>
                 </div>
             </div>
