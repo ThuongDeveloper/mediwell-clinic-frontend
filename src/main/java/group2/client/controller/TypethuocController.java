@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -71,6 +72,7 @@ public class TypethuocController {
 
                     // Xử lý dữ liệu theo nhu cầu của bạn
                     model.addAttribute("listTypeThuoc", listTypeThuoc);
+                    model.addAttribute("currentAdmin", currentAdmin);
                 }
 
                 //Kiểm tra các thông báo 
@@ -89,6 +91,7 @@ public class TypethuocController {
 
                     // Xử lý dữ liệu theo nhu cầu của bạn
                     model.addAttribute("listTypeThuoc", listTypeThuoc);
+                    model.addAttribute("currentDoctor", currentDoctor);
                 }
 
                 //Kiểm tra các thông báo 
@@ -107,6 +110,7 @@ public class TypethuocController {
 
                     // Xử lý dữ liệu theo nhu cầu của bạn
                     model.addAttribute("listTypeThuoc", listTypeThuoc);
+                    model.addAttribute("currentCasher", currentCasher);
                 }
 
                 //Kiểm tra các thông báo 
@@ -133,16 +137,20 @@ public class TypethuocController {
             return "redirect:/forbien";
         } else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
              model.addAttribute("typethuoc", new Typethuoc());
+             model.addAttribute("currentAdmin", currentAdmin);
 
             return "admin/typethuoc/create";
         }else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
               model.addAttribute("typethuoc", new Typethuoc());
+             model.addAttribute("currentDoctor", currentDoctor);
 
             return "admin/typethuoc/create";
         }else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
              model.addAttribute("typethuoc", new Typethuoc());
+             model.addAttribute("currentCasher", currentCasher);
 
-            return "admin/typethuoc/create";
+
+             return "admin/typethuoc/create";
         }else {
             return "redirect:/login";
         }
@@ -152,19 +160,35 @@ public class TypethuocController {
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String create(Model model, Typethuoc typethuoc, RedirectAttributes redirectAttributes) {
+        try {
+            // Send a POST request to the API to create a new medicine type
+            ResponseEntity<String> response = restTemplate.postForEntity(apiUrl + "/create", typethuoc, String.class);
 
-        ResponseEntity<String> response = restTemplate.postForEntity(apiUrl + "/create", typethuoc, String.class);
-        if (Boolean.parseBoolean(response.getBody()) == true) {
-
-            redirectAttributes.addFlashAttribute("MessageCreate", "Tạo thành công");
-        } else {
-
-            redirectAttributes.addFlashAttribute("MessageCreate", "Tạo thất bại");
+            if (response.getStatusCode() == HttpStatus.CREATED) {
+                // Creation was successful
+                redirectAttributes.addFlashAttribute("MessageCreate", "Creation successful");
+                return "redirect:/admin/typethuoc"; // Redirect to index page
+            } else {
+                // Server error from the API
+                redirectAttributes.addFlashAttribute("MessageCreate", "Server error when creating medicine type.");
+            }
+        } catch (HttpClientErrorException e) {
+            // The API returned a bad request (400) status
+            String responseBody = e.getResponseBodyAsString();
+            if ("Name already exists in the database.".equals(responseBody)) {
+                redirectAttributes.addFlashAttribute("MessageCreateError", "Name already exists in the database.");
+            } else {
+                redirectAttributes.addFlashAttribute("MessageCreateError", "Undefined error when creating medicine type.");
+            }
         }
 
-        return "redirect:/admin/typethuoc";
+        return "redirect:/admin/typethuoc/create";
     }
-    
+
+
+
+
+
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
     public String edit(Model model, @PathVariable("id") Integer id, HttpServletRequest request) {
         
@@ -183,6 +207,7 @@ public class TypethuocController {
 
                 // Truyền thông tin TypeDoctor vào model để hiển thị trên trang edit.html
                 model.addAttribute("typethuoc", typethuoc);
+                model.addAttribute("currentAdmin", currentAdmin);
 
                 return "admin/typethuoc/edit";
             } else {
@@ -197,6 +222,7 @@ public class TypethuocController {
 
                 // Truyền thông tin TypeDoctor vào model để hiển thị trên trang edit.html
                 model.addAttribute("typethuoc", typethuoc);
+                model.addAttribute("currentDoctor", currentDoctor);
 
                 return "admin/typethuoc/edit";
             } else {
@@ -211,6 +237,7 @@ public class TypethuocController {
 
                 // Truyền thông tin TypeDoctor vào model để hiển thị trên trang edit.html
                 model.addAttribute("typethuoc", typethuoc);
+                model.addAttribute("currentCasher", currentCasher);
 
                 return "admin/typethuoc/edit";
             } else {
@@ -292,5 +319,6 @@ public class TypethuocController {
         }
  
     }
+
 
 }
