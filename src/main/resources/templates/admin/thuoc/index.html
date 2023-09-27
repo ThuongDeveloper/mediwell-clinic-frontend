@@ -25,50 +25,24 @@
         cursor: default;
     }
 
-    .notification {
-        /* CSS cho thông báo */
-        display: none;
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        transform: translateY(50%);
-        padding: 20px;
-        background-color: #4CAF50;
-        color: #FFFFFF;
-        border-radius: 5px;
-        z-index: 1000;
-        text-align: center;
-        font-size: 18px;
-        animation: slide-in 0.5s, fade-out 2s 1.5s;
+    /* CSS cho thông báo thành công */
+    .success-container {
+        background-color: #4CAF50; /* Màu xanh lá cây */
+        color: #ffffff; /* Màu chữ trắng */
+        padding: 10px;
+        border-radius: 5px; /* Góc bo tròn */
+        margin-bottom: 10px; /* Khoảng cách dưới */
+        display: none; /* Ẩn ban đầu */
     }
 
-    .notification.active {
-        display: block;
-    }
-
-    .notification-close {
-        position: absolute;
-        top: 5px;
-        right: 10px;
-        cursor: pointer;
-    }
-
-    @keyframes slide-in {
-        from {
-            transform: translateY(100%);
-        }
-        to {
-            transform: translateY(50%);
-        }
-    }
-
-    @keyframes fade-out {
-        0% {
-            opacity: 1;
-        }
-        100% {
-            opacity: 0;
-        }
+    /* CSS cho thông báo thất bại */
+    .error-container {
+        background-color: #f44336; /* Màu đỏ */
+        color: #ffffff; /* Màu chữ trắng */
+        padding: 10px;
+        border-radius: 5px; /* Góc bo tròn */
+        margin-bottom: 10px; /* Khoảng cách dưới */
+        display: none; /* Ẩn ban đầu */
     }
 
 </style>
@@ -89,11 +63,12 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <div th:if="${MessageCreate != null}" class="notification">
-                                    <span class="notification-close" onclick="closeNotification()">&times;</span>
-                                    <p id="notificationMessage" th:text="${MessageCreate}"></p>
+                                <div th:if="${MessageCreate != null}" class="success-container">
+                                    <span class="success-message" th:text="${MessageCreate}"></span>
                                 </div>
-
+                                <div th:if="${MessageError != null}" class="error-container">
+                                    <span class="error-message" th:text="${MessageError}"></span>
+                                </div>
 
                                 <table  class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
@@ -125,8 +100,8 @@
                                         <th th:text="${#dates.format(e.getManufacturingDate(), 'dd/MM/yyyy')}"></th>
                                         <th th:text="${#dates.format(e.getExpiryDate(), 'dd/MM/yyyy')}"></th>
                                         <td>
-                                            <span th:if="${e.getExpiryDate().before(e.getManufacturingDate())}" class="expired">Expired</span>
-                                            <span th:unless="${e.getExpiryDate().before(e.getManufacturingDate())}" class="active1">Active</span>
+                                            <span th:if="${e.getExpiryDate().before(e.getManufacturingDate()) or e.getExpiryDate().before(#dates.createNow())}" class="expired">Expired</span>
+                                            <span th:unless="${e.getExpiryDate().before(e.getManufacturingDate()) or e.getExpiryDate().before(#dates.createNow())}" class="active1">Active</span>
                                         </td>
 
                                         <td>
@@ -143,24 +118,21 @@
 
                 </div>
 <script>
-    // Hiển thị thông báo
-    function showNotification(message) {
-        var notification = document.querySelector(".notification");
-        var notificationMessage = document.getElementById("notificationMessage");
+    function showNotification(message, container) {
+        var notification = document.querySelector(container);
+        var notificationMessage = notification.querySelector("span");
         notificationMessage.innerText = message;
-        notification.classList.add("active");
+        notification.style.display = "block"; // Hiển thị thông báo
+        setTimeout(function () {
+            notification.style.display = "none"; // Ẩn thông báo sau 3 giây
+        }, 3000); // 3 giây (3000 milliseconds)
     }
 
-    // Ẩn thông báo
-    function closeNotification() {
-        var notification = document.querySelector(".notification");
-        notification.classList.remove("active");
-    }
+    // Sử dụng khi bạn muốn hiển thị thông báo thành công
+    showNotification("Update Successful.", ".success-container");
 
-    // Ví dụ sử dụng
-    showNotification("Cập nhật thành công.");
-    // Sau một khoảng thời gian, bạn có thể ẩn thông báo bằng cách gọi closeNotification()
-
+    // Sử dụng khi bạn muốn hiển thị thông báo thất bại
+    showNotification("Update Failed.", ".error-container");
 </script>
 
                 <!-- Content -->

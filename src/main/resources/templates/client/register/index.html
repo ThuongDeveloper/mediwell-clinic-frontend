@@ -251,39 +251,39 @@
                   th:object="${patient}" method="post" id="registration-form">
                 <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
                     <label>Name&nbsp;<span class="required">*</span></label>
-                    <input class="woocommerce-Input woocommerce-Input--text input-text" type="text" name="name" required="required" id="name">
+                    <input class="woocommerce-Input woocommerce-Input--text input-text" type="text" name="name"  id="name">
                 <div id="name-error" class="error-message"></div>
                 </p>
 
                 <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
                     <label>Email&nbsp;<span class="required">*</span></label>
-                    <input name="email"  class="woocommerce-Input woocommerce-Input--text input-text" type="text" required="required" id="email">
+                    <input name="email"  class="woocommerce-Input woocommerce-Input--text input-text" type="text"  id="email">
                 <div id="email-error" class="error-message"></div>
 
                 </p>
 
                 <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
                     <label>Password&nbsp;<span class="required">*</span></label>
-                    <input class="woocommerce-Input woocommerce-Input--text input-text" type="password" name="password" required="required" id="password">
+                    <input class="woocommerce-Input woocommerce-Input--text input-text" type="password" name="password"  id="password">
                 <div id="password-error" class="error-message"></div>
                 </p>
 
                 <!-- Thêm trường xác nhận mật khẩu -->
                 <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
                     <label>Confirm Password&nbsp;<span class="required">*</span></label>
-                    <input class="woocommerce-Input woocommerce-Input--text input-text" type="password" name="confirmPassword" required="required" id="confirmPassword">
+                    <input class="woocommerce-Input woocommerce-Input--text input-text" type="password" name="confirmPassword"  id="confirmPassword">
                 <div id="confirm-password-error" class="error-message"></div>
                 </p>
 
                 <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
                     <label>Address&nbsp;<span class="required">*</span></label>
-                    <input class="woocommerce-Input woocommerce-Input--text input-text" type="text" name="address" required="required" id="address">
+                    <input class="woocommerce-Input woocommerce-Input--text input-text" type="text" name="address"  id="address">
                 <div id="address-error" class="error-message"></div>
                 </p>
 
                 <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
                     <label>Phone&nbsp;<span class="required">*</span></label>
-                    <input class="woocommerce-Input woocommerce-Input--text input-text" type="number" name="phone" required="required" id="phone">
+                    <input class="woocommerce-Input woocommerce-Input--text input-text" type="number" name="phone" id="phone">
                 <div id="phone-error" class="error-message"></div>
                 </p>
 
@@ -319,7 +319,10 @@
                     if (passwordInput.val() !== confirmPasswordInput.val()) {
                         confirmPasswordError.html('<span style="color: red;">Password and confirm password do not match.</span>');
                         hasError = true; // Đặt biến hasError thành true nếu có lỗi
-                    } else {
+                    } else if(passwordInput.val().trim() === ""){
+                        confirmPasswordError.html('<span style="color: red;">Confirm Password is required.</span>');
+                        hasError = true;
+                    }else{
                         confirmPasswordError.text("");
                     }
 
