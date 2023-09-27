@@ -65,7 +65,7 @@ public class Doctor implements Serializable {
     private String address;
     @Size(max = 50)
     @Column(name = "role")
-    private String role;
+private String role;
     @Size(max = 250)
     @Column(name = "image")
     private String image;
@@ -177,7 +177,7 @@ public class Doctor implements Serializable {
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Doctor)) {
-            return false;
+return false;
         }
         Doctor other = (Doctor) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {

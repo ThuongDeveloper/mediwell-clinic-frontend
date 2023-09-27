@@ -151,10 +151,10 @@ public class NewsController {
         News news = new News();
 
         news.setTitle(newsDAO.getTitle());
-        news.setBanner(fileName);
+       // news.setBanner(fileName);
         news.setContent(newsDAO.getContent());
         news.setStatus(newsDAO.getStatus());
-        news.setAuthor(author);
+       // news.setAuthor(author);
 
         // Tạo một HttpEntity với thông tin Casher để gửi yêu cầu POST
         HttpEntity<News> request = new HttpEntity<>(news, headers);

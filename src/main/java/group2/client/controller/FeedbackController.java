@@ -165,7 +165,7 @@ public class FeedbackController {
         headers.setContentType(MediaType.APPLICATION_JSON);
         Patient newPatient = new Patient();
         newPatient.setId(Integer.parseInt(patientID));
-        feedback.setPatientId(newPatient);
+       
         // Tạo một HttpEntity với thông tin Casher để gửi yêu cầu POST
         HttpEntity<Feedback> request = new HttpEntity<>(feedback, headers);
 

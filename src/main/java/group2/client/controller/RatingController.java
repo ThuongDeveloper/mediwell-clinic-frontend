@@ -194,7 +194,7 @@ public class RatingController {
         Doctor newDoctor = new Doctor();
         newDoctor.setId(Integer.parseInt(doctorID));
         rating.setDoctorId(newDoctor);
-        var a = rating.getDoctorId().getId();
+     //   var a = rating.getDoctorId().getId();
 
         Patient newPatient = new Patient();
         newPatient.setId(Integer.parseInt(patientID));

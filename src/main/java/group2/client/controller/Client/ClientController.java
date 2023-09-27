@@ -765,7 +765,6 @@ public class ClientController {
         if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
 
             Lichlamviec lichlamviec = lichlamviecRepository.findById(id).get();
-
             Doctor newDoctor = new Doctor();
             newDoctor.setId(lichlamviec.getDoctorId().getId());
             appointment.setDoctorId(newDoctor);
