@@ -27,6 +27,13 @@
                                         </div>
                                         <th:block th:text="${#session.removeAttribute('error')}"></th:block>
                                     </div>
+                                    <div th:if="${session.notnull}">                         
+                                        <div class="alert alert-danger alert-dismissible fade show notify-error">
+
+                                            <span th:text="${session.notnull}"></span>
+                                        </div>
+                                        <th:block th:text="${#session.removeAttribute('notnull')}"></th:block>
+                                    </div>
                                     <form th:action="@{/admin/donthuoc/create}" th:object="${donthuoc}" method="post">
                                         <h1 style="text-align: center">Create Medication Invoice</h1>
                                         <div class=" form-group">
