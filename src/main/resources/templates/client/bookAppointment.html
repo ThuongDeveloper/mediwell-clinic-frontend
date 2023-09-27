@@ -51,7 +51,9 @@
             color: #fff;
             background: #17449e;
         }
-        
+        .session{
+            font-size: 25px;
+        }
     </style>
 
     <body class="home page-template-default page page-id-7684 theme-mediz gdlr-core-body woocommerce-no-js mediz-body mediz-body-front mediz-full  mediz-with-sticky-navigation  mediz-blockquote-style-1 gdlr-core-link-to-lightbox" data-home-url="https://demo.goodlayers.com/mediz/hospital/" >
@@ -314,10 +316,24 @@
                                                                                                                 <div th:if="${lichlamviec != null}" class="doctor-list-schedule">
                                                                                                                     
                                                                                                                     <div th:each="schedule: ${lichlamviecByFutureDate}" class="doctor-date">
-                                                                                                                       
-                                                                                                                        <a th:href="@{/book-appointment-time/{id}(id=${schedule.id})}">
-                                                                                                                           <p th:text="${#dates.format(schedule.date, 'dd-MM-yyyy')}"></p>
-                                                                                                                        </a>
+                                                                                                                        <div th:if="${schedule.starttime == '07:00:00'}">
+                                                                                                                            <span class="session">Morning</span>
+                                                                                                                            <a th:href="@{/book-appointment-time/{id}(id=${schedule.id})}">
+                                                                                                                                <p th:text="${#dates.format(schedule.date, 'dd-MM-yyyy')}"></p>
+                                                                                                                            </a>
+                                                                                                                        </div>
+                                                                                                                        <div th:if="${schedule.starttime == '12:00:00'}">
+                                                                                                                            <span class="session">Afternoon</span>
+                                                                                                                            <a th:href="@{/book-appointment-time/{id}(id=${schedule.id})}">
+                                                                                                                                <p th:text="${#dates.format(schedule.date, 'dd-MM-yyyy')}"></p>
+                                                                                                                            </a>
+                                                                                                                        </div>
+                                                                                                                        <div th:if="${schedule.starttime == '17:00:00'}">
+                                                                                                                            <span class="session">Dinner</span>
+                                                                                                                            <a th:href="@{/book-appointment-time/{id}(id=${schedule.id})}">
+                                                                                                                                <p th:text="${#dates.format(schedule.date, 'dd-MM-yyyy')}"></p>
+                                                                                                                            </a>
+                                                                                                                        </div>
                                                                                                                     </div>                                                                                                             
                                                                                                                                                                                                                                           
                                                                                                

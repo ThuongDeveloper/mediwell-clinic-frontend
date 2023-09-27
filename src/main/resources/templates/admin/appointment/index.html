@@ -52,8 +52,8 @@
                                 <a th:href="@{/admin/appointment}" class="reset-search-btn">Reset</a>  
                             </div>
                             <div th:if="${currentDoctor != null}">
-                                <form th:action="@{/admin/appointment/search}" class="app-form">
-                                    <input type="text" th:value="${#dates.format(currentDate, 'yyyy-MM-dd')}" class="form-control current-date-input" name="current-date" readonly="true"/>
+                                <form th:action="@{/admin/appointment/search-each-day}" class="app-form">
+                                    <input type="date" class="form-control current-date-input" id="date" name="date"/>
                                     <button type="submit" class="btn btn-success">Search</button> 
                                 </form>
                                 <a th:href="@{/admin/appointment}" class="reset-search-btn">Reset</a>
@@ -62,7 +62,14 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
+                                 <div th:if="${session.msg}">
 
+                                    <div class="alert alert-danger alert-dismissible fade show">
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                        <span th:text="${session.msg}"></span>
+                                    </div>
+                                    <th:block th:text="${#session.removeAttribute('msg')}"></th:block>
+                                </div>
                                 <table th:object="${listAppointment}" class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
 
                                     <thead>
@@ -92,19 +99,24 @@
                                         <td th:if="${e.getStatus() == false}">
                                             <div th:if="${currentDoctor != null}">
                                                 <form th:action="@{/change-status/{id}(id=${e.getId()})}" method="post">
-                                                    <button type="submit" class="btn btn-danger">Haven't examined yet</button>
+                                                    <button type="submit" onclick="return confirm('Are you sure you want to update the status of this appointment?')" class="btn btn-danger">Haven't examined yet</button>
                                                 </form>
                                             </div>
                                              <div th:if="${currentAdmin != null}">
                                                 
-                                                <button type="submit" class="btn btn-danger">Haven't examined yet</button>
+                                                <span style="color: red;">Haven't examined yet</span>
                                                 
                                             </div>
                                         </td>
                                         <td th:if="${e.getStatus() == true}">
-                                            
-                                            <button type="submit" class="btn btn-success">Examined</button>
-                                           
+                                            <div th:if="${currentDoctor != null}">
+                                                <button type="submit" class="btn btn-success">Examined</button>
+                                            </div>
+                                             <div th:if="${currentAdmin != null}">
+                                                
+                                                 <span style="color: green;">Examined</span>
+                                                
+                                            </div>
                                         </td>
                                     </tr>
                                 </tbody>

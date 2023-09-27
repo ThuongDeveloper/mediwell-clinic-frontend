@@ -17,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.repository.query.Param;
@@ -263,8 +264,17 @@ public class AppointmentController {
     }
     
      @RequestMapping(value = "/change-status/{id}", method = RequestMethod.POST)
-    public String changeStatus(Model model, @PathVariable("id") Integer id) {
+    public String changeStatus(Model model, @PathVariable("id") Integer id, HttpSession session) {
         Appointment appointment = appointmentRepository.findById(id).get();
+        Date currentDate = new Date();
+        if(appointment.getDate().after(currentDate)){
+            session.setAttribute("msg", "Cannot update because the examination date has not yet arrived");
+            return "redirect:/admin/appointment";
+        }
+        if(appointment.getDate().before(currentDate)){
+            session.setAttribute("msg", "Cannot update because the examination date has passed");
+            return "redirect:/admin/appointment";
+        }
         appointment.setStatus(Boolean.TRUE);
         appointmentRepository.save(appointment);
         return "redirect:/admin/appointment";
