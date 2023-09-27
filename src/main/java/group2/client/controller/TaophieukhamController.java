@@ -103,28 +103,9 @@ public class TaophieukhamController {
                     new ParameterizedTypeReference<List<Taophieukham>>() {
             });
 
-            ResponseEntity<List<Toathuoc>> responseTT = restTemplate.exchange(apiUrl_Toathuoc, HttpMethod.GET, null,
-                    new ParameterizedTypeReference<List<Toathuoc>>() {
-            });
-
-            List<Toathuoc> listToathuoc = responseTT.getBody();
-
-//            ObjectMapper objectMapper = new ObjectMapper();
-//            List<Toathuoc> toathuocLists = objectMapper.readValue(, new TypeReference<List<Toathuoc>>() {
-//            });
-//            List<Toathuoc> toathuocList = (List<Toathuoc>) restTemplate.getForObject(apiUrl_Toathuoc, Toathuoc.class);
-
-//            Map<Integer, Toathuoc> toathuocListByTPK = toathuocList.stream().collect(
-//                    Collectors.toMap(x -> x.getTaophieukhamId().getId(), x -> x));
-            Map<Integer, List<Toathuoc>> toathuocListByTPK = listToathuoc.stream().collect(Collectors.groupingBy(x -> x.getTaophieukhamId().getId(), Collectors.toList()));
             // Kiểm tra mã trạng thái của phản hồi
             if (response.getStatusCode().is2xxSuccessful()) {
                 List<Taophieukham> listTaophieukham = response.getBody();
-                for (var tpk : listTaophieukham) {
-                    if (toathuocListByTPK.get(tpk.getId()) != null) {
-                        tpk.setToathuocList(toathuocListByTPK.get(tpk.getId()));
-                    }
-                }
                 // Xử lý dữ liệu theo nhu cầu của bạn
                 model.addAttribute("listTaophieukham", listTaophieukham);
                 model.addAttribute("currentCasher", currentCasher);
