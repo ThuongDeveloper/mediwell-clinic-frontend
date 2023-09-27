@@ -1,0 +1,80 @@
+<html  xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <div th:replace="~{admin/layout/layout :: head}"></div>
+
+
+    <body class="nav-md">
+        <div class="container body">
+            <div class="main_container">
+                <div th:replace="~{admin/layout/slidebar :: slidebarAdmin}"></div>
+                <div class="top_nav">
+                    <div th:replace="~{admin/layout/header :: div}"></div>
+                </div>
+                <!-- Content -->
+
+                <div class="right_col" role="main">
+                    <div class="card shadow mb-4">
+
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <h1 class="text-center">List Patient Today</h1>
+                                <span class="section"></span>
+
+<!--                                <a th:href="@{/admin/listphieukham/create}" type="button" class="btn btn-primary">Create </a>-->
+                            </div>
+                            <div class="x_content">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="card-box table-responsive">
+                                            <div id="datatable_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap no-footer">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <table th:object="${listTaophieukham}" id="datatable" class="table table-striped table-bordered dataTable no-footer" style="width: 100%;" role="grid" aria-describedby="datatable_info">
+                                                            <thead>
+                                                                <tr role="row">
+                                                                    <th>No.</th>
+                                                                    <th>Patient Name</th>
+                                                                    <th>Type Doctor</th>
+                                                                    <th>Create at</th>
+                                                                    <th>Action</th>
+<!--                                                                    <th>Print PDF files</th>-->
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr th:each="e : ${listTaophieukham}">
+                                                                    <td th:text="${e.getSothutu()}"></td>
+                                                                    <td th:text="${e.getName()}"></td>
+                                                                    <td th:text="${e.getTypeDoctorId().getName()}"></td>
+                                                                    <td th:text="${#dates.format(e.getCreateAt(), 'dd/MM/yyyy')}"></td>
+                                                                    <td>
+                                                                        <a class="btn btn-info" th:href="@{/admin/toathuoc/create/{id}(id=${e.getId()})}">Create Prescription</a> |
+<!--                                                                        <a th:object="${toathuoc}" th:href="@{/admin/donthuoc/create/{id}(id=${e.id})}" class="btn btn-primary">Create Medication Invoice</a>-->
+                                                                    </td>
+                                                                    <td>
+<!--                                                                        <a th:href="@{'/admin/phieukham/export-pdf?casherId=' + ${e.getCasherId().getId()} + '&typeDoctorId=' + ${e.getTypeDoctorId().getId()}+ '&id=' + ${e.getId()}}"-->
+<!--                                                                           class="btn btn-primary">Export PDF</a>-->
+                                                                    </td>
+
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Content -->
+        <div th:replace="~{admin/layout/footer :: footer}"></div>
+
+        <div th:replace="~{admin/layout/layout :: body}"></div>
+
+    </body>
+</html>
