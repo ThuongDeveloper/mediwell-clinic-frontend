@@ -64,7 +64,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                         </li>
 
                     </ul>
-                    <ul th:if="${currentDoctor != null || currentAdmin != null}" class="nav side-menu">
+                    <ul th:if="${currentDoctor != null}" class="nav side-menu">
                         <li><a><i class="fa fa-home"></i>Doctor Feature<span class="fa fa-chevron-down"></span></a>
                             <ul class="nav child_menu">  
                                 <li><a th:href="@{/admin/toathuoc}">Prescription</a></li>
@@ -73,7 +73,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                             </ul>
                         </li>
                     </ul>
-                    <ul th:if="${currentCasher != null || currentAdmin != null}" class="nav side-menu">
+                    <ul th:if="${currentCasher != null}" class="nav side-menu">
                         <li><a><i class="fa fa-home"></i>Cashier Feature<span class="fa fa-chevron-down"></span></a>
                             <ul class="nav child_menu">  
                                 <li><a th:href="@{/admin/donthuoc}">Invoice Medication</a></li>

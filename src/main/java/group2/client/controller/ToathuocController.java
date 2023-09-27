@@ -59,6 +59,7 @@ public class ToathuocController {
 
                 // Xử lý dữ liệu theo nhu cầu của bạn
                 model.addAttribute("listToathuoc", listToathuoc);
+                 model.addAttribute("currentAdmin", currentAdmin);
             }
             return "admin/toathuoc/index";
         }else if(currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")){
@@ -72,6 +73,7 @@ public class ToathuocController {
 
                 // Xử lý dữ liệu theo nhu cầu của bạn
                 model.addAttribute("listToathuoc", listToathuoc);
+                   model.addAttribute("currentDoctor", currentDoctor);
             }
             return "admin/toathuoc/index";
         }else if(currentCasher != null && currentCasher.getRole().equals("CASHER")){
@@ -85,6 +87,7 @@ public class ToathuocController {
 
                 // Xử lý dữ liệu theo nhu cầu của bạn
                 model.addAttribute("listToathuoc", listToathuoc);
+                model.addAttribute("currentCasher", currentCasher);
             }
             return "admin/toathuoc/index";
         }else {
@@ -111,7 +114,7 @@ public class ToathuocController {
                     });
             List<Toathuoc> listToathuoc = response.getBody();
             model.addAttribute("listToathuoc", listToathuoc);
-
+            model.addAttribute("currentAdmin", currentAdmin);
             model.addAttribute("toathuoc", new Toathuoc());
             return "admin/toathuoc/create";
         }else if(currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")){
@@ -121,7 +124,7 @@ public class ToathuocController {
                     });
             List<Toathuoc> listToathuoc = response.getBody();
             model.addAttribute("listToathuoc", listToathuoc);
-
+            model.addAttribute("currentDoctor", currentDoctor);
             model.addAttribute("toathuoc", new Toathuoc());
             return "admin/toathuoc/create";
         }else if(currentCasher != null && currentCasher.getRole().equals("CASHER")){
@@ -131,7 +134,7 @@ public class ToathuocController {
                     });
             List<Toathuoc> listToathuoc = response.getBody();
             model.addAttribute("listToathuoc", listToathuoc);
-
+            model.addAttribute("currentCasher", currentCasher);
             model.addAttribute("toathuoc", new Toathuoc());
             return "admin/toathuoc/create";
         }else {

@@ -62,7 +62,7 @@ public class RegisterController {
         // Kiểm tra mã trạng thái của phản hồi
         if (response.getStatusCode().is2xxSuccessful()) {
             model.addAttribute("attribute", "value");
-            return "/client/login/login";
+            return "redirect:/login";
         } else {
             // Xử lý lỗi nếu cần thiết
             return "/client/home";
