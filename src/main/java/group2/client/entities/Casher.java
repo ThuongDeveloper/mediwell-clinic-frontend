@@ -29,6 +29,7 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  *
@@ -57,56 +58,54 @@ public class Casher implements Serializable {
     @Column(name = "id")
     private Integer id;
     
-    
-   @Size(max = 250)
+    @Size(max = 250)
     @Column(name = "name")
     @NotBlank(message = "Name cannot be left blank!!!")
     @Length(min = 3, max = 50, message = "Name must be from 3 to 50 characters")
     private String name;
-   
-   
+    
     @Column(name = "dob")
-    @Temporal(TemporalType.DATE)
-    @NotNull(message = "Age cannot be null")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @NotNull(message = "DOB cannot be null")
     private Date dob;
-  @Column(name = "password")
+    
+    @Column(name = "password")
     @NotBlank(message = "Password cannot be left blank!!!")
     @Length(min = 8, max = 100, message = "Password must be from 8 to 100 characters")
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=]).*$", message = "Invalid password")
     private String password;
-    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
-   @Size(max = 250)
+    
+    @Size(max = 250)
     @Column(name = "email")
     @NotBlank(message = "Email cannot be left blank!!!")
     @Email
     private String email;
-   
-   @Size(max = 250)
+    
+    @Size(max = 250)
     @Column(name = "address")
     @NotBlank(message = "Address cannot be left blank!!!")
     @Length(min = 10, max = 150, message = "Address must be from 10 to 150 characters")
     private String address;
-   
-   @Column(name = "gender")
+
+    @Column(name = "gender")
     @NotNull(message = "Gender cannot be null")
     private Boolean gender;
-   
+
     @Size(max = 50)
     @Column(name = "role")
     private String role;
-    
-    // @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message="Invalid phone/fax format, should be as xxx-xxx-xxxx")//if the field contains phone or fax number consider using this annotation to enforce field validation
-   @Size(max = 250)
+
+    @Size(max = 250)
     @Column(name = "phone")
     @NotBlank(message = "Phone cannot be left blank!!!")
     @Pattern(regexp = "^[0-9]*$", message = "Phone must contain only numbers")
     private String phone;
-   
+
     @Column(name = "create_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createAt;
-    
-@OneToMany(mappedBy = "casherId")
+
+    @OneToMany(mappedBy = "casherId")
     @JsonIgnore
     private Collection<Donthuoc> donthuocCollection;
     @OneToMany(mappedBy = "casherId")
@@ -175,8 +174,8 @@ public class Casher implements Serializable {
     public void setRole(String role) {
         this.role = role;
     }
-   
-public Boolean getGender() {
+
+    public Boolean getGender() {
         return gender;
     }
 
@@ -200,7 +199,7 @@ public Boolean getGender() {
         this.createAt = createAt;
     }
 
-public Collection<Donthuoc> getDonthuocCollection() {
+    public Collection<Donthuoc> getDonthuocCollection() {
         return donthuocCollection;
     }
 
@@ -240,5 +239,5 @@ public Collection<Donthuoc> getDonthuocCollection() {
     public String toString() {
         return "group2.client.entities.Casher[ id=" + id + " ]";
     }
-    
+
 }

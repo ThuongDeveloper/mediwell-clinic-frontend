@@ -26,7 +26,7 @@
                             <div class="col-md-12 col-sm-12">
                                 <div class="x_panel">
                                     <div class="x_content">
-                                        <form th:action="@{/admin/phieukham/edit}" th:object="${taophieukham}" method="get">
+                                        <form th:action="@{/admin/phieukham/details}" th:object="${taophieukham}" method="get">
                                             <div class="field item form-group">
                                                 <div class="col-md-6 col-sm-6">
                                                     <input class="form-control" th:field="*{id}" type="text" hidden="true">
@@ -47,14 +47,14 @@
                                             <div class="field item form-group">
                                                 <label class="col-form-label col-md-3 col-sm-3 label-align">Gender</label>
                                                 <div class="col-md-6 col-sm-6">
-                                                    <input type="radio"  th:field="*{gender}"  value="true" checked="checked" readonly="true"/>Male
-                                                    <input type="radio" th:field="*{gender}" value="false" readonly="true"/>Female
+                                                    <input type="radio" th:field="*{gender}" value="true" checked="checked" readonly="true" disabled="true"/>Male
+                                                    <input type="radio" th:field="*{gender}" value="false" readonly="true" disabled="true"/>Female
                                                 </div>
                                             </div>
                                             <div class="field item form-group">
                                                 <label class="col-form-label col-md-3 col-sm-3 label-align">Date of Birth</label>
                                                 <div class="col-md-6 col-sm-6">
-                                                    <input th:field="*{dob}" class="form-control" name="phone" type="date" readonly="true"/>
+                                                    <input th:field="*{dob}" class="form-control" name="dob" type="date" readonly="true"/>
                                                 </div>
                                             </div>
                                             <div class="field item form-group">

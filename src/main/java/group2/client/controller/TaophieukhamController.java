@@ -45,6 +45,7 @@ public class TaophieukhamController {
     private String apiUrlCasher = "http://localhost:8888/api/casher/";
     private String apiUrlTypeDoctor = "http://localhost:8888/api/typedoctor/";
     private String apiUrlPatient = "http://localhost:8888/api/patient/";
+    private String apiUrl_Toathuoc = "http://localhost:8888/api/toathuoc/";
     RestTemplate restTemplate = new RestTemplate();
 
     @Autowired
@@ -57,7 +58,7 @@ public class TaophieukhamController {
         Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
         Patient currentPatient = authService.isAuthenticatedPatient(request);
         Casher currentCasher = authService.isAuthenticatedCasher(request);
-
+//        Toathuoc toathuoc = restTemplate.getForObject(apiUrl_Toathuoc + "/", Toathuoc.class);
         if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
             return "redirect:/forbien";
         } else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
@@ -262,8 +263,8 @@ public class TaophieukhamController {
         }
     }
 
-    @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
-    public String edit(Model model, @PathVariable("id") int id, HttpServletRequest request) {
+    @RequestMapping(value = "/details/{id}", method = RequestMethod.GET)
+    public String details(Model model, @PathVariable("id") int id, HttpServletRequest request) {
 
         Admin currentAdmin = authService.isAuthenticatedAdmin(request);
         Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
@@ -289,7 +290,7 @@ public class TaophieukhamController {
                 model.addAttribute("listCasher", listCasher);
                 model.addAttribute("taophieukham", taophieukham);
                 model.addAttribute("currentAdmin", currentAdmin);
-                return "/admin/phieukham/edit";
+                return "/admin/phieukham/details";
             } else {
                 return "redirect:/admin/phieukham";
             }
@@ -310,7 +311,7 @@ public class TaophieukhamController {
                 model.addAttribute("listCasher", listCasher);
                 model.addAttribute("taophieukham", taophieukham);
                 model.addAttribute("currentDoctor", currentDoctor);
-                return "/admin/phieukham/edit";
+                return "/admin/phieukham/details";
             } else {
                 return "redirect:/admin/phieukham";
             }
@@ -331,7 +332,7 @@ public class TaophieukhamController {
                 model.addAttribute("listCasher", listCasher);
                 model.addAttribute("taophieukham", taophieukham);
                 model.addAttribute("currentCasher", currentCasher);
-                return "/admin/phieukham/edit";
+                return "/admin/phieukham/details";
             } else {
                 return "redirect:/admin/phieukham";
             }
