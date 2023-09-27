@@ -259,7 +259,7 @@ public class TypethuocController {
         // Chú ý rằng, phương thức put trả về void (không có phản hồi từ server)
 
         // Điều hướng về trang danh sách TypeDoctor với thông báo thành công
-        redirectAttributes.addFlashAttribute("MessageCreate", "Cập nhật thành công");
+        redirectAttributes.addFlashAttribute("MessageCreate", "Update successful");
         return "redirect:/admin/typethuoc";
     }
     
@@ -281,10 +281,10 @@ public class TypethuocController {
                     restTemplate.delete(apiUrl+"/delete/"+id);
 
                     // Nếu không có lỗi, tức là xóa thành công
-                    redirectAttributes.addFlashAttribute("MessageCreate", "Xóa thành công");
+                    redirectAttributes.addFlashAttribute("MessageCreate", "Delete successful");
                 } catch (Exception e) {
                      // Xử lý lỗi nếu có
-                  redirectAttributes.addFlashAttribute("MessageCreate", "Xóa thất bại");
+                  redirectAttributes.addFlashAttribute("MessageCreate", "Delete fail");
                 }
 
               return "redirect:/admin/typethuoc";
@@ -294,10 +294,10 @@ public class TypethuocController {
                     restTemplate.delete(apiUrl+"/delete/"+id);
 
                     // Nếu không có lỗi, tức là xóa thành công
-                    redirectAttributes.addFlashAttribute("MessageCreate", "Xóa thành công");
+                    redirectAttributes.addFlashAttribute("MessageCreate", "Delete successful");
                 } catch (Exception e) {
                      // Xử lý lỗi nếu có
-                  redirectAttributes.addFlashAttribute("MessageCreate", "Xóa thất bại");
+                  redirectAttributes.addFlashAttribute("MessageCreate", "Delete fail");
                 }
 
               return "redirect:/admin/typethuoc";
@@ -307,10 +307,10 @@ public class TypethuocController {
                     restTemplate.delete(apiUrl+"/delete/"+id);
 
                     // Nếu không có lỗi, tức là xóa thành công
-                    redirectAttributes.addFlashAttribute("MessageCreate", "Xóa thành công");
+                    redirectAttributes.addFlashAttribute("MessageCreate", "Delete successful");
                 } catch (Exception e) {
                      // Xử lý lỗi nếu có
-                  redirectAttributes.addFlashAttribute("MessageCreate", "Xóa thất bại");
+                  redirectAttributes.addFlashAttribute("MessageCreate", "Delete fail");
                 }
 
               return "redirect:/admin/typethuoc";

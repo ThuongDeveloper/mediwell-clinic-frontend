@@ -4,6 +4,8 @@
  */
 package group2.client.entities;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
@@ -65,10 +67,12 @@ public class Thuoc implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createAt;
     @Column(name = "manufacturing_date")
-    @Temporal(TemporalType.DATE)
+//    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date manufacturingDate;
     @Column(name = "expiry_date")
-    @Temporal(TemporalType.DATE)
+//    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date expiryDate;
     @OneToMany(mappedBy = "thuocId")
     private Collection<DonthuocDetails> donthuocDetailsCollection;
@@ -77,7 +81,9 @@ public class Thuoc implements Serializable {
     private Typethuoc typethuocId;
     @OneToMany(mappedBy = "thuocId")
     private Collection<ToathuocDetails> toathuocDetailsCollection;
-
+    @JoinColumn(name = "donvi_id", referencedColumnName = "id")
+    @ManyToOne
+    private Donvi donviId;
     public Thuoc() {
     }
 
@@ -180,7 +186,12 @@ public class Thuoc implements Serializable {
     public void setToathuocDetailsCollection(Collection<ToathuocDetails> toathuocDetailsCollection) {
         this.toathuocDetailsCollection = toathuocDetailsCollection;
     }
-
+    public Donvi getDonviId() {
+        return donviId;
+    }
+    public void setDonviId(Donvi donviId) {
+        this.donviId = donviId;
+    }
     @Override
     public int hashCode() {
         int hash = 0;
