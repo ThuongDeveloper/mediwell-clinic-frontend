@@ -6,7 +6,7 @@ package group2.client.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -59,9 +59,8 @@ public class Taophieukham implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    
-    
-   @Column(name = "sothutu")
+
+    @Column(name = "sothutu")
     @NotNull(message = "No. cannot be left blank!!!")
     private Integer sothutu;
     @Size(max = 250)
@@ -73,15 +72,13 @@ public class Taophieukham implements Serializable {
     @NotBlank(message = "Phone cannot be left blank!!!")
     @Length(min = 10, max = 30, message = "Phone must be from 10 to 30 numbers")
     @Pattern(regexp = "^[0-9]+$", message = "Invalid phone")
-    
-    
+
     private String phone;
     @Column(name = "address")
     @NotBlank(message = "Address cannot be left blank!!!")
     @Length(min = 10, max = 150, message = "Address must be from 10 to 150 characters")
     private String address;
-    
-    
+
     @Column(name = "total_money")
     private Integer totalMoney;
     @Column(name = "create_at")
@@ -92,18 +89,18 @@ public class Taophieukham implements Serializable {
     @Column(name = "dob")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dob;
-    
+
     @Size(max = 250)
     @Column(name = "sympton")
     private String sympton;
     @OneToMany(mappedBy = "taophieukhamId")
     @JsonIgnore
-    private Collection<Toathuoc> toathuocCollection;
-    
+    private List<Toathuoc> toathuocList;
+
     @JoinColumn(name = "casher_id", referencedColumnName = "id")
     @ManyToOne
     private Casher casherId;
-    
+
     @JoinColumn(name = "type_doctor_id", referencedColumnName = "id")
     @ManyToOne
     private TypeDoctor typeDoctorId;
@@ -196,12 +193,19 @@ public class Taophieukham implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Toathuoc> getToathuocCollection() {
-        return toathuocCollection;
+    public List<Toathuoc> getToathuocList() {
+        return toathuocList;
     }
 
-    public void setToathuocCollection(Collection<Toathuoc> toathuocCollection) {
-        this.toathuocCollection = toathuocCollection;
+    public Integer getToathuocId() {
+        if (toathuocList != null) {
+            return toathuocList.get(0).getId();
+        }
+        return 0;
+    }
+
+    public void setToathuocList(List<Toathuoc> toathuocList) {
+        this.toathuocList = toathuocList;
     }
 
     public Casher getCasherId() {
@@ -244,5 +248,5 @@ public class Taophieukham implements Serializable {
     public String toString() {
         return "group2.client.entities.Taophieukham[ id=" + id + " ]";
     }
-    
+
 }

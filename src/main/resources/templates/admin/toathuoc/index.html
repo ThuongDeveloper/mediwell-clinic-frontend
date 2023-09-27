@@ -27,11 +27,17 @@
                                         <tr>
 
                                             <th>Id</th>
-                                            <th>Name</th>
-                                            <th>Phone</th>
+<!--                                            <th>Name</th>
+                                            <th>Phone</th>-->
                                             <th>Sympton</th>
+<<<<<<< HEAD
+                                            <!--<th>Description</th>-->
+<!--                                            <th>State</th>-->
+                                            <th>Date</th>
+=======
                                             <th>Examination Date</th>
                                             <th>Re-examination Date</th>
+>>>>>>> 6db04836eb0b2a19c5153ccdadbedbbcdc444c1b
                                             <th>Action</th>
 
                                         </tr>
@@ -39,9 +45,18 @@
                                     </tbody>
                                     <tr th:each="e : ${listToathuoc}">
                                         <td th:text="${e.getId()}"></td>
+<<<<<<< HEAD
+                                        <!--<td th:text="${e.getName()}"></td>-->
+                                        <!--<td th:text="${e.getPhone()}"></td>-->
+                                        <td th:text="${e.getSympton()}"></td>
+                                        <!--<td th:text="${e.getDescription()}"></td>-->
+<!--                                        <td th:text="${e.getState()}"></td>-->
+                                        <!--                                     <td th:text="${e.getDoctorId().getName()}"></td>-->
+=======
                                         <td th:text="${e.taophieukhamId.name}"></td>
                                         <td th:text="${e.taophieukhamId.phone}"></td>
                                         <td th:text="${e.getSympton()}"></td>
+>>>>>>> 6db04836eb0b2a19c5153ccdadbedbbcdc444c1b
                                         <td th:text="${#dates.format(e.getCreateAt(), 'dd/MM/yyyy')}" ></td>
                                         <td th:text="${#dates.format(e.getNgaytaikham(), 'dd/MM/yyyy')}" ></td>
                                      <td>

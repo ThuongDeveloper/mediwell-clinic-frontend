@@ -7,6 +7,7 @@ import group2.client.entities.Donthuoc;
 import group2.client.entities.DonthuocDetails;
 import group2.client.entities.Taophieukham;
 import group2.client.entities.Thuoc;
+import group2.client.entities.Toathuoc;
 import group2.client.entities.Typethuoc;
 import group2.client.repository.ThuocRepository;
 import group2.client.service.AuthService;
@@ -44,6 +45,7 @@ public class DonthuocController {
     private String apiUrl = "http://localhost:8888/api/taophieukham/";
     private String apiUrl_Thuoc = "http://localhost:8888/api/thuoc/";
     private String apiUrl_Donthuoc = "http://localhost:8888/api/donthuoc/";
+    private String apiUrl_Toathuoc = "http://localhost:8888/api/toathuoc/";
     RestTemplate restTemplate = new RestTemplate();
 
     @Autowired
@@ -79,10 +81,10 @@ public class DonthuocController {
         ResponseEntity<List<Donthuoc>> response = restTemplate.exchange(apiUrl_Donthuoc, HttpMethod.GET, null,
                 new ParameterizedTypeReference<List<Donthuoc>>() {
         });
-        Taophieukham taophieukham = restTemplate.getForObject(apiUrl + "/" + id, Taophieukham.class);
-
+        Toathuoc toathuoc = restTemplate.getForObject(apiUrl_Toathuoc + "/" + id, Toathuoc.class);
+        
         List<Donthuoc> listDonthuoc = response.getBody();
-        model.addAttribute("taophieukham", taophieukham);
+        model.addAttribute("toathuoc", toathuoc);
         model.addAttribute("listDonthuoc", listDonthuoc);
         model.addAttribute("currentCasher", currentCasher);
         model.addAttribute("donthuoc", new Donthuoc());
@@ -90,7 +92,7 @@ public class DonthuocController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String create(Model model, @ModelAttribute Taophieukham taophieukham, int[] thuocID, int[] price, int[] quantity, HttpSession session, HttpServletRequest requestCurent) {
+    public String create(Model model, @ModelAttribute Toathuoc toathuoc, int[] thuocID, int[] price, int[] quantity, HttpSession session, HttpServletRequest requestCurent) {
 
         String hienloiQuantity = "";
 
@@ -103,11 +105,6 @@ public class DonthuocController {
 
         List<Thuoc> listThuoc = response1.getBody();
 
-        if (thuocID == null) {
-            session.setAttribute("notnull", "You must add the medicine to your prescription!");
-            return "admin/donthuoc/create";
-        }
-        
         for (int i = 0; i < thuocID.length; i++) {
             for (var item : listThuoc) {
                 if (item.getId() == thuocID[i]) {
@@ -130,12 +127,15 @@ public class DonthuocController {
             list.add(obj);
         }
 
-        Taophieukham existTPK = restTemplate.getForObject(apiUrl + "/" + taophieukham.getId(), Taophieukham.class);
+        Toathuoc existTT = restTemplate.getForObject(apiUrl_Toathuoc + "/" + toathuoc.getId(), Toathuoc.class);
 
         ListHoaDonThuocDAO listHDTD = new ListHoaDonThuocDAO();
         listHDTD.setListHDT(list);
-        listHDTD.setName(existTPK.getName());
-        listHDTD.setPhone(existTPK.getPhone());
+        listHDTD.setName(existTT.getTaophieukhamId().getName());
+        listHDTD.setPhone(existTT.getTaophieukhamId().getPhone());
+        listHDTD.setAddress(existTT.getTaophieukhamId().getAddress());
+        listHDTD.setGender(existTT.getTaophieukhamId().getGender());
+        listHDTD.setDob(existTT.getTaophieukhamId().getDob());
         listHDTD.setCasherId(currentCasher);
 
         HttpHeaders headers = new HttpHeaders();
