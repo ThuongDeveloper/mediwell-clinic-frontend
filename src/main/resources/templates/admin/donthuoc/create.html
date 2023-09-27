@@ -39,22 +39,27 @@
                                         <div class=" form-group">
                                             <div class="field item form-group">
                                                 <div class="col-md-6 col-sm-6">
-                                                    <input class="form-control" th:object="${taophieukham}" th:field="*{id}" type="text" hidden="true">
+                                                    <input class="form-control" th:object="${toathuoc}" th:field="*{id}" type="text" hidden="true">
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-6">
                                                     <labe>Name</labe>
-                                                    <!--<input type="text" name="name" id="name" class="form-control"></input>-->
-                                                    <input th:if="${taophieukham.name != null}" th:value="${taophieukham.name}" name="name" id="name" class="form-control" type="text" readonly="true">
-
+                                                    <input th:if="${toathuoc.name != null}" th:value="${toathuoc.name}" name="name" id="name" class="form-control" type="text" readonly="true">
+                                                </div>
+                                                <div class="col-6">
+                                                    <labe>Gender</labe>
+                                                    <input th:if="${toathuoc.gender != null && toathuoc.gender == true}" value="Male" name="gender" id="gender" class="form-control" type="text" readonly="true">
+                                                    <input th:if="${toathuoc.gender != null && toathuoc.gender == false}" value="Female" name="gender" id="gender" class="form-control" type="text" readonly="true">
                                                 </div>
                                                 <div class="col-6">
                                                     <labe>Phone</labe>
-                                                    <!--<input type="text" name="phone" id="phone" class="form-control"></input>-->
-                                                    <input th:if="${taophieukham.phone != null}" th:value="${taophieukham.phone}" name="phone" id="phone" class="form-control" type="text" readonly="true">
+                                                    <input th:if="${toathuoc.phone != null}" th:value="${toathuoc.phone}" name="phone" id="phone" class="form-control" type="text" readonly="true">
                                                 </div>
-                                            </div>
+                                                <div class="col-6">
+                                                    <labe>Address</labe>
+                                                    <input th:if="${toathuoc.address != null}" th:value="${toathuoc.address}" name="address" id="address" class="form-control" type="text" readonly="true">
+                                                </div>
                                         </div>
                                         <div class=" form-group">
                                             <button class="btn btn-secondary" type="button" id="addButton">Add</button>
@@ -162,7 +167,13 @@
     async function fetchThuocData() {
         try {
             const response = await axios.get('http://localhost:8888/api/thuoc');
-            return response.data;
+            const thuocData = response.data;
+
+            // Lọc ra các thuốc có ngày hết hạn lớn hơn hoặc bằng ngày hiện tại
+            const currentDate = new Date();
+            const validThuocData = thuocData.filter(thuoc => new Date(thuoc.expiryDate) >= currentDate);
+
+            return validThuocData;
         } catch (error) {
             console.error('Lỗi khi tải dữ liệu thuốc:', error);
             return [];

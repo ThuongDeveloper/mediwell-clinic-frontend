@@ -21,6 +21,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -45,6 +47,24 @@ public class Donthuoc implements Serializable {
     private String name;
     @Column(name = "phone")
     private String phone;
+    @Column(name = "create_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createAt;
+    @JoinColumn(name = "casher_id", referencedColumnName = "id")
+    @ManyToOne
+    private Casher casherId;
+    @OneToMany(mappedBy = "donthuocId")
+    private Collection<DonthuocDetails> donthuocDetailsCollection;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "total_money")
+    private int totalMoney;
+    @Size(max = 255)
+    @Column(name = "address")
+    private String address;
+    @JoinColumn(name = "phieukham_id", referencedColumnName = "id")
+    @ManyToOne
+    private Taophieukham phieukhamId;
 
     public String getName() {
         return name;
@@ -61,16 +81,6 @@ public class Donthuoc implements Serializable {
     public void setPhone(String phone) {
         this.phone = phone;
     }
-    @Column(name = "total_money")
-    private Integer totalMoney;
-    @Column(name = "create_at")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createAt;
-    @JoinColumn(name = "casher_id", referencedColumnName = "id")
-    @ManyToOne
-    private Casher casherId;
-    @OneToMany(mappedBy = "donthuocId")
-    private Collection<DonthuocDetails> donthuocDetailsCollection;
 
     public Donthuoc() {
     }
@@ -109,6 +119,22 @@ public class Donthuoc implements Serializable {
 
     public void setCasherId(Casher casherId) {
         this.casherId = casherId;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public Taophieukham getPhieukhamId() {
+        return phieukhamId;
+    }
+
+    public void setPhieukhamId(Taophieukham phieukhamId) {
+        this.phieukhamId = phieukhamId;
     }
 
     public Collection<DonthuocDetails> getDonthuocDetailsCollection() {

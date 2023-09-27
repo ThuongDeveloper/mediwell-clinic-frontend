@@ -341,46 +341,37 @@ public class TaophieukhamController {
 
     }
 
-    @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public String update(Model model, @Valid @ModelAttribute Taophieukham updatedTaophieukham, BindingResult bindingResult, @RequestParam String typeDoctorID) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        // Lấy phiếu khám hiện có từ API server
-        Taophieukham existingTaophieukham = restTemplate.getForObject(apiUrl + "/" + updatedTaophieukham.getId(), Taophieukham.class);
-
-        ResponseEntity<List<TypeDoctor>> TDResponse = restTemplate.exchange(apiUrlTypeDoctor, HttpMethod.GET, null,
-                new ParameterizedTypeReference<List<TypeDoctor>>() {
-        });
-
-        TypeDoctor newTD = new TypeDoctor();
-
-        if (typeDoctorID == "") {
-            newTD.setId(null);
-        } else {
-            newTD.setId(Integer.parseInt(typeDoctorID));
-            updatedTaophieukham.setTypeDoctorId(newTD);
-        }
-
-        if (bindingResult.hasErrors()) {
-            List<TypeDoctor> listTypeDoctor = TDResponse.getBody();
-            model.addAttribute("listTypeDoctor", listTypeDoctor);
-            model.addAttribute("taophieukham", updatedTaophieukham);
-            return "/admin/phieukham/edit";
-        }
-
-        // Bổ sung id vào URL khi thực hiện PUT
-        String url = apiUrl + "edit/" + updatedTaophieukham.getId(); // Đảm bảo URL đúng
-
-        // Tạo một HttpEntity với thông tin phiếu khám cập nhật để gửi yêu cầu PUT
-        HttpEntity<Taophieukham> request = new HttpEntity<>(updatedTaophieukham, headers);
-
-        // Thực hiện PUT request để cập nhật phiếu khám
-        restTemplate.exchange(url, HttpMethod.PUT, request, Taophieukham.class);
-        // Sau khi cập nhật thành công, chuyển hướng về trang danh sách phiếu khám
-        return "redirect:/admin/phieukham";
-
-    }
+//    @RequestMapping(value = "/edit", method = RequestMethod.POST)
+//    public String update(Model model, @Valid @ModelAttribute Taophieukham updatedTaophieukham, BindingResult bindingResult) {
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.APPLICATION_JSON);
+//
+//        // Lấy phiếu khám hiện có từ API server
+//        Taophieukham existingTaophieukham = restTemplate.getForObject(apiUrl + "/" + updatedTaophieukham.getId(), Taophieukham.class);
+//
+//        ResponseEntity<List<TypeDoctor>> TDResponse = restTemplate.exchange(apiUrlTypeDoctor, HttpMethod.GET, null,
+//                new ParameterizedTypeReference<List<TypeDoctor>>() {
+//        });
+//
+//        if (bindingResult.hasErrors()) {
+//            List<TypeDoctor> listTypeDoctor = TDResponse.getBody();
+//            model.addAttribute("listTypeDoctor", listTypeDoctor);
+//            model.addAttribute("taophieukham", updatedTaophieukham);
+//            return "/admin/phieukham/edit";
+//        }
+//
+//        // Bổ sung id vào URL khi thực hiện PUT
+//        String url = apiUrl + "edit/" + updatedTaophieukham.getId(); // Đảm bảo URL đúng
+//
+//        // Tạo một HttpEntity với thông tin phiếu khám cập nhật để gửi yêu cầu PUT
+//        HttpEntity<Taophieukham> request = new HttpEntity<>(updatedTaophieukham, headers);
+//
+//        // Thực hiện PUT request để cập nhật phiếu khám
+//        restTemplate.exchange(url, HttpMethod.PUT, request, Taophieukham.class);
+//        // Sau khi cập nhật thành công, chuyển hướng về trang danh sách phiếu khám
+//        return "redirect:/admin/phieukham";
+//
+//    }
 
     @RequestMapping(value = "/delete/{id}")
     public String delete(@PathVariable("id") Integer id, HttpServletRequest request) {

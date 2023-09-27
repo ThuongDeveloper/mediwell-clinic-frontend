@@ -1,4 +1,3 @@
-
 package group2.client.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -23,7 +22,7 @@ import org.hibernate.validator.constraints.Length;
     @NamedQuery(name = "Casher.findAll", query = "SELECT c FROM Casher c"),
     @NamedQuery(name = "Casher.findById", query = "SELECT c FROM Casher c WHERE c.id = :id"),
     @NamedQuery(name = "Casher.findByName", query = "SELECT c FROM Casher c WHERE c.name = :name"),
-    @NamedQuery(name = "Casher.findByUsername", query = "SELECT c FROM Casher c WHERE c.username = :username"),
+    @NamedQuery(name = "Casher.findByPhone", query = "SELECT c FROM Casher c WHERE c.phone = :phone"),
     @NamedQuery(name = "Casher.findByPassword", query = "SELECT c FROM Casher c WHERE c.password = :password"),
     @NamedQuery(name = "Casher.findByEmail", query = "SELECT c FROM Casher c WHERE c.email = :email"),
     @NamedQuery(name = "Casher.findByAddress", query = "SELECT c FROM Casher c WHERE c.address = :address"),
@@ -42,22 +41,22 @@ public class Casher implements Serializable {
     @NotBlank(message = "Name cannot be left blank!!!")
     @Length(min = 3, max = 50, message = "Name must be from 3 to 50 characters")
     private String name;
-    @Column(name = "username")
-    @NotBlank(message = "Username cannot be left blank!!!")
-    @Length(min = 3, max = 30, message = "Username must be from 3 to 30 characters")
-    @Pattern(regexp = "^(?=.*[a-zA-Z])[a-zA-Z0-9]+$", message = "Invalid username")
-    private String username;
+    @Size(max = 250)
+    @Column(name = "phone")
+    @NotBlank(message = "Phone cannot be left blank!!!")
+    @Pattern(regexp = "^[0-9]*$", message = "Phone must contain only numbers")
+    private String phone;
     @Column(name = "password")
     @NotBlank(message = "Password cannot be left blank!!!")
     @Length(min = 8, max = 100, message = "Password must be from 8 to 100 characters")
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=]).*$", message = "Invalid password")
     private String password;
+    @Size(max = 250)
     @Column(name = "email")
     @NotBlank(message = "Email cannot be left blank!!!")
-//    @Pattern(regexp = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message = "Invalid email")
-//    @Length(min = 11, message = "Email must have at least 11 characters")
     @Email
     private String email;
+    @Size(max = 250)
     @Column(name = "address")
     @NotBlank(message = "Address cannot be left blank!!!")
     @Length(min = 10, max = 150, message = "Address must be from 10 to 150 characters")
@@ -65,6 +64,13 @@ public class Casher implements Serializable {
     @Size(max = 50)
     @Column(name = "role")
     private String role;
+    @Column(name = "age")
+    @Temporal(TemporalType.DATE)
+    @NotNull(message = "Age cannot be null")
+    private Date age;
+    @Column(name = "gender")
+    @NotNull(message = "Gender cannot be null")
+    private Boolean gender;
     @Column(name = "create_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createAt;
@@ -98,12 +104,28 @@ public class Casher implements Serializable {
         this.name = name;
     }
 
-    public String getUsername() {
-        return username;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public Date getAge() {
+        return age;
+    }
+
+    public void setAge(Date age) {
+        this.age = age;
+    }
+
+    public Boolean getGender() {
+        return gender;
+    }
+
+    public void setGender(Boolean gender) {
+        this.gender = gender;
     }
 
     public String getPassword() {
@@ -145,7 +167,7 @@ public class Casher implements Serializable {
     public void setCreateAt(Date createAt) {
         this.createAt = createAt;
     }
-    
+
 //    public List<Donthuoc> getDonthuocList() {
 //        return donthuocList;
 //    }
@@ -158,9 +180,6 @@ public class Casher implements Serializable {
 //    public void setTaophieukhamList(List<Taophieukham> taophieukhamList) {
 //        this.taophieukhamList = taophieukhamList;
 //    }
-    
-    
-
     public Collection<Donthuoc> getDonthuocCollection() {
         return donthuocCollection;
     }
@@ -201,5 +220,5 @@ public class Casher implements Serializable {
     public String toString() {
         return "group2.client.entities.Casher[ id=" + id + " ]";
     }
-    
+
 }

@@ -8,8 +8,10 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import javax.xml.bind.annotation.XmlTransient;
 import org.hibernate.validator.constraints.Length;
 
 /**
@@ -53,6 +55,8 @@ public class Taophieukham implements Serializable {
     @NotBlank(message = "Address cannot be left blank!!!")
     @Length(min = 10, max = 150, message = "Address must be from 10 to 150 characters")
     private String address;
+    @OneToMany(mappedBy = "phieukhamId")
+    private List<Donthuoc> donthuocList;
     @Column(name = "total_money")
     private Integer totalMoney;
     @Column(name = "create_at")
@@ -147,6 +151,15 @@ public class Taophieukham implements Serializable {
         this.typeDoctorId = typeDoctorId;
     }
 
+    @XmlTransient
+    public List<Donthuoc> getDonthuocList() {
+        return donthuocList;
+    }
+
+    public void setDonthuocList(List<Donthuoc> donthuocList) {
+        this.donthuocList = donthuocList;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -171,5 +184,5 @@ public class Taophieukham implements Serializable {
     public String toString() {
         return "group2.client.entities.Taophieukham[ id=" + id + " ]";
     }
-    
+
 }

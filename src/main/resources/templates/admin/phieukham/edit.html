@@ -26,22 +26,35 @@
                             <div class="col-md-12 col-sm-12">
                                 <div class="x_panel">
                                     <div class="x_content">
-                                        <form th:action="@{/admin/phieukham/edit}" th:object="${taophieukham}" method="post">
+                                        <form th:action="@{/admin/phieukham/edit}" th:object="${taophieukham}" method="get">
                                             <div class="field item form-group">
                                                 <div class="col-md-6 col-sm-6">
                                                     <input class="form-control" th:field="*{id}" type="text" hidden="true">
                                                 </div>
                                             </div>
                                             <div class="field item form-group">
-                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Số thứ tự</label>
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">No.</label>
                                                 <div class="col-md-6 col-sm-6">
                                                     <input class="form-control" th:field="*{sothutu}" type="text" readonly="true">
                                                 </div>
                                             </div>
                                             <div class="field item form-group">
-                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Name</label>
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Full Name</label>
                                                 <div class="col-md-6 col-sm-6">
                                                     <input type="text" th:field="*{name}" class="form-control" readonly="true">
+                                                </div>
+                                            </div>
+                                            <div class="field item form-group">
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Gender</label>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <input type="radio"  th:field="*{gender}"  value="true" checked="checked" readonly="true"/>Male
+                                                    <input type="radio" th:field="*{gender}" value="false" readonly="true"/>Female
+                                                </div>
+                                            </div>
+                                            <div class="field item form-group">
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Date of Birth</label>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <input th:field="*{dob}" class="form-control" name="phone" type="date" readonly="true"/>
                                                 </div>
                                             </div>
                                             <div class="field item form-group">
@@ -66,24 +79,18 @@
                                             <div class="field item form-group">
                                                 <label class="col-form-label col-md-3 col-sm-3 label-align">Type Doctor<span class="required">*</span></label>
                                                 <div class="col-md-6 col-sm-6">
-                                                    <select name="typeDoctorID" class="form-control">
-                                                        <option th:each="td : ${listTypeDoctor}"
-                                                                th:value="${td.id}"
-                                                                th:text="${td.name}"
-                                                                th:selected="${td.id == taophieukham.typeDoctorId.id}"></option>
-                                                    </select>
+                                                    <input name="typeDoctorID" type="hidden" />
+                                                    <input th:if="${taophieukham.typeDoctorId != null}" th:value="${taophieukham.typeDoctorId.name}" class="form-control" type="text" readonly="true">
                                                 </div>
                                             </div>
                                             <div class="field item form-group">
                                                 <label class="col-form-label col-md-3 col-sm-3 label-align">Total Money</label>
                                                 <div class="col-md-6 col-sm-6">
-                                                    <input th:field="*{totalMoney}" class="form-control" type="number">
-                                                        <div style="color: red" class="help-block with-errors" th:if="${#fields.hasErrors('totalMoney')}" th:errors="*{totalMoney}"></div>
+                                                    <input th:field="*{totalMoney}" class="form-control" type="number" readonly="true">
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <div class="col-md-6 offset-md-3">
-                                                    <input type="submit" value="Update" class="btn btn-primary"/>
                                                     <a th:href="@{/admin/phieukham}" class="btn btn-success">Cancel</a>
                                                 </div>
                                             </div>
