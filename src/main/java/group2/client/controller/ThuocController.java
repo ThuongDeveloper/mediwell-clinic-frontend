@@ -34,7 +34,7 @@ public class ThuocController {
 
     private String apiUrl_Thuoc = "http://localhost:8888/api/thuoc/";
     private String apiUrl_TypeThuoc = "http://localhost:8888/api/typethuoc/";
-
+    private String apiUrl_Company = "http://localhost:8888/api/company/";
     private String apiUrl_Donvi = "http://localhost:8888/api/donvi/";
     RestTemplate restTemplate = new RestTemplate();
 
@@ -117,6 +117,11 @@ public class ThuocController {
             ResponseEntity<List<Donvi>> response1 = restTemplate.exchange(apiUrl_Donvi, HttpMethod.GET, null,
                     new ParameterizedTypeReference<List<Donvi>>() {
                     });
+            ResponseEntity<List<Company>> response2 = restTemplate.exchange(apiUrl_Company, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<List<Company>>() {
+                    });
+            List<Company> listCompany = response2.getBody();
+            model.addAttribute("listCompany", listCompany);
             List<Donvi> listDonvi = response1.getBody();
             List<Typethuoc> listTypeThuoc = response.getBody();
             model.addAttribute("listDonvi", listDonvi);
@@ -129,7 +134,19 @@ public class ThuocController {
             ResponseEntity<List<Typethuoc>> response = restTemplate.exchange(apiUrl_TypeThuoc, HttpMethod.GET, null,
                     new ParameterizedTypeReference<List<Typethuoc>>() {
             });
+            ResponseEntity<List<Company>> response2 = restTemplate.exchange(apiUrl_Company, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<List<Company>>() {
+                    });
+            //Lấy List Donvi
+            ResponseEntity<List<Donvi>> response1 = restTemplate.exchange(apiUrl_Donvi, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<List<Donvi>>() {
+                    });
+
+            List<Company> listCompany = response2.getBody();
             List<Typethuoc> listTypeThuoc = response.getBody();
+            List<Donvi> listDonvi = response1.getBody();
+            model.addAttribute("listCompany", listCompany);
+            model.addAttribute("listDonvi", listDonvi);
             model.addAttribute("listTypeThuoc", listTypeThuoc);
             model.addAttribute("currentDoctor", currentDoctor);
             model.addAttribute("thuoc", new Thuoc());
@@ -143,6 +160,11 @@ public class ThuocController {
             ResponseEntity<List<Donvi>> response1 = restTemplate.exchange(apiUrl_Donvi, HttpMethod.GET, null,
                     new ParameterizedTypeReference<List<Donvi>>() {
                     });
+            ResponseEntity<List<Company>> response2 = restTemplate.exchange(apiUrl_Company, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<List<Company>>() {
+                    });
+            List<Company> listCompany = response2.getBody();
+            model.addAttribute("listCompany", listCompany);
             List<Donvi> listDonvi = response1.getBody();
             List<Typethuoc> listTypeThuoc = response.getBody();
             model.addAttribute("listDonvi", listDonvi);
@@ -161,17 +183,23 @@ public class ThuocController {
             Model model,
             Thuoc thuoc,
             @RequestParam("typeThuocID") String typethuocID,
-            @RequestParam("donviID") String donviID
+            @RequestParam("donviID") String donviID,
+            @RequestParam("companyID") String companyID
     ) {
         // Set các giá trị còn thiếu
         Typethuoc newTT = new Typethuoc();
         newTT.setId(Integer.parseInt(typethuocID));
+
+        Company newCpn = new Company();
+        newCpn.setId(Integer.parseInt(companyID));
+
         Donvi newDv = new Donvi();
         newDv.setId(Integer.parseInt(donviID));
+
         thuoc.setCreateAt(new Date());
         thuoc.setTypethuocId(newTT);
+        thuoc.setCompanyId(newCpn);
         thuoc.setDonviId(newDv);
-
         var a = thuoc.getTypethuocId().getId();
         var response = restTemplate.postForObject(apiUrl_Thuoc + "/create", thuoc, Boolean.class);
 
@@ -211,6 +239,11 @@ public class ThuocController {
                     });
             List<Donvi> listDonvi = response1.getBody();
             model.addAttribute("listDonvi", listDonvi);
+            ResponseEntity<List<Company>> response2 = restTemplate.exchange(apiUrl_Company, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<List<Company>>() {
+                    });
+            List<Company> listCompany = response2.getBody();
+            model.addAttribute("listCompany", listCompany);
             //Lấy One Doctor theo ID
             ResponseEntity<Thuoc> response = restTemplate.getForEntity(apiUrl_Thuoc + "/edit/{id}", Thuoc.class, id);
 
@@ -237,6 +270,11 @@ public class ThuocController {
                     new ParameterizedTypeReference<List<Donvi>>() {
                     });
             List<Donvi> listDonvi = response1.getBody();
+            ResponseEntity<List<Company>> response2 = restTemplate.exchange(apiUrl_Company, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<List<Company>>() {
+                    });
+            List<Company> listCompany = response2.getBody();
+            model.addAttribute("listCompany", listCompany);
             model.addAttribute("listDonvi", listDonvi);
             //Lấy One Doctor theo ID
             ResponseEntity<Thuoc> response = restTemplate.getForEntity(apiUrl_Thuoc + "/edit/{id}", Thuoc.class, id);
@@ -265,6 +303,11 @@ public class ThuocController {
                     });
             List<Donvi> listDonvi = response1.getBody();
             model.addAttribute("listDonvi", listDonvi);
+            ResponseEntity<List<Company>> response2 = restTemplate.exchange(apiUrl_Company, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<List<Company>>() {
+                    });
+            List<Company> listCompany = response2.getBody();
+            model.addAttribute("listCompany", listCompany);
             //Lấy One Doctor theo ID
             ResponseEntity<Thuoc> response = restTemplate.getForEntity(apiUrl_Thuoc + "/edit/{id}", Thuoc.class, id);
 
@@ -292,15 +335,21 @@ public class ThuocController {
             Thuoc objThuoc,
             @RequestParam String typeThuocID,
             @RequestParam String donviID,
+            @RequestParam String companyID,
             RedirectAttributes redirectAttributes
     ) {
         // Tạo một đối tượng Typethuoc mới dựa trên typeThuocID được truyền từ form
         Typethuoc newTD = new Typethuoc();
         newTD.setId(Integer.parseInt(typeThuocID));
         objThuoc.setTypethuocId(newTD);
+        // Don vi
         Donvi newDv = new Donvi();
         newDv.setId(Integer.parseInt(donviID));
         objThuoc.setDonviId(newDv);
+        // Company
+        Company newCpn = new Company();
+        newCpn.setId(Integer.parseInt(companyID));
+        objThuoc.setCompanyId(newCpn);
         // Sử dụng RestTemplate để gửi yêu cầu PUT đến API
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);

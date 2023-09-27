@@ -91,7 +91,7 @@
                                     <tr th:each="e : ${listThuoc}">
                                         <th th:text="${e.getId()}"></th>
                                         <th th:text="${e.getName()}"></th>
-                                        <th th:text="${e.getCompanyName()}"></th>
+                                        <th th:text="${e.getCompanyId().getName()}"></th>
                                         <th th:text="${e.getComposition()}"></th>
                                         <th th:text="${e.getQuantity()}"></th>
                                         <th th:text="${e.getDonviId().getName()}"></th>
