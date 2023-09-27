@@ -2,7 +2,50 @@
 
     <div th:replace="~{admin/layout/layout :: head}"></div>
 
+<style>
+    /* Style for expired items */
+    .expired {
+        display: inline-block;
+        padding: 5px 10px;
+        background-color: red;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: default;
+    }
 
+    /* Style for active items */
+    .active1 {
+        display: inline-block;
+        padding: 5px 10px;
+        background-color: green;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: default;
+    }
+
+    /* CSS cho thông báo thành công */
+    .success-container {
+        background-color: #4CAF50; /* Màu xanh lá cây */
+        color: #ffffff; /* Màu chữ trắng */
+        padding: 10px;
+        border-radius: 5px; /* Góc bo tròn */
+        margin-bottom: 10px; /* Khoảng cách dưới */
+        display: none; /* Ẩn ban đầu */
+    }
+
+    /* CSS cho thông báo thất bại */
+    .error-container {
+        background-color: #f44336; /* Màu đỏ */
+        color: #ffffff; /* Màu chữ trắng */
+        padding: 10px;
+        border-radius: 5px; /* Góc bo tròn */
+        margin-bottom: 10px; /* Khoảng cách dưới */
+        display: none; /* Ẩn ban đầu */
+    }
+
+</style>
     <body class="nav-md">
         <div class="container body">
             <div class="main_container">
@@ -12,7 +55,7 @@
                 </div>
                 <!-- Content -->
                 <div class="right_col" role="main">
-                    <h1>Drug Page</h1>
+                    <h1>Medication Page</h1>
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 card_head">
 
@@ -20,6 +63,12 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
+                                <div th:if="${MessageCreate != null}" class="success-container">
+                                    <span class="success-message" th:text="${MessageCreate}"></span>
+                                </div>
+                                <div th:if="${MessageError != null}" class="error-container">
+                                    <span class="error-message" th:text="${MessageError}"></span>
+                                </div>
 
                                 <table  class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
@@ -29,9 +78,12 @@
                                             <th>Company Name</th>
                                             <th>Composition</th>
                                             <th>Quantity</th>
+                                            <th>Unit</th>
                                             <th>Price</th>
                                             <th>Drug Type</th>
-                                            <th>Create at</th>
+                                            <th>Manufacturing Date</th>
+                                            <th>Expiry Date</th>
+                                            <th>Expired</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -42,9 +94,16 @@
                                         <th th:text="${e.getCompanyName()}"></th>
                                         <th th:text="${e.getComposition()}"></th>
                                         <th th:text="${e.getQuantity()}"></th>
+                                        <th th:text="${e.getDonviId().getName()}"></th>
                                         <th th:text="${e.getPrice()}"></th>
                                         <th th:text="${e.getTypethuocId().getName()}"></th>
-                                        <th th:text="${#dates.format(e.getCreateAt(), 'dd/MM/yyyy')}"></th>
+                                        <th th:text="${#dates.format(e.getManufacturingDate(), 'dd/MM/yyyy')}"></th>
+                                        <th th:text="${#dates.format(e.getExpiryDate(), 'dd/MM/yyyy')}"></th>
+                                        <td>
+                                            <span th:if="${e.getExpiryDate().before(e.getManufacturingDate()) or e.getExpiryDate().before(#dates.createNow())}" class="expired">Expired</span>
+                                            <span th:unless="${e.getExpiryDate().before(e.getManufacturingDate()) or e.getExpiryDate().before(#dates.createNow())}" class="active1">Active</span>
+                                        </td>
+
                                         <td>
                                             <a class="btn btn-info" th:href="@{/admin/thuoc/edit/{id}(id=${e.getId()})}">Update</a> | 
                                             <a class="btn btn-warning" th:href="@{/admin/thuoc/delete/{id}(id=${e.getId()})}">Delete</a>
@@ -58,7 +117,23 @@
                     </div>
 
                 </div>
+<script>
+    function showNotification(message, container) {
+        var notification = document.querySelector(container);
+        var notificationMessage = notification.querySelector("span");
+        notificationMessage.innerText = message;
+        notification.style.display = "block"; // Hiển thị thông báo
+        setTimeout(function () {
+            notification.style.display = "none"; // Ẩn thông báo sau 3 giây
+        }, 3000); // 3 giây (3000 milliseconds)
+    }
 
+    // Sử dụng khi bạn muốn hiển thị thông báo thành công
+    showNotification("Update Successful.", ".success-container");
+
+    // Sử dụng khi bạn muốn hiển thị thông báo thất bại
+    showNotification("Update Failed.", ".error-container");
+</script>
 
                 <!-- Content -->
                 <div th:replace="~{admin/layout/footer :: footer}"></div>

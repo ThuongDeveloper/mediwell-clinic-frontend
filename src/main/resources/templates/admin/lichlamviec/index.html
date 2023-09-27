@@ -2,7 +2,25 @@
 
     <div th:replace="~{admin/layout/layoutfixbug :: head}"></div>
 
-
+    <style>
+        .search-doctor-btn{
+            margin-left: 5px;
+        }
+        .llv-form{
+            display: flex;
+        }
+        .date-search-input{
+            width: 180px;
+        }
+        .reset-search-date-btn{
+            text-align: center;
+            color: #fff;
+            border-radius: 3px;
+            padding: 10px 12px;
+            height: 38px;
+            background: #26B99A;
+        }
+    </style>
     <body class="nav-md">
         <div class="container body">
             <div class="main_container">
@@ -17,7 +35,16 @@
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 card_head">
 
-                            <a th:href="@{/admin/lichlamviec/create}" class="btn btn-primary">Create</a>                        </div>
+                            <a th:href="@{/admin/lichlamviec/create}" class="btn btn-primary">Create</a>  
+                             <form th:action="@{/admin/lichlamviec/search-each-day}" class="llv-form">
+                                    <input class="form-control date-search-input" name="llv-date" required="true" id="date" type="date" />
+                                    <button type="submit" class="btn btn-success">Search</button> 
+                                </form>
+                                <a th:href="@{/admin/lichlamviec}" class="reset-search-date-btn">Reset</a>
+                        </div>
+                        <div>
+                            
+                        </div>
                         <div class="card-body">
                             <div class="table-responsive">
                                 <div th:if="${session.msg}">
@@ -70,6 +97,25 @@
             </div>
 
             <div th:replace="~{admin/layout/layoutfixbug :: body}"></div>
+             <script>
+               
+                var todayDate = new Date();
+                var month = todayDate.getMonth() + 1;
+                var year = todayDate.getFullYear();
+                var tdate = todayDate.getDate();
+                if (month < 10) {
+                   month = "0" + month.toString();
+                }
+                if (tdate < 10) {
+                   tdate = "0" + tdate.toString();
+                }
+                var maxDate = year + "-" + month + "-" + (tdate + 1);
+                
+              
+                
+                document.getElementById("date").setAttribute("min", maxDate);
+                console.log(maxDate);
 
+            </script>
     </body>
 </html>

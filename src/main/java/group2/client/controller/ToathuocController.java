@@ -59,7 +59,11 @@ public class ToathuocController {
 
                 // Xử lý dữ liệu theo nhu cầu của bạn
                 model.addAttribute("listToathuoc", listToathuoc);
+<<<<<<< HEAD
                  model.addAttribute("currentAdmin", currentAdmin);
+=======
+                model.addAttribute("currentAdmin", currentAdmin);
+>>>>>>> a816e647285ae68ffaf9948a69b9c13c7e9d89c9
             }
             return "admin/toathuoc/index";
         }else if(currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")){
@@ -73,7 +77,11 @@ public class ToathuocController {
 
                 // Xử lý dữ liệu theo nhu cầu của bạn
                 model.addAttribute("listToathuoc", listToathuoc);
+<<<<<<< HEAD
                    model.addAttribute("currentDoctor", currentDoctor);
+=======
+                model.addAttribute("currentDoctor", currentDoctor);
+>>>>>>> a816e647285ae68ffaf9948a69b9c13c7e9d89c9
             }
             return "admin/toathuoc/index";
         }else if(currentCasher != null && currentCasher.getRole().equals("CASHER")){
@@ -88,6 +96,10 @@ public class ToathuocController {
                 // Xử lý dữ liệu theo nhu cầu của bạn
                 model.addAttribute("listToathuoc", listToathuoc);
                 model.addAttribute("currentCasher", currentCasher);
+<<<<<<< HEAD
+=======
+
+>>>>>>> a816e647285ae68ffaf9948a69b9c13c7e9d89c9
             }
             return "admin/toathuoc/index";
         }else {
@@ -114,7 +126,11 @@ public class ToathuocController {
                     });
             List<Toathuoc> listToathuoc = response.getBody();
             model.addAttribute("listToathuoc", listToathuoc);
+<<<<<<< HEAD
             model.addAttribute("currentAdmin", currentAdmin);
+=======
+             model.addAttribute("currentAdmin", currentAdmin);
+>>>>>>> a816e647285ae68ffaf9948a69b9c13c7e9d89c9
             model.addAttribute("toathuoc", new Toathuoc());
             return "admin/toathuoc/create";
         }else if(currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")){
@@ -124,7 +140,11 @@ public class ToathuocController {
                     });
             List<Toathuoc> listToathuoc = response.getBody();
             model.addAttribute("listToathuoc", listToathuoc);
+<<<<<<< HEAD
             model.addAttribute("currentDoctor", currentDoctor);
+=======
+             model.addAttribute("currentDoctor", currentDoctor);
+>>>>>>> a816e647285ae68ffaf9948a69b9c13c7e9d89c9
             model.addAttribute("toathuoc", new Toathuoc());
             return "admin/toathuoc/create";
         }else if(currentCasher != null && currentCasher.getRole().equals("CASHER")){
@@ -134,7 +154,11 @@ public class ToathuocController {
                     });
             List<Toathuoc> listToathuoc = response.getBody();
             model.addAttribute("listToathuoc", listToathuoc);
+<<<<<<< HEAD
             model.addAttribute("currentCasher", currentCasher);
+=======
+             model.addAttribute("currentCasher", currentCasher);
+>>>>>>> a816e647285ae68ffaf9948a69b9c13c7e9d89c9
             model.addAttribute("toathuoc", new Toathuoc());
             return "admin/toathuoc/create";
         }else {

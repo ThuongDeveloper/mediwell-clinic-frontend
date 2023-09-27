@@ -13,11 +13,15 @@
                 <!-- Content -->
 
                 <div class="right_col" role="main">
+<<<<<<< HEAD
                     <h1>Medication Invoice   Page</h1>
+=======
+                    <h1>Prescription Page</h1>
+>>>>>>> a816e647285ae68ffaf9948a69b9c13c7e9d89c9
                     <div class="card shadow mb-4">
-                        <div class="card-header py-3 card_head">
-
-                            <a th:href="@{/admin/donthuoc/create}" class="btn btn-primary">Create</a>                        </div>
+<!--                        <div class="card-header py-3 card_head">
+                            <a th:href="@{/admin/donthuoc/create}" class="btn btn-primary">Create</a>
+                        </div>-->
                         <div class="card-body">
                             <div class="table-responsive">
 
@@ -25,13 +29,12 @@
 
                                     <thead>
                                         <tr>
-
                                             <th>Id</th>
                                             <th>Name</th>
                                             <th>Phone</th>
                                             <th>Total Money</th>
                                             <th>Date</th>
-                                            <th>Action</th>
+                                            <th>Print PDF files</th>
                                         </tr>
                                     </thead>
                                     </tbody>
@@ -42,10 +45,9 @@
                                         <td th:text="${e.getTotalMoney()}"></td>
                                         <td th:text="${e.getCreateAt()}"></td>
                                         <td>
-                                            <button class="btn btn-primary">Details</button>
+                                            <a th:href="@{'/admin/donthuoc/export-pdf?donthuocId=' + ${e.getId()}}"
+                                               class="btn btn-primary">Export PDF</a>
                                         </td>
-
-
                                     </tr>
                                     </tbody>
 

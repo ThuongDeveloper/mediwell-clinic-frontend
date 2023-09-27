@@ -27,22 +27,32 @@
                                         </div>
                                         <th:block th:text="${#session.removeAttribute('error')}"></th:block>
                                     </div>
+                                    <div th:if="${session.notnull}">                         
+                                        <div class="alert alert-danger alert-dismissible fade show notify-error">
+
+                                            <span th:text="${session.notnull}"></span>
+                                        </div>
+                                        <th:block th:text="${#session.removeAttribute('notnull')}"></th:block>
+                                    </div>
                                     <form th:action="@{/admin/donthuoc/create}" th:object="${donthuoc}" method="post">
                                         <h1 style="text-align: center">Create Medication Invoice</h1>
                                         <div class=" form-group">
+                                            <div class="field item form-group">
+                                                <div class="col-md-6 col-sm-6">
+                                                    <input class="form-control" th:object="${taophieukham}" th:field="*{id}" type="text" hidden="true">
+                                                </div>
+                                            </div>
                                             <div class="row">
                                                 <div class="col-6">
                                                     <labe>Name</labe>
-                                                    <input type="text" name="name" id="name" class="form-control"></input>
-                                                    <span style="display:none;color:red" id="name_notblank">Name not blank !! </span>
+                                                    <!--<input type="text" name="name" id="name" class="form-control"></input>-->
+                                                    <input th:if="${taophieukham.name != null}" th:value="${taophieukham.name}" name="name" id="name" class="form-control" type="text" readonly="true">
 
                                                 </div>
                                                 <div class="col-6">
                                                     <labe>Phone</labe>
-                                                    <input type="text" name="phone" id="phone" class="form-control"></input>
-                                                    <span style="display:none;color:red" id="phone_notblank">Phone not blank !! </span>
-                                                    <span style="display:none;color:red" id="phone_lenght">Phone number must be 10 digits.</span>
-
+                                                    <!--<input type="text" name="phone" id="phone" class="form-control"></input>-->
+                                                    <input th:if="${taophieukham.phone != null}" th:value="${taophieukham.phone}" name="phone" id="phone" class="form-control" type="text" readonly="true">
                                                 </div>
                                             </div>
                                         </div>
@@ -64,201 +74,200 @@
                 </div>
                 <!-- ... -->
             </div>
-      <div th:replace="~{admin/layout/footer :: footer}"></div>
-   
+            <div th:replace="~{admin/layout/footer :: footer}"></div>
 
-        <div th:replace="~{admin/layout/layoutfixbug :: body}"></div>
+
+            <div th:replace="~{admin/layout/layoutfixbug :: body}"></div>
 
     </body>
 </html>
-            <!-- ... -->
-            <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-            <script>
-                const addButton = document.getElementById('addButton');
-                const boxesContainer = document.getElementById('boxes');
+<!-- ... -->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    const addButton = document.getElementById('addButton');
+    const boxesContainer = document.getElementById('boxes');
+    let boxCount = 0;
 
-                let boxCount = 0;
+    addButton.addEventListener('click', () => {
+        const box = createBox();
+        boxesContainer.appendChild(box);
+    });
 
-                addButton.addEventListener('click', () => {
-                    const box = createBox();
-                    boxesContainer.appendChild(box);
-                });
-
-                function createBox() {
-                    const box = document.createElement('div');
-                    box.className = "row my-2";
-
-
-
-                    const colRow1 = document.createElement('div');
-                    colRow1.className = "col-4";
-                    const colRow2 = document.createElement('div');
-                    colRow2.className = "col";
-                    const colRow3 = document.createElement('div');
-                    colRow3.className = "col";
-                    const colRow4 = document.createElement('div');
-                    colRow4.className = "col";
-                    const colRowRemove = document.createElement('div');
-                    colRowRemove.style = "display:flex;align-items:end;";
-                    colRowRemove.className = "col-1";
-
-
-                    const selectLabel = document.createElement('label');
-                    selectLabel.textContent = 'Select drug';
-                    colRow1.appendChild(selectLabel);
-                    const select = createSelect();
-                    select.className = 'form-control';
-                    colRow1.appendChild(select);
-
-                    box.appendChild(colRow1);
-                    //Row 1
-
-                    const priceLabel = document.createElement('label');
-                    priceLabel.textContent = 'Price';
-                    colRow2.appendChild(priceLabel);
-                    const input = createInput();
-                    input.className = 'form-control';
-                    colRow2.appendChild(input);
-                    box.appendChild(colRow2);
-                    //Row 2
-
-                    const quantityLabel = document.createElement('label');
-                    quantityLabel.textContent = 'Quantity';
-                    colRow3.appendChild(quantityLabel);
-                    const quantityInput = createQuantityInput();
-                    quantityInput.className = 'form-control';
-                    colRow3.appendChild(quantityInput);
-                    box.appendChild(colRow3);
-                    //Row 3 
-                    const removeButton = createRemoveButton();
-                    removeButton.addEventListener('click', () => {
-                        boxesContainer.removeChild(box);
-                    });
-                    colRowRemove.appendChild(removeButton);
-                    box.appendChild(colRowRemove);
-
-                    const result = document.createElement('div');
-                    result.classList.add('result');
-
-                    select.addEventListener('change', async () => {
-                        const selectedOption = select.options[select.selectedIndex];
-                        input.value = selectedOption.getAttribute('data-price');
-                    });
-
-                    box.appendChild(result);
-
-                    return box;
-                }
-
-                async function fetchThuocData() {
-                    try {
-                        const response = await axios.get('http://localhost:8888/api/thuoc');
-                        return response.data;
-                    } catch (error) {
-                        console.error('Lỗi khi tải dữ liệu thuốc:', error);
-                        return [];
-                    }
-                }
-
-                async function populateDropdown(select) {
-                    const thuocData = await fetchThuocData();
-
-                    thuocData.forEach(thuoc => {
-                        const option = createOption(thuoc.id, thuoc.name, thuoc.price);
-                        select.appendChild(option);
-                    });
-                }
-
-                function createSelect() {
-                    const select = document.createElement('select');
-                    select.classList.add('dropdown');
-                    select.name = 'thuocID';
-                    populateDropdown(select);
-
-                    return select;
-                }
-
-                function createOption(id, name, price) {
-                    const option = document.createElement('option');
-                    option.value = id;
-
-                    option.textContent = name;
-                    option.setAttribute('data-price', price);
-                    return option;
-                }
-
-                function createInput() {
-                    const input = document.createElement('input');
-                    input.type = 'text';
-                    input.name = 'price';
-                    input.setAttribute('readonly', true);
-                    input.classList.add('input');
-                    return input;
-                }
-
-                function createQuantityInput() {
-                    const quantityInput = document.createElement('input');
-                    quantityInput.type = 'number';
-                    quantityInput.name = 'quantity';
-                    quantityInput.setAttribute('required', true);
-                    quantityInput.setAttribute('min', 1);
-                    quantityInput.setAttribute('max', 1000);
-
-                    quantityInput.classList.add('input');
-                    return quantityInput;
-                }
-                function createRemoveButton() {
-                    const removeButton = document.createElement('button');
-                    removeButton.textContent = '-';
-                    removeButton.className = 'btn btn-danger';
-                    removeButton.style = "margin-bottom:0";
-                    return removeButton;
-                }
-                var checkValidation = function () {
-
-                    var flag = true;
-                    flag &= kiemtrarong("#name", "#name_notblank");
-
-                    flag &= kiemtrarong("#phone", "#phone_notblank");
-                    flag &= validatePhoneNumber("#phone",'#phone_lenght');
-                    console.log(flag);
+    function createBox() {
+        const box = document.createElement('div');
+        box.className = "row my-2";
 
 
 
+        const colRow1 = document.createElement('div');
+        colRow1.className = "col-4";
+        const colRow2 = document.createElement('div');
+        colRow2.className = "col";
+        const colRow3 = document.createElement('div');
+        colRow3.className = "col";
+        const colRow4 = document.createElement('div');
+        colRow4.className = "col";
+        const colRowRemove = document.createElement('div');
+        colRowRemove.style = "display:flex;align-items:end;";
+        colRowRemove.className = "col-1";
 
-                    if (!flag) {
-                        return false;
-                    }
 
-                }
+        const selectLabel = document.createElement('label');
+        selectLabel.textContent = 'Select drug';
+        colRow1.appendChild(selectLabel);
+        const select = createSelect();
+        select.className = 'form-control';
+        colRow1.appendChild(select);
 
-                function validatePhoneNumber(selectorValue, selectorError) {
-                    var inputText = document.querySelector(selectorValue);
-                    var regex = /^\d{10}$/;
-                    if (regex.test(inputText.value)) {
-                        document.querySelector(selectorError).style.display = "none";
-                        return true;
-                    } else {
-                        document.querySelector(selectorError).style.display = "block";
-                        return false;
-                    }
-                }
-                function kiemtrarong(value, error) {
-                    var bientam = document.querySelector(value).value;
-                    if (bientam.length < 1 || bientam.length == 0) {
+        box.appendChild(colRow1);
+        //Row 1
 
-                        document.querySelector(error).style.display = "block";
-                        document.querySelector(value).style.border = "1px solid red";
-                        return false;
-                    } else {
+        const priceLabel = document.createElement('label');
+        priceLabel.textContent = 'Price';
+        colRow2.appendChild(priceLabel);
+        const input = createInput();
+        input.className = 'form-control';
+        colRow2.appendChild(input);
+        box.appendChild(colRow2);
+        //Row 2
 
-                        document.querySelector(error).style.display = "none";
-                        document.querySelector(value).style.border = "";
+        const quantityLabel = document.createElement('label');
+        quantityLabel.textContent = 'Quantity';
+        colRow3.appendChild(quantityLabel);
+        const quantityInput = createQuantityInput();
+        quantityInput.className = 'form-control';
+        colRow3.appendChild(quantityInput);
+        box.appendChild(colRow3);
+        //Row 3 
+        const removeButton = createRemoveButton();
+        removeButton.addEventListener('click', () => {
+            boxesContainer.removeChild(box);
+        });
+        colRowRemove.appendChild(removeButton);
+        box.appendChild(colRowRemove);
 
-                        return true;
-                    }
-                }
-                document.querySelector('#dangKy').onclick = checkValidation;
-            </script>
-            <!-- Content -->
-      
+        const result = document.createElement('div');
+        result.classList.add('result');
+
+        select.addEventListener('change', async () => {
+            const selectedOption = select.options[select.selectedIndex];
+            input.value = selectedOption.getAttribute('data-price');
+        });
+
+        box.appendChild(result);
+
+        return box;
+    }
+
+    async function fetchThuocData() {
+        try {
+            const response = await axios.get('http://localhost:8888/api/thuoc');
+            return response.data;
+        } catch (error) {
+            console.error('Lỗi khi tải dữ liệu thuốc:', error);
+            return [];
+        }
+    }
+
+    async function populateDropdown(select) {
+        const thuocData = await fetchThuocData();
+
+        thuocData.forEach(thuoc => {
+            const option = createOption(thuoc.id, thuoc.name, thuoc.price);
+            select.appendChild(option);
+        });
+    }
+
+    function createSelect() {
+        const select = document.createElement('select');
+        select.classList.add('dropdown');
+        select.name = 'thuocID';
+        populateDropdown(select);
+
+        return select;
+    }
+
+    function createOption(id, name, price) {
+        const option = document.createElement('option');
+        option.value = id;
+
+        option.textContent = name;
+        option.setAttribute('data-price', price);
+        return option;
+    }
+
+    function createInput() {
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.name = 'price';
+        input.setAttribute('readonly', true);
+        input.classList.add('input');
+        return input;
+    }
+
+    function createQuantityInput() {
+        const quantityInput = document.createElement('input');
+        quantityInput.type = 'number';
+        quantityInput.name = 'quantity';
+        quantityInput.setAttribute('required', true);
+        quantityInput.setAttribute('min', 1);
+        quantityInput.setAttribute('max', 1000);
+
+        quantityInput.classList.add('input');
+        return quantityInput;
+    }
+    function createRemoveButton() {
+        const removeButton = document.createElement('button');
+        removeButton.textContent = '-';
+        removeButton.className = 'btn btn-danger';
+        removeButton.style = "margin-bottom:0";
+        return removeButton;
+    }
+    var checkValidation = function () {
+
+        var flag = true;
+        flag &= kiemtrarong("#name", "#name_notblank");
+
+        flag &= kiemtrarong("#phone", "#phone_notblank");
+        flag &= validatePhoneNumber("#phone", '#phone_lenght');
+        console.log(flag);
+
+
+
+
+        if (!flag) {
+            return false;
+        }
+
+    }
+
+    function validatePhoneNumber(selectorValue, selectorError) {
+        var inputText = document.querySelector(selectorValue);
+        var regex = /^\d{10}$/;
+        if (regex.test(inputText.value)) {
+            document.querySelector(selectorError).style.display = "none";
+            return true;
+        } else {
+            document.querySelector(selectorError).style.display = "block";
+            return false;
+        }
+    }
+    function kiemtrarong(value, error) {
+        var bientam = document.querySelector(value).value;
+        if (bientam.length < 1 || bientam.length == 0) {
+
+            document.querySelector(error).style.display = "block";
+            document.querySelector(value).style.border = "1px solid red";
+            return false;
+        } else {
+
+            document.querySelector(error).style.display = "none";
+            document.querySelector(value).style.border = "";
+
+            return true;
+        }
+    }
+    document.querySelector('#dangKy').onclick = checkValidation;
+</script>
+<!-- Content -->
+

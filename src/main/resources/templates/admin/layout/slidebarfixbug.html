@@ -22,15 +22,15 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                     <img src="/admin/images/img.jpg" alt="..." class="img-circle profile_img">
                 </div>
                 <div th:if="${currentAdmin != null}" class="profile_info">
-                    <span>Welcome,</span>
+                    <span>Welcome, Admin</span>
                     <h2>[[${currentAdmin.username}]]</h2>
                 </div>
                 <div th:if="${currentDoctor != null}" class="profile_info">
-                    <span>Welcome,</span>
+                    <span>Welcome, Doctor</span>
                     <h2>[[${currentDoctor.name}]]</h2>
                 </div>
                 <div th:if="${currentCasher != null}" class="profile_info">
-                    <span>Welcome,</span>
+                    <span>Welcome, Casher</span>
                     <h2>[[${currentCasher.name}]]</h2>
                 </div>
             </div>
@@ -45,7 +45,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                         <li><a><i class="fa fa-home"></i>Data Management<span class="fa fa-chevron-down"></span></a>
                             <ul class="nav child_menu">
                                 <li><a th:href="@{/admin/thuoc}">Medication Management</a></li>
-                                <li><a th:href="@{/admin/typethuoc}">Medication Types</a></li>        
+                                <li><a th:href="@{/admin/typethuoc}">Medication Types</a></li>
+                                <li><a th:href="@{/admin/donvi}">Unit</a></li>
                                 <li><a th:href="@{/admin/typedoctor}">Type Doctor</a></li>                        
                                 <li><a th:href="@{/admin/lichlamviec}">Work Schedule</a></li>                          
                                 <li><a th:href="@{/admin/rating}">Review and Comment Management</a></li>

@@ -29,7 +29,7 @@
                 </div>
                 <!-- Content -->
                 <div class="right_col" role="main">
-                    <h1>Medication Types</h1>
+                    <h1>Unit</h1>
                     <!-- Display success message in the success container -->
                     <!-- Display success message only if it's not null -->
                     <div th:if="${MessageCreate != null}" class="success-container">
@@ -38,7 +38,7 @@
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 card_head">
 
-                            <a th:href="@{/admin/typethuoc/create}"  class="btn btn-primary">Create </a> <br><!-- comment -->
+                            <a th:href="@{/admin/donvi/create}"  class="btn btn-primary">Create </a> <br><!-- comment -->
                                 <div th:if="${successMessage}" style="color: green;">
                                     <p th:text="${successMessage}"></p>
                                 </div>
@@ -61,12 +61,12 @@
                                         </tr>
                                     </thead>
                                     </tbody>
-                                    <tr th:each="e : ${listTypeThuoc}">
+                                    <tr th:each="e : ${listDonvi}">
                                         <td th:text="${e.getId()}"></td>
                                         <td th:text="${e.getName()}"></td>
                                         <td>
-                                            <a class="btn btn-info" th:href="@{/admin/typethuoc/edit/{id}(id=${e.getId()})}">Update</a> |
-                                            <a class="btn btn-warning" th:href="@{/admin/typethuoc/delete/{id}(id=${e.getId()})}">Delete</a>
+                                            <a class="btn btn-info" th:href="@{/admin/donvi/edit/{id}(id=${e.getId()})}">Update</a> |
+                                            <a class="btn btn-warning" th:href="@{/admin/donvi/delete/{id}(id=${e.getId()})}">Delete</a>
                                         </td>
 
 

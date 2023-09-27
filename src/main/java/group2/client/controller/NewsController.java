@@ -4,15 +4,19 @@
  */
 package group2.client.controller;
 
+import group2.client.dto.NewsDAO;
 import group2.client.entities.Admin;
 import group2.client.entities.Casher;
 import group2.client.entities.Doctor;
 import group2.client.entities.News;
 import group2.client.entities.Patient;
 import group2.client.service.AuthService;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -21,12 +25,15 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -34,6 +41,9 @@ import org.springframework.web.client.RestTemplate;
  */
 @Controller
 public class NewsController {
+    
+    @Value("${upload.path}")
+    private String fileUpload;
 
     String apiUrl = "http://localhost:8888/api/news";
     RestTemplate restTemplate = new RestTemplate();
@@ -124,10 +134,27 @@ public class NewsController {
 
     }
 
-    @RequestMapping(value = "/admin/news/create", method = RequestMethod.POST)
-    public String create(Model model, @ModelAttribute News news) {
+   @RequestMapping(value = "/admin/news/create", method = RequestMethod.POST)
+    public String create(Model model, @ModelAttribute NewsDAO newsDAO, @RequestParam ("author") String author) {
+        MultipartFile multipartFile = newsDAO.getBanner();
+        String fileName = multipartFile.getOriginalFilename();
+        String pathFile = this.fileUpload + fileName;
+        try {
+            FileCopyUtils.copy(newsDAO.getBanner().getBytes(), new File(pathFile));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+
+        News news = new News();
+
+        news.setTitle(newsDAO.getTitle());
+        news.setBanner(fileName);
+        news.setContent(newsDAO.getContent());
+        news.setStatus(newsDAO.getStatus());
+        news.setAuthor(author);
 
         // Tạo một HttpEntity với thông tin Casher để gửi yêu cầu POST
         HttpEntity<News> request = new HttpEntity<>(news, headers);
