@@ -51,13 +51,11 @@ public class Appointment implements Serializable {
     private Integer id;
     @Column(name = "starttime")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
-
 // @Temporal(TemporalType.TIME)
     private String starttime;
     @Column(name = "endtime")
     //@Temporal(TemporalType.TIME)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
-
     private String endtime;
     @Size(max = 250)
     @Column(name = "symptom")

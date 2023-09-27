@@ -24,6 +24,9 @@
         .reset-search-btn:hover{
             color: #fff;
         }
+        .appointment-title{
+            text-align: center;
+        }
     </style>
 
     <body class="nav-md">
@@ -36,8 +39,9 @@
                 <!-- Content -->
 
                 <div class="right_col" role="main">
-                    <h1>Appointment Page</h1>
+                   
                     <div class="card shadow mb-4">
+                        <h1 class="appointment-title">Appointment Page</h1>
                         <div class="card-header py-3 card_head select-date-group">
                             <div th:if="${currentAdmin != null}">
                                 <form th:action="@{/admin/appointment/search}" class="app-form">
@@ -48,8 +52,8 @@
                                 <a th:href="@{/admin/appointment}" class="reset-search-btn">Reset</a>  
                             </div>
                             <div th:if="${currentDoctor != null}">
-                                <form th:action="@{/admin/appointment/search-each-day}" class="app-form">
-                                    <input class="form-control" name="date" required="true" id="date" type="date" />
+                                <form th:action="@{/admin/appointment/search}" class="app-form">
+                                    <input type="text" th:value="${#dates.format(currentDate, 'yyyy-MM-dd')}" class="form-control current-date-input" name="current-date" readonly="true"/>
                                     <button type="submit" class="btn btn-success">Search</button> 
                                 </form>
                                 <a th:href="@{/admin/appointment}" class="reset-search-btn">Reset</a>
@@ -82,7 +86,7 @@
                                         <td th:text="${e.getSymptom()}"></td>
                                         <td th:text="${e.getTypePayment()}"></td>
                                         <td th:text="${e.getPrice()}"></td>
-                                        <td th:text="${e.getDate()}"></td>
+                                        <td th:text="${#dates.format(e.getDate(), 'yyyy-MM-dd')}"></td>
                                         <td th:text="${e.getStarttime()}"></td>
                                         <td th:text="${e.getEndtime()}"></td>
                                         <td th:if="${e.getStatus() == false}">

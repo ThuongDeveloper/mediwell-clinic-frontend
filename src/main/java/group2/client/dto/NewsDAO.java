@@ -16,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 @ToString
 public class NewsDAO {
     private String title;
-    private MultipartFile banner;
+    private MultipartFile image;
     private String content;
     private Boolean status;
     private String author;

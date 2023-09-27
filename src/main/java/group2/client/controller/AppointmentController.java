@@ -204,7 +204,13 @@ public class AppointmentController {
 
                 return "/admin/appointment/index";
          }else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
-              
+               List<Appointment> listAppointment = appointmentRepository.searchAppointment(current_Date);
+                model.addAttribute("listAppointment", listAppointment);
+
+
+                Date currentDate = new Date();
+                // Xử lý dữ liệu theo nhu cầu của bạn
+                model.addAttribute("currentDate", currentDate);
                 model.addAttribute("currentDoctor", currentDoctor);
 
                 return "/admin/appointment/index";
