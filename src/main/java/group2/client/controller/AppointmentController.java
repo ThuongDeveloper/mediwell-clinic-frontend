@@ -10,11 +10,16 @@ import group2.client.entities.Casher;
 import group2.client.entities.Doctor;
 import group2.client.entities.Lichlamviec;
 import group2.client.entities.Patient;
+import group2.client.repository.AppointmentRepository;
 import group2.client.service.AuthService;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -44,6 +49,12 @@ public class AppointmentController {
     
      @Autowired
     private AuthService authService;
+     
+     @Autowired
+    AppointmentRepository appointmentRepository;
+
+    public AppointmentController() {
+    }
 
     @RequestMapping("/admin/appointment")
     public String page(Model model, HttpServletRequest request) {
@@ -64,24 +75,22 @@ public class AppointmentController {
             if (response.getStatusCode().is2xxSuccessful()) {
                 List<Appointment> listAppointment = response.getBody();
 
+                 Date currentDate = new Date();
                 // Xử lý dữ liệu theo nhu cầu của bạn
+                model.addAttribute("currentDate", currentDate);
                 model.addAttribute("listAppointment", listAppointment);
                 model.addAttribute("currentAdmin", currentAdmin);
             }
             return "/admin/appointment/index";
         }else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
-            ResponseEntity<List<Appointment>> response = restTemplate.exchange(apiUrl, HttpMethod.GET, null,
-                new ParameterizedTypeReference<List<Appointment>>() {
-            });
 
-            // Kiểm tra mã trạng thái của phản hồi
-            if (response.getStatusCode().is2xxSuccessful()) {
-                List<Appointment> listAppointment = response.getBody();
-
+               List<Appointment> appointmentByDoctor = appointmentRepository.findByDoctorId(currentDoctor);
+               
+              Date currentDate = new Date();
                 // Xử lý dữ liệu theo nhu cầu của bạn
-                model.addAttribute("listAppointment", listAppointment);
+                model.addAttribute("currentDate", currentDate);
+                model.addAttribute("listAppointment", appointmentByDoctor);
                 model.addAttribute("currentDoctor", currentDoctor);
-            }
             return "/admin/appointment/index";
         }else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
              ResponseEntity<List<Appointment>> response = restTemplate.exchange(apiUrl, HttpMethod.GET, null,
@@ -91,8 +100,9 @@ public class AppointmentController {
             // Kiểm tra mã trạng thái của phản hồi
             if (response.getStatusCode().is2xxSuccessful()) {
                 List<Appointment> listAppointment = response.getBody();
-
+                Date currentDate = new Date();
                 // Xử lý dữ liệu theo nhu cầu của bạn
+                model.addAttribute("currentDate", currentDate);
                 model.addAttribute("listAppointment", listAppointment);
                 model.addAttribute("currentCasher", currentCasher);
             }
@@ -171,6 +181,89 @@ public class AppointmentController {
             return "/admin/appointment/create";
         }
     }
+    
+     @RequestMapping(value = "/admin/appointment/search", method = RequestMethod.GET)
+    public String search(Model model, @RequestParam("current-date") String current_Date, HttpServletRequest request) throws ParseException {
+        
+        Admin currentAdmin = authService.isAuthenticatedAdmin(request);
+        Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
+        Patient currentPatient = authService.isAuthenticatedPatient(request);
+        Casher currentCasher = authService.isAuthenticatedCasher(request);
+        
+         if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
+             return "redirect:/forbien";
+         } else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
+                List<Appointment> listAppointment = appointmentRepository.searchAppointment(current_Date);
+                model.addAttribute("listAppointment", listAppointment);
+
+
+                Date currentDate = new Date();
+                // Xử lý dữ liệu theo nhu cầu của bạn
+                model.addAttribute("currentDate", currentDate);
+                model.addAttribute("currentAdmin", currentAdmin);
+
+                return "/admin/appointment/index";
+         }else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
+              
+                model.addAttribute("currentDoctor", currentDoctor);
+
+                return "/admin/appointment/index";
+         }else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
+             
+                model.addAttribute("currentCasher", currentCasher);
+
+                return "/admin/appointment/index";
+         }else {
+            return "redirect:/login";
+        }
+      
+       
+    }
+    
+     @RequestMapping(value = "/admin/appointment/search-each-day", method = RequestMethod.GET)
+    public String searchEachDay(Model model, @RequestParam("date") String selectDate, HttpServletRequest request) throws ParseException {
+        Admin currentAdmin = authService.isAuthenticatedAdmin(request);
+        Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
+        Patient currentPatient = authService.isAuthenticatedPatient(request);
+        Casher currentCasher = authService.isAuthenticatedCasher(request);
+        
+        if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
+             return "redirect:/forbien";
+         } else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
+          
+
+              
+                model.addAttribute("currentAdmin", currentAdmin);
+
+                return "/admin/appointment/index";
+         }else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
+             
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                Date choose_date = sdf.parse(selectDate);
+             
+                List<Appointment> appointmentByDoctor = appointmentRepository.findByDateAndDoctorId(choose_date, currentDoctor);
+                model.addAttribute("listAppointment", appointmentByDoctor);
+                model.addAttribute("currentDoctor", currentDoctor);
+                return "/admin/appointment/index";
+         }else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
+              
+                model.addAttribute("currentCasher", currentCasher);
+
+                return "/admin/appointment/index";
+         }else {
+            return "redirect:/login";
+        }
+
+    }
+    
+     @RequestMapping(value = "/change-status/{id}", method = RequestMethod.POST)
+    public String changeStatus(Model model, @PathVariable("id") Integer id) {
+        Appointment appointment = appointmentRepository.findById(id).get();
+        appointment.setStatus(Boolean.TRUE);
+        appointmentRepository.save(appointment);
+        return "redirect:/admin/appointment";
+    }
+   
 
     @RequestMapping(value = "/admin/appointment/edit/{id}", method = RequestMethod.GET)
     public String edit(Model model, @PathVariable("id") Integer id) {

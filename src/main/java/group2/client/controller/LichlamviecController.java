@@ -11,6 +11,10 @@ import group2.client.entities.Lichlamviec;
 import group2.client.entities.Patient;
 import group2.client.repository.LichlamviecRepository;
 import group2.client.service.AuthService;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -63,11 +67,17 @@ public class LichlamviecController {
              ResponseEntity<List<Lichlamviec>> response = restTemplate.exchange(apiUrl, HttpMethod.GET, null,
                 new ParameterizedTypeReference<List<Lichlamviec>>() {
             });
+             
+              ResponseEntity<List<Doctor>> DResponse = restTemplate.exchange(apiUrlDoctor, HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<Doctor>>() {
+            });
 
             // Kiểm tra mã trạng thái của phản hồi
-            if (response.getStatusCode().is2xxSuccessful()) {
+            if (response.getStatusCode().is2xxSuccessful() && DResponse.getStatusCode().is2xxSuccessful()) {
                 List<Lichlamviec> listLich = response.getBody();
-
+                List<Doctor> listDoctor = DResponse.getBody();
+                model.addAttribute("listDoctor", listDoctor);
+               
                 // Xử lý dữ liệu theo nhu cầu của bạn
                 model.addAttribute("listLich", listLich);
                 model.addAttribute("currentAdmin", currentAdmin);
@@ -383,7 +393,85 @@ public class LichlamviecController {
     }
 
    
+     @RequestMapping(value = "/admin/lichlamviec/search", method = RequestMethod.GET)
+    public String searchByDoctor(Model model, @RequestParam("lichlamviec-doctor") String lichlamviec_doctor, HttpServletRequest request){
+        
+        Admin currentAdmin = authService.isAuthenticatedAdmin(request);
+        Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
+        Patient currentPatient = authService.isAuthenticatedPatient(request);
+        Casher currentCasher = authService.isAuthenticatedCasher(request);
+        
+         if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
+             return "redirect:/forbien";
+         } else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
+                ResponseEntity<List<Doctor>> DResponse = restTemplate.exchange(apiUrlDoctor, HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<Doctor>>() {
+            });
+             
+           List<Lichlamviec> listLich = lichlamviecRepository.searchLich(lichlamviec_doctor);
+           
+            if (DResponse.getStatusCode().is2xxSuccessful()) {
+                // Thực hiện thêm xử lý sau khi tạo Casher thành công (nếu cần)
+                List<Doctor> listDoctor = DResponse.getBody();
+                model.addAttribute("listDoctor", listDoctor);
+                model.addAttribute("listLich", listLich);
+                model.addAttribute("currentAdmin", currentAdmin);
+            }
 
+            return "/admin/lichlamviec/index";
+         }else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
+              
+                model.addAttribute("currentDoctor", currentDoctor);
+
+                return "/admin/lichlamviec/index";
+         }else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
+             
+                model.addAttribute("currentCasher", currentCasher);
+
+                return "/admin/lichlamviec/index";
+         }else {
+            return "redirect:/login";
+        }
+      
+       
+    }
+    
+    
+       @RequestMapping(value = "/admin/lichlamviec/search-each-day", method = RequestMethod.GET)
+    public String searchScheduleEachDay(Model model, @RequestParam("llv-date") String selectDate, HttpServletRequest request) throws ParseException {
+        Admin currentAdmin = authService.isAuthenticatedAdmin(request);
+        Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
+        Patient currentPatient = authService.isAuthenticatedPatient(request);
+        Casher currentCasher = authService.isAuthenticatedCasher(request);
+        
+        if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
+             return "redirect:/forbien";
+         } else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
+          
+
+               SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                Date choose_date = sdf.parse(selectDate);
+             
+                List<Lichlamviec> scheduleByDate = lichlamviecRepository.findByDate(choose_date);
+                model.addAttribute("listLich", scheduleByDate);
+                model.addAttribute("currentAdmin", currentAdmin);
+
+                return "/admin/lichlamviec/index";
+         }else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
+             
+               
+                model.addAttribute("currentDoctor", currentDoctor);
+                return "/admin/lichlamviec/index";
+         }else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
+              
+                model.addAttribute("currentCasher", currentCasher);
+
+                return "/admin/lichlamviec/index";
+         }else {
+            return "redirect:/login";
+        }
+
+    }
 
 }
 

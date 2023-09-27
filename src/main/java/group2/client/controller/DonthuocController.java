@@ -103,6 +103,11 @@ public class DonthuocController {
 
         List<Thuoc> listThuoc = response1.getBody();
 
+        if (thuocID == null) {
+            session.setAttribute("notnull", "You must add the medicine to your prescription!");
+            return "admin/donthuoc/create";
+        }
+        
         for (int i = 0; i < thuocID.length; i++) {
             for (var item : listThuoc) {
                 if (item.getId() == thuocID[i]) {
