@@ -1,5 +1,4 @@
 package group2.client.controller;
-
 import group2.client.dto.HoaDonThuocDAO;
 import group2.client.dto.ListToaThuocDAO;
 import group2.client.dto.ToaThuocDAO;
@@ -59,11 +58,7 @@ public class ToathuocController {
 
                 // Xử lý dữ liệu theo nhu cầu của bạn
                 model.addAttribute("listToathuoc", listToathuoc);
-<<<<<<< HEAD
-                 model.addAttribute("currentAdmin", currentAdmin);
-=======
                 model.addAttribute("currentAdmin", currentAdmin);
->>>>>>> a816e647285ae68ffaf9948a69b9c13c7e9d89c9
             }
             return "admin/toathuoc/index";
         }else if(currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")){
@@ -77,11 +72,7 @@ public class ToathuocController {
 
                 // Xử lý dữ liệu theo nhu cầu của bạn
                 model.addAttribute("listToathuoc", listToathuoc);
-<<<<<<< HEAD
-                   model.addAttribute("currentDoctor", currentDoctor);
-=======
                 model.addAttribute("currentDoctor", currentDoctor);
->>>>>>> a816e647285ae68ffaf9948a69b9c13c7e9d89c9
             }
             return "admin/toathuoc/index";
         }else if(currentCasher != null && currentCasher.getRole().equals("CASHER")){
@@ -96,10 +87,7 @@ public class ToathuocController {
                 // Xử lý dữ liệu theo nhu cầu của bạn
                 model.addAttribute("listToathuoc", listToathuoc);
                 model.addAttribute("currentCasher", currentCasher);
-<<<<<<< HEAD
-=======
 
->>>>>>> a816e647285ae68ffaf9948a69b9c13c7e9d89c9
             }
             return "admin/toathuoc/index";
         }else {
@@ -126,11 +114,7 @@ public class ToathuocController {
                     });
             List<Toathuoc> listToathuoc = response.getBody();
             model.addAttribute("listToathuoc", listToathuoc);
-<<<<<<< HEAD
-            model.addAttribute("currentAdmin", currentAdmin);
-=======
              model.addAttribute("currentAdmin", currentAdmin);
->>>>>>> a816e647285ae68ffaf9948a69b9c13c7e9d89c9
             model.addAttribute("toathuoc", new Toathuoc());
             return "admin/toathuoc/create";
         }else if(currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")){
@@ -140,11 +124,7 @@ public class ToathuocController {
                     });
             List<Toathuoc> listToathuoc = response.getBody();
             model.addAttribute("listToathuoc", listToathuoc);
-<<<<<<< HEAD
-            model.addAttribute("currentDoctor", currentDoctor);
-=======
              model.addAttribute("currentDoctor", currentDoctor);
->>>>>>> a816e647285ae68ffaf9948a69b9c13c7e9d89c9
             model.addAttribute("toathuoc", new Toathuoc());
             return "admin/toathuoc/create";
         }else if(currentCasher != null && currentCasher.getRole().equals("CASHER")){
@@ -154,11 +134,7 @@ public class ToathuocController {
                     });
             List<Toathuoc> listToathuoc = response.getBody();
             model.addAttribute("listToathuoc", listToathuoc);
-<<<<<<< HEAD
-            model.addAttribute("currentCasher", currentCasher);
-=======
              model.addAttribute("currentCasher", currentCasher);
->>>>>>> a816e647285ae68ffaf9948a69b9c13c7e9d89c9
             model.addAttribute("toathuoc", new Toathuoc());
             return "admin/toathuoc/create";
         }else {
@@ -256,7 +232,7 @@ public class ToathuocController {
         // Tạo một luồng nội dung cho trang
         PDPageContentStream contentStream = new PDPageContentStream(document, page);
 
-        // Thực hiện viết nội dung PDF ở đây (ví dụ: ghi thông tin từ `toathuoc` vào tài liệu)
+        // Thực hiện viết nội dung PDF ở đây (ví dụ: ghi thông tin từ toathuoc vào tài liệu)
 
         // Đóng luồng nội dung
         contentStream.close();
