@@ -30,9 +30,8 @@
                                             <th>Name</th>
                                             <th>Phone</th>
                                             <th>Sympton</th>
-                                            <th>Description</th>
-<!--                                            <th>State</th>-->
-                                            <th>Date</th>
+                                            <th>Examination Date</th>
+                                            <th>Re-examination Date</th>
                                             <th>Action</th>
 
                                         </tr>
@@ -40,14 +39,11 @@
                                     </tbody>
                                     <tr th:each="e : ${listToathuoc}">
                                         <td th:text="${e.getId()}"></td>
-                                        <td th:text="${e.getName()}"></td>
-                                        <td th:text="${e.getPhone()}"></td>
-                                        <td th:text="${e.getSymptom()}"></td>
-                                        <td th:text="${e.getDescription()}"></td>
-<!--                                        <td th:text="${e.getState()}"></td>-->
-                                        <!--                                     <td th:text="${e.getDoctorId().getName()}"></td>-->
+                                        <td th:text="${e.taophieukhamId.name}"></td>
+                                        <td th:text="${e.taophieukhamId.phone}"></td>
+                                        <td th:text="${e.getSympton()}"></td>
                                         <td th:text="${#dates.format(e.getCreateAt(), 'dd/MM/yyyy')}" ></td>
-                                        <!--                                        <td >Chưa thêm</td>-->
+                                        <td th:text="${#dates.format(e.getNgaytaikham(), 'dd/MM/yyyy')}" ></td>
                                      <td>
                                          <a th:href="@{'/admin/toathuoc/export-pdf?toathuocId=' + ${e.getId()}}"
                                             class="btn btn-primary">Export PDF</a>

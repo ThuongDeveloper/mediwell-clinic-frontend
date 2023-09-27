@@ -5,6 +5,7 @@
 package group2.client.entities;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -43,7 +44,7 @@ public class Company implements Serializable {
     @Column(name = "name")
     private String name;
     @OneToMany(mappedBy = "companyId")
-    private List<Thuoc> thuocList;
+    private Collection<Thuoc> thuocCollection;
 
     public Company() {
     }
@@ -69,13 +70,14 @@ public class Company implements Serializable {
     }
 
     @XmlTransient
-    public List<Thuoc> getThuocList() {
-        return thuocList;
+    public Collection<Thuoc> getThuocCollection() {
+        return thuocCollection;
     }
 
-    public void setThuocList(List<Thuoc> thuocList) {
-        this.thuocList = thuocList;
+    public void setThuocCollection(Collection<Thuoc> thuocCollection) {
+        this.thuocCollection = thuocCollection;
     }
+
 
     @Override
     public int hashCode() {

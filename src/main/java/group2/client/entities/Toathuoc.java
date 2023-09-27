@@ -4,6 +4,8 @@
  */
 package group2.client.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
@@ -65,6 +67,7 @@ public class Toathuoc implements Serializable {
     @ManyToOne
     private Taophieukham taophieukhamId;
    @OneToMany(mappedBy = "toathuocId")
+   @JsonIgnore
     private Collection<ToathuocDetails> toathuocDetailsCollection;
 
     public Toathuoc() {
