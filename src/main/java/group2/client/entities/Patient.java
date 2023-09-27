@@ -5,10 +5,8 @@
 package group2.client.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,9 +17,9 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -30,17 +28,19 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "patient")
 @JsonIgnoreProperties({"ratingCollection"})
+
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Patient.findAll", query = "SELECT p FROM Patient p"),
     @NamedQuery(name = "Patient.findById", query = "SELECT p FROM Patient p WHERE p.id = :id"),
-    @NamedQuery(name = "Patient.findByUsername", query = "SELECT p FROM Patient p WHERE p.username = :username"),
     @NamedQuery(name = "Patient.findByPassword", query = "SELECT p FROM Patient p WHERE p.password = :password"),
     @NamedQuery(name = "Patient.findByName", query = "SELECT p FROM Patient p WHERE p.name = :name"),
     @NamedQuery(name = "Patient.findByEmail", query = "SELECT p FROM Patient p WHERE p.email = :email"),
     @NamedQuery(name = "Patient.findByAddress", query = "SELECT p FROM Patient p WHERE p.address = :address"),
     @NamedQuery(name = "Patient.findByPhone", query = "SELECT p FROM Patient p WHERE p.phone = :phone"),
+    @NamedQuery(name = "Patient.findByImage", query = "SELECT p FROM Patient p WHERE p.image = :image"),
     @NamedQuery(name = "Patient.findByRole", query = "SELECT p FROM Patient p WHERE p.role = :role"),
-    @NamedQuery(name = "Patient.findByImage", query = "SELECT p FROM Patient p WHERE p.image = :image")})
+    @NamedQuery(name = "Patient.findByGender", query = "SELECT p FROM Patient p WHERE p.gender = :gender")})
 public class Patient implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -50,15 +50,11 @@ public class Patient implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Size(max = 250)
-    @Column(name = "username")
-    private String username;
-    @Size(max = 250)
     @Column(name = "password")
     private String password;
     @Size(max = 250)
     @Column(name = "name")
     private String name;
-    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     @Size(max = 250)
     @Column(name = "email")
@@ -66,29 +62,22 @@ public class Patient implements Serializable {
     @Size(max = 250)
     @Column(name = "address")
     private String address;
-    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
-    // @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message="Invalid phone/fax format, should be as xxx-xxx-xxxx")//if the field contains phone or fax number consider using this annotation to enforce field validation
-    @Column(name = "age")
-    @Temporal(TemporalType.DATE)
-    private Date age;
     // @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message="Invalid phone/fax format, should be as xxx-xxx-xxxx")//if the field contains phone or fax number consider using this annotation to enforce field validation
     @Size(max = 50)
     @Column(name = "phone")
     private String phone;
-    @Column(name = "gender")
-    private Boolean gender;
     @Size(max = 250)
     @Column(name = "image")
     private String image;
     @Size(max = 50)
     @Column(name = "role")
     private String role;
+    @Column(name = "gender")
+    private Boolean gender;
     @OneToMany(mappedBy = "patientId")
-    private Collection<Rating> ratingCollection;
+    private List<Rating> ratingList;
     @OneToMany(mappedBy = "patientId")
-    private Collection<Appointment> appointmentCollection;
-    @OneToMany(mappedBy = "patientId")
-    private Collection<Feedback> feedbackCollection;
+    private List<Appointment> appointmentList;
 
     public Patient() {
     }
@@ -103,15 +92,6 @@ public class Patient implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getPassword() {
@@ -146,28 +126,12 @@ public class Patient implements Serializable {
         this.address = address;
     }
 
-    public Date getAge() {
-        return age;
-    }
-
-    public void setAge(Date age) {
-        this.age = age;
-    }
-
     public String getPhone() {
         return phone;
     }
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public Boolean getGender() {
-        return gender;
-    }
-
-    public void setGender(Boolean gender) {
-        this.gender = gender;
     }
 
     public String getImage() {
@@ -186,28 +150,30 @@ public class Patient implements Serializable {
         this.role = role;
     }
 
-    public Collection<Rating> getRatingCollection() {
-        return ratingCollection;
+    public Boolean getGender() {
+        return gender;
     }
 
-    public void setRatingCollection(Collection<Rating> ratingCollection) {
-        this.ratingCollection = ratingCollection;
+    public void setGender(Boolean gender) {
+        this.gender = gender;
     }
 
-    public Collection<Appointment> getAppointmentCollection() {
-        return appointmentCollection;
+    @XmlTransient
+    public List<Rating> getRatingList() {
+        return ratingList;
     }
 
-    public void setAppointmentCollection(Collection<Appointment> appointmentCollection) {
-        this.appointmentCollection = appointmentCollection;
+    public void setRatingList(List<Rating> ratingList) {
+        this.ratingList = ratingList;
     }
 
-    public Collection<Feedback> getFeedbackCollection() {
-        return feedbackCollection;
+    @XmlTransient
+    public List<Appointment> getAppointmentList() {
+        return appointmentList;
     }
 
-    public void setFeedbackCollection(Collection<Feedback> feedbackCollection) {
-        this.feedbackCollection = feedbackCollection;
+    public void setAppointmentList(List<Appointment> appointmentList) {
+        this.appointmentList = appointmentList;
     }
 
     @Override
@@ -234,5 +200,5 @@ public class Patient implements Serializable {
     public String toString() {
         return "group2.client.entities.Patient[ id=" + id + " ]";
     }
-
+    
 }

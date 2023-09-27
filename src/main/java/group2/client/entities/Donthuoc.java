@@ -7,6 +7,7 @@ package group2.client.entities;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,7 +23,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -30,6 +32,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "donthuoc")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Donthuoc.findAll", query = "SELECT d FROM Donthuoc d"),
     @NamedQuery(name = "Donthuoc.findById", query = "SELECT d FROM Donthuoc d WHERE d.id = :id"),
@@ -43,50 +46,33 @@ public class Donthuoc implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-     @Column(name = "name")
-    private String name;
-    @Column(name = "phone")
-    private String phone;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "total_money")
+    private int totalMoney;
     @Column(name = "create_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createAt;
     @JoinColumn(name = "casher_id", referencedColumnName = "id")
     @ManyToOne
     private Casher casherId;
-    @OneToMany(mappedBy = "donthuocId")
-    private Collection<DonthuocDetails> donthuocDetailsCollection;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "total_money")
-    private int totalMoney;
-    @Size(max = 255)
-    @Column(name = "address")
-    private String address;
-    @JoinColumn(name = "phieukham_id", referencedColumnName = "id")
+    @JoinColumn(name = "toathuoc_id", referencedColumnName = "id")
     @ManyToOne
-    private Taophieukham phieukhamId;
+    private Toathuoc toathuocId;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
+@OneToMany(mappedBy = "donthuocId")
+    private Collection<DonthuocDetails> donthuocDetailsCollection;
 
     public Donthuoc() {
     }
 
     public Donthuoc(Integer id) {
         this.id = id;
+    }
+
+    public Donthuoc(Integer id, int totalMoney) {
+        this.id = id;
+        this.totalMoney = totalMoney;
     }
 
     public Integer getId() {
@@ -97,11 +83,11 @@ public class Donthuoc implements Serializable {
         this.id = id;
     }
 
-    public Integer getTotalMoney() {
+    public int getTotalMoney() {
         return totalMoney;
     }
 
-    public void setTotalMoney(Integer totalMoney) {
+    public void setTotalMoney(int totalMoney) {
         this.totalMoney = totalMoney;
     }
 
@@ -121,23 +107,15 @@ public class Donthuoc implements Serializable {
         this.casherId = casherId;
     }
 
-    public String getAddress() {
-        return address;
+    public Toathuoc getToathuocId() {
+        return toathuocId;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setToathuocId(Toathuoc toathuocId) {
+        this.toathuocId = toathuocId;
     }
 
-    public Taophieukham getPhieukhamId() {
-        return phieukhamId;
-    }
-
-    public void setPhieukhamId(Taophieukham phieukhamId) {
-        this.phieukhamId = phieukhamId;
-    }
-
-    public Collection<DonthuocDetails> getDonthuocDetailsCollection() {
+   public Collection<DonthuocDetails> getDonthuocDetailsCollection() {
         return donthuocDetailsCollection;
     }
 

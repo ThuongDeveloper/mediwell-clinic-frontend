@@ -4,7 +4,6 @@
  */
 package group2.client.entities;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -21,6 +20,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
@@ -29,6 +29,7 @@ import org.springframework.format.annotation.DateTimeFormat;
  */
 @Entity
 @Table(name = "appointment")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Appointment.findAll", query = "SELECT a FROM Appointment a"),
     @NamedQuery(name = "Appointment.findById", query = "SELECT a FROM Appointment a WHERE a.id = :id"),
@@ -37,8 +38,8 @@ import org.springframework.format.annotation.DateTimeFormat;
     @NamedQuery(name = "Appointment.findBySymptom", query = "SELECT a FROM Appointment a WHERE a.symptom = :symptom"),
     @NamedQuery(name = "Appointment.findByTypePayment", query = "SELECT a FROM Appointment a WHERE a.typePayment = :typePayment"),
     @NamedQuery(name = "Appointment.findByPrice", query = "SELECT a FROM Appointment a WHERE a.price = :price"),
-    @NamedQuery(name = "Appointment.findByStatus", query = "SELECT a FROM Appointment a WHERE a.status = :status"),
-    @NamedQuery(name = "Appointment.findByDate", query = "SELECT a FROM Appointment a WHERE a.date = :date")})
+    @NamedQuery(name = "Appointment.findByDate", query = "SELECT a FROM Appointment a WHERE a.date = :date"),
+    @NamedQuery(name = "Appointment.findByStatus", query = "SELECT a FROM Appointment a WHERE a.status = :status")})
 public class Appointment implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -48,13 +49,11 @@ public class Appointment implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Column(name = "starttime")
-//    @Temporal(TemporalType.TIME)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
-    private String starttime;
+    @Temporal(TemporalType.TIME)
+    private Date starttime;
     @Column(name = "endtime")
-//    @Temporal(TemporalType.TIME)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
-    private String endtime;
+    @Temporal(TemporalType.TIME)
+    private Date endtime;
     @Size(max = 250)
     @Column(name = "symptom")
     private String symptom;
@@ -64,17 +63,17 @@ public class Appointment implements Serializable {
     @Column(name = "price")
     private Integer price;
     @Column(name = "date")
-//    @Temporal(TemporalType.DATE)
+    //@Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date date;
+    @Column(name = "status")
+    private Boolean status;
     @JoinColumn(name = "doctor_id", referencedColumnName = "id")
     @ManyToOne
     private Doctor doctorId;
     @JoinColumn(name = "patient_id", referencedColumnName = "id")
     @ManyToOne
     private Patient patientId;
-    @Column(name = "status")
-    private Boolean status;
 
     public Appointment() {
     }
@@ -91,19 +90,19 @@ public class Appointment implements Serializable {
         this.id = id;
     }
 
-    public String getStarttime() {
+    public Date getStarttime() {
         return starttime;
     }
 
-    public void setStarttime(String starttime) {
+    public void setStarttime(Date starttime) {
         this.starttime = starttime;
     }
 
-    public String getEndtime() {
+    public Date getEndtime() {
         return endtime;
     }
 
-    public void setEndtime(String endtime) {
+    public void setEndtime(Date endtime) {
         this.endtime = endtime;
     }
 
@@ -139,6 +138,14 @@ public class Appointment implements Serializable {
         this.date = date;
     }
 
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+
     public Doctor getDoctorId() {
         return doctorId;
     }
@@ -154,16 +161,6 @@ public class Appointment implements Serializable {
     public void setPatientId(Patient patientId) {
         this.patientId = patientId;
     }
-
-    public Boolean getStatus() {
-        return status;
-    }
-
-    public void setStatus(Boolean status) {
-        this.status = status;
-    }
-    
-    
 
     @Override
     public int hashCode() {

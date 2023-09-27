@@ -4,13 +4,28 @@
  */
 package group2.client.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import org.hibernate.validator.constraints.Length;
 
@@ -19,8 +34,8 @@ import org.hibernate.validator.constraints.Length;
  * @author DELL
  */
 @Entity
-//@JsonIgnoreProperties("casherId")
 @Table(name = "taophieukham")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Taophieukham.findAll", query = "SELECT t FROM Taophieukham t"),
     @NamedQuery(name = "Taophieukham.findById", query = "SELECT t FROM Taophieukham t WHERE t.id = :id"),
@@ -29,7 +44,10 @@ import org.hibernate.validator.constraints.Length;
     @NamedQuery(name = "Taophieukham.findByPhone", query = "SELECT t FROM Taophieukham t WHERE t.phone = :phone"),
     @NamedQuery(name = "Taophieukham.findByAddress", query = "SELECT t FROM Taophieukham t WHERE t.address = :address"),
     @NamedQuery(name = "Taophieukham.findByTotalMoney", query = "SELECT t FROM Taophieukham t WHERE t.totalMoney = :totalMoney"),
-    @NamedQuery(name = "Taophieukham.findByCreateAt", query = "SELECT t FROM Taophieukham t WHERE t.createAt = :createAt")})
+    @NamedQuery(name = "Taophieukham.findByCreateAt", query = "SELECT t FROM Taophieukham t WHERE t.createAt = :createAt"),
+    @NamedQuery(name = "Taophieukham.findByGender", query = "SELECT t FROM Taophieukham t WHERE t.gender = :gender"),
+    @NamedQuery(name = "Taophieukham.findByDob", query = "SELECT t FROM Taophieukham t WHERE t.dob = :dob"),
+    @NamedQuery(name = "Taophieukham.findBySympton", query = "SELECT t FROM Taophieukham t WHERE t.sympton = :sympton")})
 public class Taophieukham implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -38,7 +56,9 @@ public class Taophieukham implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Column(name = "sothutu")
+    
+    
+   @Column(name = "sothutu")
     @NotNull(message = "No. cannot be left blank!!!")
     private Integer sothutu;
     @Size(max = 250)
@@ -50,25 +70,37 @@ public class Taophieukham implements Serializable {
     @NotBlank(message = "Phone cannot be left blank!!!")
     @Length(min = 10, max = 30, message = "Phone must be from 10 to 30 numbers")
     @Pattern(regexp = "^[0-9]+$", message = "Invalid phone")
+    
+    
     private String phone;
     @Column(name = "address")
     @NotBlank(message = "Address cannot be left blank!!!")
     @Length(min = 10, max = 150, message = "Address must be from 10 to 150 characters")
     private String address;
-    @OneToMany(mappedBy = "phieukhamId")
-    private List<Donthuoc> donthuocList;
+    
+    
     @Column(name = "total_money")
     private Integer totalMoney;
     @Column(name = "create_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createAt;
+    @Column(name = "gender")
+    private Boolean gender;
+    @Column(name = "dob")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dob;
+    
+    @Size(max = 250)
+    @Column(name = "sympton")
+    private String sympton;
+    @OneToMany(mappedBy = "taophieukhamId")
+    private List<Toathuoc> toathuocList;
+    
     @JoinColumn(name = "casher_id", referencedColumnName = "id")
-//    @NotNull(message = "Casher Name cannot be left blank!!!")
-//    @JsonBackReference
     @ManyToOne
     private Casher casherId;
+    
     @JoinColumn(name = "type_doctor_id", referencedColumnName = "id")
-//    @NotNull(message = "Type Doctor cannot be left blank!!!")
     @ManyToOne
     private TypeDoctor typeDoctorId;
 
@@ -135,6 +167,39 @@ public class Taophieukham implements Serializable {
         this.createAt = createAt;
     }
 
+    public Boolean getGender() {
+        return gender;
+    }
+
+    public void setGender(Boolean gender) {
+        this.gender = gender;
+    }
+
+    public Date getDob() {
+        return dob;
+    }
+
+    public void setDob(Date dob) {
+        this.dob = dob;
+    }
+
+    public String getSympton() {
+        return sympton;
+    }
+
+    public void setSympton(String sympton) {
+        this.sympton = sympton;
+    }
+
+    @XmlTransient
+    public List<Toathuoc> getToathuocList() {
+        return toathuocList;
+    }
+
+    public void setToathuocList(List<Toathuoc> toathuocList) {
+        this.toathuocList = toathuocList;
+    }
+
     public Casher getCasherId() {
         return casherId;
     }
@@ -149,15 +214,6 @@ public class Taophieukham implements Serializable {
 
     public void setTypeDoctorId(TypeDoctor typeDoctorId) {
         this.typeDoctorId = typeDoctorId;
-    }
-
-    @XmlTransient
-    public List<Donthuoc> getDonthuocList() {
-        return donthuocList;
-    }
-
-    public void setDonthuocList(List<Donthuoc> donthuocList) {
-        this.donthuocList = donthuocList;
     }
 
     @Override
@@ -184,5 +240,5 @@ public class Taophieukham implements Serializable {
     public String toString() {
         return "group2.client.entities.Taophieukham[ id=" + id + " ]";
     }
-
+    
 }

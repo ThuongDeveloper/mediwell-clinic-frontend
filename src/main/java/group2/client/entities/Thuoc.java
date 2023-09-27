@@ -4,11 +4,10 @@
  */
 package group2.client.entities;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,6 +23,9 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  *
@@ -31,11 +33,11 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "thuoc")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Thuoc.findAll", query = "SELECT t FROM Thuoc t"),
     @NamedQuery(name = "Thuoc.findById", query = "SELECT t FROM Thuoc t WHERE t.id = :id"),
     @NamedQuery(name = "Thuoc.findByName", query = "SELECT t FROM Thuoc t WHERE t.name = :name"),
-    @NamedQuery(name = "Thuoc.findByCompanyName", query = "SELECT t FROM Thuoc t WHERE t.companyName = :companyName"),
     @NamedQuery(name = "Thuoc.findByComposition", query = "SELECT t FROM Thuoc t WHERE t.composition = :composition"),
     @NamedQuery(name = "Thuoc.findByQuantity", query = "SELECT t FROM Thuoc t WHERE t.quantity = :quantity"),
     @NamedQuery(name = "Thuoc.findByPrice", query = "SELECT t FROM Thuoc t WHERE t.price = :price"),
@@ -54,19 +56,19 @@ public class Thuoc implements Serializable {
     @Column(name = "name")
     private String name;
     @Size(max = 250)
-    @Column(name = "company_name")
-    private String companyName;
-    @Size(max = 250)
     @Column(name = "composition")
     private String composition;
     @Column(name = "quantity")
     private Integer quantity;
     @Column(name = "price")
     private Integer price;
+    
+    
     @Column(name = "create_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createAt;
-    @Column(name = "manufacturing_date")
+    
+ @Column(name = "manufacturing_date")
 //    @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date manufacturingDate;
@@ -74,16 +76,23 @@ public class Thuoc implements Serializable {
 //    @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date expiryDate;
-    @OneToMany(mappedBy = "thuocId")
+    
+    
+
+@OneToMany(mappedBy = "thuocId")
     private Collection<DonthuocDetails> donthuocDetailsCollection;
-    @JoinColumn(name = "typethuoc_id", referencedColumnName = "id")
+    @JoinColumn(name = "company_id", referencedColumnName = "id")
     @ManyToOne
-    private Typethuoc typethuocId;
-    @OneToMany(mappedBy = "thuocId")
-    private Collection<ToathuocDetails> toathuocDetailsCollection;
+    private Company companyId;
     @JoinColumn(name = "donvi_id", referencedColumnName = "id")
     @ManyToOne
     private Donvi donviId;
+    @JoinColumn(name = "typethuoc_id", referencedColumnName = "id")
+    @ManyToOne
+    private Typethuoc typethuocId;
+@OneToMany(mappedBy = "thuocId")
+    private Collection<ToathuocDetails> toathuocDetailsCollection;
+
     public Thuoc() {
     }
 
@@ -105,14 +114,6 @@ public class Thuoc implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
     }
 
     public String getComposition() {
@@ -163,12 +164,29 @@ public class Thuoc implements Serializable {
         this.expiryDate = expiryDate;
     }
 
-    public Collection<DonthuocDetails> getDonthuocDetailsCollection() {
+    @XmlTransient
+    public Collection<DonthuocDetails> getDonthuocDetailsList() {
         return donthuocDetailsCollection;
     }
 
-    public void setDonthuocDetailsCollection(Collection<DonthuocDetails> donthuocDetailsCollection) {
-        this.donthuocDetailsCollection = donthuocDetailsCollection;
+    public void setDonthuocDetailsList(Collection<DonthuocDetails> donthuocDetailsList) {
+        this.donthuocDetailsCollection = donthuocDetailsList;
+    }
+
+    public Company getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Company companyId) {
+        this.companyId = companyId;
+    }
+
+    public Donvi getDonviId() {
+        return donviId;
+    }
+
+    public void setDonviId(Donvi donviId) {
+        this.donviId = donviId;
     }
 
     public Typethuoc getTypethuocId() {
@@ -179,19 +197,15 @@ public class Thuoc implements Serializable {
         this.typethuocId = typethuocId;
     }
 
-    public Collection<ToathuocDetails> getToathuocDetailsCollection() {
+    @XmlTransient
+    public Collection<ToathuocDetails> getToathuocDetailsList() {
         return toathuocDetailsCollection;
     }
 
-    public void setToathuocDetailsCollection(Collection<ToathuocDetails> toathuocDetailsCollection) {
-        this.toathuocDetailsCollection = toathuocDetailsCollection;
+    public void setToathuocDetailsList(Collection<ToathuocDetails> toathuocDetailsList) {
+        this.toathuocDetailsCollection = toathuocDetailsList;
     }
-    public Donvi getDonviId() {
-        return donviId;
-    }
-    public void setDonviId(Donvi donviId) {
-        this.donviId = donviId;
-    }
+
     @Override
     public int hashCode() {
         int hash = 0;
