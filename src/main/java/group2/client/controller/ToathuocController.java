@@ -152,23 +152,14 @@ public class ToathuocController {
             ToaThuocDAO obj = new ToaThuocDAO(thuocID[i], quantity[i], sang[i], trua[i], chieu[i], toi[i]);
             list.add(obj);
         }
-
-        if (state == null) {
-            state = false;
-        }
-
         // Authenticate the doctor and retrieve their information
         Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
         Integer doctorId = currentDoctor.getId();
 
         ListToaThuocDAO listTT = new ListToaThuocDAO();
         listTT.setListTT(list);
-        listTT.setName(name);
-        listTT.setPhone(phone);
-        listTT.setAddress(address);
+
         listTT.setSymptom(sympton);
-        listTT.setDescription(description);
-        listTT.setState(state);
         listTT.setDoctorId(doctorId); // Set the doctorId
 
         HttpHeaders headers = new HttpHeaders();

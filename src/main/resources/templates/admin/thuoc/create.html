@@ -103,12 +103,21 @@
                                             </div>
                                         </div>
                                         <div class="field item form-group">
-                                            <label class="col-form-label col-md-3 col-sm-3 label-align">Company name<span class="required">*</span></label>
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align">Company Name<span class="required">*</span></label>
                                             <div class="col-md-6 col-sm-6">
-                                                <input type="text" th:field="*{companyName}" class="form-control" >
-                                                <div class="help-block with-errors" id="companyName-error"></div>
+
+                                                <select name="companyID" class="custom-select">
+                                                    <option value="">-- Choose Company Name --</option>
+                                                    <option th:each="company : ${listCompany}"
+                                                            th:value="${company.id}"
+                                                            th:text="${company.name}">
+                                                    </option>
+                                                </select>
+                                                <div id="companyID-message" style="color: red;"></div>
+
                                             </div>
                                         </div>
+
                                         <div class="field item form-group">
                                             <label class="col-form-label col-md-3 col-sm-3 label-align">Composition<span class="required">*</span></label>
                                             <div class="col-md-6 col-sm-6">
@@ -207,29 +216,15 @@
                                     errorMessage.textContent = '';
                                 });
 
-                                // Validate the 'Name' field
-                                const nameField = form.querySelector('input[name="name"]');
-                                if (nameField.value.trim() === '') {
-                                    const errorMessage = form.querySelector('#name-error');
-                                    errorMessage.textContent = 'Name is required.';
-                                    isValid = false;
-                                }
-
-                                // Validate the 'Company Name' field
-                                const companyNameField = form.querySelector('input[name="companyName"]');
-                                if (companyNameField.value.trim() === '') {
-                                    const errorMessage = form.querySelector('#companyName-error');
-                                    errorMessage.textContent = 'Company name is required.';
-                                    isValid = false;
-                                }
-
-                                // Validate the 'Composition' field
-                                const compositionField = form.querySelector('input[name="composition"]');
-                                if (compositionField.value.trim() === '') {
-                                    const errorMessage = form.querySelector('#composition-error');
-                                    errorMessage.textContent = 'Composition is required.';
-                                    isValid = false;
-                                }
+                                // Check if all input fields are empty
+                                const inputFields = form.querySelectorAll('input[type="text"], input[type="number"], input[type="date"]');
+                                inputFields.forEach(function (inputField) {
+                                    if (inputField.value.trim() === '') {
+                                        const errorMessage = form.querySelector('#' + inputField.name + '-error');
+                                        errorMessage.textContent = 'Please enter valid ' + inputField.name ;
+                                        isValid = false;
+                                    }
+                                });
 
                                 // Validate the 'Quantity' field
                                 const quantityField = form.querySelector('input[name="quantity"]');
@@ -286,6 +281,13 @@
                                     errorMessage.textContent = 'Please select a Unit.';
                                     isValid = false;
                                 }
+
+                                const companyIDField = form.querySelector('select[name="companyID"]');
+                                if (companyIDField.value === '') {
+                                    const errorMessage = form.querySelector('#companyID-message');
+                                    errorMessage.textContent = 'Please select a Company.';
+                                    isValid = false;
+                                }
                                 // If any field is invalid, prevent form submission
                                 if (!isValid) {
                                     event.preventDefault();
@@ -298,6 +300,7 @@
                                 return pattern.test(dateString);
                             }
                         });
+
                     </script>
 
                 </div>

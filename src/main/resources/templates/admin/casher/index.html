@@ -53,7 +53,7 @@
                                                                         <div th:if="${e.getGender() == true}">Male</div>
                                                                         <div th:if="${e.getGender() == false}">Female</div>
                                                                     </td>
-                                                                    <td th:text="${e.Dob()}"></td>
+                                                                    <td th:text="${#dates.format(e.dob, 'yyyy-MM-dd')}"></td>
                                                                     <td th:text="${e.getEmail()}"></td>
                                                                     <td th:text="${e.getCreateAt()}"></td>
                                                                     <td>

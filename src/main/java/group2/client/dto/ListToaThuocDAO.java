@@ -4,42 +4,22 @@ package group2.client.dto;
 import java.util.List;
 
 public class ListToaThuocDAO {
-    private String name;
-    private String phone;
-    private String address;
+
     private String symptom;
-    private String description;
-    private boolean state;
     private int doctorId;
+    private int taophieukhamId;
     private List<ToaThuocDAO> listTT;
 
     public ListToaThuocDAO() {
         // Hàm tạo mặc định, không cần truyền tham số
     }
 
-
-    public String getName() {
-        return name;
+    public int getTaophieukhamId() {
+        return taophieukhamId;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
+    public void setTaophieukhamId(int taophieukhamId) {
+        this.taophieukhamId = taophieukhamId;
     }
 
     public String getSymptom() {
@@ -50,21 +30,6 @@ public class ListToaThuocDAO {
         this.symptom = symptom;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public boolean isState() {
-        return state;
-    }
-
-    public void setState(boolean state) {
-        this.state = state;
-    }
 
     public int getDoctorId() {
         return doctorId;

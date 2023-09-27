@@ -107,10 +107,19 @@
                                             </div>
                                         </div>
                                         <div class="field item form-group">
-                                            <label class="col-form-label col-md-3 col-sm-3 label-align">Company name<span class="required">*</span></label>
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align">Company Name<span class="required">*</span></label>
                                             <div class="col-md-6 col-sm-6">
-                                                <input type="text" th:field="*{companyName}" class="form-control" >
-                                                <div class="help-block with-errors" id="companyName-error"></div>
+
+                                                <select name="companyID" class="custom-select">
+                                                    <option value="">-- Choose Company Name --</option>
+                                                    <option th:each="company : ${listCompany}"
+                                                            th:value="${company.id}"
+                                                            th:text="${company.name}"
+                                                            th:selected="${company.id == objThuoc.donviId.id}">>
+                                                    </option>
+                                                </select>
+                                                <div id="companyName-message" style="color: red;"></div>
+
                                             </div>
                                         </div>
                                         <div class="field item form-group">
@@ -175,7 +184,6 @@
                                         <div class="field item form-group">
                                             <label class="col-form-label col-md-3 col-sm-3 label-align">Medication Types<span class="required">*</span></label>
                                             <div class="col-md-6 col-sm-6">
-<!--                                                      <input  readonly th:value="${objThuoc.getTypethuocId().getName()}"/>-->
                                                 <select name="typeThuocID" class="custom-select">
                                                     <option th:each="typeThuoc : ${listTypeThuoc}"
                                                             th:value="${typeThuoc.id}"

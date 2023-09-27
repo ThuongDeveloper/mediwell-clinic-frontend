@@ -43,7 +43,7 @@
                                                             </thead>
                                                             <tbody>
                                                                 <tr th:each="e : ${listTaophieukham}">
-                                                                    <td class="sorting_1" th:text="${e.getSothutu()}"></td>
+                                                                    <td th:text="${e.getSothutu()}"></td>
                                                                     <td th:text="${e.getName()}"></td>
                                                                     <td th:text="${e.getCasherId().getName()}"></td>
                                                                     <td th:text="${e.getTypeDoctorId().getName()}"></td>
@@ -51,7 +51,7 @@
                                                                     <td th:text="${e.getCreateAt()}"></td>
                                                                     <td>
                                                                         <a class="btn btn-info" th:href="@{/admin/phieukham/details/{id}(id=${e.getId()})}">Details</a> | 
-                                                                        <a th:object="${toathuoc}" th:href="@{/admin/donthuoc/create/{id}(id=${e.getId()})}" class="btn btn-primary">Create Medication Invoice</a>
+                                                                        <a th:object="${toathuoc}" th:href="@{/admin/donthuoc/create/{id}(id=${e.id})}" class="btn btn-primary">Create Medication Invoice</a>
                                                                     </td>
                                                                     <td>
                                                                         <a th:href="@{'/admin/phieukham/export-pdf?casherId=' + ${e.getCasherId().getId()} + '&typeDoctorId=' + ${e.getTypeDoctorId().getId()}+ '&id=' + ${e.getId()}}"
