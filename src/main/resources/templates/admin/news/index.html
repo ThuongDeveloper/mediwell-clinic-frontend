@@ -49,6 +49,14 @@
                                                  class="dataTables_wrapper container-fluid dt-bootstrap no-footer">
                                                 <div class="row">
                                                     <div class="col-sm-12">
+                                                        <div th:if="${session.msg}">
+
+                                                            <div class="alert alert-success alert-dismissible fade show">
+                                                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                                                <span th:text="${session.msg}"></span>
+                                                            </div>
+                                                            <th:block th:text="${#session.removeAttribute('msg')}"></th:block>
+                                                        </div>
                                                         <table th:object="${listNews}" id="datatable"
                                                                class="table table-striped table-bordered dataTable no-footer"
                                                                style="width: 100%;" role="grid"
@@ -69,7 +77,7 @@
                                                                 <th class="sorting" tabindex="0"
                                                                     aria-controls="datatable" rowspan="1" colspan="1"
                                                                     aria-label="Create at: activate to sort column ascending"
-                                                                    style="width: 250.2px;">Banner
+                                                                    style="width: 250.2px;">Image
                                                                 </th>
                                                                 <th class="sorting" tabindex="0"
                                                                     aria-controls="datatable" rowspan="1" colspan="1"
@@ -96,7 +104,7 @@
                                                                 <td class="sorting_1" th:text="${e.getId()}"></td>
                                                                 <td th:text="${e.getTitle()}"></td>
                                                                 <td><img style="width: 100px; height: 100px"
-                                                                         th:src="@{${'/img/' + e.getBanner()}}" alt="a"
+                                                                         th:src="@{${e.getImage()}}" alt="a"
                                                                          src=""></td>
                                                                 <td>
                                                                     <div style="overflow: hidden;
@@ -108,7 +116,20 @@
                                                                     >
                                                                     </div>
                                                                 </td>
-                                                                <td th:text="${e.getStatus()}"></td>
+                                                                <div th:if="${e.getStatus() == true}">
+                                                                    <td>
+                                                                        <form th:action="@{/change-status-news/{id}(id=${e.getId()})}" method="post">
+                                                                            <button type="submit" class="btn btn-success">[[${e.getStatus()}]]</button>
+                                                                        </form>
+                                                                    </td>
+                                                                </div>
+                                                                <div th:if="${e.getStatus() == false}">
+                                                                    <td>
+                                                                        <form th:action="@{/change-status-news/{id}(id=${e.getId()})}" method="post">
+                                                                            <button type="submit" class="btn btn-danger">[[${e.getStatus()}]]</button>
+                                                                        </form>
+                                                                    </td>
+                                                                </div>
                                                                 <td th:text="${e.getCreateAt()}"></td>
                                                                 <td>
                                                                     <a class="btn btn-info"

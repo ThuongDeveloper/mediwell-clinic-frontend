@@ -49,7 +49,7 @@ public class News implements Serializable {
     @Size(min = 1, max = 250)
     @Column(name = "title")
     private String title;
-    @Size(max = 250)
+    
     @Column(name = "content")
     private String content;
     @Column(name = "status")
