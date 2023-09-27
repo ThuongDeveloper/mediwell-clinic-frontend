@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -44,9 +45,21 @@ public class RatingDoctorController {
     @Autowired
     private DoctorRepository doctorRepository;
 
+    //Validate comment tục tiểu
     private boolean containsProfanity(String comment) {
-        // Thực hiện kiểm tra ở đây, ví dụ:
-        String[] profanityWords = {"profanity1", "profanity2", "profanity3"};
+        String[] profanityWords = {
+                // Danh sách các từ tục tiểu ở đây
+                "buồi", "buoi", "dau buoi", "daubuoi", "caidaubuoi", "nhucaidaubuoi", "dau boi", "bòi", "dauboi", "caidauboi", "đầu bòy", "đầu bùi", "dau boy", "dauboy", "caidauboy",
+                "cặc", "cak", "kak", "kac", "cac", "concak", "nungcak", "bucak", "caiconcac", "caiconcak", "cu", "cặk", "cak", "dái", "giái", "zái", "kiu",
+                "cứt", "cuccut", "cutcut", "cứk", "cuk", "cười ỉa", "cười ẻ",
+                "đéo", "đếch", "đếk", "dek", "đết", "đệt", "đách", "dech", "đ'", "deo", "d'", "đel", "đél", "del", "dell ngửi", "dell ngui", "dell chịu", "dell chiu", "dell hiểu", "dell hieu", "dellhieukieugi", "dell nói", "dell noi", "dellnoinhieu", "dell biết", "dell biet", "dell nghe", "dell ăn", "dell an", "dell được", "dell duoc", "dell làm", "dell lam", "dell đi", "dell di", "dell chạy", "dell chay", "deohieukieugi",
+                "địt", "đm", "dm", "đmm", "dmm", "đmmm", "dmmm", "đmmmm", "dmmmm", "đmmmmm", "dmmmmm", "đcm", "dcm", "đcmm", "dcmm", "đcmmm", "dcmmm", "đcmmmm", "dcmmmm", "đệch", "đệt", "dit", "dis", "diz", "đjt", "djt", "địt mẹ", "địt mịe", "địt má", "địt mía", "địt ba", "địt bà", "địt cha", "địt con", "địt bố", "địt cụ", "dis me", "disme", "dismje", "dismia", "dis mia", "dis mie", "đis mịa", "đis mịe", "ditmemayconcho", "ditmemay", "ditmethangoccho", "ditmeconcho", "dmconcho", "dmcs", "ditmecondi", "ditmecondicho",
+                "đù", "đút đít", "chổng mông", "banh háng", "xéo háng", "xhct", "xephinh", "la liếm", "đổ vỏ", "xoạc", "xoac", "chich choac", "húp sò",
+                "chịch", "vãi", "v~", "đụ", "nứng", "nug", "đút đít", "chổng mông", "banh háng", "xéo háng", "xhct", "xephinh", "la liếm", "đổ vỏ", "xoạc", "xoac", "chich choac", "húp sò", "fuck", "fck", "đụ", "bỏ bú", "buscu",
+                "ngu", "óc chó", "occho", "lao cho", "láo chó", "bố láo", "chó má", "cờ hó", "sảng", "thằng chó", "thang cho'", "thang cho", "chó điên", "thằng điên", "thang dien", "đồ điên", "sủa bậy", "sủa tiếp", "sủa đi", "sủa càn",
+                "mẹ bà","tiên sư","con bà mày","con mẹ mày","má mày","mẹ mày", "mẹ cha mày", "me cha may", "mẹ cha anh", "mẹ cha nhà anh", "mẹ cha nhà mày", "me cha nha may", "mả cha mày", "mả cha nhà mày", "ma cha may", "ma cha nha may", "mả mẹ", "mả cha", "kệ mẹ", "kệ mịe", "kệ mịa", "kệ mje", "kệ mja", "ke me", "ke mie", "ke mia", "ke mja", "ke mje", "bỏ mẹ", "bỏ mịa", "bỏ mịe", "bỏ mja", "bỏ mje", "bo me", "bo mia", "bo mie", "bo mje", "bo mja", "chetme", "chet me", "chết mẹ", "chết mịa", "chết mja", "chết mịe", "chết mie", "chet mia", "chet mie", "chet mja", "chet mje", "thấy mẹ", "thấy mịe", "thấy mịa", "thay me", "thay mie", "thay mia", "tổ cha", "bà cha mày", "cmn", "cmnl", "tiên sư nhà mày", "tiên sư bố", "tổ sư"
+        };
+
         for (String word : profanityWords) {
             if (comment.toLowerCase().contains(word)) {
                 return true;
@@ -54,6 +67,7 @@ public class RatingDoctorController {
         }
         return false;
     }
+
     @GetMapping("/rating/{patientID}")
     public String editProfile(Model model, @PathVariable("patientID") Integer patientID, HttpServletRequest request) {
         Patient currentPatient = authService.isAuthenticatedPatient(request);
@@ -77,7 +91,8 @@ public class RatingDoctorController {
 
             if (listDoctor.isEmpty()) {
                 // Nếu không có cuộc hẹn, thêm thông báo vào model
-                model.addAttribute("noAppointmentsMessage", "Không có cuộc hẹn nào cho bệnh nhân này.");
+                model.addAttribute("noAppointmentsMessage", "No appointments found for this patient.");
+                model.addAttribute("currentPatient", currentPatient);
             } else {
                 // Thêm danh sách bác sĩ vào model nếu có cuộc hẹn
                 model.addAttribute("listDoctor", listDoctor);
@@ -96,7 +111,7 @@ public class RatingDoctorController {
 
     @PostMapping("/rating/{patientId}")
     public String create(Model model, Double rating, String comment, int doctorId,
-                         @PathVariable("patientId") int patientId, HttpServletRequest requestPatient) {
+                         @PathVariable("patientId") int patientId, HttpServletRequest requestPatient, RedirectAttributes redirectAttributes) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         Patient currentPatient = authService.isAuthenticatedPatient(requestPatient);
@@ -110,6 +125,11 @@ public class RatingDoctorController {
         // Kiểm tra nếu rating là null thì gán giá trị mặc định là 0
         if (rating == null) {
             rating = 0.0;
+        }
+        if (containsProfanity(comment)) {
+            redirectAttributes.addFlashAttribute("error", "Comment contains profanity.");
+            redirectAttributes.addFlashAttribute("patient", currentPatient);
+            return "redirect:/rating/" + patientId;
         }
         RatingDAO ratingDAO = new RatingDAO();
         ratingDAO.setRating(rating);
@@ -125,7 +145,7 @@ public class RatingDoctorController {
             if (responseEntity.getStatusCode().is2xxSuccessful()) {
                 // Chuyển hướng về trang danh sách đánh giá cho bác sĩ
                 model.addAttribute("rating", new Rating());
-                model.addAttribute("successMessage", "Rating created successfully."); // Thêm thông báo thành công
+                redirectAttributes.addFlashAttribute("successMessage", "Rating created successfully."); // Thêm thông báo thành công
                 return "redirect:/rating/" + patientId;
             } else {
                 // Xử lý lỗi nếu cần thiết

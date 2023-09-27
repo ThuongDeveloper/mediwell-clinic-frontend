@@ -89,8 +89,11 @@
         padding: 10px;
         border-radius: 4px;
         text-align: center;
+        display: none;
     }
-
+    .alert.show {
+        display: block;
+    }
     .alert-info {
         background-color: #d9edf7;
         color: #31708f;
@@ -186,12 +189,20 @@
         <div th:if="${noAppointmentsMessage}" class="alert alert-info">
             <p th:text="${noAppointmentsMessage}"></p>
         </div>
+        <!-- Hiển thị thông báo thành công nếu có -->
+        <div th:if="${successMessage}" class="alert alert-success">
+            <p th:text="${successMessage}"></p>
+        </div>
 
+        <!-- Hiển thị thông báo lỗi nếu có -->
+        <div th:if="${error}" class="alert alert-danger">
+            <p th:text="${error}"></p>
+        </div>
         <!-- Hiển thị form đánh giá nếu có cuộc hẹn -->
         <div th:if="${listDoctor != null and not listDoctor.isEmpty()}">
-            <form th:action="@{/rating/{patientID}(patientID=${patient.id})}" th:object="${rating}" method="post">
+            <form th:action="@{/rating/{patientID}(patientID=${patient.id})}" class="woocommerce-form woocommerce-form-login login" th:object="${rating}" method="post">
                 <div class="form-group row">
-                    <label class="col-md-3 col-form-label label-align">Rating<span class="required">*</span></label>
+                    <label class="col-md-3 col-form-label label-align">Rating<span class="required"></span></label>
                     <div class="col-md-6">
                         <div id="rating" class="rating">
                             <input type="radio" id="star5" name="rating" value="5" />
@@ -213,7 +224,7 @@
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-md-3 col-form-label label-align">Comment<span class="required">*</span></label>
+                    <label class="col-md-3 col-form-label label-align">Comment<span class="required"></span></label>
                     <div class="col-md-6">
                         <input class="form-control" th:field="*{comment}" type="text" name="comment" required="required">
                         <span th:if="${#fields.hasErrors('comment')}" th:errors="*{comment}" class="error"></span>
@@ -221,7 +232,7 @@
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-md-3 col-form-label label-align">Doctor<span class="required">*</span></label>
+                    <label class="col-md-3 col-form-label label-align">Doctor<span class="required"></span></label>
                     <div class="col-md-6">
                         <select name="doctorId" class="form-control">
                             <option th:each="doctor : ${listDoctor}" th:value="${doctor.id}" th:text="${doctor.name}"></option>
@@ -242,15 +253,7 @@
             </form>
         </div>
 
-        <!-- Hiển thị thông báo thành công nếu có -->
-        <div th:if="${successMessage}" class="alert alert-success">
-            <p th:text="${successMessage}"></p>
-        </div>
 
-        <!-- Hiển thị thông báo lỗi nếu có -->
-        <div th:if="${error}" class="alert alert-danger">
-            <p th:text="${error}"></p>
-        </div>
 
 
 
@@ -265,7 +268,19 @@
             id && (document.getElementById(id).checked = !0);
         }
     </script>
-    </script>
+<script>
+    // Lấy tất cả các thông báo
+    var alerts = document.querySelectorAll('.alert');
+
+    // Hiển thị thông báo và tự động ẩn sau 5 giây
+    alerts.forEach(function(alert) {
+        alert.classList.add('show'); // Hiển thị thông báo
+        setTimeout(function() {
+            alert.classList.remove('show'); // Ẩn thông báo sau 5 giây
+        }, 3000);
+    });
+
+</script>
     <script src="../client/js/client.js"></script>
 
     <div th:replace="~{client/layout/layout :: body}"></div>

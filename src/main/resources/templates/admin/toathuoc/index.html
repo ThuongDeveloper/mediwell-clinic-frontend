@@ -31,7 +31,7 @@
                                             <th>Phone</th>
                                             <th>Sympton</th>
                                             <th>Description</th>
-                                            <th>State</th>
+<!--                                            <th>State</th>-->
                                             <th>Date</th>
                                             <th>Action</th>
 
@@ -44,9 +44,9 @@
                                         <td th:text="${e.getPhone()}"></td>
                                         <td th:text="${e.getSymptom()}"></td>
                                         <td th:text="${e.getDescription()}"></td>
-                                        <td th:text="${e.getState()}"></td>
+<!--                                        <td th:text="${e.getState()}"></td>-->
                                         <!--                                     <td th:text="${e.getDoctorId().getName()}"></td>-->
-                                        <td th:text="${e.getCreateAt()}"></td>
+                                        <td th:text="${#dates.format(e.getCreateAt(), 'dd/MM/yyyy')}" ></td>
                                         <!--                                        <td >Chưa thêm</td>-->
                                      <td>
                                          <a th:href="@{'/admin/toathuoc/export-pdf?toathuocId=' + ${e.getId()}}"

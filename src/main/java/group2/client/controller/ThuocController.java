@@ -343,10 +343,10 @@ public class ThuocController {
                 restTemplate.delete(apiUrl_Thuoc + "/delete/" + id);
 
                 // Nếu không có lỗi, tức là xóa thành công
-                redirectAttributes.addFlashAttribute("MessageCreate", "Xóa thành công");
+                redirectAttributes.addFlashAttribute("MessageCreate", "Delete Successful");
             } catch (Exception e) {
                 // Xử lý lỗi nếu có
-                redirectAttributes.addFlashAttribute("MessageCreate", "Xóa thất bại");
+                redirectAttributes.addFlashAttribute("MessageError", "Delete fail.");
             }
 
             return "redirect:/admin/thuoc";
@@ -356,10 +356,10 @@ public class ThuocController {
                 restTemplate.delete(apiUrl_Thuoc + "/delete/" + id);
 
                 // Nếu không có lỗi, tức là xóa thành công
-                redirectAttributes.addFlashAttribute("MessageCreate", "Xóa thành công");
+                redirectAttributes.addFlashAttribute("MessageCreate", "Delete Successful");
             } catch (Exception e) {
                 // Xử lý lỗi nếu có
-                redirectAttributes.addFlashAttribute("MessageCreate", "Xóa thất bại");
+                redirectAttributes.addFlashAttribute("MessageError", "Delete fail.");
             }
 
             return "redirect:/admin/thuoc";
@@ -369,10 +369,10 @@ public class ThuocController {
                 restTemplate.delete(apiUrl_Thuoc + "/delete/" + id);
 
                 // Nếu không có lỗi, tức là xóa thành công
-                redirectAttributes.addFlashAttribute("MessageCreate", "Xóa thành công");
+                redirectAttributes.addFlashAttribute("MessageCreate", "Delete Successful");
             } catch (Exception e) {
                 // Xử lý lỗi nếu có
-                redirectAttributes.addFlashAttribute("MessageCreate", "Xóa thất bại");
+                redirectAttributes.addFlashAttribute("MessageError", "Delete fail.");
             }
 
             return "redirect:/admin/thuoc";
