@@ -27,10 +27,10 @@
                                         <tr>
 
                                             <th>Id</th>
-                                            <th>Name</th>
-                                            <th>Phone</th>
+<!--                                            <th>Name</th>
+                                            <th>Phone</th>-->
                                             <th>Sympton</th>
-                                            <th>Description</th>
+                                            <!--<th>Description</th>-->
 <!--                                            <th>State</th>-->
                                             <th>Date</th>
                                             <th>Action</th>
@@ -40,10 +40,10 @@
                                     </tbody>
                                     <tr th:each="e : ${listToathuoc}">
                                         <td th:text="${e.getId()}"></td>
-                                        <td th:text="${e.getName()}"></td>
-                                        <td th:text="${e.getPhone()}"></td>
-                                        <td th:text="${e.getSymptom()}"></td>
-                                        <td th:text="${e.getDescription()}"></td>
+                                        <!--<td th:text="${e.getName()}"></td>-->
+                                        <!--<td th:text="${e.getPhone()}"></td>-->
+                                        <td th:text="${e.getSympton()}"></td>
+                                        <!--<td th:text="${e.getDescription()}"></td>-->
 <!--                                        <td th:text="${e.getState()}"></td>-->
                                         <!--                                     <td th:text="${e.getDoctorId().getName()}"></td>-->
                                         <td th:text="${#dates.format(e.getCreateAt(), 'dd/MM/yyyy')}" ></td>
