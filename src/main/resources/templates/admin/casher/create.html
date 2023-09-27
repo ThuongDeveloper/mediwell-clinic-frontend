@@ -1,91 +1,105 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
-<head>
-    <div th:replace="~{admin/layout/layoutfixbug :: head}"></div>
-</head>
+    <head>
+        <div th:replace="~{admin/layout/layoutfixbug :: head}"></div>
+    </head>
 
-<body class="nav-md">
-    <div class="container body">
-        <div class="main_container">
-            <div th:replace="~{admin/layout/slidebarfixbug :: slidebarAdmin}"></div>
-            <div class="top_nav">
-                <div th:replace="~{admin/layout/headerfixbug :: div}"></div>
-            </div>
-            <!-- Content -->
+    <body class="nav-md">
+        <div class="container body">
+            <div class="main_container">
+                <div th:replace="~{admin/layout/slidebarfixbug :: slidebarAdmin}"></div>
+                <div class="top_nav">
+                    <div th:replace="~{admin/layout/headerfixbug :: div}"></div>
+                </div>
+                <!-- Content -->
 
-            <div class="right_col" role="main">
-                <div class="">
-                    <div class="page-title">
-                        <div class="title_left">
-                            <h3>Casher Form</h3>
+                <div class="right_col" role="main">
+                    <div class="">
+                        <div class="page-title">
+                            <div class="title_left">
+                                <h3>Casher Form</h3>
+                            </div>
                         </div>
-                    </div>
-                    <div class="clearfix"></div>
+                        <div class="clearfix"></div>
 
-                    <div class="row">
-                        <div class="col-md-12 col-sm-12">
-                            <div class="x_panel">
-                                <div class="x_content">
-                                    <form th:action="@{/admin/casher/create}" th:object="${casher}" method="post">
-                                        <div class="field item form-group">
-                                            <label class="col-form-label col-md-3 col-sm-3 label-align">Name<span class="required" style="color: red">*</span></label>
-                                            <div class="col-md-6 col-sm-6">
-                                                <input th:field="*{name}" class="form-control" name="name" th:attr="style=${casher.name == null} ? 'border-color: red' : ''" placeholder="ex. John f. Kennedy">
-                                                <div style="color: red" class="help-block with-errors" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12">
+                                <div class="x_panel">
+                                    <div class="x_content">
+                                        <form th:action="@{/admin/casher/create}" th:object="${casher}" method="post">
+                                            <div class="field item form-group">
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Full Name<span class="required" style="color: red">*</span></label>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <input th:field="*{name}" class="form-control" name="name" th:attr="style=${casher.name == null} ? 'border-color: red' : ''" placeholder="ex. John f. Kennedy">
+                                                        <div style="color: red" class="help-block with-errors" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="field item form-group">
-                                            <label class="col-form-label col-md-3 col-sm-3 label-align">User name<span class="required" style="color: red">*</span></label>
-                                            <div class="col-md-6 col-sm-6">
-                                                <input th:field="*{username}" class="form-control" name="username" th:attr="style=${casher.username == null} ? 'border-color: red' : ''" type="text">
-                                                <div style="color: red" class="help-block with-errors" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+                                            <div class="field item form-group">
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Gender</label>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <input type="radio"  th:field="*{gender}"  value="true" checked="checked"/>Male
+                                                    <input type="radio" th:field="*{gender}" value="false"/>Female
+                                                    <div style="color: red" class="help-block with-errors" th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"></div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="field item form-group">
-                                            <label class="col-form-label col-md-3 col-sm-3 label-align">Password<span class="required" style="color: red">*</span></label>
-                                            <div class="col-md-6 col-sm-6">
-                                                <input th:field="*{password}" class="form-control" type="password" id="password1" name="password" th:attr="style=${casher.password == null} ? 'border-color: red' : ''">
-                                                <div style="color: red" class="help-block with-errors" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+                                            <div class="field item form-group">
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Date of Birth<span class="required" style="color: red">*</span></label>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <input th:field="*{dob}" class="form-control" name="phone" type="date"/>
+                                                        <div style="color: red" class="help-block with-errors" th:if="${#fields.hasErrors('dob')}" th:errors="*{dob}"></div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="field item form-group">
-                                            <label class="col-form-label col-md-3 col-sm-3 label-align">Email<span class="required" style="color: red">*</span></label>
-                                            <div class="col-md-6 col-sm-6">
-                                                <input th:field="*{email}" class="form-control" name="email" th:attr="style=${casher.email == null} ? 'border-color: red' : ''" type="email">
-                                                <div style="color: red" class="help-block with-errors" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
-                                                <!--<div style="color: red" th:if="${#fields.hasErrors('email')}"></div>-->
+                                            <div class="field item form-group">
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Phone<span class="required" style="color: red">*</span></label>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <input th:field="*{phone}" class="form-control" name="phone" th:attr="style=${casher.phone == null} ? 'border-color: red' : ''" type="text"/>
+                                                        <div style="color: red" class="help-block with-errors" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="field item form-group">
-                                            <label class="col-form-label col-md-3 col-sm-3 label-align">Address<span class="required" style="color: red">*</span></label>
-                                            <div class="col-md-6 col-sm-6">
-                                                <input th:field="*{address}" class="form-control" type="text" name="address" th:attr="style=${casher.address == null} ? 'border-color: red' : ''">
-                                                <div style="color: red" class="help-block with-errors" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></div>
+                                            <div class="field item form-group">
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Address<span class="required" style="color: red">*</span></label>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <input th:field="*{address}" class="form-control" type="text" name="address" th:attr="style=${casher.address == null} ? 'border-color: red' : ''"/>
+                                                        <div style="color: red" class="help-block with-errors" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></div>
+                                                </div>
                                             </div>
-                                        </div>
+                                            <div class="field item form-group">
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Password<span class="required" style="color: red">*</span></label>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <input th:field="*{password}" class="form-control" type="password" id="password1" name="password" th:attr="style=${casher.password == null} ? 'border-color: red' : ''"/>
+                                                        <div style="color: red" class="help-block with-errors" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+                                                </div>
+                                            </div>
+                                            <div class="field item form-group">
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Email<span class="required" style="color: red">*</span></label>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <input th:field="*{email}" class="form-control" name="email" th:attr="style=${casher.email == null} ? 'border-color: red' : ''" type="email"/>
+                                                        <div style="color: red" class="help-block with-errors" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+                                                </div>
+                                            </div>
 
-                                        <div class="form-group">
-                                            <div class="col-md-6 offset-md-3">
-                                                <input type="submit" value="Create" class="btn btn-primary"/>
-                                                <a th:href="@{/admin/casher}" class="btn btn-success">Cancel</a>
+                                            <div class="form-group">
+                                                <div class="col-md-6 offset-md-3">
+                                                    <input type="submit" value="Create" class="btn btn-primary"/>
+                                                    <a th:href="@{/admin/casher}" class="btn btn-success">Cancel</a>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </form>
+                                        </form>
 
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <!-- Content -->
+                <div th:replace="~{admin/layout/footer :: footer}"></div>
             </div>
 
-            <!-- Content -->
-            <div th:replace="~{admin/layout/footer :: footer}"></div>
+            <div th:replace="~{admin/layout/layoutfixbug :: body}"></div>
         </div>
-
-        <div th:replace="~{admin/layout/layoutfixbug :: body}"></div>
-    </div>
-</body>
+    </body>
 
 </html>

@@ -41,10 +41,25 @@
                                                 </div>
                                             </div>
                                             <div class="field item form-group">
-                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Name<span class="required" style="color: red">*</span></label>
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Full Name<span class="required" style="color: red">*</span></label>
                                                 <div class="col-md-6 col-sm-6">
                                                     <input type="text" th:field="*{name}" class="form-control" name="name" placeholder="ex. John f. Kennedy" th:attr="style=${taophieukham.name == null} ? 'border-color: red' : ''">
                                                         <div style="color: red" class="help-block with-errors" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                                                </div>
+                                            </div>
+                                            <div class="field item form-group">
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Gender</label>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <input type="radio"  th:field="*{gender}"  value="true" checked="checked"/>Male
+                                                    <input type="radio" th:field="*{gender}" value="false"/>Female
+                                                    <div style="color: red" class="help-block with-errors" th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"></div>
+                                                </div>
+                                            </div>
+                                            <div class="field item form-group">
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Date of Birth<span class="required" style="color: red">*</span></label>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <input th:field="*{dob}" class="form-control" name="phone" type="date"/>
+                                                        <div style="color: red" class="help-block with-errors" th:if="${#fields.hasErrors('dob')}" th:errors="*{dob}"></div>
                                                 </div>
                                             </div>
                                             <div class="field item form-group">

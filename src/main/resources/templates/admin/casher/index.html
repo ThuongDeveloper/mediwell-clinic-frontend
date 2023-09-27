@@ -39,7 +39,8 @@
                                                                 <tr role="row">
                                                                     <th>ID</th>
                                                                     <th>Name</th>
-                                                                    <th>User Name</th>
+                                                                    <th>Gender</th>
+                                                                    <th>DOB</th>
                                                                     <th>Email</th>
                                                                     <th>Create at</th>
                                                                     <th>Action</th>
@@ -48,12 +49,16 @@
                                                                 <tr th:each="e : ${listCasher}">
                                                                     <td class="sorting_1" th:text="${e.getId()}"></td>
                                                                     <td th:text="${e.getName()}"></td>
-                                                                    <td th:text="${e.getUsername()}"></td>
+                                                                    <td>
+                                                                        <div th:if="${e.getGender() == true}">Male</div>
+                                                                        <div th:if="${e.getGender() == false}">Female</div>
+                                                                    </td>
+                                                                    <td th:text="${e.Dob()}"></td>
                                                                     <td th:text="${e.getEmail()}"></td>
                                                                     <td th:text="${e.getCreateAt()}"></td>
                                                                     <td>
-                                                                        <a class="btn btn-info" th:href="@{/admin/casher/edit/{id}(id=${e.getId()})}">Update</a> | 
-                                                                        <a class="btn btn-primary" th:href="@{/admin/casher/changepassword/{id}(id=${e.getId()})}">Change Password</a> | 
+                                                                        <a class="btn btn-info" th:href="@{/admin/casher/details/{id}(id=${e.getId()})}">Details</a> | 
+                                                                        <!--<a class="btn btn-primary" th:href="@{/admin/casher/changepassword/{id}(id=${e.getId()})}">Change Password</a> |--> 
                                                                         <a class="btn btn-warning" th:href="@{/admin/casher/delete/{id}(id=${e.getId()})}">Delete</a>
                                                                     </td>
                                                                 </tr>

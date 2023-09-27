@@ -183,8 +183,8 @@ public class CasherController {
         }
     }
 
-    @RequestMapping(value = "/admin/casher/edit/{id}", method = RequestMethod.GET)
-    public String edit(Model model, @PathVariable("id") Integer id, HttpServletRequest request) {
+    @RequestMapping(value = "/admin/casher/details/{id}", method = RequestMethod.GET)
+    public String details(Model model, @PathVariable("id") Integer id, HttpServletRequest request) {
 
         Admin currentAdmin = authService.isAuthenticatedAdmin(request);
         Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
@@ -197,109 +197,109 @@ public class CasherController {
             Casher casher = restTemplate.getForObject(apiUrl + "/" + id, Casher.class);
             model.addAttribute("casher", casher);
             model.addAttribute("currentAdmin", currentAdmin);
-            return "/admin/casher/edit";
+            return "/admin/casher/details";
         } else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
             Casher casher = restTemplate.getForObject(apiUrl + "/" + id, Casher.class);
             model.addAttribute("casher", casher);
             model.addAttribute("currentDoctor", currentDoctor);
-            return "/admin/casher/edit";
+            return "/admin/casher/details";
         } else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
             Casher casher = restTemplate.getForObject(apiUrl + "/" + id, Casher.class);
             model.addAttribute("casher", casher);
             model.addAttribute("currentCasher", currentCasher);
-            return "/admin/casher/edit";
+            return "/admin/casher/details";
         } else {
             return "redirect:/login";
         }
 
     }
 
-    @RequestMapping(value = "/admin/casher/edit", method = RequestMethod.POST)
-    public String update(Model model, @Valid @ModelAttribute Casher updatedCasher, BindingResult bindingResult) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("casher", updatedCasher);
-            return "/admin/casher/edit";
-        }
-
-        // Lấy Casher hiện có từ API server
-        Casher existingCasher = restTemplate.getForObject(apiUrl + "/" + updatedCasher.getId(), Casher.class);
-
-        // Bổ sung id vào URL khi thực hiện PUT
-        String url = apiUrl + "/" + updatedCasher.getId();
-
-        // Tạo một HttpEntity với thông tin Casher cập nhật để gửi yêu cầu PUT
-        HttpEntity<Casher> request = new HttpEntity<>(updatedCasher, headers);
-
-        try {
-            restTemplate.exchange(url, HttpMethod.PUT, request, Casher.class);
-            return "redirect:/admin/casher";
-
-        } catch (RestClientException e) {
-            model.addAttribute("casher", existingCasher);
-            return "/admin/casher/edit/" + updatedCasher.getId();
-        }
-    }
-
-    @RequestMapping(value = "/admin/casher/changepassword/{id}", method = RequestMethod.GET)
-    public String changePass(Model model, @PathVariable("id") Integer id, HttpServletRequest request) {
-
-        Admin currentAdmin = authService.isAuthenticatedAdmin(request);
-        Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
-        Patient currentPatient = authService.isAuthenticatedPatient(request);
-        Casher currentCasher = authService.isAuthenticatedCasher(request);
-
-        if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
-            return "redirect:/forbien";
-        } else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
-            Casher casher = restTemplate.getForObject(apiUrl + "/" + id, Casher.class);
-            model.addAttribute("casher", casher);
-            model.addAttribute("currentAdmin", currentAdmin);
-            return "/admin/casher/changepassword";
-        } else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
-            return "redirect:/forbien";
-        } else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
-            return "redirect:/forbien";
-        } else {
-            return "redirect:/login";
-        }
-
-    }
-
-    @RequestMapping(value = "/admin/casher/changepassword", method = RequestMethod.POST)
-    public String changePass(Model model, @Valid @ModelAttribute Casher changePassword, BindingResult bindingResult, @RequestParam("newPass") String newPass, HttpSession session) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
+//    @RequestMapping(value = "/admin/casher/edit", method = RequestMethod.POST)
+//    public String update(Model model, @Valid @ModelAttribute Casher updatedCasher, BindingResult bindingResult) {
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.APPLICATION_JSON);
+//
 //        if (bindingResult.hasErrors()) {
-//            return "/admin/casher/changepassword";
+//            model.addAttribute("casher", updatedCasher);
+//            return "/admin/casher/edit";
 //        }
-        
-        Casher casher = casherService.getCasherById(changePassword.getId());
+//
+//        // Lấy Casher hiện có từ API server
+//        Casher existingCasher = restTemplate.getForObject(apiUrl + "/" + updatedCasher.getId(), Casher.class);
+//
+//        // Bổ sung id vào URL khi thực hiện PUT
+//        String url = apiUrl + "/" + updatedCasher.getId();
+//
+//        // Tạo một HttpEntity với thông tin Casher cập nhật để gửi yêu cầu PUT
+//        HttpEntity<Casher> request = new HttpEntity<>(updatedCasher, headers);
+//
+//        try {
+//            restTemplate.exchange(url, HttpMethod.PUT, request, Casher.class);
+//            return "redirect:/admin/casher";
+//
+//        } catch (RestClientException e) {
+//            model.addAttribute("casher", existingCasher);
+//            return "/admin/casher/edit/" + updatedCasher.getId();
+//        }
+//    }
 
-        if (newPass == "") {
-            session.setAttribute("error", "The new password cannot be blank!!!");
-            return "/admin/casher/changepassword";
-        } else {
-            casher.setPassword(newPass);
-        }
-
-        // Bổ sung id vào URL khi thực hiện PUT
-        String url = apiUrl + "/changePassword/" + changePassword.getId();
-
-        // Tạo một HttpEntity với thông tin Casher cập nhật để gửi yêu cầu PUT
-        HttpEntity<Casher> request = new HttpEntity<>(casher, headers);
-
-        try {
-            restTemplate.exchange(url, HttpMethod.PUT, request, Casher.class);
-            return "redirect:/admin/casher";
-
-        } catch (RestClientException e) {
-            return "/admin/casher/changepassword/" + changePassword.getId();
-        }
-    }
+//    @RequestMapping(value = "/admin/casher/changepassword/{id}", method = RequestMethod.GET)
+//    public String changePass(Model model, @PathVariable("id") Integer id, HttpServletRequest request) {
+//
+//        Admin currentAdmin = authService.isAuthenticatedAdmin(request);
+//        Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
+//        Patient currentPatient = authService.isAuthenticatedPatient(request);
+//        Casher currentCasher = authService.isAuthenticatedCasher(request);
+//
+//        if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
+//            return "redirect:/forbien";
+//        } else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
+//            Casher casher = restTemplate.getForObject(apiUrl + "/" + id, Casher.class);
+//            model.addAttribute("casher", casher);
+//            model.addAttribute("currentAdmin", currentAdmin);
+//            return "/admin/casher/changepassword";
+//        } else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
+//            return "redirect:/forbien";
+//        } else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
+//            return "redirect:/forbien";
+//        } else {
+//            return "redirect:/login";
+//        }
+//
+//    }
+//
+//    @RequestMapping(value = "/admin/casher/changepassword", method = RequestMethod.POST)
+//    public String changePass(Model model, @Valid @ModelAttribute Casher changePassword, BindingResult bindingResult, @RequestParam("newPass") String newPass, HttpSession session) {
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.APPLICATION_JSON);
+//
+////        if (bindingResult.hasErrors()) {
+////            return "/admin/casher/changepassword";
+////        }
+//        
+//        Casher casher = casherService.getCasherById(changePassword.getId());
+//
+//        if (newPass == "") {
+//            session.setAttribute("error", "The new password cannot be blank!!!");
+//            return "/admin/casher/changepassword";
+//        } else {
+//            casher.setPassword(newPass);
+//        }
+//
+//        // Bổ sung id vào URL khi thực hiện PUT
+//        String url = apiUrl + "/changePassword/" + changePassword.getId();
+//
+//        // Tạo một HttpEntity với thông tin Casher cập nhật để gửi yêu cầu PUT
+//        HttpEntity<Casher> request = new HttpEntity<>(casher, headers);
+//
+//        try {
+//            restTemplate.exchange(url, HttpMethod.PUT, request, Casher.class);
+//            return "redirect:/admin/casher";
+//
+//        } catch (RestClientException e) {
+//            return "/admin/casher/changepassword/" + changePassword.getId();
+//        }
+//    }
 
     @RequestMapping(value = "/admin/casher/delete/{id}", method = RequestMethod.GET)
     public String delete(@PathVariable("id") Integer id, HttpServletRequest request, HttpSession session) {
