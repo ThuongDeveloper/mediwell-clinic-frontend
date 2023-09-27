@@ -68,7 +68,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                     </ul>
                     <ul th:if="${currentDoctor != null || currentAdmin != null}" class="nav side-menu">
                         <li><a><i class="fa fa-home"></i>Doctor Feature<span class="fa fa-chevron-down"></span></a>
-                            <ul class="nav child_menu">  
+                            <ul class="nav child_menu">
+                                <li><a th:href="@{/admin/listphieukham}">Patient Today</a></li>
                                 <li><a th:href="@{/admin/toathuoc}">Prescription</a></li>
                                 <li><a th:href="@{/admin/appointment}">Appointments</a></li>
 

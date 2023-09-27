@@ -3,21 +3,18 @@ package group2.client.controller;
 import group2.client.dto.HoaDonThuocDAO;
 import group2.client.dto.ListToaThuocDAO;
 import group2.client.dto.ToaThuocDAO;
-import group2.client.entities.Admin;
-import group2.client.entities.Casher;
-import group2.client.entities.Doctor;
-import group2.client.entities.Patient;
-import group2.client.entities.Thuoc;
-import group2.client.entities.Toathuoc;
+import group2.client.entities.*;
 import group2.client.service.AuthService;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,12 +26,15 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Controller
 @RequestMapping("/admin/toathuoc")
 public class ToathuocController {
     private String apiUrl_Toathuoc = "http://localhost:8888/api/toathuoc/";
+    private String apiUrl_taophieukham = "http://localhost:8888/api/taophieukham/typeDoctorId/";
+    private String apiUrl = "http://localhost:8888/api/taophieukham/";
     RestTemplate restTemplate = new RestTemplate();
     @Autowired
     private AuthService authService;
@@ -98,8 +98,8 @@ public class ToathuocController {
        
     }
 
-    @RequestMapping(value = "/create", method = RequestMethod.GET)
-    public String create(Model model, Thuoc thuoc, HttpServletRequest request) {
+    @RequestMapping(value = "/create/{id}", method = RequestMethod.GET)
+    public String create(Model model, Thuoc thuoc, @PathVariable("id") Integer phieukhamId, HttpServletRequest request) {
         
         Admin currentAdmin = authService.isAuthenticatedAdmin(request);
         Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
@@ -114,6 +114,7 @@ public class ToathuocController {
                     new ParameterizedTypeReference<List<Toathuoc>>() {
                     });
             List<Toathuoc> listToathuoc = response.getBody();
+
             model.addAttribute("listToathuoc", listToathuoc);
              model.addAttribute("currentAdmin", currentAdmin);
             model.addAttribute("toathuoc", new Toathuoc());
@@ -123,8 +124,15 @@ public class ToathuocController {
             ResponseEntity<List<Toathuoc>> response = restTemplate.exchange(apiUrl_Toathuoc, HttpMethod.GET, null,
                     new ParameterizedTypeReference<List<Toathuoc>>() {
                     });
-            List<Toathuoc> listToathuoc = response.getBody();
+             List<Toathuoc> listToathuoc = response.getBody();
+
+
+             // Lấy thông tin phiếu khám từ API bằng phieukhamId
+             ResponseEntity<Taophieukham> response1 = restTemplate.exchange(apiUrl + "/" + phieukhamId, HttpMethod.GET, null,
+                     new ParameterizedTypeReference<Taophieukham>() {});
+             Taophieukham taophieukham = response1.getBody();
             model.addAttribute("listToathuoc", listToathuoc);
+             model.addAttribute("phieukham", taophieukham);
              model.addAttribute("currentDoctor", currentDoctor);
             model.addAttribute("toathuoc", new Toathuoc());
             return "admin/toathuoc/create";
@@ -146,7 +154,7 @@ public class ToathuocController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String create(Model model, HttpServletRequest request, int[] thuocID, int[] quantity, int[] sang, int[] trua, int[] chieu, int[] toi, String name, String phone, String address, String sympton, String description, Boolean state) {
+    public String create(Model model, HttpServletRequest request, int[] thuocID, int[] quantity, int[] sang, int[] trua, int[] chieu, int[] toi, String sympton, int phieukhamId, @DateTimeFormat(pattern = "yyyy-MM-dd") Date ngaytaikham) {
         List<ToaThuocDAO> list = new ArrayList<ToaThuocDAO>();
         for(int i = 0; i < thuocID.length; i++){
             ToaThuocDAO obj = new ToaThuocDAO(thuocID[i], quantity[i], sang[i], trua[i], chieu[i], toi[i]);
@@ -156,12 +164,14 @@ public class ToathuocController {
         Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
         Integer doctorId = currentDoctor.getId();
 
+
         ListToaThuocDAO listTT = new ListToaThuocDAO();
         listTT.setListTT(list);
 
         listTT.setSymptom(sympton);
         listTT.setDoctorId(doctorId); // Set the doctorId
-
+        listTT.setTaophieukhamId(phieukhamId);
+        listTT.setNgaytaikham(ngaytaikham);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 

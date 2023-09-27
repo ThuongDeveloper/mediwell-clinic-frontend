@@ -4,9 +4,12 @@
  */
 package group2.client.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import group2.client.entities.Admin;
 import group2.client.entities.Casher;
 import group2.client.entities.Doctor;
+import group2.client.entities.Donthuoc;
 import group2.client.entities.Patient;
 import group2.client.entities.Taophieukham;
 import group2.client.entities.Toathuoc;
@@ -15,7 +18,9 @@ import group2.client.service.AuthService;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -58,7 +63,6 @@ public class TaophieukhamController {
         Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
         Patient currentPatient = authService.isAuthenticatedPatient(request);
         Casher currentCasher = authService.isAuthenticatedCasher(request);
-//        Toathuoc toathuoc = restTemplate.getForObject(apiUrl_Toathuoc + "/", Toathuoc.class);
         if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
             return "redirect:/forbien";
         } else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
@@ -102,7 +106,6 @@ public class TaophieukhamController {
             // Kiểm tra mã trạng thái của phản hồi
             if (response.getStatusCode().is2xxSuccessful()) {
                 List<Taophieukham> listTaophieukham = response.getBody();
-
                 // Xử lý dữ liệu theo nhu cầu của bạn
                 model.addAttribute("listTaophieukham", listTaophieukham);
                 model.addAttribute("currentCasher", currentCasher);
@@ -341,38 +344,6 @@ public class TaophieukhamController {
         }
 
     }
-
-//    @RequestMapping(value = "/edit", method = RequestMethod.POST)
-//    public String update(Model model, @Valid @ModelAttribute Taophieukham updatedTaophieukham, BindingResult bindingResult) {
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_JSON);
-//
-//        // Lấy phiếu khám hiện có từ API server
-//        Taophieukham existingTaophieukham = restTemplate.getForObject(apiUrl + "/" + updatedTaophieukham.getId(), Taophieukham.class);
-//
-//        ResponseEntity<List<TypeDoctor>> TDResponse = restTemplate.exchange(apiUrlTypeDoctor, HttpMethod.GET, null,
-//                new ParameterizedTypeReference<List<TypeDoctor>>() {
-//        });
-//
-//        if (bindingResult.hasErrors()) {
-//            List<TypeDoctor> listTypeDoctor = TDResponse.getBody();
-//            model.addAttribute("listTypeDoctor", listTypeDoctor);
-//            model.addAttribute("taophieukham", updatedTaophieukham);
-//            return "/admin/phieukham/edit";
-//        }
-//
-//        // Bổ sung id vào URL khi thực hiện PUT
-//        String url = apiUrl + "edit/" + updatedTaophieukham.getId(); // Đảm bảo URL đúng
-//
-//        // Tạo một HttpEntity với thông tin phiếu khám cập nhật để gửi yêu cầu PUT
-//        HttpEntity<Taophieukham> request = new HttpEntity<>(updatedTaophieukham, headers);
-//
-//        // Thực hiện PUT request để cập nhật phiếu khám
-//        restTemplate.exchange(url, HttpMethod.PUT, request, Taophieukham.class);
-//        // Sau khi cập nhật thành công, chuyển hướng về trang danh sách phiếu khám
-//        return "redirect:/admin/phieukham";
-//
-//    }
 
     @RequestMapping(value = "/delete/{id}")
     public String delete(@PathVariable("id") Integer id, HttpServletRequest request) {

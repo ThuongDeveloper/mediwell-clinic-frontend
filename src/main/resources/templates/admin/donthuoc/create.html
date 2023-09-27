@@ -45,22 +45,22 @@
                                             <div class="row">
                                                 <div class="col-6">
                                                     <labe>Name</labe>
-                                                    <input th:if="${toathuoc.name != null}" th:value="${toathuoc.name}" name="name" id="name" class="form-control" type="text" readonly="true">
+                                                    <input th:if="${toathuoc.taophieukhamId.name != null}" th:value="${toathuoc.taophieukhamId.name}" name="name" id="name" class="form-control" type="text" readonly="true">
                                                 </div>
                                                 <div class="col-6">
                                                     <labe>Gender</labe>
-                                                    <input th:if="${toathuoc.gender != null && toathuoc.gender == true}" value="Male" name="gender" id="gender" class="form-control" type="text" readonly="true">
-                                                    <input th:if="${toathuoc.gender != null && toathuoc.gender == false}" value="Female" name="gender" id="gender" class="form-control" type="text" readonly="true">
+                                                    <input th:if="${toathuoc.taophieukhamId.gender != null && toathuoc.taophieukhamId.gender == true}" value="Male" name="gender" id="gender" class="form-control" type="text" readonly="true">
+                                                    <input th:if="${toathuoc.taophieukhamId.gender != null && toathuoc.taophieukhamId.gender == false}" value="Female" name="gender" id="gender" class="form-control" type="text" readonly="true">
                                                 </div>
                                                 <div class="col-6">
                                                     <labe>Phone</labe>
-                                                    <input th:if="${toathuoc.phone != null}" th:value="${toathuoc.phone}" name="phone" id="phone" class="form-control" type="text" readonly="true">
+                                                    <input th:if="${toathuoc.taophieukhamId.phone != null}" th:value="${toathuoc.taophieukhamId.phone}" name="phone" id="phone" class="form-control" type="text" readonly="true">
                                                 </div>
                                                 <div class="col-6">
                                                     <labe>Address</labe>
-                                                    <input th:if="${toathuoc.address != null}" th:value="${toathuoc.address}" name="address" id="address" class="form-control" type="text" readonly="true">
+                                                    <input th:if="${toathuoc.taophieukhamId.address != null}" th:value="${toathuoc.taophieukhamId.address}" name="address" id="address" class="form-control" type="text" readonly="true">
                                                 </div>
-                                        </div>
+                                            </div>
                                         <div class=" form-group">
                                             <button class="btn btn-secondary" type="button" id="addButton">Add</button>
                                             <div id="boxes"></div>

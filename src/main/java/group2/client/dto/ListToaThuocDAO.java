@@ -1,10 +1,12 @@
 package group2.client.dto;
 
 
+import java.util.Date;
 import java.util.List;
 
 public class ListToaThuocDAO {
 
+    private Date ngaytaikham;
     private String symptom;
     private int doctorId;
     private int taophieukhamId;
@@ -12,6 +14,14 @@ public class ListToaThuocDAO {
 
     public ListToaThuocDAO() {
         // Hàm tạo mặc định, không cần truyền tham số
+    }
+
+    public Date getNgaytaikham() {
+        return ngaytaikham;
+    }
+
+    public void setNgaytaikham(Date ngaytaikham) {
+        this.ngaytaikham = ngaytaikham;
     }
 
     public int getTaophieukhamId() {
