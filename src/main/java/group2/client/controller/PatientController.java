@@ -41,7 +41,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/admin/patient")
 public class PatientController {
 
-    String apiUrl = "http://localhost:8888/api/patient";
+    String apiUrl = "http://localhost:8888/api/patient/";
     RestTemplate restTemplate = new RestTemplate();
 
     @Autowired
