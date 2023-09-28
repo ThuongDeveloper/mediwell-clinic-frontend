@@ -20,7 +20,7 @@ import javax.transaction.Transactional;
 public interface PatientRepository extends JpaRepository<Patient, Integer> {
     public Patient findByEmail(String email);
     public Patient findByName(String name);
-  
+
     boolean existsByEmail(String email);
     @Modifying
     @Transactional

@@ -20,6 +20,9 @@
             height: 38px;
             background: #26B99A;
         }
+        .reset-search-date-btn:hover{
+            color: #fff;
+        }
     </style>
     <body class="nav-md">
         <div class="container body">
@@ -72,7 +75,7 @@
                                         <tr th:each="e : ${listLich}">
                                             <td th:text="${e.getDoctorId().getName()}"></td>
                                             <td th:text="${e.getThu()}"></td>
-                                            <td th:text="${e.getDate()}"></td>
+                                            <td th:text="${#dates.format(e.getDate(), 'yyyy-MM-dd')}"></td>
                                             <td th:text="${e.getStarttime()}"></td>
                                             <td th:text="${e.getEndtime()}"></td>
 

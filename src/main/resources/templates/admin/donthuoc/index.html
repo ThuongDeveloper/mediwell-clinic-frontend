@@ -33,8 +33,8 @@
                                     </tbody>
                                     <tr th:each="e : ${listDonthuoc}">
                                         <td th:text="${e.getId()}"></td>
-                                        <td th:text="${e.getName()}"></td>
-                                        <td th:text="${e.getPhone()}"></td>
+                                        <td th:text="${e.getToathuocId().getTaophieukhamId().getName()}"></td>
+                                        <td th:text="${e.getToathuocId().getTaophieukhamId().getPhone()}"></td>
                                         <td th:text="${e.getTotalMoney()}"></td>
                                         <td th:text="${e.getCreateAt()}"></td>
                                         <td>
