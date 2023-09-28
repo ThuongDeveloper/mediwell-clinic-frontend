@@ -46,6 +46,7 @@ public class DonthuocController {
     private String apiUrl_Thuoc = "http://localhost:8888/api/thuoc/";
     private String apiUrl_Donthuoc = "http://localhost:8888/api/donthuoc/";
     private String apiUrl_Toathuoc = "http://localhost:8888/api/toathuoc/";
+    private String apiUrl_LTT = "http://localhost:8888/api/listtoathuoc/";
     RestTemplate restTemplate = new RestTemplate();
 
     @Autowired
@@ -72,7 +73,6 @@ public class DonthuocController {
         return "admin/donthuoc/index";
     }
 
-
     @RequestMapping(value = "/create/{id}", method = RequestMethod.GET)
     public String create(Model model, Thuoc thuoc, @PathVariable("id") int id, HttpServletRequest request) {
         Casher currentCasher = authService.isAuthenticatedCasher(request);
@@ -82,7 +82,7 @@ public class DonthuocController {
                 new ParameterizedTypeReference<List<Donthuoc>>() {
         });
         Toathuoc toathuoc = restTemplate.getForObject(apiUrl_Toathuoc + "/" + id, Toathuoc.class);
-        
+
         List<Donthuoc> listDonthuoc = response.getBody();
         model.addAttribute("toathuoc", toathuoc);
         model.addAttribute("listDonthuoc", listDonthuoc);
@@ -97,6 +97,8 @@ public class DonthuocController {
         String hienloiQuantity = "";
 
         Casher currentCasher = authService.isAuthenticatedCasher(requestCurent);
+
+        Toathuoc existTT = restTemplate.getForObject(apiUrl_Toathuoc + "/" + toathuoc.getId(), Toathuoc.class);
 
         ResponseEntity<List<Thuoc>> response1 = restTemplate.exchange(apiUrl_Thuoc, HttpMethod.GET, null,
                 new ParameterizedTypeReference<List<Thuoc>>() {
@@ -118,6 +120,8 @@ public class DonthuocController {
         }
         if (flagQuantity == false) {
             session.setAttribute("error", hienloiQuantity);
+            model.addAttribute("toathuoc", existTT);
+            model.addAttribute("currentCasher", currentCasher);
             return "admin/donthuoc/create";
         }
 
@@ -127,8 +131,6 @@ public class DonthuocController {
             list.add(obj);
         }
 
-        Toathuoc existTT = restTemplate.getForObject(apiUrl_Toathuoc + "/" + toathuoc.getId(), Toathuoc.class);
-
         ListHoaDonThuocDAO listHDTD = new ListHoaDonThuocDAO();
         listHDTD.setListHDT(list);
         listHDTD.setName(existTT.getTaophieukhamId().getName());
@@ -136,7 +138,9 @@ public class DonthuocController {
         listHDTD.setAddress(existTT.getTaophieukhamId().getAddress());
         listHDTD.setGender(existTT.getTaophieukhamId().getGender());
         listHDTD.setDob(existTT.getTaophieukhamId().getDob());
+        listHDTD.setSympton(existTT.getTaophieukhamId().getSympton());
         listHDTD.setCasherId(currentCasher);
+        listHDTD.setToathuocId(existTT.getId());
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -168,6 +172,7 @@ public class DonthuocController {
             return "redirect:/admin/donthuoc";
         } else {
             // Xử lý lỗi nếu cần thiết
+            model.addAttribute("toathuoc", existTT);
             return "redirect:/admin/donthuoc";
         }
     }

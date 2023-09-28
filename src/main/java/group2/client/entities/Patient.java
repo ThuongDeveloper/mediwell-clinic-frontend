@@ -5,7 +5,10 @@
 package group2.client.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -17,9 +20,13 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  *
@@ -73,7 +80,11 @@ public class Patient implements Serializable {
     @Column(name = "role")
     private String role;
     @Column(name = "gender")
+    
     private Boolean gender;
+    @Column(name = "dob")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date dob;
     @OneToMany(mappedBy = "patientId")
     private List<Rating> ratingList;
     @OneToMany(mappedBy = "patientId")
@@ -157,7 +168,14 @@ public class Patient implements Serializable {
     public void setGender(Boolean gender) {
         this.gender = gender;
     }
+    public Date getDob() {
+        return dob;
+    }
 
+
+    public void setDob(Date dob) {
+        this.dob = dob;
+    }
     @XmlTransient
     public List<Rating> getRatingList() {
         return ratingList;

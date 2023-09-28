@@ -76,7 +76,7 @@ public class TypethuocController {
                     model.addAttribute("currentAdmin", currentAdmin);
                 }
 
-                //Kiểm tra các thông báo 
+                //Kiểm tra các thông báo
                 if(MessageCreate != null){
                        model.addAttribute("messageCreate", MessageCreate);
                 }
@@ -95,7 +95,7 @@ public class TypethuocController {
                     model.addAttribute("currentDoctor", currentDoctor);
                 }
 
-                //Kiểm tra các thông báo 
+                //Kiểm tra các thông báo
                 if(MessageCreate != null){
                        model.addAttribute("messageCreate", MessageCreate);
                 }
@@ -114,10 +114,6 @@ public class TypethuocController {
                     model.addAttribute("currentCasher", currentCasher);
                 }
 
-                //Kiểm tra các thông báo 
-                if(MessageCreate != null){
-                       model.addAttribute("messageCreate", MessageCreate);
-                }
                 return "admin/typethuoc/index";
         }else {
             return "redirect:/login";
@@ -174,6 +170,7 @@ public class TypethuocController {
                 // Server error from the API
                 session.setAttribute("msg", "Server error when creating medicine type.");
 //                redirectAttributes.addFlashAttribute("MessageCreate", "Server error when creating medicine type.");
+
             }
         } catch (HttpClientErrorException e) {
             // The API returned a bad request (400) status
@@ -290,8 +287,11 @@ public class TypethuocController {
 //                    redirectAttributes.addFlashAttribute("MessageCreate", "Delete successful");
                 } catch (Exception e) {
                      // Xử lý lỗi nếu có
-                     session.setAttribute("msg", "Delete fail");
+                     session.setAttribute("msg", "Delete fail. Already exist Medicine in this type");
 //                  redirectAttributes.addFlashAttribute("MessageCreate", "Delete fail");
+
+//                  redirectAttributes.addFlashAttribute("MessageError", "Delete fail. Already exist Medicine in this type");
+
                 }
 
               return "redirect:/admin/typethuoc";
@@ -304,8 +304,11 @@ public class TypethuocController {
 //                    redirectAttributes.addFlashAttribute("MessageCreate", "Delete successful");
                 } catch (Exception e) {
                      // Xử lý lỗi nếu có
+
                      session.setAttribute("msg", "Delete fail");
 //                  redirectAttributes.addFlashAttribute("MessageCreate", "Delete fail");
+
+
                 }
 
               return "redirect:/admin/typethuoc";
@@ -318,7 +321,7 @@ public class TypethuocController {
 //                    redirectAttributes.addFlashAttribute("MessageCreate", "Delete successful");
                 } catch (Exception e) {
                      // Xử lý lỗi nếu có
-                  redirectAttributes.addFlashAttribute("MessageCreate", "Delete fail");
+                  redirectAttributes.addFlashAttribute("MessageError", "Delete fail");
                 }
 
               return "redirect:/admin/typethuoc";

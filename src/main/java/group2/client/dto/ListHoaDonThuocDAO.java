@@ -5,6 +5,7 @@
 package group2.client.dto;
 
 import group2.client.entities.Casher;
+import group2.client.entities.Toathuoc;
 import java.util.Date;
 import java.util.List;
 
@@ -20,7 +21,8 @@ public class ListHoaDonThuocDAO {
     private Date dob;
     private Boolean gender;
     private String sympton;
-    private Casher casherId; 
+    private Casher casherId;
+    private int toathuocId;
     
     private List<HoaDonThuocDAO> listHDT;
 
@@ -85,6 +87,14 @@ public class ListHoaDonThuocDAO {
 
     public void setCasherId(Casher casherId) {
         this.casherId = casherId;
+    }
+
+    public int getToathuocId() {
+        return toathuocId;
+    }
+
+    public void setToathuocId(int toathuocId) {
+        this.toathuocId = toathuocId;
     }
 
 }

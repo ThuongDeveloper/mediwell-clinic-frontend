@@ -80,11 +80,14 @@
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-12">
-                                            <label>Sympton</label>
+                                            <label>Diagnosis</label>
                                             <input type="text"  class="form-control"   th:field="*{sympton}" >
+                                            <span style="display:none;color:red" id="sympton_notblank">Sympton not blank !! </span>
                                         </div>
                                     </div>
                                 </div>
+                                <div id="addButtonError" style="display:none; color:red;">Please click the Add button to add medicine information.</div>
+
                                 <div class="form-group">
                                     <button class="btn btn-secondary" type="button" id="addButton">Add</button>
                                     <div id="boxes"></div>
@@ -94,12 +97,13 @@
                                         <div class="col-12">
                                             <label>Re-examination Date</label>
                                             <input type="date"  class="form-control"   th:field="*{ngaytaikham}" >
+                                            <div id="reexamination_date_error" style="color: red"></div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div>
-                                        <input type="submit" value="Create" class="btn btn-primary">
+                                        <input type="submit" value="Create" id="xacNhan" class="btn btn-primary">
                                         <input type="reset" value="Reset" class="btn btn-success">
                                     </div>
                                 </div>
@@ -116,14 +120,17 @@
     <!-- ... -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
+        let addClicked = false;
+
         const addButton = document.getElementById('addButton');
         const boxesContainer = document.getElementById('boxes');
-
+        const addButtonError = document.getElementById('addButtonError');
         let boxCount = 0;
-
         addButton.addEventListener('click', () => {
             const box = createBox();
             boxesContainer.appendChild(box);
+            addClicked = true;
+            addButtonError.style.display = 'none';
         });
 
         function createBox() {
@@ -274,7 +281,7 @@
             const thuocData = await fetchThuocData();
 
             thuocData.forEach(thuoc => {
-                const option = createOption(thuoc.id, thuoc.name,thuoc.donviID.name);
+                const option = createOption(thuoc.id, thuoc.name,thuoc.donviId.name);
                 select.appendChild(option);
             });
         }
@@ -357,85 +364,225 @@
 
     </script>
     <script>
-        document.querySelector('form').addEventListener('submit', (event) => {
-            // Lấy giá trị của quantity và các trường sáng, trưa, chiều, và tối
-            const quantityInput = document.querySelector('input[name="quantity"]');
-            const sangInput = document.querySelector('input[name="sang"]');
-            const truaInput = document.querySelector('input[name="trua"]');
-            const chieuInput = document.querySelector('input[name="chieu"]');
-            const toiInput = document.querySelector('input[name="toi"]');
+        const form = document.querySelector('form');
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault(); // Ngăn chặn việc submit form mặc định
 
-            // Chuyển đổi giá trị nhập vào thành số nguyên hoặc 0 nếu không có giá trị
-            const quantityValue = parseInt(quantityInput.value) || 0;
-            const sangValue = parseInt(sangInput.value) || 0;
-            const truaValue = parseInt(truaInput.value) || 0;
-            const chieuValue = parseInt(chieuInput.value) || 0;
-            const toiValue = parseInt(toiInput.value) || 0;
+            // Validate các trường ở đây
+            const isValid = validateFields();
 
-            // Cập nhật giá trị của các trường để đảm bảo rằng chúng không bỏ trống
-            quantityInput.value = quantityValue;
-            sangInput.value = sangValue;
-            truaInput.value = truaValue;
-            chieuInput.value = chieuValue;
-            toiInput.value = toiValue;
-
-            // Xóa thông báo lỗi cũ trước khi kiểm tra lại
-            quantityInput.nextElementSibling.textContent = '';
-            sangInput.nextElementSibling.textContent = '';
-            truaInput.nextElementSibling.textContent = '';
-            chieuInput.nextElementSibling.textContent = '';
-            toiInput.nextElementSibling.textContent = '';
-
-            let isValid = true;
-
-            if (!quantityValue) {
-                // Display error message to the user in the quantityErrorDiv
-                quantityInput.nextElementSibling.textContent = 'Please enter a value for quantity.';
-                isValid = false;
-            } else if (quantityValue <= 0) {
-                // Check for negative or zero quantity and display error message
-                quantityInput.nextElementSibling.textContent = 'Quantity must be greater than 0.';
-                isValid = false;
-            } else if (sangValue + truaValue + chieuValue + toiValue === 0) {
-                // Check if all fields are zero when quantity is greater than 0
-                quantityInput.nextElementSibling.textContent = 'At least one of morning, noon, afternoon, and evening must be greater than 0.';
-                isValid = false;
-            } else if (sangValue + truaValue + chieuValue + toiValue > quantityValue) {
-                // Check if the sum of fields is greater than quantity
-                quantityInput.nextElementSibling.textContent = 'The sum of morning, noon, afternoon, and evening cannot exceed quantity.';
-                isValid = false;
-            }
-
-// Check and display error messages for morning, noon, afternoon, and evening fields if they are negative or greater than quantity
-            if (sangValue < 0 || sangValue > quantityValue) {
-                sangInput.nextElementSibling.textContent = 'Morning is invalid.';
-                isValid = false;
-            }
-
-            if (truaValue < 0 || truaValue > quantityValue) {
-                truaInput.nextElementSibling.textContent = 'Noon is invalid.';
-                isValid = false;
-            }
-
-            if (chieuValue < 0 || chieuValue > quantityValue) {
-                chieuInput.nextElementSibling.textContent = 'Afternoon is invalid.';
-                isValid = false;
-            }
-
-            if (toiValue < 0 || toiValue > quantityValue) {
-                toiInput.nextElementSibling.textContent = 'Evening is invalid.';
-                isValid = false;
-            }
-
-
-
-            if (!isValid) {
-                event.preventDefault(); // Ngăn chặn gửi biểu mẫu nếu có lỗi
+            if (isValid) {
+                form.submit(); // Nếu hợp lệ, thì submit form
             }
         });
 
+        function validateFields() {
+            let isValid = true;
 
+
+            const symptomInput = document.querySelector('input[name="sympton"]');
+            const symptomErrorDiv = document.querySelector('#sympton_notblank');
+
+            // Xóa thông báo lỗi cũ
+            symptomErrorDiv.style.display = 'none';
+
+            if (symptomInput.value.trim() === '') {
+                isValid = false;
+                symptomErrorDiv.textContent = 'Symptom must not be empty.'; // Thêm thông báo lỗi
+                symptomErrorDiv.style.display = 'block';
+            }
+
+            // Kiểm tra trường "Re-examination Date"
+            const reexaminationDateInput = document.querySelector('input[name="ngaytaikham"]');
+            const currentDate = new Date();
+            const reexaminationDateErrorDiv = document.querySelector('#reexamination_date_error');
+
+            // Xóa thông báo lỗi cũ
+            reexaminationDateErrorDiv.textContent = '';
+
+            if (reexaminationDateInput.value === '') {
+                isValid = false;
+                reexaminationDateErrorDiv.textContent = 'Re-examination Date is required.'; // Thêm thông báo lỗi
+            } else {
+                const selectedDate = new Date(reexaminationDateInput.value);
+                if (selectedDate <= currentDate) {
+                    isValid = false;
+                    reexaminationDateErrorDiv.textContent = 'Re-examination Date must be greater than the current date.'; // Thêm thông báo lỗi
+                }
+            }
+            if (!addClicked) {
+                isValid = false;
+                addButtonError.style.display = 'block';// Thông báo lỗi nếu chưa bấm nút "Add"
+            }
+            // Lặp qua từng hộp thuốc để kiểm tra
+            const boxes = document.querySelectorAll('.row.my-2');
+            boxes.forEach((box, index) => {
+                const select = box.querySelector('select');
+                const quantityInput = box.querySelector('input[name="quantity"]');
+                const sangInput = box.querySelector('input[name="sang"]');
+                const truaInput = box.querySelector('input[name="trua"]');
+                const chieuInput = box.querySelector('input[name="chieu"]');
+                const toiInput = box.querySelector('input[name="toi"]');
+                const quantityErrorDiv = box.querySelector('.error-message-quantity');
+                const sangErrorDiv = box.querySelector('.error-message-sang');
+                const truaErrorDiv = box.querySelector('.error-message-trua');
+                const chieuErrorDiv = box.querySelector('.error-message-chieu');
+                const toiErrorDiv = box.querySelector('.error-message-toi');
+
+                // Xóa thông báo lỗi cũ
+                quantityErrorDiv.textContent = '';
+                sangErrorDiv.textContent = '';
+                truaErrorDiv.textContent = '';
+                chieuErrorDiv.textContent = '';
+                toiErrorDiv.textContent = '';
+
+                // Kiểm tra các trường cần validate
+                if (select.value === '') {
+                    isValid = false;
+                    select.classList.add('is-invalid');
+                } else {
+                    select.classList.remove('is-invalid');
+                }
+
+                if (quantityInput.value === '') {
+                    isValid = false;
+                    quantityErrorDiv.textContent = 'Quantity is required.';
+                }
+
+                if (sangInput.value === '' || isNaN(sangInput.value)) {
+                    isValid = false;
+                    sangErrorDiv.textContent = 'Morning value must be a number.';
+                }
+
+                if (truaInput.value === '' || isNaN(truaInput.value)) {
+                    isValid = false;
+                    truaErrorDiv.textContent = 'Noon value must be a number.';
+                }
+
+                if (chieuInput.value === '' || isNaN(chieuInput.value)) {
+                    isValid = false;
+                    chieuErrorDiv.textContent = 'Afternoon value must be a number.';
+                }
+
+                if (toiInput.value === '' || isNaN(toiInput.value)) {
+                    isValid = false;
+                    toiErrorDiv.textContent = 'Evening value must be a number.';
+                }
+            });
+
+            return isValid;
+        }
     </script>
+
+    <!--    <script>-->
+<!--        document.querySelector('form').addEventListener('submit', (event) => {-->
+
+<!--            // Lấy giá trị của quantity và các trường sáng, trưa, chiều, và tối-->
+<!--            const quantityInput = document.querySelector('input[name="quantity"]');-->
+<!--            const sangInput = document.querySelector('input[name="sang"]');-->
+<!--            const truaInput = document.querySelector('input[name="trua"]');-->
+<!--            const chieuInput = document.querySelector('input[name="chieu"]');-->
+<!--            const toiInput = document.querySelector('input[name="toi"]');-->
+
+<!--            // Chuyển đổi giá trị nhập vào thành số nguyên hoặc 0 nếu không có giá trị-->
+<!--            const quantityValue = parseInt(quantityInput.value) || 0;-->
+<!--            const sangValue = parseInt(sangInput.value) || 0;-->
+<!--            const truaValue = parseInt(truaInput.value) || 0;-->
+<!--            const chieuValue = parseInt(chieuInput.value) || 0;-->
+<!--            const toiValue = parseInt(toiInput.value) || 0;-->
+
+<!--            // Cập nhật giá trị của các trường để đảm bảo rằng chúng không bỏ trống-->
+<!--            quantityInput.value = quantityValue;-->
+<!--            sangInput.value = sangValue;-->
+<!--            truaInput.value = truaValue;-->
+<!--            chieuInput.value = chieuValue;-->
+<!--            toiInput.value = toiValue;-->
+
+<!--            // Xóa thông báo lỗi cũ trước khi kiểm tra lại-->
+<!--            quantityInput.nextElementSibling.textContent = '';-->
+<!--            sangInput.nextElementSibling.textContent = '';-->
+<!--            truaInput.nextElementSibling.textContent = '';-->
+<!--            chieuInput.nextElementSibling.textContent = '';-->
+<!--            toiInput.nextElementSibling.textContent = '';-->
+
+<!--            let isValid = true;-->
+<!--            -->
+
+<!--            if (!quantityValue) {-->
+<!--                // Display error message to the user in the quantityErrorDiv-->
+<!--                quantityInput.nextElementSibling.textContent = 'Please enter a value for quantity.';-->
+<!--                isValid = false;-->
+<!--            } else if (quantityValue <= 0) {-->
+<!--                // Check for negative or zero quantity and display error message-->
+<!--                quantityInput.nextElementSibling.textContent = 'Quantity must be greater than 0.';-->
+<!--                isValid = false;-->
+<!--            } else if (sangValue + truaValue + chieuValue + toiValue === 0) {-->
+<!--                // Check if all fields are zero when quantity is greater than 0-->
+<!--                quantityInput.nextElementSibling.textContent = 'At least one of morning, noon, afternoon, and evening must be greater than 0.';-->
+<!--                isValid = false;-->
+<!--            } else if (sangValue + truaValue + chieuValue + toiValue > quantityValue) {-->
+<!--                // Check if the sum of fields is greater than quantity-->
+<!--                quantityInput.nextElementSibling.textContent = 'The sum of morning, noon, afternoon, and evening cannot exceed quantity.';-->
+<!--                isValid = false;-->
+<!--            }-->
+
+<!--// Check and display error messages for morning, noon, afternoon, and evening fields if they are negative or greater than quantity-->
+<!--            if (sangValue < 0 || sangValue > quantityValue) {-->
+<!--                sangInput.nextElementSibling.textContent = 'Morning is invalid.';-->
+<!--                isValid = false;-->
+<!--            }-->
+
+<!--            if (truaValue < 0 || truaValue > quantityValue) {-->
+<!--                truaInput.nextElementSibling.textContent = 'Noon is invalid.';-->
+<!--                isValid = false;-->
+<!--            }-->
+
+<!--            if (chieuValue < 0 || chieuValue > quantityValue) {-->
+<!--                chieuInput.nextElementSibling.textContent = 'Afternoon is invalid.';-->
+<!--                isValid = false;-->
+<!--            }-->
+
+<!--            if (toiValue < 0 || toiValue > quantityValue) {-->
+<!--                toiInput.nextElementSibling.textContent = 'Evening is invalid.';-->
+<!--                isValid = false;-->
+<!--            }-->
+<!--            isValid = kiemtrarong("#symton","#sympton_notblank") ;-->
+
+
+<!--            if (!isValid) {-->
+<!--                event.preventDefault(); // Ngăn chặn gửi biểu mẫu nếu có lỗi-->
+<!--            }-->
+<!--        });-->
+
+
+<!--        var checkValidation = function () {-->
+
+<!--            var flag = true;-->
+<!--            flag &= kiemtrarong("#symton", "#sympton_notblank");-->
+
+<!--            if (!flag) {-->
+<!--                return false;-->
+<!--            }-->
+
+<!--        }-->
+<!--        document.querySelector('#xacNhan').onclick = checkValidation;-->
+<!--        function kiemtrarong(value, error) {-->
+<!--            var bientam = document.querySelector(value).value;-->
+<!--            if (bientam.length < 1 || bientam.length == 0) {-->
+
+<!--                document.querySelector(error).style.display = "block";-->
+<!--                document.querySelector(value).style.border = "1px solid red";-->
+<!--                return false;-->
+<!--            } else {-->
+
+<!--                document.querySelector(error).style.display = "none";-->
+<!--                document.querySelector(value).style.border = "";-->
+
+<!--                return true;-->
+<!--            }-->
+<!--        }-->
+
+<!--    </script>-->
     <!-- Content -->
     <div th:replace="~{admin/layout/footer :: footer}"></div>
 </div>

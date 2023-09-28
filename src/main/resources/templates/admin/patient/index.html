@@ -37,7 +37,7 @@
                                     <div class="x_title">
                                         <div class="card-header py-3 card_head">
 
-                                            <a th:href="@{/admin/patient/create}" class="btn btn-primary">Create </a>
+<!--                                            <a th:href="@{/admin/patient/create}" class="btn btn-primary">Create </a>-->
                                         </div>
                                     </div>
                                     <div class="x_content">
@@ -52,24 +52,24 @@
                                                                         <tr role="row">
                                                                             <th class="sorting_asc" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="ID: activate to sort column descending" style="width: 50.2px;">ID</th>
                                                                             <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Name: activate to sort column ascending" style="width: 220.2px;">Name</th>
-                                                                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="User Name: activate to sort column ascending" style="width: 120.2px;">User Name</th>
                                                                             <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Email: activate to sort column ascending" style="width: 122.2px;">Email</th>
                                                                             <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Phone: activate to sort column ascending" style="width: 120.2px;">Phone</th>
                                                                             <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Address activate to sort column ascending" style="width: 250.2px;">Address</th>
-                                                                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 200.2px;">Action</th>
+                                                                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Address activate to sort column ascending" style="width: 250.2px;">Date of Birth</th>
+                                                                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Address activate to sort column ascending" style="width: 250.2px;">Gender</th>
+
+
                                                                     </thead>
                                                                     <tbody>
                                                                         <tr role="row" class="odd" th:each="e : ${listPatient}">
                                                                             <td class="sorting_1" th:text="${e.getId()}"></td>
                                                                             <td th:text="${e.getName()}"></td>
-                                                                            <td th:text="${e.getUsername()}"></td>
                                                                             <td th:text="${e.getEmail()}"></td>
                                                                             <td th:text="${e.getPhone()}"></td>
                                                                             <td th:text="${e.getAddress()}"></td>
-                                                                            <td>
-                                                                                <a class="btn btn-info" th:href="@{/admin/patient/edit/{id}(id=${e.getId()})}">Update</a> | 
-                                                                                <a class="btn btn-warning" th:href="@{/admin/patient/delete/{id}(id=${e.getId()})}">Delete</a>
-                                                                            </td>
+                                                                            <td th:text="${#dates.format(e.getDob(), 'dd/MM/yyyy')}"></td>
+                                                                            <td th:text="${e.getGender() ? 'Male' : 'Female'}"></td>
+
                                                                         </tr>
                                                                     </tbody>
                                                                 </table>

@@ -34,9 +34,11 @@
                                         </div>
                                         <th:block th:text="${#session.removeAttribute('notnull')}"></th:block>
                                     </div>
+                                    <div id="error-message" style="display: none; color: red;font-size: 20px">Please enter a valid quantity (greater than 0).</div>
+                                    <div id="error-message-container" style="display: none; color: red; font-size: 20px; text-align: center;"></div>
                                     <form th:action="@{/admin/donthuoc/create}" th:object="${donthuoc}" method="post">
                                         <h1 style="text-align: center">Create Medication Invoice</h1>
-                                        <div class=" form-group">
+                                        <div class="form-group">
                                             <div class="field item form-group">
                                                 <div class="col-md-6 col-sm-6">
                                                     <input class="form-control" th:object="${toathuoc}" th:field="*{id}" type="text" hidden="true">
@@ -44,31 +46,35 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-6">
-                                                    <labe>Name</labe>
+                                                    <label>Name</label>
                                                     <input th:if="${toathuoc.taophieukhamId.name != null}" th:value="${toathuoc.taophieukhamId.name}" name="name" id="name" class="form-control" type="text" readonly="true">
                                                 </div>
                                                 <div class="col-6">
-                                                    <labe>Gender</labe>
+                                                    <label>Gender</label>
                                                     <input th:if="${toathuoc.taophieukhamId.gender != null && toathuoc.taophieukhamId.gender == true}" value="Male" name="gender" id="gender" class="form-control" type="text" readonly="true">
                                                     <input th:if="${toathuoc.taophieukhamId.gender != null && toathuoc.taophieukhamId.gender == false}" value="Female" name="gender" id="gender" class="form-control" type="text" readonly="true">
                                                 </div>
                                                 <div class="col-6">
-                                                    <labe>Phone</labe>
+                                                    <label>Phone</label>
                                                     <input th:if="${toathuoc.taophieukhamId.phone != null}" th:value="${toathuoc.taophieukhamId.phone}" name="phone" id="phone" class="form-control" type="text" readonly="true">
                                                 </div>
                                                 <div class="col-6">
-                                                    <labe>Address</labe>
+                                                    <label>Address</label>
                                                     <input th:if="${toathuoc.taophieukhamId.address != null}" th:value="${toathuoc.taophieukhamId.address}" name="address" id="address" class="form-control" type="text" readonly="true">
                                                 </div>
+                                                <div class="col-12">
+                                                    <label>Sympton</label>
+                                                    <input th:if="${toathuoc.taophieukhamId.sympton != null}" th:value="${toathuoc.taophieukhamId.sympton}" name="sympton" id="sympton" class="form-control" type="text" readonly="true">
+                                                </div>
                                             </div>
-                                        <div class=" form-group">
-                                            <button class="btn btn-secondary" type="button" id="addButton">Add</button>
-                                            <div id="boxes"></div>
-                                        </div>
-                                        <div class="form-group">
-                                            <div    >
-                                                <input type="submit" id="dangKy"  value="Create" class="btn btn-primary" />
-
+                                            <div class="form-group">
+                                                <button class="btn btn-secondary" type="button" id="addButton" style="margin-top: 15px;">Add</button>
+                                                <div id="boxes"></div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div>
+                                                    <input type="submit" id="dangKy" value="Create" class="btn btn-primary">
+                                                </div>
                                             </div>
                                         </div>
                                     </form>
@@ -217,51 +223,24 @@
     }
 
     function createQuantityInput() {
-        const quantityInput = document.createElement('input');
-        quantityInput.type = 'number';
-        quantityInput.name = 'quantity';
-        quantityInput.setAttribute('required', true);
-        quantityInput.setAttribute('min', 1);
-        quantityInput.setAttribute('max', 1000);
+    const quantityInput = document.createElement('input');
+    quantityInput.type = 'number';
+    quantityInput.name = 'quantity';
+    quantityInput.id = 'quantity'; // Thêm id cho input
+    quantityInput.setAttribute('required', true);
+    quantityInput.setAttribute('min', 1);
+    quantityInput.setAttribute('max', 1000);
 
-        quantityInput.classList.add('input');
-        return quantityInput;
+    quantityInput.classList.add('input');
+    return quantityInput;
     }
+
     function createRemoveButton() {
         const removeButton = document.createElement('button');
         removeButton.textContent = '-';
         removeButton.className = 'btn btn-danger';
         removeButton.style = "margin-bottom:0";
         return removeButton;
-    }
-    var checkValidation = function () {
-
-        var flag = true;
-        flag &= kiemtrarong("#name", "#name_notblank");
-
-        flag &= kiemtrarong("#phone", "#phone_notblank");
-        flag &= validatePhoneNumber("#phone", '#phone_lenght');
-        console.log(flag);
-
-
-
-
-        if (!flag) {
-            return false;
-        }
-
-    }
-
-    function validatePhoneNumber(selectorValue, selectorError) {
-        var inputText = document.querySelector(selectorValue);
-        var regex = /^\d{10}$/;
-        if (regex.test(inputText.value)) {
-            document.querySelector(selectorError).style.display = "none";
-            return true;
-        } else {
-            document.querySelector(selectorError).style.display = "block";
-            return false;
-        }
     }
     function kiemtrarong(value, error) {
         var bientam = document.querySelector(value).value;
@@ -279,6 +258,36 @@
         }
     }
     document.querySelector('#dangKy').onclick = checkValidation;
+    function checkValidation() {
+    const isValidQuantity = kiemtrarong('#quantity', '#error-message');
+
+    if (!isValidQuantity) {
+        // Hiển thị thông báo lỗi ở đầu trang
+        document.querySelector('#error-message').style.display = 'block';
+        // Ngăn chặn việc submit form nếu có lỗi
+        return false;
+    }
+
+    // Nếu tất cả điều kiện kiểm tra đều đúng, cho phép submit form
+    return true;
+    }
+    document.querySelector('#dangKy').onclick = function() {
+    // Kiểm tra xem có ít nhất một ô input thuốc nào đó đã được nhập hay không
+    const hasAtLeastOneInput = Array.from(document.querySelectorAll('input[name="quantity"]')).some(input => input.value.trim() !== '');
+
+    if (!hasAtLeastOneInput) {
+        // Hiển thị thông báo lỗi ở đầu trang
+        const errorMessageContainer = document.querySelector('#error-message-container');
+        errorMessageContainer.textContent = 'Please enter at least one medicine before creating.';
+        errorMessageContainer.style.display = 'block';
+
+        return false; // Ngăn chặn việc submit form
+    }
+
+    // Nếu có ít nhất một ô input thuốc đã được nhập, cho phép submit form
+    return true;
+};
+
 </script>
 <!-- Content -->
 

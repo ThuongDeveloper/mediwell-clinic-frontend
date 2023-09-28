@@ -60,7 +60,7 @@ public class Donthuoc implements Serializable {
     @ManyToOne
     private Toathuoc toathuocId;
 
-@OneToMany(mappedBy = "donthuocId")
+    @OneToMany(mappedBy = "donthuocId")
     private Collection<DonthuocDetails> donthuocDetailsCollection;
 
     public Donthuoc() {
@@ -115,7 +115,7 @@ public class Donthuoc implements Serializable {
         this.toathuocId = toathuocId;
     }
 
-   public Collection<DonthuocDetails> getDonthuocDetailsCollection() {
+    public Collection<DonthuocDetails> getDonthuocDetailsCollection() {
         return donthuocDetailsCollection;
     }
 
@@ -147,5 +147,5 @@ public class Donthuoc implements Serializable {
     public String toString() {
         return "group2.client.entities.Donthuoc[ id=" + id + " ]";
     }
-    
+
 }

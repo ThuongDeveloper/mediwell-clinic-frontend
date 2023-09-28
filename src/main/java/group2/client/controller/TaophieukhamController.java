@@ -50,7 +50,6 @@ public class TaophieukhamController {
     private String apiUrlCasher = "http://localhost:8888/api/casher/";
     private String apiUrlTypeDoctor = "http://localhost:8888/api/typedoctor/";
     private String apiUrlPatient = "http://localhost:8888/api/patient/";
-    private String apiUrl_Toathuoc = "http://localhost:8888/api/toathuoc/";
     RestTemplate restTemplate = new RestTemplate();
 
     @Autowired
@@ -230,7 +229,7 @@ public class TaophieukhamController {
             model.addAttribute("listTypeDoctor", listTypeDoctor);
             model.addAttribute("listCasher", listCasher);
             model.addAttribute("currentCasher", currentCasher);
-            session.setAttribute("error", "Cannot be left blank!");
+            session.setAttribute("error", "Type Doctor cannot be left blank!");
             return "/admin/phieukham/create";
         } else {
             newTD.setId(Integer.parseInt(typeDoctorID));
