@@ -79,6 +79,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                     <ul th:if="${currentCasher != null}" class="nav side-menu">
                         <li><a><i class="fa fa-home"></i>Cashier Feature<span class="fa fa-chevron-down"></span></a>
                             <ul class="nav child_menu">  
+                                <li><a th:href="@{/admin/listtoathuoc}">List of Prescriptions Today</a></li>
                                 <li><a th:href="@{/admin/donthuoc}">Invoice Medication</a></li>
                                 <li><a th:href="@{/admin/phieukham}">Waiting Ticket</a></li>  
                             </ul>

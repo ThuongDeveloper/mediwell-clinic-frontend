@@ -116,8 +116,12 @@
                                                                                     <div style="color: red" id="nameError"></div>
                                                                         </p>
                                                                         <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+                                                                                <label for="dob">DOB</label>
+                                                                                <input th:field="*{dob}" class="woocommerce-Input woocommerce-Input--text input-text" type="text" name="dob" id="dob" readonly="true">
+                                                                        </p>
+                                                                        <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
                                                                                 <label for="email">Email</label>
-                                                                                <input th:field="*{email}" readonly="true" class="woocommerce-Input woocommerce-Input--text input-text" type="text" name="email" id="email">
+                                                                                <input th:field="*{email}" readonly="true" class="woocommerce-Input woocommerce-Input--text input-text" type="date" name="email" id="email">
                                                                         </p>
                                                                         <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
                                                                                 <label for="address">Address</label>

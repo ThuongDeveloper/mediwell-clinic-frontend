@@ -151,18 +151,21 @@ public class CasherController {
     }
 
     @RequestMapping(value = "/admin/casher/create", method = RequestMethod.POST)
-    public String create(Model model, @Valid @ModelAttribute Casher casher, BindingResult bindingResult) {
+    public String create(Model model, @Valid @ModelAttribute Casher casher, BindingResult bindingResult, HttpServletRequest requestCurrent) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+        Admin currentAdmin = authService.isAuthenticatedAdmin(requestCurrent);
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("casher", casher);
+            model.addAttribute("currentAdmin", currentAdmin);
             return "/admin/casher/create";
         }
 
         // Kiểm tra xem email đã tồn tại trong cơ sở dữ liệu chưa
         if (casherRepository.existsByEmail(casher.getEmail())) {
             bindingResult.rejectValue("email", "error.email", "Email already exists.");
+            model.addAttribute("currentAdmin", currentAdmin);
             model.addAttribute("casher", casher);
             return "/admin/casher/create";
         }

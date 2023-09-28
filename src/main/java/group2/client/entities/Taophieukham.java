@@ -6,9 +6,9 @@ package group2.client.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 import java.util.Date;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -95,7 +95,7 @@ public class Taophieukham implements Serializable {
     private String sympton;
     @OneToMany(mappedBy = "taophieukhamId")
     @JsonIgnore
-    private List<Toathuoc> toathuocList;
+    private Collection<Toathuoc> toathuocCollection;
 
     @JoinColumn(name = "casher_id", referencedColumnName = "id")
     @ManyToOne
@@ -193,19 +193,12 @@ public class Taophieukham implements Serializable {
     }
 
     @XmlTransient
-    public List<Toathuoc> getToathuocList() {
-        return toathuocList;
+    public Collection<Toathuoc> getToathuocCollection() {
+        return toathuocCollection;
     }
 
-    public Integer getToathuocId() {
-        if (toathuocList != null) {
-            return toathuocList.get(0).getId();
-        }
-        return 0;
-    }
-
-    public void setToathuocList(List<Toathuoc> toathuocList) {
-        this.toathuocList = toathuocList;
+    public void setToathuocCollection(Collection<Toathuoc> toathuocCollection) {
+        this.toathuocCollection = toathuocCollection;
     }
 
     public Casher getCasherId() {
