@@ -171,10 +171,11 @@ public class Patient implements Serializable {
     public Date getDob() {
         return dob;
     }
+
+
     public void setDob(Date dob) {
         this.dob = dob;
     }
-
     @XmlTransient
     public List<Rating> getRatingList() {
         return ratingList;
