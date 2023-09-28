@@ -2,50 +2,50 @@
 
     <div th:replace="~{admin/layout/layout :: head}"></div>
 
-<style>
-    /* Style for expired items */
-    .expired {
-        display: inline-block;
-        padding: 5px 10px;
-        background-color: red;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: default;
-    }
+    <style>
+        /* Style for expired items */
+        .expired {
+            display: inline-block;
+            padding: 5px 10px;
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: default;
+        }
 
-    /* Style for active items */
-    .active1 {
-        display: inline-block;
-        padding: 5px 10px;
-        background-color: green;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: default;
-    }
+        /* Style for active items */
+        .active1 {
+            display: inline-block;
+            padding: 5px 10px;
+            background-color: green;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: default;
+        }
 
-    /* CSS cho thông báo thành công */
-    .success-container {
-        background-color: #4CAF50; /* Màu xanh lá cây */
-        color: #ffffff; /* Màu chữ trắng */
-        padding: 10px;
-        border-radius: 5px; /* Góc bo tròn */
-        margin-bottom: 10px; /* Khoảng cách dưới */
-        display: none; /* Ẩn ban đầu */
-    }
+        /* CSS cho thông báo thành công */
+        .success-container {
+            background-color: #4CAF50; /* Màu xanh lá cây */
+            color: #ffffff; /* Màu chữ trắng */
+            padding: 10px;
+            border-radius: 5px; /* Góc bo tròn */
+            margin-bottom: 10px; /* Khoảng cách dưới */
+            display: none; /* Ẩn ban đầu */
+        }
 
-    /* CSS cho thông báo thất bại */
-    .error-container {
-        background-color: #f44336; /* Màu đỏ */
-        color: #ffffff; /* Màu chữ trắng */
-        padding: 10px;
-        border-radius: 5px; /* Góc bo tròn */
-        margin-bottom: 10px; /* Khoảng cách dưới */
-        display: none; /* Ẩn ban đầu */
-    }
+        /* CSS cho thông báo thất bại */
+        .error-container {
+            background-color: #f44336; /* Màu đỏ */
+            color: #ffffff; /* Màu chữ trắng */
+            padding: 10px;
+            border-radius: 5px; /* Góc bo tròn */
+            margin-bottom: 10px; /* Khoảng cách dưới */
+            display: none; /* Ẩn ban đầu */
+        }
 
-</style>
+    </style>
     <body class="nav-md">
         <div class="container body">
             <div class="main_container">
@@ -63,11 +63,19 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <div th:if="${MessageCreate != null}" class="success-container">
+<!--                                <div th:if="${MessageCreate != null}" class="success-container">
                                     <span class="success-message" th:text="${MessageCreate}"></span>
                                 </div>
                                 <div th:if="${MessageError != null}" class="error-container">
                                     <span class="error-message" th:text="${MessageError}"></span>
+                                </div>-->
+                                <div th:if="${session.msg}">
+
+                                    <div class="alert alert-success alert-dismissible fade show notify-error">
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                        <span th:text="${session.msg}"></span>
+                                    </div>
+                                    <th:block th:text="${#session.removeAttribute('msg')}"></th:block>
                                 </div>
 
                                 <table  class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -88,27 +96,29 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:each="e : ${listThuoc}">
-                                        <th th:text="${e.getId()}"></th>
-                                        <th th:text="${e.getName()}"></th>
-                                        <th th:text="${e.getCompanyId().getName()}"></th>
-                                        <th th:text="${e.getComposition()}"></th>
-                                        <th th:text="${e.getQuantity()}"></th>
-                                        <th th:text="${e.getDonviId().getName()}"></th>
-                                        <th th:text="${e.getPrice()}"></th>
-                                        <th th:text="${e.getTypethuocId().getName()}"></th>
-                                        <th th:text="${#dates.format(e.getManufacturingDate(), 'dd/MM/yyyy')}"></th>
-                                        <th th:text="${#dates.format(e.getExpiryDate(), 'dd/MM/yyyy')}"></th>
-                                        <td>
-                                            <span th:if="${e.getExpiryDate().before(e.getManufacturingDate()) or e.getExpiryDate().before(#dates.createNow())}" class="expired">Expired</span>
-                                            <span th:unless="${e.getExpiryDate().before(e.getManufacturingDate()) or e.getExpiryDate().before(#dates.createNow())}" class="active1">Active</span>
-                                        </td>
+                                        <tr th:each="e : ${listThuoc}">
+                                            <th th:text="${e.getId()}"></th>
+                                            <th th:text="${e.getName()}"></th>
+                                            <th th:text="${e.getCompanyId().getName()}"></th>
+                                            <th th:text="${e.getComposition()}"></th>
+                                            <th th:text="${e.getQuantity()}"></th>
+                                            <th th:text="${e.getDonviId().getName()}"></th>
+                                            <th th:text="${e.getPrice()}"></th>
+                                            <th th:text="${e.getTypethuocId().getName()}"></th>
+                                            <th th:text="${#dates.format(e.getManufacturingDate(), 'dd/MM/yyyy')}"></th>
+                                            <th th:text="${#dates.format(e.getExpiryDate(), 'dd/MM/yyyy')}"></th>
+                                            <td>
+                                                <span th:if="${e.getExpiryDate().before(e.getManufacturingDate()) or e.getExpiryDate().before(#dates.createNow())}" class="expired">Expired</span>
+                                                <span th:unless="${e.getExpiryDate().before(e.getManufacturingDate()) or e.getExpiryDate().before(#dates.createNow())}" class="active1">Active</span>
+                                            </td>
 
-                                        <td>
-                                            <a class="btn btn-info" th:href="@{/admin/thuoc/edit/{id}(id=${e.getId()})}">Update</a> | 
-                                            <a class="btn btn-warning" th:href="@{/admin/thuoc/delete/{id}(id=${e.getId()})}">Delete</a>
-                                        </td>
-                                    </tr>
+                                            <td>
+                                                <a class="btn btn-info" th:href="@{/admin/thuoc/edit/{id}(id=${e.getId()})}">Update</a> | 
+                                                <a th:href="@{/admin/thuoc/delete/{id}(id=${e.getId()})}">
+                                                    <button class="btn btn-warning" onclick="return confirm('Are you sure want to remove this drug?')">Delete</button>
+                                                </a>
+                                            </td>
+                                        </tr>
 
                                     </tbody>
                                 </table>
@@ -117,23 +127,23 @@
                     </div>
 
                 </div>
-<script>
-    function showNotification(message, container) {
-        var notification = document.querySelector(container);
-        var notificationMessage = notification.querySelector("span");
-        notificationMessage.innerText = message;
-        notification.style.display = "block"; // Hiển thị thông báo
-        setTimeout(function () {
-            notification.style.display = "none"; // Ẩn thông báo sau 3 giây
-        }, 3000); // 3 giây (3000 milliseconds)
-    }
+                <script>
+                    function showNotification(message, container) {
+                        var notification = document.querySelector(container);
+                        var notificationMessage = notification.querySelector("span");
+                        notificationMessage.innerText = message;
+                        notification.style.display = "block"; // Hiển thị thông báo
+                        setTimeout(function () {
+                            notification.style.display = "none"; // Ẩn thông báo sau 3 giây
+                        }, 3000); // 3 giây (3000 milliseconds)
+                    }
 
-    // Sử dụng khi bạn muốn hiển thị thông báo thành công
-    showNotification("Update Successful.", ".success-container");
+                    // Sử dụng khi bạn muốn hiển thị thông báo thành công
+                    showNotification("Update Successful.", ".success-container");
 
-    // Sử dụng khi bạn muốn hiển thị thông báo thất bại
-    showNotification("Update Failed.", ".error-container");
-</script>
+                    // Sử dụng khi bạn muốn hiển thị thông báo thất bại
+                    showNotification("Update Failed.", ".error-container");
+                </script>
 
                 <!-- Content -->
                 <div th:replace="~{admin/layout/footer :: footer}"></div>

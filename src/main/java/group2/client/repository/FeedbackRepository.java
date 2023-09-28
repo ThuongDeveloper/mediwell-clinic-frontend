@@ -4,14 +4,13 @@
  */
 package group2.client.repository;
 
-import group2.client.entities.News;
+import group2.client.entities.Feedback;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  *
  * @author hokim
  */
-public interface NewsRepository extends JpaRepository<News, Integer> {
-    public News findByTitleAndContent(String title, String content);
-    public News findByTitle(String title);
+public interface FeedbackRepository extends JpaRepository<Feedback, Integer> {
+    
 }

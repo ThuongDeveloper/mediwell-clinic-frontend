@@ -34,6 +34,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Feedback.findByContent", query = "SELECT f FROM Feedback f WHERE f.content = :content"),
     @NamedQuery(name = "Feedback.findByStatus", query = "SELECT f FROM Feedback f WHERE f.status = :status"),
     @NamedQuery(name = "Feedback.findByCreateAt", query = "SELECT f FROM Feedback f WHERE f.createAt = :createAt"),
+    @NamedQuery(name = "Feedback.findByEmail", query = "SELECT f FROM Feedback f WHERE f.email = :email"),
     @NamedQuery(name = "Feedback.findByPhone", query = "SELECT f FROM Feedback f WHERE f.phone = :phone")})
 public class Feedback implements Serializable {
 
@@ -49,6 +50,9 @@ public class Feedback implements Serializable {
     @Size(max = 250)
     @Column(name = "content")
     private String content;
+    @Size(max = 250)
+    @Column(name = "email")
+    private String email;
     @Column(name = "status")
     private Boolean status;
     @Column(name = "create_at")
@@ -113,6 +117,16 @@ public class Feedback implements Serializable {
     public void setPhone(String phone) {
         this.phone = phone;
     }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    
+    
 
     @Override
     public int hashCode() {

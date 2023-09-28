@@ -119,14 +119,14 @@
                                                                 <div th:if="${e.getStatus() == true}">
                                                                     <td>
                                                                         <form th:action="@{/change-status-news/{id}(id=${e.getId()})}" method="post">
-                                                                            <button type="submit" class="btn btn-success">[[${e.getStatus()}]]</button>
+                                                                            <button type="submit" onclick="return confirm('Are you sure want to hide this news?');" class="btn btn-success">Show</button>
                                                                         </form>
                                                                     </td>
                                                                 </div>
                                                                 <div th:if="${e.getStatus() == false}">
                                                                     <td>
                                                                         <form th:action="@{/change-status-news/{id}(id=${e.getId()})}" method="post">
-                                                                            <button type="submit" class="btn btn-danger">[[${e.getStatus()}]]</button>
+                                                                            <button type="submit" onclick="return confirm('Are you sure want to show this news?');" class="btn btn-danger">Hide</button>
                                                                         </form>
                                                                     </td>
                                                                 </div>
@@ -135,8 +135,10 @@
                                                                     <a class="btn btn-info"
                                                                        th:href="@{/admin/news/edit/{id}(id=${e.getId()})}">Update</a>
                                                                     |
-                                                                    <a class="btn btn-warning"
-                                                                       th:href="@{/admin/news/delete/{id}(id=${e.getId()})}">Delete</a>
+                                                                    <a 
+                                                                       th:href="@{/admin/news/delete/{id}(id=${e.getId()})}">
+                                                                           <button type="button" class="btn btn-warning" onclick="return confirm('Are you sure want to remove this news?');">Delete</button>
+                                                                    </a>
                                                                 </td>
                                                             </tr>
                                                             </tbody>

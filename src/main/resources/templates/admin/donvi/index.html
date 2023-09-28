@@ -2,24 +2,24 @@
 
     <div th:replace="~{admin/layout/layoutfixbug :: head}"></div>
 
-<style>
-    /* Style the success container */
-    /*.success-container {*/
-    /*    border: 1px solid #28a745; !* Green border color for success container *!*/
-    /*    background-color: #d4edda; !* Background color for success container *!*/
-    /*    padding: 10px; !* Padding inside the success container *!*/
-    /*    border-radius: 3px; !* Rounded corners for success container *!*/
-    /*    margin-top: 10px; !* Margin space at the top of the success container *!*/
-    /*}*/
+    <style>
+        /* Style the success container */
+        /*.success-container {*/
+        /*    border: 1px solid #28a745; !* Green border color for success container *!*/
+        /*    background-color: #d4edda; !* Background color for success container *!*/
+        /*    padding: 10px; !* Padding inside the success container *!*/
+        /*    border-radius: 3px; !* Rounded corners for success container *!*/
+        /*    margin-top: 10px; !* Margin space at the top of the success container *!*/
+        /*}*/
 
-    /* Style the success message text */
-    .success-message {
-        color: #28a745; /* Green color for success text */
-        font-weight: bold; /* Bold text for success message */
-    }
+        /* Style the success message text */
+        .success-message {
+            color: #28a745; /* Green color for success text */
+            font-weight: bold; /* Bold text for success message */
+        }
 
 
-</style>
+    </style>
     <body class="nav-md">
         <div class="container body">
             <div class="main_container">
@@ -39,12 +39,13 @@
                         <div class="card-header py-3 card_head">
 
                             <a th:href="@{/admin/donvi/create}"  class="btn btn-primary">Create </a> <br><!-- comment -->
-                                <div th:if="${successMessage}" style="color: green;">
-                                    <p th:text="${successMessage}"></p>
-                                </div>
+                                <div th:if="${session.msg}">
 
-                                <div th:if="${errorMessage}" style="color: red;">
-                                    <p th:text="${errorMessage}"></p>
+                                    <div class="alert alert-success alert-dismissible fade show">
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                        <span th:text="${session.msg}"></span>
+                                    </div>
+                                    <th:block th:text="${#session.removeAttribute('msg')}"></th:block>
                                 </div>
                         </div>
                         <div class="card-body">
@@ -66,7 +67,9 @@
                                         <td th:text="${e.getName()}"></td>
                                         <td>
                                             <a class="btn btn-info" th:href="@{/admin/donvi/edit/{id}(id=${e.getId()})}">Update</a> |
-                                            <a class="btn btn-warning" th:href="@{/admin/donvi/delete/{id}(id=${e.getId()})}">Delete</a>
+                                            <a th:href="@{/admin/donvi/delete/{id}(id=${e.getId()})}">
+                                                <button class="btn btn-warning" onclick="return confirm('Are you sure want to remove this unit?')">Delete</button>
+                                            </a>
                                         </td>
 
 

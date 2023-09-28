@@ -39,7 +39,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
-
+ 
 /**
  *
  * @author admin
@@ -154,26 +154,35 @@ public class NewsController {
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
         body.add("News", news);
         body.add("file", fileResource);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-
-        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
-
-
-        ResponseEntity response = restTemplate.exchange(apiUrl + "/create", HttpMethod.POST, requestEntity, String.class);
         
-        // Kiểm tra mã trạng thái của phản hồi
-        if (response.getStatusCode().is2xxSuccessful()) {
-            // Thực hiện thêm xử lý sau khi tạo Casher thành công (nếu cần)
+        News checkNewsByTitleAndContent = newsRepository.findByTitle(news.getTitle());
+        
+        if(checkNewsByTitleAndContent != null){
+            session.setAttribute("msg", "Newsletter has been created");
+            return "redirect:/admin/news/create";
+        }else{
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
-            // Chuyển hướng về trang danh sách Casher
-            session.setAttribute("msg", "Create news successful!");
-            return "redirect:/admin/news";
-        } else {
-            // Xử lý lỗi nếu cần thiết
-            return "/admin/news/create";
+            HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
+
+
+            ResponseEntity response = restTemplate.exchange(apiUrl + "/create", HttpMethod.POST, requestEntity, String.class);
+
+            // Kiểm tra mã trạng thái của phản hồi
+            if (response.getStatusCode().is2xxSuccessful()) {
+                // Thực hiện thêm xử lý sau khi tạo Casher thành công (nếu cần)
+
+                // Chuyển hướng về trang danh sách Casher
+                session.setAttribute("msg", "Create news successful!");
+                return "redirect:/admin/news";
+            } else {
+                // Xử lý lỗi nếu cần thiết
+                return "/admin/news/create";
+            }
         }
+
+        
     }
 
     @RequestMapping(value = "/admin/news/edit/{id}", method = RequestMethod.GET)

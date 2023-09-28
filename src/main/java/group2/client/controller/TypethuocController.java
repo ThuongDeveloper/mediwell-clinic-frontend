@@ -13,6 +13,7 @@ import group2.client.entities.Typethuoc;
 import group2.client.service.AuthService;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -159,26 +160,30 @@ public class TypethuocController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String create(Model model, Typethuoc typethuoc, RedirectAttributes redirectAttributes) {
+    public String create(Model model, Typethuoc typethuoc, RedirectAttributes redirectAttributes, HttpSession session) {
         try {
             // Send a POST request to the API to create a new medicine type
             ResponseEntity<String> response = restTemplate.postForEntity(apiUrl + "/create", typethuoc, String.class);
 
             if (response.getStatusCode() == HttpStatus.CREATED) {
                 // Creation was successful
-                redirectAttributes.addFlashAttribute("MessageCreate", "Creation successful");
+                session.setAttribute("msg", "Create successful");
+//                redirectAttributes.addFlashAttribute("MessageCreate", "Creation successful");
                 return "redirect:/admin/typethuoc"; // Redirect to index page
             } else {
                 // Server error from the API
-                redirectAttributes.addFlashAttribute("MessageCreate", "Server error when creating medicine type.");
+                session.setAttribute("msg", "Server error when creating medicine type.");
+//                redirectAttributes.addFlashAttribute("MessageCreate", "Server error when creating medicine type.");
             }
         } catch (HttpClientErrorException e) {
             // The API returned a bad request (400) status
             String responseBody = e.getResponseBodyAsString();
             if ("Name already exists in the database.".equals(responseBody)) {
-                redirectAttributes.addFlashAttribute("MessageCreateError", "Name already exists in the database.");
+                session.setAttribute("msg", "Name already exists in the database.");
+//                redirectAttributes.addFlashAttribute("MessageCreateError", "Name already exists in the database.");
             } else {
-                redirectAttributes.addFlashAttribute("MessageCreateError", "Undefined error when creating medicine type.");
+                session.setAttribute("msg", "Undefined error when creating medicine type.");
+//                redirectAttributes.addFlashAttribute("MessageCreateError", "Undefined error when creating medicine type.");
             }
         }
 
@@ -252,21 +257,21 @@ public class TypethuocController {
     }
     
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.POST)
-    public String update(Model model, @PathVariable("id") Integer id, Typethuoc updatedTypethuoc, RedirectAttributes redirectAttributes) {
+    public String update(Model model, @PathVariable("id") Integer id, Typethuoc updatedTypethuoc, HttpSession session, RedirectAttributes redirectAttributes) {
         // Gửi yêu cầu API để cập nhật thông tin TypeDoctor trong cơ sở dữ liệu
        
          restTemplate.put(apiUrl + "/edit", updatedTypethuoc);
         // Chú ý rằng, phương thức put trả về void (không có phản hồi từ server)
-
+        session.setAttribute("msg", "Update successful");
         // Điều hướng về trang danh sách TypeDoctor với thông báo thành công
-        redirectAttributes.addFlashAttribute("MessageCreate", "Update successful");
+//        redirectAttributes.addFlashAttribute("MessageCreate", "Update successful");
         return "redirect:/admin/typethuoc";
     }
     
     
     
        @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
-    public String delete(Model model, @PathVariable("id") Integer id,RedirectAttributes redirectAttributes, HttpServletRequest request) {
+    public String delete(Model model, @PathVariable("id") Integer id,RedirectAttributes redirectAttributes, HttpSession session, HttpServletRequest request) {
 
          Admin currentAdmin = authService.isAuthenticatedAdmin(request);
         Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
@@ -281,10 +286,12 @@ public class TypethuocController {
                     restTemplate.delete(apiUrl+"/delete/"+id);
 
                     // Nếu không có lỗi, tức là xóa thành công
-                    redirectAttributes.addFlashAttribute("MessageCreate", "Delete successful");
+                    session.setAttribute("msg", "Delete successful");
+//                    redirectAttributes.addFlashAttribute("MessageCreate", "Delete successful");
                 } catch (Exception e) {
                      // Xử lý lỗi nếu có
-                  redirectAttributes.addFlashAttribute("MessageCreate", "Delete fail");
+                     session.setAttribute("msg", "Delete fail");
+//                  redirectAttributes.addFlashAttribute("MessageCreate", "Delete fail");
                 }
 
               return "redirect:/admin/typethuoc";
@@ -292,12 +299,13 @@ public class TypethuocController {
              try {
       
                     restTemplate.delete(apiUrl+"/delete/"+id);
-
+                    session.setAttribute("msg", "Delete successful");
                     // Nếu không có lỗi, tức là xóa thành công
-                    redirectAttributes.addFlashAttribute("MessageCreate", "Delete successful");
+//                    redirectAttributes.addFlashAttribute("MessageCreate", "Delete successful");
                 } catch (Exception e) {
                      // Xử lý lỗi nếu có
-                  redirectAttributes.addFlashAttribute("MessageCreate", "Delete fail");
+                     session.setAttribute("msg", "Delete fail");
+//                  redirectAttributes.addFlashAttribute("MessageCreate", "Delete fail");
                 }
 
               return "redirect:/admin/typethuoc";
@@ -305,9 +313,9 @@ public class TypethuocController {
             try {
       
                     restTemplate.delete(apiUrl+"/delete/"+id);
-
+                    session.setAttribute("msg", "Delete successful");
                     // Nếu không có lỗi, tức là xóa thành công
-                    redirectAttributes.addFlashAttribute("MessageCreate", "Delete successful");
+//                    redirectAttributes.addFlashAttribute("MessageCreate", "Delete successful");
                 } catch (Exception e) {
                      // Xử lý lỗi nếu có
                   redirectAttributes.addFlashAttribute("MessageCreate", "Delete fail");

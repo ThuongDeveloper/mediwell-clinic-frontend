@@ -296,7 +296,7 @@
                                                                                                         <div class="getDetailDoctor">
                                                                                                             <div class="doctor-detail">  
 
-                                                                                                            <img style="width:300px;height:300px;border:3px solid black" class="doctor-img" th:src="${doctor.image}"></img>
+                                                                                                            
 
                                                                                                             <img th:if="${doctor.image != null}" style="width:300px;height:300px;" class="doctor-img" th:src="${doctor.image}"></img>
                                                                                                              <img th:unless="${doctor.image != null}" style="width:300px;height:300px;" class="doctor-img" src="../client/image/avatar-default.jpg"></img>
@@ -373,14 +373,13 @@
                                                                                                                
                                                                                                                        
                                                                                                             </div>  
-<<<<<<< HEAD
+
                                                                                                             </div>
                                                                                                                 
-=======
+
                                                                                                             <div th:if="${#lists.isEmpty(ratings)}">
                                                                                                                  <div class="not-found-schedule-rating">No Rating Found</div>
                                                                                                             </div>
->>>>>>> 0f18e8ec5d97407e4a9fe0a8c806197093e59f2a
                                                                                                         </div>
                                                                                                     </div>
                                                                                                 </div>

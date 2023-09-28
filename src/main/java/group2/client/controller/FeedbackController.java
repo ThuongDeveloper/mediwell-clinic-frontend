@@ -9,9 +9,11 @@ import group2.client.entities.Casher;
 import group2.client.entities.Doctor;
 import group2.client.entities.Feedback;
 import group2.client.entities.Patient;
+import group2.client.repository.FeedbackRepository;
 import group2.client.service.AuthService;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -19,10 +21,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -42,6 +47,12 @@ public class FeedbackController {
 
     @Autowired
     private AuthService authService;
+    
+    @Autowired
+    private FeedbackRepository feedbackRepository;
+    
+    @Autowired
+    private JavaMailSender javaMailSender;
 
     @RequestMapping("/admin/feedback")
     public String page(Model model, HttpServletRequest request) {
@@ -174,7 +185,7 @@ public class FeedbackController {
         // Kiểm tra mã trạng thái của phản hồi
         if (response.getStatusCode().is2xxSuccessful()) {
             // Thực hiện thêm xử lý sau khi tạo Casher thành công (nếu cần)
-
+            
             // Chuyển hướng về trang danh sách Casher
             return "redirect:/admin/feedback";
         } else {
@@ -274,6 +285,7 @@ public class FeedbackController {
 
         try {
             restTemplate.exchange(url, HttpMethod.PUT, request, Feedback.class);
+            
             return "redirect:/admin/feedback";
 
         } catch (RestClientException e) {
@@ -283,7 +295,7 @@ public class FeedbackController {
     }
 
     @RequestMapping(value = "/admin/feedback/delete/{id}", method = RequestMethod.GET)
-    public String delete(@PathVariable("id") Integer id, HttpServletRequest request) {
+    public String delete(@PathVariable("id") Integer id, HttpServletRequest request, HttpSession session) {
 
         Admin currentAdmin = authService.isAuthenticatedAdmin(request);
         Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
@@ -295,24 +307,84 @@ public class FeedbackController {
         } else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
             restTemplate.delete(apiUrl + "/" + id);
             // Thực hiện thêm xử lý sau khi xóa Casher thành công (nếu cần)
-
+            session.setAttribute("msg", "Delete feedback successful!");
             // Chuyển hướng về trang danh sách Casher
             return "redirect:/admin/feedback";
         } else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
             restTemplate.delete(apiUrl + "/" + id);
             // Thực hiện thêm xử lý sau khi xóa Casher thành công (nếu cần)
-
+            session.setAttribute("msg", "Delete feedback successful!");
             // Chuyển hướng về trang danh sách Casher
             return "redirect:/admin/feedback";
         } else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
             restTemplate.delete(apiUrl + "/" + id);
             // Thực hiện thêm xử lý sau khi xóa Casher thành công (nếu cần)
-
+            session.setAttribute("msg", "Delete feedback successful!");
             // Chuyển hướng về trang danh sách Casher
             return "redirect:/admin/feedback";
         } else {
             return "redirect:/login";
         }
+
+    }
+    
+     @RequestMapping(value = "/admin/feedback/send-email-detail/{id}", method = RequestMethod.GET)
+    public String sendEmailDetail(Model model, @PathVariable("id") Integer id, HttpServletRequest request) {
+        
+        Admin currentAdmin = authService.isAuthenticatedAdmin(request);
+        Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
+        Patient currentPatient = authService.isAuthenticatedPatient(request);
+        Casher currentCasher = authService.isAuthenticatedCasher(request);
+        
+        if (currentPatient != null && currentPatient.getRole().equals("PATIENT")) {
+            return "redirect:/forbien";
+        } else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
+            Feedback feedback = restTemplate.getForObject(apiUrl + "/" + id, Feedback.class);
+            model.addAttribute("feedback", feedback);
+             model.addAttribute("currentAdmin", currentAdmin);
+            return "/admin/feedback/sendEmailDetail";
+        }else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
+            Feedback feedback = restTemplate.getForObject(apiUrl + "/" + id, Feedback.class);
+            model.addAttribute("feedback", feedback);
+             model.addAttribute("currentDoctor", currentDoctor);
+            return "/admin/feedback/sendEmailDetail";
+        }else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
+            Feedback feedback = restTemplate.getForObject(apiUrl + "/" + id, Feedback.class);
+            model.addAttribute("feedback", feedback);
+            model.addAttribute("currentCasher", currentCasher);
+            return "/admin/feedback/sendEmailDetail";
+        }else {
+            return "redirect:/login";
+        }
+        
+        
+    }
+    
+    @PostMapping("/admin/feedback/send-email-answer")
+    public String sendMailFeedback(@ModelAttribute Feedback feedback, @RequestParam(value = "email") String email,
+                           @RequestParam(value = "title") String title,
+                           @RequestParam(value = "content") String content, HttpSession session) {
+
+        try {
+            SimpleMailMessage msg = new SimpleMailMessage();
+            msg.setFrom("nova1x1996@gmail.com");
+            msg.setTo(email);
+            msg.setSubject(title);
+            msg.setText(content);
+
+            javaMailSender.send(msg);
+            
+            feedback.setStatus(Boolean.TRUE);
+            feedbackRepository.save(feedback);
+            // Gửi email thành công
+            session.setAttribute("msg", "Send email successful!");
+            return "redirect:/admin/feedback";
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Xử lý lỗi khi gửi email
+            return "redirect:/admin/feedback";
+        }
+
 
     }
     

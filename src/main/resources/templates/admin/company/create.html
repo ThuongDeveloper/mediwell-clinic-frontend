@@ -2,65 +2,65 @@
 
     <div th:replace="~{admin/layout/layoutfixbug :: head}"></div>
 
-<style>
-    /* Add styles to the form container */
-    .form-container {
-        max-width: 400px;
-        margin: 0 auto;
-        padding: 20px;
-        background-color: #f5f5f5;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-    }
+    <style>
+        /* Add styles to the form container */
+        .form-container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
 
-    /* Style form labels */
-    label {
-        display: block;
-        margin-bottom: 5px;
-        font-weight: bold;
-    }
+        /* Style form labels */
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
 
-    /* Style form input fields */
-    input[type="text"] {
-        width: 60%; /* Adjust the width as needed */
-        padding: 10px;
-        margin-bottom: 10px;
-        border: 1px solid #ccc;
-        border-radius: 3px;
-    }
+        /* Style form input fields */
+        input[type="text"] {
+            width: 60%; /* Adjust the width as needed */
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
 
-    /* Style form submit button */
-    input[type="submit"] {
-        background-color: #007bff;
-        color: #fff;
-        padding: 10px 15px;
-        border: none;
-        border-radius: 3px;
-        cursor: pointer;
-    }
+        /* Style form submit button */
+        input[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
 
-    /* Style success message */
-    .success-message {
-        color: green;
-        font-weight: bold;
-    }
+        /* Style success message */
+        .success-message {
+            color: green;
+            font-weight: bold;
+        }
 
-    /* Style error message */
-    .error-container {
-        border: 1px solid #dc3545; /* Red border color for error container */
-        background-color: #f8d7da; /* Background color for error container */
-        padding: 10px; /* Padding inside the error container */
-        border-radius: 3px; /* Rounded corners for error container */
-        margin-top: 10px; /* Margin space at the top of the error container */
-    }
+        /* Style error message */
+        .error-container {
+            border: 1px solid #dc3545; /* Red border color for error container */
+            background-color: #f8d7da; /* Background color for error container */
+            padding: 10px; /* Padding inside the error container */
+            border-radius: 3px; /* Rounded corners for error container */
+            margin-top: 10px; /* Margin space at the top of the error container */
+        }
 
-    /* Style the error message text */
-    .error-message {
-        color: #dc3545; /* Red color for error text */
-        font-weight: bold; /* Bold text for error message */
-    }
+        /* Style the error message text */
+        .error-message {
+            color: #dc3545; /* Red color for error text */
+            font-weight: bold; /* Bold text for error message */
+        }
 
-</style>
+    </style>
     <body class="nav-md">
         <div class="container body">
             <div class="main_container">
@@ -69,24 +69,31 @@
                     <div th:replace="~{admin/layout/header :: div}"></div>
                 </div>
                 <!-- Content -->
-                
-                 <div class="right_col" role="main">
+
+                <div class="right_col" role="main">
                     <h1>Company</h1>
+                    <div th:if="${session.msg}">
 
+                        <div class="alert alert-danger alert-dismissible fade show">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            <span th:text="${session.msg}"></span>
+                        </div>
+                        <th:block th:text="${#session.removeAttribute('msg')}"></th:block>
+                    </div>
 
-                     <!-- Display error message in the error container -->
-                     <div th:if="${MessageCreateError}" class="error-container">
-                         <span class="error-message" th:text="${MessageCreateError}"></span>
-                     </div>
+                    <!-- Display error message in the error container -->
+                    <div th:if="${MessageCreateError}" class="error-container">
+                        <span class="error-message" th:text="${MessageCreateError}"></span>
+                    </div>
 
-                      <form th:action="@{/admin/company/create}" th:object="${company}" method="post">
-                    <label>Name</label> <input type="text"   th:field="*{name}" >
-                        <input type="submit" value="Confirm"></input>
-                </form>
+                    <form th:action="@{/admin/company/create}" th:object="${company}" method="post">
+                        <label>Name</label> <input type="text"   th:field="*{name}" >
+                            <input type="submit" value="Confirm"></input>
+                    </form>
 
                 </div>
-             
-                
+
+
 
                 <!-- Content -->
                 <div th:replace="~{admin/layout/footer :: footer}"></div>

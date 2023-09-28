@@ -276,16 +276,26 @@
                                                                     <form class="woocommerce-form woocommerce-form-login login" th:action="@{/create-feedback}"
                                                                           th:object="${feedback}" method="post" id="registration-form">
                                                                         <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
-                                                                            <label>Full Name&nbsp;<span class="required">*</span></label>
-                                                                            <input required="true" class="woocommerce-Input woocommerce-Input--text input-text" th:field="*{title}" type="text" name="name"  id="name" placeholder="Full Name or Email...">
-                                                                                
+                                                                            <label>Email&nbsp;<span class="required">*</span></label>
+                                                                            <input class="woocommerce-Input woocommerce-Input--text input-text" th:field="*{email}" required="true" type="email" name="email" placeholder="Email...">
+                                                                              <span style="display:none;color:red" id="email_notblank">Email not blank !! </span>   
+                                                                        </p>
+                                                                         <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+                                                                            <label>Phone&nbsp;<span class="required">*</span></label>
+                                                                            <input class="woocommerce-Input woocommerce-Input--text input-text" th:field="*{phone}" required="true" type="text" name="phone" placeholder="Phone...">
+                                                                              <span style="display:none;color:red" id="email_notblank">Phone not blank !! </span>   
+                                                                        </p>
+                                                                        <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+                                                                            <label>Title&nbsp;<span class="required">*</span></label>
+                                                                            <input class="woocommerce-Input woocommerce-Input--text input-text" th:field="*{title}" required="true" type="text" name="title"  id="title" placeholder="Title...">
+                                                                              <span style="display:none;color:red" id="title_notblank">Title not blank !! </span>   
                                                                         </p>
 
 
                                                                         <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
-                                                                            <label>Message&nbsp;<span class="required">*</span></label>
-                                                                            <input required="true" class="woocommerce-Input woocommerce-Input--text input-text" th:field="*{content}" type="text" name="message"  id="message" placeholder="Your Feedback...">
-                                                                               
+                                                                            <label>Content&nbsp;<span class="required">*</span></label>
+                                                                            <textarea class="woocommerce-Input woocommerce-Input--text input-text" required="true" th:field="*{content}" type="text" name="message"  id="message" placeholder="Your Feedback..."></textarea>
+                                                                                <span style="display:none;color:red" id="content_notblank">Content not blank !! </span>
                                                                         </p>
 
                                                                         <p class="form-row">                                                                          
@@ -302,5 +312,6 @@
 
 
                                                                     <div th:replace="~{client/layout/layout :: body}"></div>
+                                                                    
                                                                     </body>
                                                                     </html>

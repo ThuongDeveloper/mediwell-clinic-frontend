@@ -40,6 +40,14 @@
                                 <form style="width: 1200px" th:action="@{/admin/news/create}" th:object="${news}"
                                       method="post"
                                       enctype="multipart/form-data">
+                                     <div th:if="${session.msg}">
+
+                                                            <div class="alert alert-danger alert-dismissible fade show">
+                                                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                                                <span th:text="${session.msg}"></span>
+                                                            </div>
+                                                            <th:block th:text="${#session.removeAttribute('msg')}"></th:block>
+                                                        </div>
                                     <span class="section">News Info</span>
                                     <div class="field item form-group">
                                         <label class="col-form-label col-md-3 col-sm-3 label-align">Title<span

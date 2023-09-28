@@ -14,6 +14,7 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -184,7 +185,8 @@ public class ThuocController {
             Thuoc thuoc,
             @RequestParam("typeThuocID") String typethuocID,
             @RequestParam("donviID") String donviID,
-            @RequestParam("companyID") String companyID
+            @RequestParam("companyID") String companyID,
+            HttpSession session
     ) {
         // Set các giá trị còn thiếu
         Typethuoc newTT = new Typethuoc();
@@ -202,12 +204,12 @@ public class ThuocController {
         thuoc.setDonviId(newDv);
         var a = thuoc.getTypethuocId().getId();
         var response = restTemplate.postForObject(apiUrl_Thuoc + "/create", thuoc, Boolean.class);
-
-        if (response) {
-            System.out.println("Kết quả là True");
-        } else {
-            System.out.println("Kết quả là False");
-        }
+        session.setAttribute("msg", "Create successful!");
+//        if (response) {
+//            System.out.println("Kết quả là True");
+//        } else {
+//            System.out.println("Kết quả là False");
+//        }
 
         // Lấy List Type Doctor
         model.addAttribute("thuoc", new Thuoc());
@@ -336,7 +338,8 @@ public class ThuocController {
             @RequestParam String typeThuocID,
             @RequestParam String donviID,
             @RequestParam String companyID,
-            RedirectAttributes redirectAttributes
+            RedirectAttributes redirectAttributes,
+            HttpSession session
     ) {
         // Tạo một đối tượng Typethuoc mới dựa trên typeThuocID được truyền từ form
         Typethuoc newTD = new Typethuoc();
@@ -364,10 +367,12 @@ public class ThuocController {
 
         if (response.getStatusCode().is2xxSuccessful()) {
             // Nếu cập nhật thành công, thêm thông báo thành công vào flash attribute
-            redirectAttributes.addFlashAttribute("MessageCreate", "Update successful");
+            session.setAttribute("msg", "Update successful!");
+//            redirectAttributes.addFlashAttribute("MessageCreate", "Update successful");
         } else {
             // Nếu không thành công, thêm thông báo lỗi vào flash attribute
-            redirectAttributes.addFlashAttribute("MessageCreate", "Update failed");
+//            redirectAttributes.addFlashAttribute("MessageCreate", "Update failed");
+            session.setAttribute("msg", "Update fail!");
         }
 
         // Điều hướng về trang danh sách thuốc
@@ -377,7 +382,7 @@ public class ThuocController {
 
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
-    public String delete(Model model, @PathVariable("id") Integer id, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+    public String delete(Model model, @PathVariable("id") Integer id, HttpServletRequest request, HttpSession session, RedirectAttributes redirectAttributes) {
 
         Admin currentAdmin = authService.isAuthenticatedAdmin(request);
         Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
@@ -390,12 +395,13 @@ public class ThuocController {
             try {
 
                 restTemplate.delete(apiUrl_Thuoc + "/delete/" + id);
-
+                session.setAttribute("msg", "Delete Successful!");
                 // Nếu không có lỗi, tức là xóa thành công
-                redirectAttributes.addFlashAttribute("MessageCreate", "Delete Successful");
+//                redirectAttributes.addFlashAttribute("MessageCreate", "Delete Successful");
             } catch (Exception e) {
                 // Xử lý lỗi nếu có
-                redirectAttributes.addFlashAttribute("MessageError", "Delete fail.");
+//                redirectAttributes.addFlashAttribute("MessageError", "Delete fail.");
+                session.setAttribute("msg", "Delete fail!");
             }
 
             return "redirect:/admin/thuoc";
@@ -403,12 +409,13 @@ public class ThuocController {
             try {
 
                 restTemplate.delete(apiUrl_Thuoc + "/delete/" + id);
-
+                 session.setAttribute("msg", "Delete Successful!");
                 // Nếu không có lỗi, tức là xóa thành công
-                redirectAttributes.addFlashAttribute("MessageCreate", "Delete Successful");
+//                redirectAttributes.addFlashAttribute("MessageCreate", "Delete Successful");
             } catch (Exception e) {
                 // Xử lý lỗi nếu có
-                redirectAttributes.addFlashAttribute("MessageError", "Delete fail.");
+//                redirectAttributes.addFlashAttribute("MessageError", "Delete fail.");
+                 session.setAttribute("msg", "Delete fail!");
             }
 
             return "redirect:/admin/thuoc";
@@ -416,12 +423,13 @@ public class ThuocController {
             try {
 
                 restTemplate.delete(apiUrl_Thuoc + "/delete/" + id);
-
+                session.setAttribute("msg", "Delete Successful!");
                 // Nếu không có lỗi, tức là xóa thành công
-                redirectAttributes.addFlashAttribute("MessageCreate", "Delete Successful");
+//                redirectAttributes.addFlashAttribute("MessageCreate", "Delete Successful");
             } catch (Exception e) {
                 // Xử lý lỗi nếu có
-                redirectAttributes.addFlashAttribute("MessageError", "Delete fail.");
+                session.setAttribute("msg", "Delete fail!");
+//                redirectAttributes.addFlashAttribute("MessageError", "Delete fail.");
             }
 
             return "redirect:/admin/thuoc";
