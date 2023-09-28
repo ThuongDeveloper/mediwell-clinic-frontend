@@ -5,9 +5,12 @@
 package group2.client.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+<<<<<<< HEAD
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,6 +23,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+=======
+import javax.persistence.*;
+>>>>>>> cb64727eb11e0522145da9f2e6e34d4355bc520a
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -84,6 +90,10 @@ public class Patient implements Serializable {
     private Date dob;
     @OneToMany(mappedBy = "patientId")
     private List<Rating> ratingList;
+    @Column(name = "dob")
+//    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date dob;
     @OneToMany(mappedBy = "patientId")
     private List<Appointment> appointmentList;
 
@@ -165,7 +175,11 @@ public class Patient implements Serializable {
     public void setGender(Boolean gender) {
         this.gender = gender;
     }
+    public Date getDob() {
+        return dob;
+    }
 
+<<<<<<< HEAD
     public Date getDob() {
         return dob;
     }
@@ -174,6 +188,11 @@ public class Patient implements Serializable {
         this.dob = dob;
     }
 
+=======
+    public void setDob(Date dob) {
+        this.dob = dob;
+    }
+>>>>>>> cb64727eb11e0522145da9f2e6e34d4355bc520a
     @XmlTransient
     public List<Rating> getRatingList() {
         return ratingList;

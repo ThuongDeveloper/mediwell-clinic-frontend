@@ -3,22 +3,25 @@
     <div th:replace="~{admin/layout/layoutfixbug :: head}"></div>
 
 <style>
-    /* Style the success container */
-    /*.success-container {*/
-    /*    border: 1px solid #28a745; !* Green border color for success container *!*/
-    /*    background-color: #d4edda; !* Background color for success container *!*/
-    /*    padding: 10px; !* Padding inside the success container *!*/
-    /*    border-radius: 3px; !* Rounded corners for success container *!*/
-    /*    margin-top: 10px; !* Margin space at the top of the success container *!*/
-    /*}*/
 
-    /* Style the success message text */
-    .success-message {
-        color: #28a745; /* Green color for success text */
-        font-weight: bold; /* Bold text for success message */
+    .success-container {
+        background-color: #4CAF50; /* Màu xanh lá cây */
+        color: #ffffff; /* Màu chữ trắng */
+        padding: 10px;
+        border-radius: 5px; /* Góc bo tròn */
+        margin-bottom: 10px; /* Khoảng cách dưới */
+        display: none; /* Ẩn ban đầu */
     }
 
-
+    /* CSS cho thông báo thất bại */
+    .error-container {
+        background-color: #f44336; /* Màu đỏ */
+        color: #ffffff; /* Màu chữ trắng */
+        padding: 10px;
+        border-radius: 5px; /* Góc bo tròn */
+        margin-bottom: 10px; /* Khoảng cách dưới */
+        display: none; /* Ẩn ban đầu */
+    }
 </style>
     <body class="nav-md">
         <div class="container body">
@@ -30,22 +33,17 @@
                 <!-- Content -->
                 <div class="right_col" role="main">
                     <h1>Medication Types</h1>
-                    <!-- Display success message in the success container -->
-                    <!-- Display success message only if it's not null -->
                     <div th:if="${MessageCreate != null}" class="success-container">
                         <span class="success-message" th:text="${MessageCreate}"></span>
+                    </div>
+                    <div th:if="${MessageError != null}" class="error-container">
+                        <span class="error-message" th:text="${MessageError}"></span>
                     </div>
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 card_head">
 
                             <a th:href="@{/admin/typethuoc/create}"  class="btn btn-primary">Create </a> <br><!-- comment -->
-                                <div th:if="${successMessage}" style="color: green;">
-                                    <p th:text="${successMessage}"></p>
-                                </div>
 
-                                <div th:if="${errorMessage}" style="color: red;">
-                                    <p th:text="${errorMessage}"></p>
-                                </div>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -84,7 +82,23 @@
 
                 </div>
 
+<!--                <script>-->
+<!--                    function showNotification(message, container) {-->
+<!--                        var notification = document.querySelector(container);-->
+<!--                        var notificationMessage = notification.querySelector("span");-->
+<!--                        notificationMessage.innerText = message;-->
+<!--                        notification.style.display = "block"; // Hiển thị thông báo-->
+<!--                        setTimeout(function () {-->
+<!--                            notification.style.display = "none"; // Ẩn thông báo sau 3 giây-->
+<!--                        }, 3000); // 3 giây (3000 milliseconds)-->
+<!--                    }-->
 
+<!--                    // Sử dụng khi bạn muốn hiển thị thông báo thành công-->
+<!--                    showNotification("Update Successful.", ".success-container");-->
+
+<!--                    // Sử dụng khi bạn muốn hiển thị thông báo thất bại-->
+<!--                    showNotification("Update Failed.", ".error-container");-->
+<!--                </script>-->
                 <!-- Content -->
                 <div th:replace="~{admin/layout/footer :: footer}"></div>
             </div>

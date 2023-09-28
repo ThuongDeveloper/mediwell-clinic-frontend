@@ -644,63 +644,66 @@
                 <!--        <p th:text="${n.content}"></p>-->
                 <!--        <a class="gdlr-core-excerpt-read-more gdlr-core-button gdlr-core-rectangle new-read-more"-->
                 <!--           th:href="@{/newsdetail/{id}(id=${n.id})}">Read More</a>-->
+                <div th:if="${n.getStatus() == true}">
+                  <img style="margin-bottom: 44px; width: 100%" src="" th:src="${n.getImage()}" alt="">
 
-                <img style="margin-bottom: 44px; width: 100%" src="" th:src="@{'/img/' + ${n.getBanner()}}" alt="">
 
-                <h1 style="font-size: 26px; color: black;margin-bottom: 14px" th:text="${n.title}"></h1>
+                  <h1 style="font-size: 26px; color: black;margin-bottom: 14px" th:text="${n.title}"></h1>
 
-                <div class="item-info">
-                    <div style="font-weight: bold ;color: #4d93e9;margin-bottom: 20px; display: flex; align-items: center;gap: 10px">
-                        <i class="bi bi-clock"></i>
-                        <span th:text="${n.getCreateAt().toLocaleString().substring(0, n.getCreateAt().toLocaleString().lastIndexOf(','))}"></span>
-                    </div>
-                    <div style="font-weight: bold ;color: #4d93e9;margin-bottom: 20px; display: flex; align-items: center;gap: 10px">
-                        <i class="bi bi-file-earmark-text-fill"></i>
-                        <span th:text="${n.getAuthor().toUpperCase()}"></span>
-                    </div>
+                  <div class="item-info">
+                      <div style="font-weight: bold ;color: #4d93e9;margin-bottom: 20px; display: flex; align-items: center;gap: 10px">
+                          <i class="bi bi-clock"></i>
+                          <span th:text="${n.getCreateAt().toLocaleString().substring(0, n.getCreateAt().toLocaleString().lastIndexOf(','))}"></span>
+                      </div>
+                      <div style="font-weight: bold ;color: #4d93e9;margin-bottom: 20px; display: flex; align-items: center;gap: 10px">
+                          <i class="bi bi-file-earmark-text-fill"></i>
+  <!--                        <span th:text="${n.getAuthor().toUpperCase()}"></span>-->
+                      </div>
+                  </div>
+<!--                  <p style="font-size: 16px; color: #555555; overflow: hidden;
+                                                                             display: block;
+                                                                             display: -webkit-box;
+                                                                              -webkit-box-orient: vertical;
+                                                                              -webkit-line-clamp: 4;"
+                     th:text="${n.content}"></p>-->
+                  <a class="gdlr-core-excerpt-read-more gdlr-core-button gdlr-core-rectangle new-read-more"
+                     th:href="@{/newsdetail/{id}(id=${n.id})}">Read More</a>
                 </div>
-                <p style="font-size: 16px; color: #555555; overflow: hidden;
-                                                                           display: block;
-                                                                           display: -webkit-box;
-                                                                            -webkit-box-orient: vertical;
-                                                                            -webkit-line-clamp: 4;"
-                   th:text="${n.content}"></p>
-                <a class="gdlr-core-excerpt-read-more gdlr-core-button gdlr-core-rectangle new-read-more"
-                   th:href="@{/newsdetail/{id}(id=${n.id})}">Read More</a>
             </div>
         </div>
         <div class="others">
             <div>
                 <h3 style="font-size: 16px; color: black; margin: 0 0 28px 0; padding: 0">Recent Article</h3>
                 <div th:each="item: ${listnews}">
-                    <div class="article-item">
-                        <img th:src="@{'/img/' + ${item.getBanner()}}"
-                             style="width: 75px; height: 75px; margin-bottom: 44px; border: 1px solid #555555;" src=""
-                             alt="a">
-                        <div>
-                            <h3 th:text="${item.getTitle()}"
-                                style="font-size: 16px; color: black; margin: 0 0 10px 0; padding: 0">
-                                tiêu đề bên phải</h3>
-                            <div class="item-info">
-                                <div style="font-weight: bold ;color: #4d93e9;margin-bottom: 20px; display: flex; align-items: center;gap: 10px">
-                                    <i class="bi bi-clock"></i>
-                                    <span style="font-size: 11px"
-                                          th:text="${item.getCreateAt().toLocaleString().substring(0, item.getCreateAt().toLocaleString().lastIndexOf(','))}"></span>
-                                </div>
-                                <div style="font-weight: bold ;color: #4d93e9;margin-bottom: 20px; display: flex; align-items: center;gap: 10px">
-                                    <i class="bi bi-file-earmark-text-fill"></i>
-                                    <span style="font-size: 11px" th:text="${item.getAuthor().toUpperCase()}"></span>
+                    <div th:if="${item.getStatus() == true}">
+                        <div class="article-item">
+                            <img th:src="${item.getImage()}"
+                                 style="width: 75px; height: 75px; margin-bottom: 44px; border: 1px solid #555555;"
+                                 alt="a">
+                            <div>
+                                <h3 th:text="${item.getTitle()}"
+                                    style="font-size: 16px; color: black; margin: 0 0 10px 0; padding: 0">
+                                    tiêu đề bên phải</h3>
+                                <div class="item-info">
+                                    <div style="font-weight: bold ;color: #4d93e9;margin-bottom: 20px; display: flex; align-items: center;gap: 10px">
+                                        <i class="bi bi-clock"></i>
+                                        <span style="font-size: 11px"
+                                              th:text="${item.getCreateAt().toLocaleString().substring(0, item.getCreateAt().toLocaleString().lastIndexOf(','))}"></span>
+                                    </div>
+                                    <div style="font-weight: bold ;color: #4d93e9;margin-bottom: 20px; display: flex; align-items: center;gap: 10px">
+                                        <i class="bi bi-file-earmark-text-fill"></i>
+    <!--                                    <span style="font-size: 11px" th:text="${item.getAuthor().toUpperCase()}"></span>-->
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
+                        </div>
                     </div>
                 </div>
             </div>
             <div>
                 <h3 style="font-size: 16px; color: black; margin: 0 0 28px 0; padding: 0">Text Widget</h3>
-                <p>Nulla vitae elit libero, a pharetra augue. Nulla vitae elit libero, a pharetra augue. Nulla vitae
-                    elit libero, a pharetra augue. Donec sed odio dui. Etiam porta sem malesuada.</p>
+                <p>Is a figurative way of referring to text widgets on news sites that are too large, take up too much space, and make the site confusing. These widgets are often placed in prominent, easy-to-see locations, and can include elements such as news headlines, photos, and advertisements.</p>
             </div>
         </div>
     </section>

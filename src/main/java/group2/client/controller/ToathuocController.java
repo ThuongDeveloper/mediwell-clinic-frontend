@@ -25,9 +25,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Controller
 @RequestMapping("/admin/toathuoc")
@@ -156,9 +154,17 @@ public class ToathuocController {
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String create(Model model, HttpServletRequest request, int[] thuocID, int[] quantity, int[] sang, int[] trua, int[] chieu, int[] toi, String sympton, int phieukhamId, @DateTimeFormat(pattern = "yyyy-MM-dd") Date ngaytaikham) {
         List<ToaThuocDAO> list = new ArrayList<ToaThuocDAO>();
-        for(int i = 0; i < thuocID.length; i++){
-            ToaThuocDAO obj = new ToaThuocDAO(thuocID[i], quantity[i], sang[i], trua[i], chieu[i], toi[i]);
-            list.add(obj);
+        Set<Integer> seenThuoIDs = new HashSet<>(); // Sử dụng Set để theo dõi thuocID đã xuất hiện
+
+        for(int i = 0; i < thuocID.length; i++) {
+            int currentThuocID = thuocID[i];
+
+            // Nếu thuocID hiện tại chưa xuất hiện, thêm vào danh sách và đánh dấu đã xuất hiện
+            if (!seenThuoIDs.contains(currentThuocID)) {
+                ToaThuocDAO obj = new ToaThuocDAO(currentThuocID, quantity[i], sang[i], trua[i], chieu[i], toi[i]);
+                list.add(obj);
+                seenThuoIDs.add(currentThuocID);
+            }
         }
         // Authenticate the doctor and retrieve their information
         Doctor currentDoctor = authService.isAuthenticatedDoctor(request);

@@ -24,6 +24,9 @@
         .reset-search-btn:hover{
             color: #fff;
         }
+        .appointment-title{
+            text-align: center;
+        }
     </style>
 
     <body class="nav-md">
@@ -36,8 +39,9 @@
                 <!-- Content -->
 
                 <div class="right_col" role="main">
-                    <h1>Appointment Page</h1>
+                   
                     <div class="card shadow mb-4">
+                        <h1 class="appointment-title">Appointment Page</h1>
                         <div class="card-header py-3 card_head select-date-group">
                             <div th:if="${currentAdmin != null}">
                                 <form th:action="@{/admin/appointment/search}" class="app-form">
@@ -49,7 +53,7 @@
                             </div>
                             <div th:if="${currentDoctor != null}">
                                 <form th:action="@{/admin/appointment/search-each-day}" class="app-form">
-                                    <input class="form-control" name="date" required="true" id="date" type="date" />
+                                    <input type="date" class="form-control current-date-input" id="date" name="date"/>
                                     <button type="submit" class="btn btn-success">Search</button> 
                                 </form>
                                 <a th:href="@{/admin/appointment}" class="reset-search-btn">Reset</a>
@@ -58,7 +62,14 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
+                                 <div th:if="${session.msg}">
 
+                                    <div class="alert alert-danger alert-dismissible fade show">
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                        <span th:text="${session.msg}"></span>
+                                    </div>
+                                    <th:block th:text="${#session.removeAttribute('msg')}"></th:block>
+                                </div>
                                 <table th:object="${listAppointment}" class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
 
                                     <thead>
@@ -82,25 +93,30 @@
                                         <td th:text="${e.getSymptom()}"></td>
                                         <td th:text="${e.getTypePayment()}"></td>
                                         <td th:text="${e.getPrice()}"></td>
-                                        <td th:text="${e.getDate()}"></td>
+                                        <td th:text="${#dates.format(e.getDate(), 'yyyy-MM-dd')}"></td>
                                         <td th:text="${e.getStarttime()}"></td>
                                         <td th:text="${e.getEndtime()}"></td>
                                         <td th:if="${e.getStatus() == false}">
                                             <div th:if="${currentDoctor != null}">
                                                 <form th:action="@{/change-status/{id}(id=${e.getId()})}" method="post">
-                                                    <button type="submit" class="btn btn-danger">Haven't examined yet</button>
+                                                    <button type="submit" onclick="return confirm('Are you sure you want to update the status of this appointment?')" class="btn btn-danger">Haven't examined yet</button>
                                                 </form>
                                             </div>
                                              <div th:if="${currentAdmin != null}">
                                                 
-                                                <button type="submit" class="btn btn-danger">Haven't examined yet</button>
+                                                <span style="color: red;">Haven't examined yet</span>
                                                 
                                             </div>
                                         </td>
                                         <td th:if="${e.getStatus() == true}">
-                                            
-                                            <button type="submit" class="btn btn-success">Examined</button>
-                                           
+                                            <div th:if="${currentDoctor != null}">
+                                                <button type="submit" class="btn btn-success">Examined</button>
+                                            </div>
+                                             <div th:if="${currentAdmin != null}">
+                                                
+                                                 <span style="color: green;">Examined</span>
+                                                
+                                            </div>
                                         </td>
                                     </tr>
                                 </tbody>

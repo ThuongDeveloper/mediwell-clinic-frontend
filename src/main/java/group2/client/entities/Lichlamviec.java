@@ -57,12 +57,12 @@ public class Lichlamviec implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createAt;
     @Column(name = "starttime")
- @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
 //    @Temporal(TemporalType.TIME)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
     private String starttime;
     @Column(name = "endtime")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
 //    @Temporal(TemporalType.TIME)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
     private String endtime;
     @JoinColumn(name = "doctor_id", referencedColumnName = "id")
     @ManyToOne

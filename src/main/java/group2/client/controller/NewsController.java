@@ -10,14 +10,17 @@ import group2.client.entities.Casher;
 import group2.client.entities.Doctor;
 import group2.client.entities.News;
 import group2.client.entities.Patient;
+import group2.client.repository.NewsRepository;
 import group2.client.service.AuthService;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -26,6 +29,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,6 +55,9 @@ public class NewsController {
 
     @Autowired
     private AuthService authService;
+    
+    @Autowired
+    private NewsRepository newsRepository;
 
     @RequestMapping("/admin/news")
     public String page(Model model, HttpServletRequest request) {
@@ -135,37 +143,32 @@ public class NewsController {
     }
 
    @RequestMapping(value = "/admin/news/create", method = RequestMethod.POST)
-    public String create(Model model, @ModelAttribute NewsDAO newsDAO, @RequestParam ("author") String author) {
-        MultipartFile multipartFile = newsDAO.getBanner();
-        String fileName = multipartFile.getOriginalFilename();
-        String pathFile = this.fileUpload + fileName;
-        try {
-            FileCopyUtils.copy(newsDAO.getBanner().getBytes(), new File(pathFile));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public String create(Model model, @ModelAttribute News news, @RequestParam("file") MultipartFile file, HttpSession session) throws IOException {
+         ByteArrayResource fileResource = new ByteArrayResource(file.getBytes()) {
+            @Override
+            public String getFilename() {
+                return file.getOriginalFilename();
+            }
+        };
+
+        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+        body.add("News", news);
+        body.add("file", fileResource);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
-        News news = new News();
+        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
 
-        news.setTitle(newsDAO.getTitle());
-       // news.setBanner(fileName);
-        news.setContent(newsDAO.getContent());
-        news.setStatus(newsDAO.getStatus());
-       // news.setAuthor(author);
 
-        // Tạo một HttpEntity với thông tin Casher để gửi yêu cầu POST
-        HttpEntity<News> request = new HttpEntity<>(news, headers);
-
-        ResponseEntity<News> response = restTemplate.exchange(apiUrl, HttpMethod.POST, request, News.class);
-
+        ResponseEntity response = restTemplate.exchange(apiUrl + "/create", HttpMethod.POST, requestEntity, String.class);
+        
         // Kiểm tra mã trạng thái của phản hồi
         if (response.getStatusCode().is2xxSuccessful()) {
             // Thực hiện thêm xử lý sau khi tạo Casher thành công (nếu cần)
 
             // Chuyển hướng về trang danh sách Casher
+            session.setAttribute("msg", "Create news successful!");
             return "redirect:/admin/news";
         } else {
             // Xử lý lỗi nếu cần thiết
@@ -205,7 +208,7 @@ public class NewsController {
     }
 
     @RequestMapping(value = "/admin/news/edit", method = RequestMethod.POST)
-    public String update(Model model, @ModelAttribute News updatedNews) {
+    public String update(Model model, @ModelAttribute News updatedNews, HttpSession session) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
@@ -220,6 +223,7 @@ public class NewsController {
 
         try {
             restTemplate.exchange(url, HttpMethod.PUT, request, News.class);
+            session.setAttribute("msg", "Update news successful!");
             return "redirect:/admin/news";
 
         } catch (RestClientException e) {
@@ -229,7 +233,7 @@ public class NewsController {
     }
 
     @RequestMapping(value = "/admin/news/delete/{id}", method = RequestMethod.GET)
-    public String delete(@PathVariable("id") Integer id, HttpServletRequest request) {
+    public String delete(@PathVariable("id") Integer id, HttpServletRequest request, HttpSession session) {
 
         Admin currentAdmin = authService.isAuthenticatedAdmin(request);
         Doctor currentDoctor = authService.isAuthenticatedDoctor(request);
@@ -241,25 +245,37 @@ public class NewsController {
         } else if (currentAdmin != null && currentAdmin.getRole().equals("ADMIN")) {
             restTemplate.delete(apiUrl + "/" + id);
             // Thực hiện thêm xử lý sau khi xóa Casher thành công (nếu cần)
-
+            session.setAttribute("msg", "Delete news successful!");
             // Chuyển hướng về trang danh sách Casher
             return "redirect:/admin/news";
         } else if (currentDoctor != null && currentDoctor.getRole().equals("DOCTOR")) {
             restTemplate.delete(apiUrl + "/" + id);
             // Thực hiện thêm xử lý sau khi xóa Casher thành công (nếu cần)
-
+            session.setAttribute("msg", "Delete news successful!");
             // Chuyển hướng về trang danh sách Casher
             return "redirect:/admin/news";
         } else if (currentCasher != null && currentCasher.getRole().equals("CASHER")) {
             restTemplate.delete(apiUrl + "/" + id);
             // Thực hiện thêm xử lý sau khi xóa Casher thành công (nếu cần)
-
+            session.setAttribute("msg", "Delete news successful!");
             // Chuyển hướng về trang danh sách Casher
             return "redirect:/admin/news";
         } else {
             return "redirect:/login";
         }
 
+    }
+    
+      @RequestMapping(value = "/change-status-news/{id}", method = RequestMethod.POST)
+    public String changeNewsStatus(Model model, @PathVariable("id") Integer id) {
+        News news = newsRepository.findById(id).get();
+        if(news.getStatus().equals(Boolean.FALSE)){
+            news.setStatus(Boolean.TRUE);
+        }else{
+            news.setStatus(Boolean.FALSE);
+        }
+        newsRepository.save(news);
+        return "redirect:/admin/news";
     }
 
 }
