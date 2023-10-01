@@ -11,6 +11,9 @@ import group2.client.entities.Feedback;
 import group2.client.entities.Patient;
 import group2.client.repository.FeedbackRepository;
 import group2.client.service.AuthService;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -362,7 +365,9 @@ public class FeedbackController {
     
     @PostMapping("/admin/feedback/send-email-answer")
     public String sendMailFeedback(@ModelAttribute Feedback feedback, @RequestParam(value = "email") String email,
-                           @RequestParam(value = "title") String title,
+                           @RequestParam(value = "title") String title, @RequestParam(value = "phone") String phone,
+                                   @RequestParam(value = "admin-answer") String answer,
+                                   @RequestParam(value = "id") int id,
                            @RequestParam(value = "content") String content, HttpSession session) {
 
         try {
@@ -370,10 +375,14 @@ public class FeedbackController {
             msg.setFrom("nova1x1996@gmail.com");
             msg.setTo(email);
             msg.setSubject(title);
-            msg.setText(content);
+            msg.setText(answer);
 
             javaMailSender.send(msg);
-            
+
+            Feedback feedback1 = feedbackRepository.findById(id).get();
+
+            feedback.setPhone(phone);
+            feedback.setCreateAt(feedback1.getCreateAt());
             feedback.setStatus(Boolean.TRUE);
             feedbackRepository.save(feedback);
             // Gửi email thành công

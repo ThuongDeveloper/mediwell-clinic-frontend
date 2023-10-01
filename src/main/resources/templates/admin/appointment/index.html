@@ -53,7 +53,7 @@
                             </div>
                             <div th:if="${currentDoctor != null}">
                                 <form th:action="@{/admin/appointment/search-each-day}" class="app-form">
-                                    <input type="date" class="form-control current-date-input" id="date" name="date"/>
+                                    <input type="date" class="form-control current-date-input" required="true" id="date" name="date"/>
                                     <button type="submit" class="btn btn-success">Search</button> 
                                 </form>
                                 <a th:href="@{/admin/appointment}" class="reset-search-btn">Reset</a>

@@ -42,13 +42,19 @@
                                             <div class="field item form-group">
                                                 <label class="col-form-label col-md-3 col-sm-3 label-align">ID</label>
                                                 <div class="col-md-6 col-sm-6">
-                                                    <input class="form-control" th:field="*{id}" type="text" data-minlength="5" data-maxlength="15" readonly="true">
+                                                    <input class="form-control" th:field="*{id}" name="id" type="text" data-minlength="5" data-maxlength="15" readonly="true">
                                                 </div>
                                             </div>
                                              <div class="field item form-group">
                                                 <label class="col-form-label col-md-3 col-sm-3 label-align">Email</label>
                                                 <div class="col-md-6 col-sm-6">
                                                     <input type="text" th:field="*{email}" name="email" class="form-control" readonly="true" required="true">
+                                                </div>
+                                            </div>
+                                            <div class="field item form-group">
+                                                <label class="col-form-label col-md-3 col-sm-3 label-align">Phone</label>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <input type="text" th:field="*{phone}" name="phone" class="form-control" readonly="true" required="true">
                                                 </div>
                                             </div>
                                             <div class="field item form-group">
@@ -63,6 +69,7 @@
                                                     <input class="form-control" th:field="*{content}" name="content" type="text" readonly="true" required="true">
                                                 </div>
                                             </div>
+
                                             <div class="field item form-group">
                                                 <label class="col-form-label col-md-3 col-sm-3 label-align">Your answer</label>
                                                 <div class="col-md-6 col-sm-6">
